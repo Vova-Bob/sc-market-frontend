@@ -1,0 +1,471 @@
+import React, { useMemo, useState } from "react"
+import {
+  Box,
+  Breadcrumbs,
+  Card,
+  CardContent,
+  CardHeader,
+  Chip,
+  Divider,
+  Fade,
+  Grid,
+  IconButton,
+  Link as MaterialLink,
+  MenuItem,
+  Paper,
+  Select,
+  Typography,
+} from "@mui/material"
+import { Link } from "react-router-dom"
+import { getRelativeTime } from "../../util/time"
+import { Section } from "../../components/paper/Section"
+import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
+import { useGetUserProfileQuery } from "../../store/profile"
+import {
+  CreateRounded,
+  PersonRounded,
+  RefreshRounded,
+  ZoomInRounded,
+} from "@mui/icons-material"
+import { useCurrentMarketListing } from "../../hooks/market/CurrentMarketItem"
+import { MarketMultiple } from "../../datatypes/MarketListing"
+import { UserList } from "../../components/list/UserList"
+import { OrderList } from "../../components/list/OrderList"
+import { useAlertHook } from "../../hooks/alert/AlertHook"
+import { MarkdownRender } from "../../components/markdown/Markdown"
+import { Helmet } from "react-helmet"
+import { ListingNameAndRating } from "../../components/rating/ListingRating"
+import { has_permission } from "../contractor/OrgRoles"
+import { ImagePreviewModal } from "../../components/modal/ImagePreviewModal"
+import {
+  dateDiffInDays,
+  ListingDetailItem,
+  PurchaseArea,
+} from "./MarketListingView"
+import { Stack } from "@mui/system"
+import { useTheme } from "@mui/material/styles"
+import moment from "moment/moment"
+import { ClockAlert } from "mdi-material-ui"
+
+export function MarketMultipleView() {
+  // TODO: Update listing details
+  const [complete] = useCurrentMarketListing<MarketMultiple>()
+  const { default_listing, listings } = complete
+
+  const [currentListing, setCurrentListing] = useState(default_listing)
+  const { listing, details, photos } = currentListing
+
+  const { data: profile } = useGetUserProfileQuery()
+  const [currentOrg] = useCurrentOrg()
+
+  const amContractor = useMemo(
+    () => currentOrg?.spectrum_id === listing.contractor_seller?.spectrum_id,
+    [currentOrg?.spectrum_id, listing?.contractor_seller],
+  )
+  const amSeller = useMemo(
+    () => profile?.username === listing.user_seller?.username && !currentOrg,
+    [currentOrg, listing?.user_seller?.username, profile?.username],
+  )
+
+  const amContractorManager = useMemo(
+    () => amContractor && has_permission(currentOrg, profile, "manage_market"),
+    [currentOrg, profile, amContractor],
+  )
+
+  const amRelated = useMemo(
+    () => amSeller || amContractorManager || profile?.role === "admin",
+    [amSeller, amContractorManager, profile?.role],
+  )
+
+  // const {data: contractor} = useGetContractorBySpectrumIDQuery(listing.listing.contractor_seller?.spectrum_id!, {skip: !listing.listing.contractor_seller})
+
+  const issueAlert = useAlertHook()
+  const [imageModalOpen, setImageModalOpen] = useState(false)
+  const theme = useTheme()
+
+  return (
+    <>
+      <Grid item xs={12} lg={12}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} lg={4}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} lg={12}>
+                <ImagePreviewModal
+                  images={photos}
+                  open={imageModalOpen}
+                  onClose={() => setImageModalOpen(false)}
+                />
+                <Paper
+                  sx={{
+                    borderRadius: 3,
+                    backgroundColor: "black",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    minHeight: 400,
+                    maxHeight: 600,
+                    height: 400,
+                    width: "100%",
+                    position: "relative",
+                  }}
+                  onClick={() => setImageModalOpen((o) => !o)}
+                >
+                  <IconButton sx={{ top: 4, right: 4, position: "absolute" }}>
+                    <ZoomInRounded />
+                  </IconButton>
+                  <img
+                    loading="lazy"
+                    // component="img"
+                    style={{
+                      display: "block",
+                      maxHeight: "100%",
+                      maxWidth: "100%",
+                      margin: "auto",
+                    }}
+                    src={photos[0]}
+                    alt={details.description}
+                    onError={({ currentTarget }) => {
+                      currentTarget.onerror = null
+                      currentTarget.src =
+                        "https://cdn.robertsspaceindustries.com/static/images/Temp/default-image.png"
+                    }}
+                  />
+                </Paper>
+
+                <Helmet>
+                  <meta name="description" content={details.description} />
+                  <script type="application/ld+json">
+                    {JSON.stringify({
+                      "@context": "https://schema.org",
+                      "@type": "Product",
+                      seller: {
+                        "@type": listing.contractor_seller
+                          ? "Contractor"
+                          : "User",
+                        name:
+                          listing.contractor_seller?.name ||
+                          listing.user_seller?.display_name,
+                      },
+                      description: details.description,
+                      name: details.title,
+                      price: `${listing.price} aUEC`,
+                      kind: details.item_type,
+                      image: photos[0],
+                      offers: {
+                        "@type": "Offer",
+                        url: `https://sc-market.space/market/${listing.listing_id}`,
+                        priceCurrency: "aUEC",
+                        price: listing.price,
+                        // "priceValidUntil": "2020-11-20",
+                        // "itemCondition": "https://schema.org/NewCondition",
+                        availability:
+                          listing.quantity_available > 0
+                            ? "https://schema.org/InStock"
+                            : "https://schema.org/OutOfStock",
+                      },
+                    })}
+                  </script>
+                </Helmet>
+              </Grid>
+
+              {amRelated && (
+                <Grid item lg={12} xs={12}>
+                  <Grid container spacing={2}>
+                    <Section
+                      disablePadding
+                      xs={12}
+                      title={"People"}
+                      innerJustify={"flex-start"}
+                    >
+                      <Grid
+                        item
+                        xs={12}
+                        sx={{
+                          paddingTop: 2,
+                          paddingBottom: 2,
+                          boxSizing: "border-box",
+                        }}
+                      >
+                        <UserList
+                          users={[
+                            listing.user_seller || listing.contractor_seller,
+                          ]}
+                          title={"Seller"}
+                        />
+                        {/*{*/}
+                        {/*    amRelated &&*/}
+                        {/*    (*/}
+                        {/*        <UserList users={[]}*/}
+                        {/*                  title={listing.sale_type === 'sale' ? 'Customers' : 'Bidders'}/>*/}
+                        {/*    )*/}
+                        {/*}*/}
+                      </Grid>
+                    </Section>
+                  </Grid>
+                </Grid>
+              )}
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12} lg={8}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Fade in={true}>
+                  <Card
+                    sx={{
+                      borderRadius: 3,
+                      minHeight: 400,
+                    }}
+                  >
+                    <CardHeader
+                      disableTypography
+                      sx={{
+                        padding: 3,
+                        paddingBottom: 0,
+                      }}
+                      title={
+                        <Stack
+                          direction={"column"}
+                          alignItems={"left"}
+                          spacing={1}
+                          justifyContent={"left"}
+                        >
+                          <Breadcrumbs
+                            aria-label="breadcrumb"
+                            color={"text.primary"}
+                          >
+                            <MaterialLink
+                              component={Link}
+                              underline="hover"
+                              color="inherit"
+                              to="/market"
+                            >
+                              Market
+                            </MaterialLink>
+                            <MaterialLink
+                              component={Link}
+                              underline="hover"
+                              color="inherit"
+                              to={`/market?type=${encodeURIComponent(
+                                details.item_type,
+                              )}`}
+                            >
+                              {details.item_type}
+                            </MaterialLink>
+                            {details.item_name && (
+                              <MaterialLink
+                                component={Link}
+                                underline="hover"
+                                color="text.secondary"
+                                to={`/market?query=${encodeURIComponent(
+                                  details.item_name,
+                                )}`}
+                              >
+                                {details.item_name}
+                              </MaterialLink>
+                            )}
+                          </Breadcrumbs>
+                          <Typography
+                            sx={{
+                              marginRight: 1,
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                            variant={"h5"}
+                            color={"text.secondary"}
+                            fontWeight={"bold"}
+                          >
+                            {complete.details.title}{" "}
+                            <Typography
+                              display={"inline"}
+                              sx={{ marginLeft: 1 }}
+                            >
+                              {dateDiffInDays(
+                                new Date(),
+                                new Date(listing.timestamp),
+                              ) <= 1 && (
+                                <Chip
+                                  color={"secondary"}
+                                  label={"New"}
+                                  sx={{
+                                    marginRight: 1,
+                                    textTransform: "uppercase",
+                                    fontSize: "0.85em",
+                                    fontWeight: "bold",
+                                  }}
+                                />
+                              )}
+                            </Typography>
+                          </Typography>
+                        </Stack>
+                      }
+                      subheader={
+                        <Stack direction={"column"} alignItems={"left"}>
+                          <ListingDetailItem
+                            icon={<PersonRounded fontSize={"inherit"} />}
+                          >
+                            <ListingNameAndRating
+                              user={listing.user_seller}
+                              contractor={listing.contractor_seller}
+                            />
+                          </ListingDetailItem>
+
+                          <ListingDetailItem
+                            icon={<CreateRounded fontSize={"inherit"} />}
+                          >
+                            Listed{" "}
+                            {getRelativeTime(new Date(listing.timestamp))}
+                          </ListingDetailItem>
+
+                          <ListingDetailItem
+                            icon={<RefreshRounded fontSize={"inherit"} />}
+                          >
+                            Updated{" "}
+                            {getRelativeTime(
+                              moment(listing.expiration)
+                                .subtract(30, "days")
+                                .toDate(),
+                            )}
+                          </ListingDetailItem>
+
+                          <ListingDetailItem
+                            icon={<ClockAlert fontSize={"inherit"} />}
+                          >
+                            Expires{" "}
+                            {getRelativeTime(new Date(listing.expiration))}
+                          </ListingDetailItem>
+                        </Stack>
+                      }
+                      action={
+                        amRelated ? (
+                          <Link
+                            to={`/market/multiple/${complete.multiple_id}/edit`}
+                          >
+                            <IconButton>
+                              <CreateRounded
+                                style={{ color: theme.palette.text.secondary }}
+                              />
+                            </IconButton>
+                          </Link>
+                        ) : undefined
+                      }
+                    />
+                    <CardContent
+                      sx={{
+                        width: "auto",
+                        minHeight: 192,
+                        padding: 3,
+                      }}
+                    >
+                      <Divider light />
+                      <PurchaseArea listing={currentListing} />
+                      <Divider light />
+
+                      <Box sx={{ paddingTop: 2 }}>
+                        <Typography
+                          variant={"subtitle1"}
+                          fontWeight={"bold"}
+                          color={"text.secondary"}
+                        >
+                          Select Item
+                        </Typography>
+                        <Select
+                          sx={{ marginBottom: 1 }}
+                          onChange={(event, value) =>
+                            setCurrentListing((old) => {
+                              const found = listings.find(
+                                (l) =>
+                                  l.listing.listing_id === event.target.value,
+                              )
+                              if (found) {
+                                return found
+                              } else {
+                                return old
+                              }
+                            })
+                          }
+                          value={currentListing.listing.listing_id}
+                        >
+                          {complete.listings.map((l) => (
+                            <MenuItem
+                              value={l.listing.listing_id}
+                              key={l.listing.listing_id}
+                            >
+                              {l.details.title}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                        <Typography
+                          variant={"subtitle1"}
+                          fontWeight={"bold"}
+                          color={"text.secondary"}
+                        >
+                          Description
+                        </Typography>
+                        <Typography variant={"body2"}>
+                          <MarkdownRender text={details.description} />
+                          <Divider light />
+                          <MarkdownRender text={complete.details.description} />
+                        </Typography>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Fade>
+              </Grid>
+
+              {amRelated && !!listing.orders?.length && (
+                <Section
+                  disablePadding
+                  xs={12}
+                  title={"Active Orders"}
+                  innerJustify={"flex-start"}
+                >
+                  <Grid
+                    item
+                    xs={12}
+                    sx={{
+                      paddingTop: 2,
+                      paddingBottom: 2,
+                      boxSizing: "border-box",
+                    }}
+                  >
+                    <OrderList
+                      orders={listing.orders.filter(
+                        (o) => !["cancelled", "fulfilled"].includes(o.status),
+                      )}
+                    />
+                  </Grid>
+                </Section>
+              )}
+
+              {amRelated && !!listing.orders?.length && (
+                <Section
+                  disablePadding
+                  xs={12}
+                  title={"Previous Orders"}
+                  innerJustify={"flex-start"}
+                >
+                  <Grid
+                    item
+                    xs={12}
+                    sx={{
+                      paddingTop: 2,
+                      paddingBottom: 2,
+                      boxSizing: "border-box",
+                    }}
+                  >
+                    <OrderList
+                      orders={listing.orders.filter((o) =>
+                        ["cancelled", "fulfilled"].includes(o.status),
+                      )}
+                    />
+                  </Grid>
+                </Section>
+              )}
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </>
+  )
+}

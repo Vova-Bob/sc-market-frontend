@@ -1,0 +1,228 @@
+import { MinimalUser, User } from "./User"
+import { Contractor, MinimalContractor } from "./Contractor"
+import { ContractKindIconKey } from "../views/contracts/ServiceListings"
+import HandymanRoundedIcon from "@mui/icons-material/HandymanRounded"
+import GppGoodRoundedIcon from "@mui/icons-material/GppGoodRounded"
+import FlightRoundedIcon from "@mui/icons-material/FlightRounded"
+import ConstructionRoundedIcon from "@mui/icons-material/ConstructionRounded"
+import PublicRoundedIcon from "@mui/icons-material/PublicRounded"
+import {
+  CarRentalRounded,
+  InfoRounded,
+  LocalHospitalRounded,
+} from "@mui/icons-material"
+import MiscellaneousServicesRoundedIcon from "@mui/icons-material/MiscellaneousServicesRounded"
+import LocalShippingRoundedIcon from "@mui/icons-material/LocalShippingRounded"
+import React from "react"
+import { AvailabilitySelection } from "../hooks/login/UserProfile"
+import { OfferMarketListing } from "../store/offer"
+
+export const orderIcons = {
+  Support: <HandymanRoundedIcon />,
+  Escort: <GppGoodRoundedIcon />,
+  Transport: <FlightRoundedIcon />,
+  Construction: <ConstructionRoundedIcon />,
+  "Resource Acquisition": <PublicRoundedIcon />,
+  Rental: <CarRentalRounded />,
+  Delivery: <LocalShippingRoundedIcon />,
+  Medical: <LocalHospitalRounded />,
+  "Intelligence Services": <InfoRounded />,
+  Misc: <MiscellaneousServicesRoundedIcon />,
+  Custom: <MiscellaneousServicesRoundedIcon />,
+}
+
+export type OrderStatus =
+  | "fulfilled"
+  | "in-progress"
+  | "not-started"
+  | "cancelled"
+
+export type OrderKind = keyof typeof orderIcons
+
+export interface Order {
+  order_id: string
+  status: OrderStatus
+  kind: OrderKind
+  cost: number
+  rush: boolean
+  assigned_to: string | null
+  contractor: string | null
+  customer: string
+  title: string
+  description: string
+  timestamp: string
+  comments: OrderComment[]
+  applicants: OrderApplicant[]
+  market_listings?: OfferMarketListing[]
+  customer_review?: OrderReview
+  contractor_review?: OrderReview
+  service_id?: string | null
+  payment_type: "one-time" | "daily" | "hourly"
+  availability?: {
+    customer: AvailabilitySelection[]
+    assigned: AvailabilitySelection[] | null
+  }
+  offer_session_id: string | null
+  discord_thread_id: string | null
+  discord_server_id: string | null
+}
+
+export interface OrderApplicant {
+  order_id: string
+  user_applicant: MinimalUser | null
+  org_applicant: MinimalContractor | null
+  timestamp: number
+  message: string
+}
+
+export interface OrderBody {
+  title: string
+  rush: boolean
+  description: string
+  kind: string
+  collateral: number
+  departure: string | null
+  destination: string | null
+  cost: number
+  contractor?: string | null
+  assigned_to?: string | null
+  service_id?: string | null
+  payment_type: "one-time" | "daily" | "hourly"
+}
+
+export interface ServiceBody {
+  service_name: string
+  service_description: string
+  title: string
+  rush: boolean
+  description: string
+  kind: string
+  collateral: number
+  departure: string | null
+  destination: string | null
+  cost: number
+  payment_type: "one-time" | "daily" | "hourly"
+  contractor?: string | null
+  status: string
+  photos: string[]
+}
+
+export type PaymentType =
+  | "one-time"
+  | "hourly"
+  | "daily"
+  | "unit"
+  | "box"
+  | "scu"
+  | "cscu"
+  | "mscu"
+
+export interface Service {
+  timestamp: string
+  service_id: string
+  service_name: string
+  service_description: string
+  title: string
+  rush: boolean
+  description: string
+  kind: ContractKindIconKey
+  collateral: number
+  offer: number
+  payment_type: "one-time" | "hourly" | "daily"
+  departure: string | null
+  destination: string | null
+  cost: number
+  contractor?: Contractor | null
+  user?: User | null
+  status: "active" | "inactive"
+  photos: string[]
+}
+
+export interface OrderComment {
+  author: User
+  content: string
+  timestamp: number
+  comment_id: string
+  order_id: string
+}
+
+export interface OrderReview {
+  user_author: MinimalUser | null
+  contractor_author: MinimalContractor | null
+  content: string
+  timestamp: number
+  review_id: string
+  order_id: string
+  rating: number
+}
+
+export interface OrderTrendDatapoint {
+  All: number
+  Fulfilled: number
+  "Not Started": number
+  name: string
+  "In-Progress": number
+}
+
+export function makeOrderTrend(): {
+  data: OrderTrendDatapoint[]
+  labels: string[]
+} {
+  const data = [
+    {
+      name: "Dec 11",
+      All: 8,
+      Fulfilled: 1,
+      "Not Started": 3,
+      "In-Progress": 4,
+    },
+    {
+      name: "Dec 12",
+      All: 12,
+      Fulfilled: 5,
+      "Not Started": 3,
+      "In-Progress": 4,
+    },
+    {
+      name: "Dec 13",
+      All: 10,
+      Fulfilled: 3,
+      "Not Started": 2,
+      "In-Progress": 5,
+    },
+    {
+      name: "Dec 14",
+      All: 7,
+      Fulfilled: 3,
+      "Not Started": 2,
+      "In-Progress": 2,
+    },
+    {
+      name: "Dec 15",
+      All: 15,
+      Fulfilled: 5,
+      "Not Started": 5,
+      "In-Progress": 5,
+    },
+  ]
+
+  return {
+    data: data,
+    labels: ["All", "Fulfilled", "Not Started", "In-Progress"],
+  }
+}
+
+export interface OrderStub {
+  order_id: string
+  contractor: MinimalContractor | null
+  assigned_to: MinimalUser | null
+  customer: MinimalUser
+  status: OrderStatus
+  timestamp: string
+  service_name: string | null
+  cost: string
+  title: string
+  payment_type: string
+  count: number
+  kind: string
+}
