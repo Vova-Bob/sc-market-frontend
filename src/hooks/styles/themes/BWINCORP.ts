@@ -1,9 +1,4 @@
-import {
-  createTheme,
-  experimental_extendTheme,
-  responsiveFontSizes,
-  ThemeOptions,
-} from "@mui/material"
+import { createTheme, responsiveFontSizes, ThemeOptions } from "@mui/material"
 import { mainThemeOptions, refTheme, themeBase } from "../Theme"
 
 export const bwinThemeOptions: ThemeOptions = {
