@@ -49,14 +49,11 @@ function LandingSmallImage(props: { src: string; title: string }) {
   const theme = useTheme<Theme>()
 
   return (
-    <Grid
-      item
-      xs={12}
-      md={4}
+    <Stack
+      direction={"column"}
       display={"flex"}
       justifyContent={"center"}
       alignItems={"center"}
-      flexDirection={"column"}
     >
       <img
         src={src}
@@ -78,7 +75,7 @@ function LandingSmallImage(props: { src: string; title: string }) {
       >
         {title}
       </Typography>
-    </Grid>
+    </Stack>
   )
 }
 
@@ -109,45 +106,43 @@ export function RecentListings() {
 
 export function RecentListingsSkeleton() {
   return (
-    <Grid item xs={12}>
-      <Box
-        display={"flex"}
-        sx={{
-          maxWidth: "100%",
-          overflowX: "scroll",
-        }}
-      >
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(
-          (item, index) => (
-            <Box
-              sx={{
-                marginLeft: 1,
-                marginRight: 1,
-                width: 250,
-                display: "inline-block",
-                flexShrink: 0,
+    <Box
+      display={"flex"}
+      sx={{
+        maxWidth: "100%",
+        overflowX: "scroll",
+      }}
+    >
+      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(
+        (item, index) => (
+          <Box
+            sx={{
+              marginLeft: 1,
+              marginRight: 1,
+              width: 250,
+              display: "inline-block",
+              flexShrink: 0,
+            }}
+            key={index}
+          >
+            <Fade
+              in={true}
+              style={{
+                transitionDelay: `${50 + 50 * index}ms`,
+                transitionDuration: "500ms",
               }}
-              key={index}
             >
-              <Fade
-                in={true}
-                style={{
-                  transitionDelay: `${50 + 50 * index}ms`,
-                  transitionDuration: "500ms",
-                }}
-              >
-                <Skeleton
-                  variant={"rectangular"}
-                  height={400}
-                  width={250}
-                  sx={{ borderRadius: 3 }}
-                />
-              </Fade>
-            </Box>
-          ),
-        )}
-      </Box>
-    </Grid>
+              <Skeleton
+                variant={"rectangular"}
+                height={400}
+                width={250}
+                sx={{ borderRadius: 3 }}
+              />
+            </Fade>
+          </Box>
+        ),
+      )}
+    </Box>
   )
 }
 
@@ -162,49 +157,47 @@ export function OrderStatistics() {
     }
 
   return (
-    <Grid item xs={12}>
-      <Grid container spacing={2}>
-        <MetricSection
-          title={"Total Orders"}
-          body={<AnimatedNumbers includeComma animateToNumber={total_orders} />}
-        />
-        <MetricSection
-          title={"Total Order Value"}
-          body={
-            <Box display={"flex"}>
-              {
-                <AnimatedNumbers
-                  includeComma
-                  animateToNumber={total_order_value}
-                />
-              }
-              &nbsp;aUEC
-            </Box>
-          }
-        />
-        <MetricSection
-          title={"Orders This Week"}
-          body={
-            <Box display={"flex"}>
-              {<AnimatedNumbers includeComma animateToNumber={week_orders} />}
-            </Box>
-          }
-        />
-        <MetricSection
-          title={"Value of Orders This Week"}
-          body={
-            <Box display={"flex"}>
-              {
-                <AnimatedNumbers
-                  includeComma
-                  animateToNumber={week_order_value}
-                />
-              }
-              &nbsp;aUEC
-            </Box>
-          }
-        />
-      </Grid>
+    <Grid container spacing={2}>
+      <MetricSection
+        title={"Total Orders"}
+        body={<AnimatedNumbers includeComma animateToNumber={total_orders} />}
+      />
+      <MetricSection
+        title={"Total Order Value"}
+        body={
+          <Box display={"flex"}>
+            {
+              <AnimatedNumbers
+                includeComma
+                animateToNumber={total_order_value}
+              />
+            }
+            &nbsp;aUEC
+          </Box>
+        }
+      />
+      <MetricSection
+        title={"Orders This Week"}
+        body={
+          <Box display={"flex"}>
+            {<AnimatedNumbers includeComma animateToNumber={week_orders} />}
+          </Box>
+        }
+      />
+      <MetricSection
+        title={"Value of Orders This Week"}
+        body={
+          <Box display={"flex"}>
+            {
+              <AnimatedNumbers
+                includeComma
+                animateToNumber={week_order_value}
+              />
+            }
+            &nbsp;aUEC
+          </Box>
+        }
+      />
     </Grid>
   )
 }
@@ -231,9 +224,8 @@ export function LandingPage() {
         {CURRENT_CUSTOM_ORG && (
           <Navigate to={`/contractor/${CURRENT_CUSTOM_ORG}`} />
         )}
-        <Grid
-          item
-          xs={12}
+        <Stack
+          direction={"column"}
           sx={{
             paddingBottom: theme.spacing(4),
             zIndex: "1",
@@ -249,174 +241,122 @@ export function LandingPage() {
               paddingBottom: theme.spacing(8),
             }}
           >
-            {/*<Box position={'absolute'} sx={{*/}
-            {/*    background: `url(${bg})`, height: 800,*/}
-            {/*    backgroundSize: 'cover', width: '100%', zIndex: '0',*/}
-            {/*    marginRight: -4,*/}
-            {/*    marginTop: -8*/}
-            {/*}}>*/}
-            {/*    <Box sx={{width: '100%', height: '100%', backgroundColor: '#00000099'}}>*/}
-
-            {/*    </Box>*/}
-            {/*</Box>*/}
-            <Grid container spacing={theme.spacing(8)}>
-              <Grid item xs={12}>
-                <Container>
-                  <Grid container spacing={theme.spacing(8)}>
-                    <Grid
-                      item
-                      xs={12}
-                      display={"flex"}
-                      justifyContent={"center"}
-                      alignItems={"center"}
-                      flexDirection={"column"}
-                      // sx={{marginTop: -8}}
-                    >
-                      <Avatar
-                        sx={{
-                          [theme.breakpoints.up("lg")]: {
-                            width: theme.spacing(32),
-                            height: theme.spacing(32),
-                          },
-                          [theme.breakpoints.down("lg")]: {
-                            width: theme.spacing(24),
-                            height: theme.spacing(24),
-                          },
-                          // marginBottom: -8
-                        }}
-                        src={logo}
-                        alt={`SC Market Logo`}
-                      />
-                      <Typography color={"secondary"} variant={"h1"}>
-                        <b>SC MARKET</b>
-                      </Typography>
-                      <Typography variant={"h2"}>
-                        Buy and sell goods. Buy and sell services.
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </Container>
-              </Grid>
-            </Grid>
+            <Container>
+              <Stack
+                justifyContent={"center"}
+                alignItems={"center"}
+                flexDirection={"column"}
+              >
+                <Avatar
+                  sx={{
+                    [theme.breakpoints.up("lg")]: {
+                      width: theme.spacing(32),
+                      height: theme.spacing(32),
+                    },
+                    [theme.breakpoints.down("lg")]: {
+                      width: theme.spacing(24),
+                      height: theme.spacing(24),
+                    },
+                    // marginBottom: -8
+                  }}
+                  src={logo}
+                  alt={`SC Market Logo`}
+                />
+                <Typography color={"secondary"} variant={"h1"}>
+                  <b>SC MARKET</b>
+                </Typography>
+                <Typography variant={"h2"}>
+                  Buy and sell goods. Buy and sell services.
+                </Typography>
+              </Stack>
+            </Container>
           </Box>
           <Container>
-            <Grid container spacing={theme.spacing(6)}>
-              {/*<Grid item xs={12} justifyContent={'center'} alignItems={'center'}>*/}
-              {/*    <Typography variant={'h3'} sx={{fontWeight: 'bold', textAlign: 'center'}}*/}
-              {/*                color={'text.secondary'}>*/}
-              {/*        Make it easy to find what you need*/}
-              {/*    </Typography>*/}
-              {/*</Grid>*/}
-
+            <Stack
+              spacing={theme.spacing(6)}
+              alignItems={"center"}
+              justifyContent={"center"}
+              direction={"column"}
+            >
               <OrderStatistics />
 
               <RecentListings />
 
-              {/*<Grid item xs={12} lg={12}>*/}
-              {/*    <img src={marketCap} style={{*/}
-              {/*        width: '100%', borderRadius: 4,*/}
-              {/*        border: `1px solid ${theme.palette.outline.main}`,*/}
-              {/*    }} alt={"A screen capture of the market page"}/>*/}
-              {/*</Grid>*/}
-              <Grid item xs={12}>
-                <Grid container spacing={theme.spacing(8)}>
-                  <Grid item xs={12} lg={4}>
-                    <Typography
-                      variant={"h4"}
-                      sx={{ fontWeight: "bold", textAlign: "center" }}
-                      color={"text.secondary"}
-                    >
-                      Buy and Sell Items
-                    </Typography>
-                    <Typography
-                      variant={"body1"}
-                      sx={{ textAlign: "left" }}
-                      color={"text.secondary"}
-                    >
-                      List your items to be sold in whatever quantity you
-                      support. Get alerts in Discord when someone places an
-                      order, and work with buyers to fulfill their orders.{" "}
-                      <b>{"We don't take a cut."}</b>
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12} lg={4}>
-                    <Typography
-                      variant={"h4"}
-                      sx={{ fontWeight: "bold", textAlign: "center" }}
-                      color={"text.secondary"}
-                    >
-                      Trade in Bulk
-                    </Typography>
-                    <Typography
-                      variant={"body1"}
-                      sx={{ textAlign: "left" }}
-                      color={"text.secondary"}
-                    >
-                      Whether you have 5 FS-9s to sell or 50, we want to support
-                      you. List your items in bulk or individually and manage
-                      your stock with the click of a button.
-                    </Typography>
-                  </Grid>
-
-                  <Grid item xs={12} lg={4}>
-                    <Typography
-                      variant={"h4"}
-                      sx={{ fontWeight: "bold", textAlign: "center" }}
-                      color={"text.secondary"}
-                    >
-                      Order Services
-                    </Typography>
-                    <Typography
-                      variant={"body1"}
-                      sx={{ textAlign: "left" }}
-                      color={"text.secondary"}
-                    >
-                      Do you or your org have provide a service? Whether its
-                      medical rescue, hauler escort, sourcing items or
-                      otherwise, find a home on SC Market where you can discover
-                      the many services being provided throughout the
-                      &apos;verse.
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-              {/*<Grid item xs={12}>*/}
-              {/*    <Grid container spacing={theme.spacing(8)} justifyContent={'center'} alignItems={'center'}>*/}
-              {/*        <Grid item xs={12}>*/}
-              {/*            <Typography variant={'h4'} sx={{fontWeight: 'bold', textAlign: 'center'}}*/}
-              {/*                        color={'text.secondary'}>*/}
-              {/*                Ready to Get Started?*/}
-              {/*            </Typography>*/}
-              {/*        </Grid>*/}
-              {/*        <Grid item xs={12} display={'flex'} justifyContent={'center'} alignItems={'center'}>*/}
-              {/*            <Button variant={'contained'} size={'large'} startIcon={<Login/>}*/}
-              {/*                    sx={{height: 50, width: 160}}*/}
-              {/*                    onClick={() => {*/}
-              {/*                        window.location.href = `${BACKEND_URL}/auth/discord?path=${encodeURIComponent("/market")}`*/}
-              {/*                    }}*/}
-              {/*            >*/}
-              {/*                <b>Sign up</b>*/}
-              {/*            </Button>*/}
-              {/*        </Grid>*/}
-              {/*    </Grid>*/}
-              {/*</Grid>*/}
-            </Grid>
-          </Container>
-          {/*</Grid>*/}
-
-          {/*<Grid item xs={12} height={theme.spacing(3)}/>*/}
-
-          {/*<Grid item xs={12} sx={{backgroundColor: '#070b11', marginBottom: -4}}>*/}
-          <Container>
-            <Grid container spacing={theme.spacing(8)}>
-              <Grid item xs={12} height={theme.spacing(3)} />
-
-              <Grid
-                item
-                xs={12}
-                justifyContent={"center"}
-                alignItems={"center"}
+              <Stack
+                spacing={theme.spacing(8)}
+                direction={"row"}
+                sx={{ "& > *": { flex: "1 1 0px" }, flexWrap: "wrap" }}
               >
+                <Stack direction={"column"}>
+                  <Typography
+                    variant={"h4"}
+                    sx={{ fontWeight: "bold", textAlign: "center" }}
+                    color={"text.secondary"}
+                  >
+                    Buy and Sell Items
+                  </Typography>
+                  <Typography
+                    variant={"body1"}
+                    sx={{ textAlign: "left" }}
+                    color={"text.secondary"}
+                  >
+                    List your items to be sold in whatever quantity you support.
+                    Get alerts in Discord when someone places an order, and work
+                    with buyers to fulfill their orders.{" "}
+                    <b>{"We don't take a cut."}</b>
+                  </Typography>
+                </Stack>
+                <Stack direction={"column"}>
+                  <Typography
+                    variant={"h4"}
+                    sx={{ fontWeight: "bold", textAlign: "center" }}
+                    color={"text.secondary"}
+                  >
+                    Trade in Bulk
+                  </Typography>
+                  <Typography
+                    variant={"body1"}
+                    sx={{ textAlign: "left" }}
+                    color={"text.secondary"}
+                  >
+                    Whether you have 5 FS-9s to sell or 50, we want to support
+                    you. List your items in bulk or individually and manage your
+                    stock with the click of a button.
+                  </Typography>
+                </Stack>
+
+                <Stack direction={"column"}>
+                  <Typography
+                    variant={"h4"}
+                    sx={{ fontWeight: "bold", textAlign: "center" }}
+                    color={"text.secondary"}
+                  >
+                    Order Services
+                  </Typography>
+                  <Typography
+                    variant={"body1"}
+                    sx={{ textAlign: "left" }}
+                    color={"text.secondary"}
+                  >
+                    Do you or your org have provide a service? Whether its
+                    medical rescue, hauler escort, sourcing items or otherwise,
+                    find a home on SC Market where you can discover the many
+                    services being provided throughout the &apos;verse.
+                  </Typography>
+                </Stack>
+              </Stack>
+            </Stack>
+          </Container>
+          <Container>
+            <Stack
+              direction={"column"}
+              spacing={theme.spacing(8)}
+              sx={{
+                paddingTop: theme.spacing(3),
+                paddingBottom: theme.spacing(13),
+              }}
+            >
+              <Stack justifyContent={"center"} alignItems={"center"}>
                 <Typography
                   variant={"h3"}
                   sx={{ fontWeight: "bold", textAlign: "center" }}
@@ -433,67 +373,56 @@ export function LandingPage() {
                     For Orgs
                   </span>
                 </Typography>
-              </Grid>
+              </Stack>
 
-              <Grid item xs={12}>
-                <Grid container spacing={theme.spacing(8)}>
-                  <LandingSmallImage
-                    src={recruitingCap}
-                    title={"Org Recruitment"}
-                  />
-                  <LandingSmallImage
-                    src={servicesCap}
-                    title={"Service Listings"}
-                  />
-                  <LandingSmallImage
-                    src={manageStockCap}
-                    title={"Stock Management"}
-                  />
-                </Grid>
-              </Grid>
+              <Stack
+                direction={"row"}
+                spacing={theme.spacing(8)}
+                sx={{ "& > *": { flex: "1 1 0px" }, flexWrap: "wrap" }}
+              >
+                <LandingSmallImage
+                  src={recruitingCap}
+                  title={"Org Recruitment"}
+                />
+                <LandingSmallImage
+                  src={servicesCap}
+                  title={"Service Listings"}
+                />
+                <LandingSmallImage
+                  src={manageStockCap}
+                  title={"Stock Management"}
+                />
+              </Stack>
 
-              <Grid item xs={12}>
-                <Grid
-                  container
-                  spacing={theme.spacing(8)}
-                  justifyContent={"center"}
-                  alignItems={"center"}
+              <Stack
+                direction={"column"}
+                spacing={theme.spacing(8)}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <Typography
+                  variant={"h5"}
+                  sx={{ textAlign: "center" }}
+                  color={"text.secondary"}
                 >
-                  <Grid item xs={12}>
-                    <Typography
-                      variant={"h5"}
-                      sx={{ textAlign: "center" }}
-                      color={"text.secondary"}
-                    >
-                      We enable orgs to coordinate their members to fulfill
-                      orders and render services. Become a trusted group
-                      customers come to when they need work done.
-                    </Typography>
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    display={"flex"}
-                    justifyContent={"center"}
-                    alignItems={"center"}
-                  >
-                    <Button
-                      variant={"outlined"}
-                      color={"secondary"}
-                      href={`https://github.com/henry232323/sc-market/wiki`}
-                    >
-                      Learn More
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Grid>
+                  We enable orgs to coordinate their members to fulfill orders
+                  and render services. Become a trusted group customers come to
+                  when they need work done.
+                </Typography>
+                <Button
+                  variant={"outlined"}
+                  color={"secondary"}
+                  href={`https://github.com/henry232323/sc-market/wiki`}
+                >
+                  Learn More
+                </Button>
+              </Stack>
               <SupportersSection />
               <FAQSection />
-              <Grid item xs={12} height={theme.spacing(15)} />
-            </Grid>
+            </Stack>
           </Container>
           <Footer />
-        </Grid>
+        </Stack>
       </OpenGrid>
     </Page>
   )
@@ -562,66 +491,62 @@ function FAQSection() {
   const theme = useTheme<ExtendedTheme>()
 
   return (
-    <>
-      <Grid item xs={12} lg={4} md={4}>
-        <Typography
-          variant={"h3"}
-          color={"text.secondary"}
-          sx={{ maxWidth: 400 }}
+    <Stack direction={"row"}>
+      <Typography
+        variant={"h3"}
+        color={"text.secondary"}
+        sx={{ maxWidth: 400, flexShrink: "0" }}
+      >
+        Your questions, answered
+      </Typography>
+      <Paper sx={{ flexGrow: "1" }}>
+        <List
+          sx={{
+            borderRadius: theme.spacing(2),
+            padding: 0,
+          }}
         >
-          Your questions, answered
-        </Typography>
-      </Grid>
-      <Grid item xs={12} lg={8} md={8}>
-        <Paper>
-          <List
-            sx={{
-              borderRadius: theme.spacing(2),
-              padding: 0,
-            }}
-          >
-            <FAQQuestion
-              question={"How do I sell items?"}
-              answer={
-                "Create market listings for the items you want to sell. Buyers can add the items they want " +
-                "to their cart, then place an order with you for those items. From there it is up to you " +
-                "and the buyer to arrange a time and place to exchange the aUEC and goods."
-              }
-              first
-            />
-            <FAQQuestion
-              question={"Is SC Market safe to use?"}
-              answer={
-                "Because we don't handle any of the goods or aUEC ourselves, we cannot make any guarantees. " +
-                "However, we do provide ways for buyers and sellers to review each other, so you can be sure " +
-                "that others have had positive experiences with a seller if you are wary of being scammed."
-              }
-            />
-            <FAQQuestion
-              question={"What kinds of things can I list on SC Market"}
-              answer={
-                "You can list any item or service as long as you accept aUEC in exchange for it. " +
-                "Items and services should generally be related to Star Citizen and services may be conducted " +
-                "in our out of the game itself."
-              }
-            />
-            <FAQQuestion
-              question={"Does SC Market take a fee?"}
-              answer={
-                "No we do not. All services are provided here free of charge and no aUEC passes through us."
-              }
-            />
-            <FAQQuestion
-              question={"Can I list items for real money?"}
-              answer={
-                "No. All transactions on SC Market should be completed in aUEC."
-              }
-              last
-            />
-          </List>
-        </Paper>
-      </Grid>
-    </>
+          <FAQQuestion
+            question={"How do I sell items?"}
+            answer={
+              "Create market listings for the items you want to sell. Buyers can add the items they want " +
+              "to their cart, then place an order with you for those items. From there it is up to you " +
+              "and the buyer to arrange a time and place to exchange the aUEC and goods."
+            }
+            first
+          />
+          <FAQQuestion
+            question={"Is SC Market safe to use?"}
+            answer={
+              "Because we don't handle any of the goods or aUEC ourselves, we cannot make any guarantees. " +
+              "However, we do provide ways for buyers and sellers to review each other, so you can be sure " +
+              "that others have had positive experiences with a seller if you are wary of being scammed."
+            }
+          />
+          <FAQQuestion
+            question={"What kinds of things can I list on SC Market"}
+            answer={
+              "You can list any item or service as long as you accept aUEC in exchange for it. " +
+              "Items and services should generally be related to Star Citizen and services may be conducted " +
+              "in our out of the game itself."
+            }
+          />
+          <FAQQuestion
+            question={"Does SC Market take a fee?"}
+            answer={
+              "No we do not. All services are provided here free of charge and no aUEC passes through us."
+            }
+          />
+          <FAQQuestion
+            question={"Can I list items for real money?"}
+            answer={
+              "No. All transactions on SC Market should be completed in aUEC."
+            }
+            last
+          />
+        </List>
+      </Paper>
+    </Stack>
   )
 }
 
@@ -635,73 +560,69 @@ function SupportersSection() {
   ]
 
   return (
-    <>
-      <Grid item xs={12}>
-        <Stack spacing={2} sx={{ maxWidth: "100%" }}>
-          <Typography
-            variant={"h3"}
-            sx={{ fontWeight: "bold", textAlign: "center" }}
-            color={"text.secondary"}
+    <Stack spacing={2} sx={{ maxWidth: "100%" }}>
+      <Typography
+        variant={"h3"}
+        sx={{ fontWeight: "bold", textAlign: "center" }}
+        color={"text.secondary"}
+      >
+        Our Supporters
+      </Typography>
+      <Typography
+        variant={"h5"}
+        sx={{ textAlign: "center" }}
+        color={"text.primary"}
+      >
+        Thank you to all of our{" "}
+        <MaterialLink
+          color={"secondary"}
+          target={"_blank"}
+          rel="noopener noreferrer"
+          underline={"hover"}
+          href={"https://www.patreon.com/henry232323"}
+        >
+          Patreon
+        </MaterialLink>{" "}
+        supporters
+      </Typography>
+      <Stack
+        sx={{ maxWidth: "100%", overflow: "scroll" }}
+        spacing={2}
+        direction={"row"}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        {supporters.map((supporter) => (
+          <Link
+            to={supporter.url}
+            style={{ color: "inherit", textDecoration: "none" }}
+            key={supporter.name}
           >
-            Our Supporters
-          </Typography>
-          <Typography
-            variant={"h5"}
-            sx={{ textAlign: "center" }}
-            color={"text.primary"}
-          >
-            Thank you to all of our{" "}
-            <MaterialLink
-              color={"secondary"}
-              target={"_blank"}
-              rel="noopener noreferrer"
-              underline={"hover"}
-              href={"https://www.patreon.com/henry232323"}
+            <Stack
+              spacing={1}
+              direction={"column"}
+              key={supporter.name}
+              justifyContent={"center"}
+              alignItems={"center"}
             >
-              Patreon
-            </MaterialLink>{" "}
-            supporters
-          </Typography>
-          <Stack
-            sx={{ maxWidth: "100%", overflow: "scroll" }}
-            spacing={2}
-            direction={"row"}
-            justifyContent={"center"}
-            alignItems={"center"}
-          >
-            {supporters.map((supporter) => (
-              <Link
-                to={supporter.url}
-                style={{ color: "inherit", textDecoration: "none" }}
-                key={supporter.name}
-              >
-                <Stack
-                  spacing={1}
-                  direction={"column"}
-                  key={supporter.name}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                >
-                  <ButtonBase>
-                    <img
-                      src={supporter.avatar}
-                      style={{ maxHeight: 128, borderRadius: 4 }}
-                      alt={supporter.name}
-                    />
-                  </ButtonBase>
+              <ButtonBase>
+                <img
+                  src={supporter.avatar}
+                  style={{ maxHeight: 128, borderRadius: 4 }}
+                  alt={supporter.name}
+                />
+              </ButtonBase>
 
-                  <MaterialLink underline={"hover"} color={"text.secondary"}>
-                    <Typography variant={"body2"} align={"center"}>
-                      {supporter.name}
-                    </Typography>
-                  </MaterialLink>
-                </Stack>
-              </Link>
-            ))}
-          </Stack>
-        </Stack>
-      </Grid>
-    </>
+              <MaterialLink underline={"hover"} color={"text.secondary"}>
+                <Typography variant={"body2"} align={"center"}>
+                  {supporter.name}
+                </Typography>
+              </MaterialLink>
+            </Stack>
+          </Link>
+        ))}
+      </Stack>
+    </Stack>
   )
 }
 
