@@ -86,7 +86,7 @@ export function Footer() {
           <br />
           <Typography variant="body2" color="textSecondary" align="center">
             {"Copyright © "}
-            SC Market {new Date().getFullYear()}
+            SC Market {new Date().getFullYear() + 930}
             {"."}
             <br />
             {
