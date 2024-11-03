@@ -4179,7 +4179,7 @@ __metadata:
     moment: "npm:^2.29.4"
     prettier: "npm:^3.3.3"
     react: "npm:^18.2.0"
-    react-animated-numbers: "npm:^0.17.1"
+    react-animated-numbers: "npm:^0.18.0"
     react-apexcharts: "npm:^1.5.0"
     react-cookie: "npm:^7.0.1"
     react-dom: "npm:^18.2.0"
@@ -7003,16 +7003,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-animated-numbers@npm:^0.17.1":
-  version: 0.17.1
-  resolution: "react-animated-numbers@npm:0.17.1"
+"react-animated-numbers@npm:^0.18.0":
+  version: 0.18.0
+  resolution: "react-animated-numbers@npm:0.18.0"
   dependencies:
     "@react-spring/web": "npm:^9.4.5"
     framer-motion: "npm:^10.16.5"
   peerDependencies:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
-  checksum: 10c0/519cfcbec0bd1bf97312eeeb46d811cfa35c4fe143000ee59396aeb16905b484267018a3010eea2831061dd211eee41ab7ff1b355936c723d8d1ab0045279378
+  checksum: 10c0/ece9547c8f052b8cf558e3b921e25c26bb4575055adeb883a3daef12cc7bca7cc1e3f2e8259d350360040269416f1283b889038f4e6674fe4ced1612d8dbd5a5
   languageName: node
   linkType: hard
 
