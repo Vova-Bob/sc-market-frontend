@@ -155,7 +155,7 @@ function RoleDetailsRow(props: { role: ContractorRole; open: boolean }) {
   const theme = useTheme<ExtendedTheme>()
 
   const submitUpdate = useCallback(async () => {
-    const { contractor_id, ...body } = newRole
+    const { contractor_id, role_id, ...body } = newRole
 
     const res: { data?: any; error?: any } = await updateRole({
       contractor: currentOrg!.spectrum_id,
@@ -471,7 +471,7 @@ export function AddRole() {
   const issueAlert = useAlertHook()
 
   const submitUpdate = useCallback(async () => {
-    const { contractor_id, ...body } = newRole
+    const { contractor_id, role_id, ...body } = newRole
 
     const res: { data?: any; error?: any } = await createRole({
       contractor: currentOrg!.spectrum_id,
