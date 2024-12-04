@@ -352,8 +352,15 @@ export function OrderDetailsArea(props: { order: Order }) {
                           onClick={() => {
                             createThread(order.order_id)
                               .unwrap()
-                              .then((result) => {})
-                              .catch((err) => {})
+                              .then((result) => {
+                                issueAlert({
+                                  message: "Created thread",
+                                  severity: "success",
+                                })
+                              })
+                              .catch((err) => {
+                                issueAlert(err)
+                              })
                           }}
                         >
                           Create Thread
