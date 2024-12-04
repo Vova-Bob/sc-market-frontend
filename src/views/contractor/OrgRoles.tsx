@@ -471,9 +471,11 @@ export function AddRole() {
   const issueAlert = useAlertHook()
 
   const submitUpdate = useCallback(async () => {
+    const { contractor_id, ...body } = newRole
+
     const res: { data?: any; error?: any } = await createRole({
       contractor: currentOrg!.spectrum_id,
-      body: newRole,
+      body,
     })
 
     if (res?.data && !res?.error) {
