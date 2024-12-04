@@ -58,7 +58,7 @@ export function has_permission(
     return false
   }
 
-  for (let role_id of member.roles) {
+  for (const role_id of member.roles) {
     const role = (contractor.roles || []).find((r) => r.role_id === role_id)
 
     if (!role) continue
@@ -102,7 +102,7 @@ export function min_role(contractor: Contractor, user: { username: string }) {
 
   let result = roles[0]
 
-  for (let role of roles) {
+  for (const role of roles) {
     if (role.position < result.position) {
       result = role
     }
@@ -155,10 +155,12 @@ function RoleDetailsRow(props: { role: ContractorRole; open: boolean }) {
   const theme = useTheme<ExtendedTheme>()
 
   const submitUpdate = useCallback(async () => {
+    const { contractor_id, ...body } = newRole
+
     const res: { data?: any; error?: any } = await updateRole({
       contractor: currentOrg!.spectrum_id,
       role_id: role.role_id,
-      body: newRole,
+      body,
     })
 
     if (res?.data && !res?.error) {
