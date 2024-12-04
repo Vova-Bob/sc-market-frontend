@@ -13,6 +13,9 @@ export interface ErrorInterface {
   status: number
   data: {
     message: string
+    error?: {
+      message: string
+    }
     errors: {
       message: string
     }[]
@@ -27,7 +30,7 @@ export interface ErrorInterface {
 }
 
 export function formatErrorAlert(error: ErrorInterface): AlertInterface {
-  let message = error.data.message
+  let message = error.data.error?.message || error.data.message
   if (error.data.errors?.length) {
     message = message.concat(" ", error.data.errors[0].message)
   } else if (error.data.validationErrors?.length) {
@@ -48,7 +51,7 @@ export function formatErrorAlert(error: ErrorInterface): AlertInterface {
 }
 
 export const useAlertHook = () => {
-  let val = React.useContext(AlertHookContext)
+  const val = React.useContext(AlertHookContext)
   if (val == null) {
     throw new Error("Cannot use useAlertHook outside of AlertHookContext")
   }

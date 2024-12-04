@@ -191,6 +191,13 @@ export const contractorsApi = serviceApi.injectEndpoints({
       ],
       transformResponse: unwrapResponse,
     }),
+    getContractorInviteCode: builder.query<{ spectrum_id: string }, string>({
+      query: (invite_id) => ({
+        url: `/api/contractors/invites/${invite_id}`,
+        method: "GET",
+      }),
+      transformResponse: unwrapResponse,
+    }),
     acceptContractorInviteCode: builder.mutation<void, string>({
       query: (invite_id) => ({
         url: `/api/contractors/invites/${invite_id}/accept`,
@@ -432,6 +439,7 @@ export const {
   useInviteContractorMembersMutation,
   useAcceptContractorInviteMutation,
   useAcceptContractorInviteCodeMutation,
+  useGetContractorInviteCodeQuery,
   useDeclineContractorInviteMutation,
   useUpdateContractorMutation,
   useCreateContractorWebhookMutation,
