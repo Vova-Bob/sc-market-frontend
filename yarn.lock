@@ -1425,13 +1425,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/x-date-pickers@npm:^7.22.1":
-  version: 7.22.1
-  resolution: "@mui/x-date-pickers@npm:7.22.1"
+"@mui/x-date-pickers@npm:^7.23.0":
+  version: 7.23.0
+  resolution: "@mui/x-date-pickers@npm:7.23.0"
   dependencies:
     "@babel/runtime": "npm:^7.25.7"
     "@mui/utils": "npm:^5.16.6 || ^6.0.0"
-    "@mui/x-internals": "npm:7.21.0"
+    "@mui/x-internals": "npm:7.23.0"
     "@types/react-transition-group": "npm:^4.4.11"
     clsx: "npm:^2.1.1"
     prop-types: "npm:^15.8.1"
@@ -1446,10 +1446,10 @@ __metadata:
     dayjs: ^1.10.7
     luxon: ^3.0.2
     moment: ^2.29.4
-    moment-hijri: ^2.1.2
+    moment-hijri: ^2.1.2 || ^3.0.0
     moment-jalaali: ^0.7.4 || ^0.8.0 || ^0.9.0 || ^0.10.0
-    react: ^17.0.0 || ^18.0.0
-    react-dom: ^17.0.0 || ^18.0.0
+    react: ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-dom: ^17.0.0 || ^18.0.0 || ^19.0.0
   peerDependenciesMeta:
     "@emotion/react":
       optional: true
@@ -1469,19 +1469,19 @@ __metadata:
       optional: true
     moment-jalaali:
       optional: true
-  checksum: 10c0/d55576817d11a6b7ff787bc51f9b719ba9822cc1fa9343d3d7e3bc0b19597e4346fdf1833fa88d20215b85f31306214dbb0e23b31c6b3e080a53051ae401fa27
+  checksum: 10c0/e9fb18d8d4d3402713928c2ac5a78689b52a1c27cce858b8a5a30e17dfeb9274b73084a6a85244483d272985d6440a5e35b85a6893d163761ccf48407a8db756
   languageName: node
   linkType: hard
 
-"@mui/x-internals@npm:7.21.0":
-  version: 7.21.0
-  resolution: "@mui/x-internals@npm:7.21.0"
+"@mui/x-internals@npm:7.23.0":
+  version: 7.23.0
+  resolution: "@mui/x-internals@npm:7.23.0"
   dependencies:
     "@babel/runtime": "npm:^7.25.7"
     "@mui/utils": "npm:^5.16.6 || ^6.0.0"
   peerDependencies:
-    react: ^17.0.0 || ^18.0.0
-  checksum: 10c0/46d105cee6cc9e53ce8fdf6149bf0758271b546ad3319b3b8fa48f1e93b574c9255218e43dffbd90214e922933291cb1d8aab54be475bcc8303fa8452078d3cb
+    react: ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/47d5efad1b58b2c316e7d9e61cfe536b3c0a16f6d3ff4f371c8a29aa7c598de136f328958f6b44f6401b2c96b5867872f631debb51fb9db6f3493181f43deb2a
   languageName: node
   linkType: hard
 
@@ -4182,7 +4182,7 @@ __metadata:
     "@mui/material": "npm:^6.1.6"
     "@mui/system": "npm:^6.1.6"
     "@mui/utils": "npm:^6.1.6"
-    "@mui/x-date-pickers": "npm:^7.22.1"
+    "@mui/x-date-pickers": "npm:^7.23.0"
     "@reduxjs/toolkit": "npm:^2.2.3"
     "@types/jest": "npm:^29.5.4"
     "@types/lodash": "npm:^4.14.180"
