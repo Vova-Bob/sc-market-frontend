@@ -353,8 +353,15 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
                           onClick={() => {
                             createThread(session.id)
                               .unwrap()
-                              .then((result) => {})
-                              .catch((err) => {})
+                              .then((result) => {
+                                issueAlert({
+                                  message: "Created thread",
+                                  severity: "success",
+                                })
+                              })
+                              .catch((err) => {
+                                issueAlert(err)
+                              })
                           }}
                         >
                           Create Thread
