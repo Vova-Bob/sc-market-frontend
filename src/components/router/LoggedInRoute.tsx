@@ -11,35 +11,23 @@ import { ContractorRole } from "../../datatypes/Contractor"
 
 export function LoggedInRoute() {
   // const [profile, setProfile] = useUserProfile()
-  const profile = useGetUserProfileQuery()
+  const { data: profile, isLoading, isSuccess } = useGetUserProfileQuery()
   const location = useLocation()
 
-  const doNavigate = useMemo(() => {
-    if (profile.error) {
-      window.location.href = `${BACKEND_URL}/auth/discord?path=${encodeURIComponent(
-        location.pathname,
-      )}`
-    } else if (
-      !profile.isLoading &&
-      profile.data &&
-      !profile?.data?.rsi_confirmed
-    ) {
-      if (location.pathname !== "/settings") {
-        return "/settings"
-      }
-    }
-    return null
-  }, [profile, location])
-
-  if (doNavigate) {
-    return <Navigate to={doNavigate} />
-  }
-
-  if (profile.isLoading) {
+  if (isLoading) {
     return <LoadingBar color="#f11946" progress={0.5} />
+  } else if (isSuccess) {
+    if (!profile.rsi_confirmed) {
+      return <Navigate to={"/settings"} />
+    } else {
+      return <Outlet />
+    }
+  } else {
+    window.location.href = `${BACKEND_URL}/auth/discord?path=${encodeURIComponent(
+      location.pathname,
+    )}`
+    return null
   }
-
-  return <Outlet />
 }
 
 export function SiteAdminRoute() {
@@ -54,13 +42,21 @@ export function SiteAdminRoute() {
 
 export function OrgRoute() {
   const [cookies] = useCookies(["current_contractor"])
-  const contractor = useGetContractorBySpectrumIDQuery(
+  const { isSuccess, isLoading } = useGetContractorBySpectrumIDQuery(
     cookies.current_contractor,
-    { skip: !cookies.current_contractor },
+    {
+      skip: !cookies.current_contractor,
+    },
   )
   const [currentOrg] = useCurrentOrg()
 
-  return contractor.isSuccess ? <Outlet /> : <Navigate to={"/"} />
+  if (isLoading) {
+    return null
+  } else if (isSuccess) {
+    return <Outlet />
+  } else {
+    return <Navigate to={"/"} />
+  }
 }
 
 export function OrgAdminRoute(props: {
@@ -69,7 +65,7 @@ export function OrgAdminRoute(props: {
 }) {
   const { permission, anyPermission, ...routeProps } = props
   const [cookies] = useCookies(["current_contractor"])
-  const contractor = useGetContractorBySpectrumIDQuery(
+  const { data: contractor, isLoading } = useGetContractorBySpectrumIDQuery(
     cookies.current_contractor,
     { skip: !cookies.current_contractor },
   )
@@ -78,15 +74,21 @@ export function OrgAdminRoute(props: {
   const { data: profile } = useGetUserProfileQuery()
   const canView = useMemo(() => {
     if (permission) {
-      return has_permission(contractor.data!, profile!, permission)
+      return has_permission(contractor!, profile!, permission)
     } else if (anyPermission) {
       return anyPermission.some((perm) =>
-        has_permission(contractor.data!, profile!, perm),
+        has_permission(contractor!, profile!, perm),
       )
     } else {
       return false
     }
-  }, [anyPermission, contractor.data, permission, profile])
+  }, [anyPermission, contractor, permission, profile])
 
-  return canView ? <Outlet /> : <Navigate to={"/"} />
+  if (isLoading) {
+    return null
+  } else if (canView) {
+    return <Outlet />
+  } else {
+    return <Navigate to={"/"} />
+  }
 }
