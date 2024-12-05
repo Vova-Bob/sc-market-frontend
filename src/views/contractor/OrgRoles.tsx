@@ -478,12 +478,13 @@ export function AddRole() {
       body,
     })
       .unwrap()
-      .then(() =>
+      .then(() => {
         issueAlert({
           message: "Updated!",
           severity: "success",
-        }),
-      )
+        })
+        setNewRole(defaultRole)
+      })
       .catch((err) => {
         issueAlert(err)
       })
