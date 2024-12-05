@@ -42,19 +42,18 @@ export function SiteAdminRoute() {
 
 export function OrgRoute() {
   const [cookies] = useCookies(["current_contractor"])
-  const { isSuccess, isLoading } = useGetContractorBySpectrumIDQuery(
+  const { isSuccess, isLoading, isError } = useGetContractorBySpectrumIDQuery(
     cookies.current_contractor,
     {
       skip: !cookies.current_contractor,
     },
   )
-  const [currentOrg] = useCurrentOrg()
 
   if (isLoading) {
     return null
   } else if (isSuccess) {
     return <Outlet />
-  } else {
+  } else if (isError) {
     return <Navigate to={"/"} />
   }
 }
@@ -65,11 +64,14 @@ export function OrgAdminRoute(props: {
 }) {
   const { permission, anyPermission, ...routeProps } = props
   const [cookies] = useCookies(["current_contractor"])
-  const { data: contractor, isLoading } = useGetContractorBySpectrumIDQuery(
-    cookies.current_contractor,
-    { skip: !cookies.current_contractor },
-  )
-  const [currentOrg] = useCurrentOrg()
+  const {
+    data: contractor,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useGetContractorBySpectrumIDQuery(cookies.current_contractor, {
+    skip: !cookies.current_contractor,
+  })
 
   const { data: profile } = useGetUserProfileQuery()
   const canView = useMemo(() => {
@@ -86,9 +88,9 @@ export function OrgAdminRoute(props: {
 
   if (isLoading) {
     return null
-  } else if (canView) {
+  } else if (isSuccess && canView) {
     return <Outlet />
-  } else {
+  } else if (isError) {
     return <Navigate to={"/"} />
   }
 }
