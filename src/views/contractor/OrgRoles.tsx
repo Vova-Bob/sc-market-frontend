@@ -471,7 +471,7 @@ export function AddRole() {
   const issueAlert = useAlertHook()
 
   const submitUpdate = useCallback(async () => {
-    const { contractor_id, role_id, ...body } = newRole
+    const { contractor_id, role_id, position, ...body } = newRole
 
     createRole({
       contractor: currentOrg!.spectrum_id,
