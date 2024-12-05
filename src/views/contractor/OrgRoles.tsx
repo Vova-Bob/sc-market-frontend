@@ -473,24 +473,20 @@ export function AddRole() {
   const submitUpdate = useCallback(async () => {
     const { contractor_id, role_id, ...body } = newRole
 
-    const res: { data?: any; error?: any } = await createRole({
+    createRole({
       contractor: currentOrg!.spectrum_id,
       body,
     })
-
-    if (res?.data && !res?.error) {
-      issueAlert({
-        message: "Updated!",
-        severity: "success",
+      .unwrap()
+      .then(() =>
+        issueAlert({
+          message: "Updated!",
+          severity: "success",
+        }),
+      )
+      .catch((err) => {
+        issueAlert(err)
       })
-    } else {
-      issueAlert({
-        message: `Failed to update! ${
-          res.error?.error || res.error?.data?.error || res.error
-        }`,
-        severity: "error",
-      })
-    }
   }, [currentOrg, issueAlert, newRole])
 
   return (
