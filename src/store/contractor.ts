@@ -264,15 +264,12 @@ export const contractorsApi = serviceApi.injectEndpoints({
       void,
       {
         contractor: string
-        body: {
-          role_id: string
-        }
+        role_id: string
       }
     >({
-      query: ({ contractor, body }) => ({
-        url: `/api/contractors/${contractor}/roles`,
+      query: ({ contractor, role_id }) => ({
+        url: `/api/contractors/${contractor}/roles/${role_id}`,
         method: "DELETE",
-        body,
       }),
       invalidatesTags: (result, error, arg) => [
         { type: "Contractor" as const, id: arg.contractor },

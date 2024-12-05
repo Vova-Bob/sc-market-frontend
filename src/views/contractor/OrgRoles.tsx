@@ -157,46 +157,34 @@ function RoleDetailsRow(props: { role: ContractorRole; open: boolean }) {
   const submitUpdate = useCallback(async () => {
     const { contractor_id, role_id, ...body } = newRole
 
-    const res: { data?: any; error?: any } = await updateRole({
+    updateRole({
       contractor: currentOrg!.spectrum_id,
       role_id: role.role_id,
       body,
     })
-
-    if (res?.data && !res?.error) {
-      issueAlert({
-        message: "Updated!",
-        severity: "success",
+      .unwrap()
+      .then(() => {
+        issueAlert({
+          message: "Updated!",
+          severity: "success",
+        })
       })
-    } else {
-      issueAlert({
-        message: `Failed to update! ${
-          res.error?.error || res.error?.data?.error || res.error
-        }`,
-        severity: "error",
-      })
-    }
+      .catch((err) => issueAlert(err))
   }, [currentOrg, role, issueAlert, newRole])
 
   const deleteRoleCallback = useCallback(async () => {
-    const res: { data?: any; error?: any } = await deleteRole({
+    deleteRole({
       contractor: currentOrg!.spectrum_id,
-      body: { role_id: role.role_id },
+      role_id: role.role_id,
     })
-
-    if (res?.data && !res?.error) {
-      issueAlert({
-        message: "Updated!",
-        severity: "success",
+      .unwrap()
+      .then(() => {
+        issueAlert({
+          message: "Deleted!",
+          severity: "success",
+        })
       })
-    } else {
-      issueAlert({
-        message: `Failed to update! ${
-          res.error?.error || res.error?.data?.error || res.error
-        }`,
-        severity: "error",
-      })
-    }
+      .catch((err) => issueAlert(err))
   }, [currentOrg, role, issueAlert, role])
 
   return (
