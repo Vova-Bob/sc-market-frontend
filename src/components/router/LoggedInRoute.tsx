@@ -17,7 +17,10 @@ export function LoggedInRoute() {
   if (isLoading) {
     return <LoadingBar color="#f11946" progress={0.5} />
   } else if (isSuccess) {
-    if (!profile.rsi_confirmed) {
+    if (
+      !profile.rsi_confirmed &&
+      !["/settings", "/accountlink"].includes(location.pathname)
+    ) {
       return <Navigate to={"/settings"} />
     } else {
       return <Outlet />
