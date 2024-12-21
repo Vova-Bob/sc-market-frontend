@@ -1,11 +1,10 @@
-import { Navigate, Outlet, RouteProps, useLocation } from "react-router-dom"
+import { Navigate, Outlet, useLocation } from "react-router-dom"
 import React, { useMemo } from "react"
 import LoadingBar from "react-top-loading-bar"
 import { useGetUserProfileQuery } from "../../store/profile"
 import { BACKEND_URL } from "../../util/constants"
 import { useGetContractorBySpectrumIDQuery } from "../../store/contractor"
 import { useCookies } from "react-cookie"
-import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 import { has_permission } from "../../views/contractor/OrgRoles"
 import { ContractorRole } from "../../datatypes/Contractor"
 
@@ -65,7 +64,7 @@ export function OrgAdminRoute(props: {
   permission?: keyof ContractorRole
   anyPermission?: (keyof ContractorRole)[]
 }) {
-  const { permission, anyPermission, ...routeProps } = props
+  const { permission, anyPermission } = props
   const [cookies] = useCookies(["current_contractor"])
   const {
     data: contractor,
