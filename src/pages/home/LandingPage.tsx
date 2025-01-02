@@ -176,7 +176,7 @@ export function OrderStatistics() {
           </Box>
         }
       />
-      {!!week_orders && (
+      {+week_orders > 0 && (
         <>
           <MetricSection
             title={"Orders This Week"}
