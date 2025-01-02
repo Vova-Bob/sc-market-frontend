@@ -10,6 +10,7 @@ import {
   Divider,
   Fade,
   Grid,
+  Link as MaterialLink,
   List,
   ListItem,
   ListItemButton,
@@ -17,7 +18,6 @@ import {
   Paper,
   Skeleton,
   Typography,
-  Link as MaterialLink,
 } from "@mui/material"
 import { Theme, useTheme } from "@mui/material/styles"
 import { ExtendedTheme } from "../../hooks/styles/Theme"
@@ -36,7 +36,7 @@ import {
   DisplayListingsHorizontal,
 } from "../../views/market/ItemListings"
 import { CURRENT_CUSTOM_ORG } from "../../hooks/contractor/CustomDomain"
-import { Navigate, Link } from "react-router-dom"
+import { Link, Navigate } from "react-router-dom"
 import { MetricSection } from "../../views/orders/OrderMetrics"
 import AnimatedNumbers from "react-animated-numbers"
 import { Stack } from "@mui/system"
@@ -157,7 +157,7 @@ export function OrderStatistics() {
     }
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} justifyContent={"center"}>
       <MetricSection
         title={"Total Orders"}
         body={<AnimatedNumbers includeComma animateToNumber={total_orders} />}
@@ -176,28 +176,32 @@ export function OrderStatistics() {
           </Box>
         }
       />
-      <MetricSection
-        title={"Orders This Week"}
-        body={
-          <Box display={"flex"}>
-            {<AnimatedNumbers includeComma animateToNumber={week_orders} />}
-          </Box>
-        }
-      />
-      <MetricSection
-        title={"Value of Orders This Week"}
-        body={
-          <Box display={"flex"}>
-            {
-              <AnimatedNumbers
-                includeComma
-                animateToNumber={week_order_value}
-              />
+      {!!week_orders && (
+        <>
+          <MetricSection
+            title={"Orders This Week"}
+            body={
+              <Box display={"flex"}>
+                {<AnimatedNumbers includeComma animateToNumber={week_orders} />}
+              </Box>
             }
-            &nbsp;aUEC
-          </Box>
-        }
-      />
+          />
+          <MetricSection
+            title={"Value of Orders This Week"}
+            body={
+              <Box display={"flex"}>
+                {
+                  <AnimatedNumbers
+                    includeComma
+                    animateToNumber={week_order_value}
+                  />
+                }
+                &nbsp;aUEC
+              </Box>
+            }
+          />
+        </>
+      )}
     </Grid>
   )
 }
