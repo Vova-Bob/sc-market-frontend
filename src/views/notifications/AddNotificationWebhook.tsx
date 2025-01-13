@@ -4,7 +4,6 @@ import {
   Divider,
   FormControlLabel,
   Grid,
-  MenuItem,
   TextField,
   Typography,
 } from "@mui/material"
@@ -14,7 +13,6 @@ import { useProfileCreateWebhook } from "../../store/profile"
 import { useCreateContractorWebhookMutation } from "../../store/contractor"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
-import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded"
 import { URL_REGEX } from "../../util/parsing"
 
 function NotificationActionCheck(props: {
@@ -68,9 +66,9 @@ export function AddNotificationWebhook(props: { org?: boolean }) {
   const submitCreateForm = useCallback(
     async (event: any) => {
       // event.preventDefault();
-      let res: { data?: any; error?: any }
+      let response
       if (props.org) {
-        res = await createContractorWebhook({
+        response = createContractorWebhook({
           contractor: currentOrg!.spectrum_id,
           body: {
             name: name,
@@ -79,29 +77,25 @@ export function AddNotificationWebhook(props: { org?: boolean }) {
           },
         })
       } else {
-        res = await createUserWebhook({
+        response = createUserWebhook({
           name: name,
           webhook_url: url,
           actions,
         })
       }
 
-      if (res?.data && !res?.error) {
-        setName("")
-        setURL("")
+      response
+        .unwrap()
+        .then((res) => {
+          issueAlert({
+            message: "Submitted!",
+            severity: "success",
+          })
+        })
+        .catch((err) => {
+          issueAlert(err)
+        })
 
-        issueAlert({
-          message: "Submitted!",
-          severity: "success",
-        })
-      } else {
-        issueAlert({
-          message: `Failed to submit! ${
-            res.error?.error || res.error?.data?.error || res.error
-          }`,
-          severity: "error",
-        })
-      }
       return false
     },
     [
