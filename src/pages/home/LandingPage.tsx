@@ -221,6 +221,7 @@ export function LandingPage() {
         position={"relative"}
         mainProps={{
           style: {
+            paddingTop: 20,
             background: `radial-gradient(at 100% 0%, ${theme.palette.primary.main}80 0px, transparent 60%),radial-gradient(at 0% 0%, ${theme.palette.secondary.main}80 0px, transparent 60%)`,
           },
         }}
