@@ -178,6 +178,20 @@ export function CartSellerEntry(props: {
     { skip: !seller.contractor_seller_id },
   )
 
+  useEffect(() => {
+    if (seller.contractor_seller_id) {
+      if (contractor_seller) {
+        seller.note = contractor_seller.market_order_template
+      }
+    } else {
+      if (user_seller) {
+        seller.note = user_seller?.market_order_template
+      }
+    }
+
+    updateCart()
+  }, [user_seller, contractor_seller])
+
   const removeCartItem = useCallback(
     (item: CartItem) => {
       const index = seller.items.indexOf(item)

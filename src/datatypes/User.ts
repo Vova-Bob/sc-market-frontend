@@ -17,6 +17,7 @@ export interface User {
     username: string
   }
   created_at?: number
+  market_order_template: string
 }
 
 export interface MinimalUser {

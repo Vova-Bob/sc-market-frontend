@@ -14,7 +14,7 @@ export interface SerializedError {
   error?: string
 }
 
-let baseUrl = `${BACKEND_URL}/api/profile`
+const baseUrl = `${BACKEND_URL}/api/profile`
 
 // Define a service using a base URL and expected endpoints
 export const userApi = serviceApi.injectEndpoints({
@@ -105,6 +105,7 @@ export const userApi = serviceApi.injectEndpoints({
         avatar_url?: string
         banner_url?: string
         display_name?: string
+        market_order_template?: string
       }
     >({
       query: (body) => ({

@@ -36,6 +36,7 @@ export interface Contractor {
   balance?: number
   official_server_id: string | null
   discord_thread_channel_id: string | null
+  market_order_template: string
 }
 
 export interface MinimalContractor {

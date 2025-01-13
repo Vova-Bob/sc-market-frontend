@@ -9,11 +9,12 @@ import { AuthenticateRSI } from "../../views/authentication/AuthenticateRSI"
 import { MyWebhooks } from "../../views/notifications/ListNotificationWebhooks"
 import { Page } from "../../components/metadata/Page"
 import { AddNotificationWebhook } from "../../views/notifications/AddNotificationWebhook"
-import { PrivacyTipRounded } from "@mui/icons-material"
+import { PrivacyTipRounded, StoreRounded } from "@mui/icons-material"
 import { PrivacySettings } from "../../views/settings/PrivacySettings"
 import { DiscordBotDetails } from "../../views/settings/DiscordBotDetails"
 import { Discord } from "../../components/icon/DiscordIcon"
 import { ConfigureDiscord } from "../../views/notifications/ConfigureDiscord"
+import { MarketEditTemplate } from "../../views/market/MarketEditTemplate"
 
 export function Settings() {
   const profile = useGetUserProfileQuery()
@@ -60,6 +61,12 @@ export function Settings() {
               {...a11yProps(2)}
               value={2}
             />
+            <Tab
+              label="Market"
+              icon={<StoreRounded />}
+              {...a11yProps(3)}
+              value={3}
+            />
             {/*<Tab*/}
             {/*    label="Preferences"*/}
             {/*    icon={*/}
@@ -103,6 +110,11 @@ export function Settings() {
               <ConfigureDiscord />
               <AddNotificationWebhook />
               <MyWebhooks />
+            </Grid>
+          </TabPanel>
+          <TabPanel value={page} index={3}>
+            <Grid container spacing={4} alignItems={"flex-start"}>
+              <MarketEditTemplate />
             </Grid>
           </TabPanel>
         </Grid>

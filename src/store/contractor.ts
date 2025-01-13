@@ -237,6 +237,7 @@ export const contractorsApi = serviceApi.injectEndpoints({
           banner_url?: string
           site_url?: string
           name?: string
+          market_order_template?: string
         }
       }
     >({

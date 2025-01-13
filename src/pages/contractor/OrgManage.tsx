@@ -11,6 +11,7 @@ import {
   AccountBoxRounded,
   InfoRounded,
   PersonAddRounded,
+  StoreRounded,
 } from "@mui/icons-material"
 import { a11yProps, TabPanel } from "../../components/tabs/Tabs"
 import { CreateOrgInviteCode } from "../../views/contractor/CreateOrgInviteCode"
@@ -27,6 +28,7 @@ import {
 import { DiscordBotDetails } from "../../views/settings/DiscordBotDetails"
 import { Discord } from "../../components/icon/DiscordIcon"
 import { ConfigureDiscord } from "../../views/notifications/ConfigureDiscord"
+import { MarketEditTemplate } from "../../views/market/MarketEditTemplate"
 
 export function OrgManage() {
   const [contractor] = useCurrentOrg()
@@ -93,6 +95,9 @@ export function OrgManage() {
                   {...a11yProps(3)}
                 />
               )}
+              {canManageOrgDetails && (
+                <Tab label="Market" icon={<StoreRounded />} {...a11yProps(4)} />
+              )}
               {/*<Tab*/}
               {/*    label="Customers"*/}
               {/*    icon={*/}
@@ -132,6 +137,11 @@ export function OrgManage() {
             </Grid>
           </TabPanel>
           <TabPanel value={page} index={4}>
+            <Grid container spacing={2}>
+              <MarketEditTemplate org />
+            </Grid>
+          </TabPanel>
+          <TabPanel value={page} index={5}>
             <Grid container spacing={2}>
               <CustomerList />
             </Grid>
