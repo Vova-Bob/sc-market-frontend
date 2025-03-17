@@ -529,7 +529,7 @@ function FAQSection() {
             }
           />
           <FAQQuestion
-            question={"What kinds of things can I list on SC Market"}
+            question={"What kinds of things can I list on SC Market?"}
             answer={
               "You can list any item or service as long as you accept aUEC in exchange for it. " +
               "Items and services should generally be related to Star Citizen and services may be conducted " +
