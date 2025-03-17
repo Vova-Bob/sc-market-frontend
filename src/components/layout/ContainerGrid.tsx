@@ -60,8 +60,8 @@ export function ContainerGrid(
             display: props.noTopSpacer
               ? "none"
               : theme.navKind === "outlined"
-              ? "block"
-              : "none",
+                ? "block"
+                : "none",
           }}
         />
         <Container
@@ -102,7 +102,6 @@ export function OpenGrid(
     noFooter,
     noSidebar,
     children,
-    onScroll,
     mainProps,
     ...gridProps
   } = props
@@ -126,19 +125,12 @@ export function OpenGrid(
           position: "relative",
           ...mainProps?.style,
         }}
-        onScroll={onScroll}
         ref={ref}
       >
         <Box
           sx={{
             ...theme.mixins.toolbar,
             position: "relative",
-            [theme.breakpoints.up("sm")]: {
-              width: drawerOpen ? sidebarDrawerWidth : 1,
-            },
-            [theme.breakpoints.down("sm")]: {
-              width: drawerOpen ? "100%" : 1,
-            },
             display: theme.navKind === "outlined" ? "block" : "none",
           }}
         />
@@ -156,33 +148,34 @@ export function OpenLayout(
     sidebarOpen: boolean
     noFooter?: boolean
     noSidebar?: boolean
-  } & GridProps,
-): JSX.Element {
+    children: React.ReactNode
+  } & React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>,
+) {
   const theme: Theme = useTheme()
 
   const [drawerOpen, setDrawerOpen] = useDrawerOpen()
 
-  const { sidebarOpen, noFooter, noSidebar, children, onScroll, ...gridProps } =
-    props
+  const { sidebarOpen, noFooter, noSidebar, children, ...mainProps } = props
 
   useEffect(() => {
     if (noSidebar) {
       setDrawerOpen(!noSidebar)
     }
-  }, [setDrawerOpen, props.sidebarOpen, noSidebar])
+  }, [setDrawerOpen, sidebarOpen, noSidebar])
 
   const ref = useRef<HTMLDivElement | null>(null)
 
   return (
     <MainRefContext.Provider value={ref}>
       <main
+        {...mainProps}
         style={{
           flexGrow: 1,
           overflow: "auto",
           height: "100vh",
           position: "relative",
+          ...mainProps?.style,
         }}
-        onScroll={onScroll}
         ref={ref}
       >
         <Box
@@ -199,8 +192,8 @@ export function OpenLayout(
             height: 64,
           }}
         />
-        {props.children}
-        {!props.noFooter && <Footer />}
+        {children}
+        {!noFooter && <Footer />}
       </main>
     </MainRefContext.Provider>
   )

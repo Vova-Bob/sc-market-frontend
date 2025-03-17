@@ -25,7 +25,7 @@ import logo from "../../assets/scmarket-logo.png"
 import recruitingCap from "../../assets/recruiting.png"
 import manageStockCap from "../../assets/manage-stock.png"
 import servicesCap from "../../assets/services-cap.png"
-import { OpenGrid } from "../../components/layout/ContainerGrid"
+import { OpenLayout } from "../../components/layout/ContainerGrid"
 import { Footer } from "../../components/footer/Footer"
 import ExpandLess from "@mui/icons-material/ExpandLess"
 import ExpandMore from "@mui/icons-material/ExpandMore"
@@ -211,20 +211,16 @@ export function LandingPage() {
 
   return (
     <Page>
-      <OpenGrid
+      <OpenLayout
         sidebarOpen={true}
-        sx={{
-          "& > *": { zIndex: "1", paddingBottom: 4 },
-          overflow: "hidden",
+        style={{
+          // "& > *": { paddingBottom: 4 },
+          position: "relative",
+          overflowY: "scroll",
+          paddingTop: 20,
+          background: `radial-gradient(at 100% 0%, ${theme.palette.primary.main}80 0px, transparent 60%),radial-gradient(at 0% 0%, ${theme.palette.secondary.main}80 0px, transparent 60%)`,
         }}
         noFooter
-        position={"relative"}
-        mainProps={{
-          style: {
-            paddingTop: 20,
-            background: `radial-gradient(at 100% 0%, ${theme.palette.primary.main}80 0px, transparent 60%),radial-gradient(at 0% 0%, ${theme.palette.secondary.main}80 0px, transparent 60%)`,
-          },
-        }}
       >
         {CURRENT_CUSTOM_ORG && (
           <Navigate to={`/contractor/${CURRENT_CUSTOM_ORG}`} />
@@ -232,8 +228,9 @@ export function LandingPage() {
         <Stack
           direction={"column"}
           sx={{
+            maxWidth: "100%",
             paddingBottom: theme.spacing(4),
-            zIndex: "1",
+            paddingTop: theme.spacing(2),
           }}
         >
           <Box
@@ -428,7 +425,7 @@ export function LandingPage() {
           </Container>
           <Footer />
         </Stack>
-      </OpenGrid>
+      </OpenLayout>
     </Page>
   )
 }
