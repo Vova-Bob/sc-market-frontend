@@ -217,6 +217,7 @@ export function LandingPage() {
           // "& > *": { paddingBottom: 4 },
           position: "relative",
           overflowY: "scroll",
+          overflowX: "hidden",
           paddingTop: 20,
           background: `radial-gradient(at 100% 0%, ${theme.palette.primary.main}80 0px, transparent 60%),radial-gradient(at 0% 0%, ${theme.palette.secondary.main}80 0px, transparent 60%)`,
         }}
@@ -282,7 +283,9 @@ export function LandingPage() {
             >
               <OrderStatistics />
 
-              <RecentListings />
+              <Box width={"100%"} sx={{ overflowX: "scroll" }}>
+                <RecentListings />
+              </Box>
 
               <Stack
                 spacing={theme.spacing(8)}
