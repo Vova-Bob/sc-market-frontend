@@ -1,5 +1,5 @@
-import { OrderStub } from "../../datatypes/Order"
-import React, { MouseEventHandler, useMemo, useState } from "react"
+import { OrderSearchSortMethod, OrderStub } from "../../datatypes/Order"
+import React, { MouseEventHandler, useEffect, useMemo, useState } from "react"
 import {
   Avatar,
   Chip,
@@ -16,11 +16,17 @@ import { UnderlineLink } from "../../components/typography/UnderlineLink"
 import { Link } from "react-router-dom"
 import { useTheme } from "@mui/material/styles"
 import { ExtendedTheme } from "../../hooks/styles/Theme"
-import { HeadCell, PaginatedTable } from "../../components/table/PaginatedTable"
+import {
+  ControlledTable,
+  HeadCell,
+  PaginatedTable,
+} from "../../components/table/PaginatedTable"
 import { Stack } from "@mui/system"
 import { a11yProps } from "../../components/tabs/Tabs"
 import { Section } from "../../components/paper/Section"
 import SCMarketLogo from "../../assets/scmarket-logo.png"
+import { useSearchOrdersQuery } from "../../store/orders"
+import { useGetUserProfileQuery } from "../../store/profile"
 
 export const statusColors = new Map<
   | "active"
@@ -161,8 +167,8 @@ export function OrderRow(props: {
               {row.count
                 ? `${row.count.toLocaleString(undefined)} items • `
                 : row.service_name
-                ? `${row.service_name} • `
-                : ""}
+                  ? `${row.service_name} • `
+                  : ""}
               {(+row.cost).toLocaleString(undefined)} aUEC
             </Typography>
           </Stack>
@@ -194,8 +200,8 @@ export function OrderRow(props: {
                   ? row.contractor
                     ? `/contractor/${row.contractor?.spectrum_id}`
                     : row.assigned_to
-                    ? `/user/${row.assigned_to?.username}`
-                    : "#"
+                      ? `/user/${row.assigned_to?.username}`
+                      : "#"
                   : `/user/${row.customer.username}`
               }
               style={{ textDecoration: "none", color: "inherit" }}
@@ -350,6 +356,116 @@ export function OrdersView(props: {
         generateRow={OrderRow}
         keyAttr={"order_id"}
         initialSortDirection={"desc"}
+        headCells={mine ? MyOrderHeadCells : OrderHeadCells}
+        disableSelect
+      />
+    </Section>
+  )
+}
+
+export function OrdersViewPaginated(props: {
+  title: string
+  mine?: boolean
+  assigned?: boolean
+  contractor?: string
+}) {
+  const { title, mine, assigned, contractor } = props
+  const { data: profile } = useGetUserProfileQuery()
+  const [statusFilter, setStatusFilter] = useState<null | "active" | "past">(
+    null,
+  )
+  const [pageSize, setPageSize] = useState(5)
+  const [page, setPage] = useState(0)
+  const [orderBy, setOrderBy] = useState("timestamp")
+  const [order, setOrder] = useState<"asc" | "desc">("desc")
+
+  const { data: orders } = useSearchOrdersQuery({
+    status: statusFilter || undefined,
+    index: page,
+    page_size: pageSize,
+    customer: mine ? profile?.username : undefined,
+    assigned: assigned ? profile?.username : undefined,
+    contractor: contractor,
+    sort_method: orderBy as OrderSearchSortMethod,
+    reverse_sort: order === "asc",
+  })
+
+  const tab = useMemo(
+    () => [null, "active", "past"].indexOf(statusFilter),
+    [statusFilter],
+  )
+
+  useEffect(() => {
+    setPage(0)
+  }, [statusFilter])
+
+  return (
+    <Section
+      xs={12}
+      md={12}
+      lg={12}
+      xl={12}
+      fill
+      element_title={
+        <Stack
+          justifyContent={"space-between"}
+          alignItems={"center"}
+          spacing={1}
+          direction={"row"}
+        >
+          <Typography
+            variant={"h5"}
+            fontWeight={"bold"}
+            color={"text.secondary"}
+          >
+            {title}
+          </Typography>
+          <Tabs
+            value={tab}
+            // onChange={(_, newPage) => setPage(newPage)}
+            aria-label="order tabs"
+            variant="scrollable"
+          >
+            <Tab
+              label="All"
+              {...a11yProps(0)}
+              onClick={() => setStatusFilter(null)}
+            />
+            <Tab
+              label="Active"
+              {...a11yProps(1)}
+              onClick={() => setStatusFilter("active")}
+            />
+            <Tab
+              label="Past"
+              {...a11yProps(2)}
+              onClick={() => setStatusFilter("past")}
+            />
+          </Tabs>
+        </Stack>
+      }
+      disablePadding
+    >
+      <ControlledTable
+        rows={(orders?.items || []).map((o) => ({
+          ...o,
+          other_name: mine
+            ? o.assigned_to?.username || o.contractor?.spectrum_id || null
+            : o.customer.username,
+          mine,
+        }))}
+        initialSort={"timestamp"}
+        onPageChange={setPage}
+        page={page}
+        onPageSizeChange={setPageSize}
+        pageSize={pageSize}
+        rowCount={+(orders?.item_count || 0)}
+        onOrderChange={setOrder}
+        order={order}
+        onOrderByChange={setOrderBy}
+        orderBy={orderBy}
+        generateRow={OrderRow}
+        keyAttr={"order_id"}
         headCells={mine ? MyOrderHeadCells : OrderHeadCells}
         disableSelect
       />

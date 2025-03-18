@@ -1,4 +1,9 @@
-import { Order, OrderStub, OrderBody } from "../datatypes/Order"
+import {
+  Order,
+  OrderBody,
+  OrderSearchQuery,
+  OrderStub,
+} from "../datatypes/Order"
 import { serviceApi } from "./service"
 
 export interface ErrorResponse<E> {
@@ -217,6 +222,17 @@ const ordersApi = serviceApi.injectEndpoints({
       providesTags: ["Order" as const, { type: "Order" as const }],
       transformResponse: unwrapResponse,
     }),
+    searchOrders: builder.query<
+      { items: OrderStub[]; item_count: string },
+      OrderSearchQuery
+    >({
+      query: (queryParams) => ({
+        url: `/api/orders/search`,
+        params: queryParams,
+      }),
+      providesTags: ["Order" as const, { type: "Order" as const }],
+      transformResponse: unwrapResponse,
+    }),
     getAssignedOrdersByContractor: builder.query<OrderStub[], string>({
       query: (spectrum_id) => `/api/orders/contractor/${spectrum_id}/assigned`,
       providesTags: (result, error, arg) =>
@@ -265,4 +281,5 @@ export const {
   useGetAssignedOrdersByContractorQuery,
   useGetAllAssignedOrdersQuery,
   useCreateOrderThreadMutation,
+  useSearchOrdersQuery,
 } = ordersApi

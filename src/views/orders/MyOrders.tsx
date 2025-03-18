@@ -1,9 +1,6 @@
 import React from "react"
-import { OrdersView } from "./OrderList"
-import { useGetMyOrdersQuery } from "../../store/orders"
+import { OrdersViewPaginated } from "./OrderList"
 
 export function MyOrders() {
-  const { data: orders } = useGetMyOrdersQuery()
-
-  return <OrdersView title={"My Orders"} orders={orders || []} mine />
+  return <OrdersViewPaginated title={"My Orders"} mine />
 }

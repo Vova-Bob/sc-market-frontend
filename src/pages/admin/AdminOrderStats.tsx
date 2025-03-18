@@ -11,7 +11,7 @@ import {
 } from "../../views/orders/OrderTrend"
 import { AdminRecentOrders } from "../../views/orders/RecentOrders"
 
-export function AdminOrderStats(props: {}) {
+export function AdminOrderStats() {
   const { data: orders } = useGetAllOrdersQuery()
 
   return (
@@ -22,7 +22,7 @@ export function AdminOrderStats(props: {}) {
         <TopUsers orders={orders || []} />
         <TopUsersThisWeek orders={orders || []} />
         <TopUsersThisMonth orders={orders || []} />
-        <AdminRecentOrders orders={orders || []} />
+        <AdminRecentOrders />
       </ContainerGrid>
     </Page>
   )

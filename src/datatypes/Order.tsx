@@ -226,3 +226,35 @@ export interface OrderStub {
   count: number
   kind: string
 }
+
+export type OrderSearchSortMethod =
+  | "title"
+  | "customer_name"
+  | "status"
+  | "timestamp"
+  | "contractor_name"
+
+export type OrderSearchStatus =
+  | "fulfilled"
+  | "in-progress"
+  | "not-started"
+  | "cancelled"
+  | "active"
+  | "past"
+
+export interface OrderSearchQuery {
+  sort_method?: OrderSearchSortMethod
+  status?:
+    | "fulfilled"
+    | "in-progress"
+    | "not-started"
+    | "cancelled"
+    | "active"
+    | "past"
+  assigned?: string
+  contractor?: string
+  customer?: string
+  index?: number
+  page_size?: number
+  reverse_sort?: boolean
+}
