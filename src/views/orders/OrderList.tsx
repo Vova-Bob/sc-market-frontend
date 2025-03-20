@@ -10,16 +10,13 @@ import {
   TableRow,
   Tabs,
   Typography,
-  useMediaQuery,
 } from "@mui/material"
 import { UnderlineLink } from "../../components/typography/UnderlineLink"
 import { Link } from "react-router-dom"
 import { useTheme } from "@mui/material/styles"
-import { ExtendedTheme } from "../../hooks/styles/Theme"
 import {
   ControlledTable,
   HeadCell,
-  PaginatedTable,
 } from "../../components/table/PaginatedTable"
 import { Stack } from "@mui/system"
 import { a11yProps } from "../../components/tabs/Tabs"
@@ -241,125 +238,6 @@ export function OrderRow(props: {
       {/*    </Button>*/}
       {/*</TableCell>*/}
     </TableRow>
-  )
-}
-
-export function OrdersView(props: {
-  title: string
-  orders: OrderStub[]
-  mine?: boolean
-}) {
-  const { title, orders, mine } = props
-
-  const [statusFilter, setStatusFilter] = useState<null | "active" | "past">(
-    null,
-  )
-
-  const rows = useMemo(() => {
-    return (orders || []).filter((o) => {
-      if (statusFilter === "active") {
-        return !["fulfilled", "cancelled"].includes(o.status)
-      }
-      if (statusFilter === "past") {
-        return ["fulfilled", "cancelled"].includes(o.status)
-      }
-
-      return true
-    })
-  }, [orders, statusFilter])
-
-  const theme = useTheme<ExtendedTheme>()
-  const xs = useMediaQuery(theme.breakpoints.down("lg"))
-
-  const page = useMemo(
-    () => [null, "active", "past"].indexOf(statusFilter),
-    [statusFilter],
-  )
-
-  return (
-    <Section
-      xs={12}
-      md={12}
-      lg={12}
-      xl={12}
-      fill
-      element_title={
-        <Stack
-          justifyContent={"space-between"}
-          alignItems={"center"}
-          spacing={1}
-          direction={"row"}
-        >
-          <Typography
-            variant={"h5"}
-            fontWeight={"bold"}
-            color={"text.secondary"}
-          >
-            {title}
-          </Typography>
-          <Tabs
-            value={page}
-            // onChange={(_, newPage) => setPage(newPage)}
-            aria-label="order tabs"
-            variant="scrollable"
-          >
-            <Tab
-              label="All"
-              icon={<Chip label={orders?.length || 0} size={"small"} />}
-              {...a11yProps(0)}
-              onClick={() => setStatusFilter(null)}
-            />
-            <Tab
-              label="Active"
-              icon={
-                <Chip
-                  label={
-                    (orders || []).filter(
-                      (o) => !["fulfilled", "cancelled"].includes(o.status),
-                    ).length
-                  }
-                  size={"small"}
-                />
-              }
-              {...a11yProps(1)}
-              onClick={() => setStatusFilter("active")}
-            />
-            <Tab
-              label="Past"
-              icon={
-                <Chip
-                  label={
-                    (orders || []).filter((o) =>
-                      ["fulfilled", "cancelled"].includes(o.status),
-                    ).length
-                  }
-                  size={"small"}
-                />
-              }
-              {...a11yProps(2)}
-              onClick={() => setStatusFilter("past")}
-            />
-          </Tabs>
-        </Stack>
-      }
-      disablePadding
-    >
-      <PaginatedTable
-        rows={rows.map((o) => ({
-          ...o,
-          other_name: mine
-            ? o.assigned_to?.username || o.contractor?.spectrum_id || null
-            : o.customer.username,
-          mine,
-        }))}
-        initialSort={"timestamp"}
-        generateRow={OrderRow}
-        keyAttr={"order_id"}
-        initialSortDirection={"desc"}
-        headCells={mine ? MyOrderHeadCells : OrderHeadCells}
-        disableSelect
-      />
-    </Section>
   )
 }
 

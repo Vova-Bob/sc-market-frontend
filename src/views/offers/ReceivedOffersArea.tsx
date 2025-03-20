@@ -1,15 +1,16 @@
 import {
+  OfferSearchStatus,
   OfferSessionStub,
-  useGetReceivedOffersOrgQuery,
-  useGetReceivedOffersQuery,
-  useGetSentOffersQuery,
+  useSearchOfferSessionsQuery,
 } from "../../store/offer"
-import { HeadCell, PaginatedTable } from "../../components/table/PaginatedTable"
-import React, { MouseEventHandler, useMemo, useState } from "react"
+import {
+  ControlledTable,
+  HeadCell,
+} from "../../components/table/PaginatedTable"
+import React, { MouseEventHandler, useEffect, useMemo, useState } from "react"
 import {
   Avatar,
   Chip,
-  Divider,
   Grid,
   Link as MaterialLink,
   Paper,
@@ -30,8 +31,9 @@ import {
 import { a11yProps } from "../../components/tabs/Tabs"
 import { Stack } from "@mui/system"
 import { useTheme } from "@mui/material/styles"
-import { Section } from "../../components/paper/Section"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
+import { useGetUserProfileQuery } from "../../store/profile"
+import { OrderSearchSortMethod } from "../../datatypes/Order"
 
 export const OffersHeadCells: readonly HeadCell<
   OfferSessionStub & { customer_name: string }
@@ -128,8 +130,8 @@ export function OfferRow(props: {
                     undefined,
                   )} items • `
                 : row.most_recent_offer.service_name
-                ? `${row.most_recent_offer.service_name} • `
-                : ""}
+                  ? `${row.most_recent_offer.service_name} • `
+                  : ""}
               {(+row.most_recent_offer.cost).toLocaleString(undefined)} aUEC
             </Typography>
           </Stack>
@@ -185,27 +187,75 @@ export function OfferRow(props: {
   )
 }
 
-export function OffersView(props: { offers: OfferSessionStub[] }) {
-  const { offers } = props
-  const [statusFilter, setStatusFilter] = useState<string | null>(null)
+export function ReceivedOffersArea() {
+  const [currentOrg] = useCurrentOrg()
 
-  const filteredOffers = useMemo(() => {
-    return (offers || []).filter(
-      (o) => !statusFilter || o.status === statusFilter,
-    )
-  }, [offers, statusFilter])
+  return (
+    <OffersViewPaginated
+      assigned={!currentOrg}
+      contractor={currentOrg?.spectrum_id}
+    />
+  )
+}
 
-  const page = useMemo(
+export function SentOffersArea() {
+  return <OffersViewPaginated mine />
+}
+
+export function OffersViewPaginated(props: {
+  mine?: boolean
+  assigned?: boolean
+  contractor?: string
+}) {
+  const { mine, assigned, contractor } = props
+  const { data: profile } = useGetUserProfileQuery()
+  const [statusFilter, setStatusFilter] = useState<null | OfferSearchStatus>(
+    null,
+  )
+  const [pageSize, setPageSize] = useState(5)
+  const [page, setPage] = useState(0)
+  const [orderBy, setOrderBy] = useState("timestamp")
+  const [order, setOrder] = useState<"asc" | "desc">("desc")
+
+  const { data } = useSearchOfferSessionsQuery({
+    status: statusFilter || undefined,
+    index: page,
+    page_size: pageSize,
+    customer: mine ? profile?.username : undefined,
+    assigned: assigned ? profile?.username : undefined,
+    contractor: contractor,
+    sort_method: orderBy as OrderSearchSortMethod,
+    reverse_sort: order === "asc",
+  })
+
+  const tabs = [
+    ["to-seller", "Waiting for Seller"],
+    ["to-customer", "Waiting for Customer"],
+    ["accepted", "Accepted"],
+    ["rejected", "Rejected"],
+  ] as const
+
+  const tab = useMemo(
     () =>
-      [
-        null,
-        "Waiting for Seller",
-        "Waiting for Customer",
-        "Accepted",
-        "Rejected",
-      ].indexOf(statusFilter),
+      [null, "to-seller", "to-customer", "accepted", "rejected"].indexOf(
+        statusFilter,
+      ),
     [statusFilter],
   )
+
+  const totalCount = useMemo(
+    () => Object.values(data?.item_counts || {}).reduce((x, y) => x + y, 0),
+    [data],
+  )
+
+  const totals = useMemo(
+    () => new Map(Object.entries(data?.item_counts || [])),
+    [data],
+  )
+
+  useEffect(() => {
+    console.log(data, totalCount, totals)
+  }, [data, totalCount, totals])
 
   return (
     <Grid item xs={12}>
@@ -222,77 +272,30 @@ export function OffersView(props: { offers: OfferSessionStub[] }) {
             Offers
           </Typography>
           <Tabs
-            value={page}
+            value={tab}
             // onChange={(_, newPage) => setPage(newPage)}
             aria-label="offer tabs"
             variant="scrollable"
           >
             <Tab
               label="All"
-              icon={<Chip label={offers?.length || 0} size={"small"} />}
+              icon={<Chip label={totalCount} size={"small"} />}
               {...a11yProps(0)}
               onClick={() => setStatusFilter(null)}
             />
-            <Tab
-              label="Waiting for Seller"
-              icon={
-                <Chip
-                  label={
-                    (offers || []).filter(
-                      (x) => x.status === "Waiting for Seller",
-                    ).length
-                  }
-                  size={"small"}
-                />
-              }
-              {...a11yProps(1)}
-              onClick={() => setStatusFilter("Waiting for Seller")}
-            />
-            <Tab
-              label="Waiting for Customer"
-              icon={
-                <Chip
-                  label={
-                    (offers || []).filter(
-                      (x) => x.status === "Waiting for Customer",
-                    ).length
-                  }
-                  size={"small"}
-                />
-              }
-              {...a11yProps(2)}
-              onClick={() => setStatusFilter("Waiting for Customer")}
-            />
-            <Tab
-              label="Accepted"
-              icon={
-                <Chip
-                  label={
-                    (offers || []).filter((x) => x.status === "Accepted").length
-                  }
-                  size={"small"}
-                />
-              }
-              {...a11yProps(3)}
-              onClick={() => setStatusFilter("Accepted")}
-            />
-            <Tab
-              label="Rejected"
-              icon={
-                <Chip
-                  label={
-                    (offers || []).filter((x) => x.status === "Rejected").length
-                  }
-                  size={"small"}
-                />
-              }
-              {...a11yProps(4)}
-              onClick={() => setStatusFilter("Rejected")}
-            />
+            {tabs.map(([id, tag], index) => (
+              <Tab
+                key={id}
+                label={tag}
+                icon={<Chip label={totals.get(id) || 0} size={"small"} />}
+                {...a11yProps(index + 1)}
+                onClick={() => setStatusFilter(id)}
+              />
+            ))}
           </Tabs>
         </Stack>
-        <PaginatedTable
-          rows={filteredOffers.map((o) => ({
+        <ControlledTable
+          rows={(data?.items || []).map((o) => ({
             ...o,
             customer_name: o.customer.username,
           }))}
@@ -301,35 +304,17 @@ export function OffersView(props: { offers: OfferSessionStub[] }) {
           keyAttr={"id"}
           headCells={OffersHeadCells}
           disableSelect
+          onPageChange={setPage}
+          page={page}
+          onPageSizeChange={setPageSize}
+          pageSize={pageSize}
+          rowCount={statusFilter ? totals.get(statusFilter) || 0 : totalCount}
+          onOrderChange={setOrder}
+          order={order}
+          onOrderByChange={setOrderBy}
+          orderBy={orderBy}
         />
       </Paper>
     </Grid>
   )
-}
-
-export function ReceivedOffersArea() {
-  const [currentOrg] = useCurrentOrg()
-  const { data: userOffers } = useGetReceivedOffersQuery(undefined, {
-    skip: !!currentOrg,
-  })
-  const { data: orgOffers } = useGetReceivedOffersOrgQuery(
-    currentOrg?.spectrum_id!,
-    { skip: !currentOrg },
-  )
-
-  const offers = useMemo(() => {
-    if (currentOrg) {
-      return orgOffers || []
-    } else {
-      return userOffers || []
-    }
-  }, [currentOrg, orgOffers, userOffers])
-
-  return <OffersView offers={offers} />
-}
-
-export function SentOffersArea() {
-  const { data: offers } = useGetSentOffersQuery()
-
-  return <OffersView offers={offers || []} />
 }

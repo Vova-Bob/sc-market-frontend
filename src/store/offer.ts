@@ -68,6 +68,45 @@ export interface OfferMarketListing {
   listing: UniqueListing
 }
 
+export type OfferSearchSortMethod =
+  | "title"
+  | "customer_name"
+  | "status"
+  | "timestamp"
+  | "contractor_name"
+
+export const OFFER_SEARCH_SORT_METHODS = [
+  "title",
+  "customer_name",
+  "status",
+  "timestamp",
+  "contractor_name",
+]
+
+export type OfferSearchStatus =
+  | "to-seller"
+  | "to-customer"
+  | "accepted"
+  | "rejected"
+
+export const OFFER_SEARCH_STATUS = [
+  "to-seller",
+  "to-customer",
+  "accepted",
+  "rejected",
+]
+
+export interface OfferSearchQuery {
+  sort_method?: OfferSearchSortMethod
+  status?: OfferSearchStatus
+  assigned?: string
+  contractor?: string
+  customer?: string
+  index?: number
+  page_size?: number
+  reverse_sort?: boolean
+}
+
 export const offersApi = serviceApi.injectEndpoints({
   endpoints: (builder) => ({
     getReceivedOffers: builder.query<OfferSessionStub[], void>({
@@ -91,6 +130,28 @@ export const offersApi = serviceApi.injectEndpoints({
         { type: "Offer" as const, id: id },
         "Offer" as const,
       ],
+      transformResponse: unwrapResponse,
+    }),
+    searchOfferSessions: builder.query<
+      {
+        items: OfferSessionStub[]
+        item_counts: {
+          "to-seller": number
+          "to-customer": number
+          accepted: number
+          rejected: number
+        }
+      },
+      OfferSearchQuery
+    >({
+      query: (queryParams) => ({
+        url: `/api/offers/search`,
+        params: queryParams,
+      }),
+      // providesTags: (_result, _error, id) => [
+      //   { type: "Offer" as const, id: id },
+      //   "Offer" as const,
+      // ],
       transformResponse: unwrapResponse,
     }),
     acceptOffer: builder.mutation<{ order_id: string }, string>({
@@ -156,4 +217,5 @@ export const {
   useGetSentOffersQuery,
   useGetReceivedOffersOrgQuery,
   useCreateOfferThreadMutation,
+  useSearchOfferSessionsQuery,
 } = offersApi
