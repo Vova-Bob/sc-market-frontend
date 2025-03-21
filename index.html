@@ -45,6 +45,11 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>SC Market</title>
+    <script language="javascript">
+        window.addEventListener('vite:preloadError', (event) => {
+            window.location.reload() // Reload the page on a vite preload error
+        })
+    </script>
 </head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
