@@ -223,7 +223,15 @@ const ordersApi = serviceApi.injectEndpoints({
       transformResponse: unwrapResponse,
     }),
     searchOrders: builder.query<
-      { items: OrderStub[]; item_count: string },
+      {
+        items: OrderStub[]
+        item_counts: {
+          fulfilled: number
+          "in-progress": number
+          "not-started": number
+          cancelled: number
+        }
+      },
       OrderSearchQuery
     >({
       query: (queryParams) => ({

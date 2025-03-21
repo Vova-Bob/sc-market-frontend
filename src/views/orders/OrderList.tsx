@@ -1,8 +1,13 @@
-import { OrderSearchSortMethod, OrderStub } from "../../datatypes/Order"
+import {
+  OrderSearchSortMethod,
+  OrderSearchStatus,
+  OrderStub,
+} from "../../datatypes/Order"
 import React, { MouseEventHandler, useEffect, useMemo, useState } from "react"
 import {
   Avatar,
   Chip,
+  Grid,
   Link as MaterialLink,
   Paper,
   Tab,
@@ -20,7 +25,6 @@ import {
 } from "../../components/table/PaginatedTable"
 import { Stack } from "@mui/system"
 import { a11yProps } from "../../components/tabs/Tabs"
-import { Section } from "../../components/paper/Section"
 import SCMarketLogo from "../../assets/scmarket-logo.png"
 import { useSearchOrdersQuery } from "../../store/orders"
 import { useGetUserProfileQuery } from "../../store/profile"
@@ -249,16 +253,16 @@ export function OrdersViewPaginated(props: {
 }) {
   const { title, mine, assigned, contractor } = props
   const { data: profile } = useGetUserProfileQuery()
-  const [statusFilter, setStatusFilter] = useState<null | "active" | "past">(
-    null,
-  )
+  const [statusFilter, setStatusFilter] = useState<
+    "all" | "active" | "past" | OrderSearchStatus
+  >("all")
   const [pageSize, setPageSize] = useState(5)
   const [page, setPage] = useState(0)
   const [orderBy, setOrderBy] = useState("timestamp")
   const [order, setOrder] = useState<"asc" | "desc">("desc")
 
   const { data: orders } = useSearchOrdersQuery({
-    status: statusFilter || undefined,
+    status: statusFilter === "all" ? undefined : statusFilter,
     index: page,
     page_size: pageSize,
     customer: mine ? profile?.username : undefined,
@@ -268,33 +272,74 @@ export function OrdersViewPaginated(props: {
     reverse_sort: order === "asc",
   })
 
+  const tabs = [
+    ["all", "All"],
+    ["active", "Active"],
+    ["past", "Past"],
+    ["fulfilled", "Fulfilled"],
+    ["in-progress", "In Progress"],
+    ["not-started", "Not Started"],
+    ["cancelled", "Cancelled"],
+  ] as const
+
   const tab = useMemo(
-    () => [null, "active", "past"].indexOf(statusFilter),
+    () =>
+      [
+        "all",
+        "active",
+        "past",
+        "fulfilled",
+        "in-progress",
+        "not-started",
+        "cancelled",
+      ].indexOf(statusFilter),
     [statusFilter],
   )
 
+  const totalCounts = useMemo(() => {
+    if (!orders?.item_counts) {
+      return {
+        all: 0,
+        active: 0,
+        past: 0,
+        fulfilled: 0,
+        "in-progress": 0,
+        "not-started": 0,
+        cancelled: 0,
+      }
+    }
+
+    return {
+      all: Object.values(orders?.item_counts || {}).reduce((x, y) => x + y, 0),
+      active:
+        (orders?.item_counts["not-started"] || 0) +
+        (orders?.item_counts["in-progress"] || 0),
+      past:
+        (orders?.item_counts["cancelled"] || 0) +
+        (orders?.item_counts["fulfilled"] || 0),
+      ...orders?.item_counts,
+    }
+  }, [orders])
+
   useEffect(() => {
-    setPage(0)
-  }, [statusFilter])
+    console.log(tab)
+  }, [tab])
 
   return (
-    <Section
-      xs={12}
-      md={12}
-      lg={12}
-      xl={12}
-      fill
-      element_title={
+    <Grid item xs={12}>
+      <Paper>
         <Stack
-          justifyContent={"space-between"}
-          alignItems={"center"}
-          spacing={1}
           direction={"row"}
+          sx={{ paddingTop: 2, paddingLeft: 2, paddingRight: 2 }}
         >
           <Typography
             variant={"h5"}
             fontWeight={"bold"}
             color={"text.secondary"}
+            sx={{
+              whiteSpace: "nowrap",
+              textOverflow: "display",
+            }}
           >
             {title}
           </Typography>
@@ -304,49 +349,41 @@ export function OrdersViewPaginated(props: {
             aria-label="order tabs"
             variant="scrollable"
           >
-            <Tab
-              label="All"
-              {...a11yProps(0)}
-              onClick={() => setStatusFilter(null)}
-            />
-            <Tab
-              label="Active"
-              {...a11yProps(1)}
-              onClick={() => setStatusFilter("active")}
-            />
-            <Tab
-              label="Past"
-              {...a11yProps(2)}
-              onClick={() => setStatusFilter("past")}
-            />
+            {tabs.map(([id, tag], index) => (
+              <Tab
+                key={id}
+                label={tag}
+                icon={<Chip label={totalCounts[id] || 0} size={"small"} />}
+                {...a11yProps(index)}
+                onClick={() => setStatusFilter(id)}
+              />
+            ))}
           </Tabs>
         </Stack>
-      }
-      disablePadding
-    >
-      <ControlledTable
-        rows={(orders?.items || []).map((o) => ({
-          ...o,
-          other_name: mine
-            ? o.assigned_to?.username || o.contractor?.spectrum_id || null
-            : o.customer.username,
-          mine,
-        }))}
-        initialSort={"timestamp"}
-        onPageChange={setPage}
-        page={page}
-        onPageSizeChange={setPageSize}
-        pageSize={pageSize}
-        rowCount={+(orders?.item_count || 0)}
-        onOrderChange={setOrder}
-        order={order}
-        onOrderByChange={setOrderBy}
-        orderBy={orderBy}
-        generateRow={OrderRow}
-        keyAttr={"order_id"}
-        headCells={mine ? MyOrderHeadCells : OrderHeadCells}
-        disableSelect
-      />
-    </Section>
+        <ControlledTable
+          rows={(orders?.items || []).map((o) => ({
+            ...o,
+            other_name: mine
+              ? o.assigned_to?.username || o.contractor?.spectrum_id || null
+              : o.customer.username,
+            mine,
+          }))}
+          initialSort={"timestamp"}
+          onPageChange={setPage}
+          page={page}
+          onPageSizeChange={setPageSize}
+          pageSize={pageSize}
+          rowCount={+(totalCounts[statusFilter] || 0)}
+          onOrderChange={setOrder}
+          order={order}
+          onOrderByChange={setOrderBy}
+          orderBy={orderBy}
+          generateRow={OrderRow}
+          keyAttr={"order_id"}
+          headCells={mine ? MyOrderHeadCells : OrderHeadCells}
+          disableSelect
+        />
+      </Paper>
+    </Grid>
   )
 }
