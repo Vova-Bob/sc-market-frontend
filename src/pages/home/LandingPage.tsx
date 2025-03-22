@@ -514,7 +514,7 @@ function FAQSection() {
       <Typography
         variant={"h3"}
         color={"text.secondary"}
-        sx={{ maxWidth: 400, flexShrink: "0" }}
+        sx={{ maxWidth: "min(400px, 100%)", flexShrink: "0", marginBottom: 2 }}
       >
         Your questions, answered
       </Typography>
@@ -627,7 +627,7 @@ function SupportersSection() {
               <ButtonBase>
                 <img
                   src={supporter.avatar}
-                  style={{ maxHeight: 128, borderRadius: 4 }}
+                  style={{ maxHeight: 128, borderRadius: 4, maxWidth: "100%" }}
                   alt={supporter.name}
                 />
               </ButtonBase>
