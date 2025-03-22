@@ -285,11 +285,9 @@ export function LandingPage() {
               <OrderStatistics />
 
               <Box
-                width={"100%"}
+                maxWidth={"100%"}
                 sx={{
                   overflowX: "scroll",
-                  justifyContent: "center",
-                  display: "flex",
                 }}
               >
                 <RecentListings />
