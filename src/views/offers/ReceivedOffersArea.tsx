@@ -7,7 +7,7 @@ import {
   ControlledTable,
   HeadCell,
 } from "../../components/table/PaginatedTable"
-import React, { MouseEventHandler, useEffect, useMemo, useState } from "react"
+import React, { MouseEventHandler, useMemo, useState } from "react"
 import {
   Avatar,
   Chip,
@@ -225,7 +225,7 @@ export function OffersViewPaginated(props: {
     assigned: assigned ? profile?.username : undefined,
     contractor: contractor,
     sort_method: orderBy as OrderSearchSortMethod,
-    reverse_sort: order === "asc",
+    reverse_sort: order === "desc",
   })
 
   const tabs = [
@@ -252,10 +252,6 @@ export function OffersViewPaginated(props: {
     () => new Map(Object.entries(data?.item_counts || [])),
     [data],
   )
-
-  useEffect(() => {
-    console.log(data, totalCount, totals)
-  }, [data, totalCount, totals])
 
   return (
     <Grid item xs={12}>

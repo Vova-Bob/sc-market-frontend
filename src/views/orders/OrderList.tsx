@@ -3,7 +3,7 @@ import {
   OrderSearchStatus,
   OrderStub,
 } from "../../datatypes/Order"
-import React, { MouseEventHandler, useEffect, useMemo, useState } from "react"
+import React, { MouseEventHandler, useMemo, useState } from "react"
 import {
   Avatar,
   Chip,
@@ -269,7 +269,7 @@ export function OrdersViewPaginated(props: {
     assigned: assigned ? profile?.username : undefined,
     contractor: contractor,
     sort_method: orderBy as OrderSearchSortMethod,
-    reverse_sort: order === "asc",
+    reverse_sort: order === "desc",
   })
 
   const tabs = [
@@ -320,10 +320,6 @@ export function OrdersViewPaginated(props: {
       ...orders?.item_counts,
     }
   }, [orders])
-
-  useEffect(() => {
-    console.log(tab)
-  }, [tab])
 
   return (
     <Grid item xs={12}>
