@@ -10,6 +10,7 @@ import {
   Divider,
   Fade,
   Grid,
+  Grid2,
   Link as MaterialLink,
   List,
   ListItem,
@@ -283,73 +284,84 @@ export function LandingPage() {
             >
               <OrderStatistics />
 
-              <Box width={"100%"} sx={{ overflowX: "scroll" }}>
+              <Box
+                width={"100%"}
+                sx={{
+                  overflowX: "scroll",
+                  justifyContent: "center",
+                  display: "flex",
+                }}
+              >
                 <RecentListings />
               </Box>
 
-              <Stack
-                spacing={theme.spacing(8)}
-                direction={"row"}
-                sx={{ "& > *": { flex: "1 1 0px" }, flexWrap: "wrap" }}
-              >
-                <Stack direction={"column"}>
-                  <Typography
-                    variant={"h4"}
-                    sx={{ fontWeight: "bold", textAlign: "center" }}
-                    color={"text.secondary"}
-                  >
-                    Buy and Sell Items
-                  </Typography>
-                  <Typography
-                    variant={"body1"}
-                    sx={{ textAlign: "left" }}
-                    color={"text.secondary"}
-                  >
-                    List your items to be sold in whatever quantity you support.
-                    Get alerts in Discord when someone places an order, and work
-                    with buyers to fulfill their orders.{" "}
-                    <b>{"We don't take a cut."}</b>
-                  </Typography>
-                </Stack>
-                <Stack direction={"column"}>
-                  <Typography
-                    variant={"h4"}
-                    sx={{ fontWeight: "bold", textAlign: "center" }}
-                    color={"text.secondary"}
-                  >
-                    Trade in Bulk
-                  </Typography>
-                  <Typography
-                    variant={"body1"}
-                    sx={{ textAlign: "left" }}
-                    color={"text.secondary"}
-                  >
-                    Whether you have 5 FS-9s to sell or 50, we want to support
-                    you. List your items in bulk or individually and manage your
-                    stock with the click of a button.
-                  </Typography>
-                </Stack>
+              <Grid2 container justifyContent={"center"} spacing={8}>
+                <Grid2 size={{ xs: 12, md: 4 }}>
+                  <Stack direction={"column"}>
+                    <Typography
+                      variant={"h4"}
+                      sx={{ fontWeight: "bold", textAlign: "center" }}
+                      color={"text.secondary"}
+                    >
+                      Buy and Sell Items
+                    </Typography>
+                    <Typography
+                      variant={"body1"}
+                      sx={{ textAlign: "left" }}
+                      color={"text.secondary"}
+                    >
+                      List your items to be sold in whatever quantity you
+                      support. Get alerts in Discord when someone places an
+                      order, and work with buyers to fulfill their orders.{" "}
+                      <b>{"We don't take a cut."}</b>
+                    </Typography>
+                  </Stack>
+                </Grid2>
 
-                <Stack direction={"column"}>
-                  <Typography
-                    variant={"h4"}
-                    sx={{ fontWeight: "bold", textAlign: "center" }}
-                    color={"text.secondary"}
-                  >
-                    Order Services
-                  </Typography>
-                  <Typography
-                    variant={"body1"}
-                    sx={{ textAlign: "left" }}
-                    color={"text.secondary"}
-                  >
-                    Do you or your org have provide a service? Whether its
-                    medical rescue, hauler escort, sourcing items or otherwise,
-                    find a home on SC Market where you can discover the many
-                    services being provided throughout the &apos;verse.
-                  </Typography>
-                </Stack>
-              </Stack>
+                <Grid2 size={{ xs: 12, md: 4 }}>
+                  <Stack direction={"column"}>
+                    <Typography
+                      variant={"h4"}
+                      sx={{ fontWeight: "bold", textAlign: "center" }}
+                      color={"text.secondary"}
+                    >
+                      Trade in Bulk
+                    </Typography>
+                    <Typography
+                      variant={"body1"}
+                      sx={{ textAlign: "left" }}
+                      color={"text.secondary"}
+                    >
+                      Whether you have 5 FS-9s to sell or 50, we want to support
+                      you. List your items in bulk or individually and manage
+                      your stock with the click of a button.
+                    </Typography>
+                  </Stack>
+                </Grid2>
+
+                <Grid2 size={{ xs: 12, md: 4 }}>
+                  <Stack direction={"column"}>
+                    <Typography
+                      variant={"h4"}
+                      sx={{ fontWeight: "bold", textAlign: "center" }}
+                      color={"text.secondary"}
+                    >
+                      Order Services
+                    </Typography>
+                    <Typography
+                      variant={"body1"}
+                      sx={{ textAlign: "left" }}
+                      color={"text.secondary"}
+                    >
+                      Do you or your org have provide a service? Whether its
+                      medical rescue, hauler escort, sourcing items or
+                      otherwise, find a home on SC Market where you can discover
+                      the many services being provided throughout the
+                      &apos;verse.
+                    </Typography>
+                  </Stack>
+                </Grid2>
+              </Grid2>
             </Stack>
           </Container>
           <Container>
@@ -380,24 +392,26 @@ export function LandingPage() {
                 </Typography>
               </Stack>
 
-              <Stack
-                direction={"row"}
-                spacing={theme.spacing(8)}
-                sx={{ "& > *": { flex: "1 1 0px" }, flexWrap: "wrap" }}
-              >
-                <LandingSmallImage
-                  src={recruitingCap}
-                  title={"Org Recruitment"}
-                />
-                <LandingSmallImage
-                  src={servicesCap}
-                  title={"Service Listings"}
-                />
-                <LandingSmallImage
-                  src={manageStockCap}
-                  title={"Stock Management"}
-                />
-              </Stack>
+              <Grid2 container justifyContent={"center"} spacing={4}>
+                <Grid2 size={{ xs: 12, md: 4 }}>
+                  <LandingSmallImage
+                    src={recruitingCap}
+                    title={"Org Recruitment"}
+                  />
+                </Grid2>
+                <Grid2 size={{ xs: 12, md: 4 }}>
+                  <LandingSmallImage
+                    src={servicesCap}
+                    title={"Service Listings"}
+                  />
+                </Grid2>
+                <Grid2 size={{ xs: 12, md: 4 }}>
+                  <LandingSmallImage
+                    src={manageStockCap}
+                    title={"Stock Management"}
+                  />
+                </Grid2>
+              </Grid2>
 
               <Stack
                 direction={"column"}
