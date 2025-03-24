@@ -689,6 +689,7 @@ export function MarketListingView() {
   const [timeDisplay, setTimeDisplay] = useState(
     auction_details ? getRelativeTime(new Date(auction_details.end_time)) : "",
   )
+
   useEffect(() => {
     if (auction_details) {
       const interval = setInterval(

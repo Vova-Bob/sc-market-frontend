@@ -1,7 +1,5 @@
 import {
   createTheme,
-  Palette,
-  PaletteOptions,
   responsiveFontSizes,
   Theme,
   ThemeOptions,

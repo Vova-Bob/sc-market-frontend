@@ -38,7 +38,6 @@ export function Section(
       <Paper
         sx={{
           height: fill ? "100%" : h,
-          borderRadius: 2,
           width: "100%",
         }}
       >
