@@ -60,8 +60,8 @@ const name_to_index = new Map([
   ["services", 1],
   ["market", 2],
   ["order", 3],
-  ["recruiting", 4],
-  ["members", 5],
+  ["members", 4],
+  ["recruiting", 5],
 ])
 
 export function OrgRelevantListingsArea(props: { org: string }) {
@@ -300,22 +300,22 @@ export function OrgInfo(props: { contractor: Contractor }) {
                     icon={<CreateRounded />}
                     {...a11yProps(3)}
                   />
+                  <Tab
+                    label="Members"
+                    component={Link}
+                    to={`/contractor/${contractor.spectrum_id}/members`}
+                    icon={<PeopleAltRoundedIcon />}
+                    {...a11yProps(4)}
+                  />
                   {recruiting_post && (
                     <Tab
                       label="Recruiting"
                       component={Link}
                       to={`/contractor/${contractor.spectrum_id}/recruiting`}
                       icon={<PersonAddRounded />}
-                      {...a11yProps(4)}
+                      {...a11yProps(5)}
                     />
                   )}
-                  <Tab
-                    label="Members"
-                    component={Link}
-                    to={`/contractor/${contractor.spectrum_id}/members`}
-                    icon={<PeopleAltRoundedIcon />}
-                    {...a11yProps(5)}
-                  />
                 </Tabs>
               </Box>
             </Grid>
@@ -352,12 +352,12 @@ export function OrgInfo(props: { contractor: Contractor }) {
               </TabPanel>
               <TabPanel value={page} index={4}>
                 <Grid container spacing={3}>
-                  <RecruitingPostArea spectrum_id={contractor.spectrum_id} />
+                  <MemberList contractor={contractor} />
                 </Grid>
               </TabPanel>
               <TabPanel value={page} index={5}>
                 <Grid container spacing={3}>
-                  <MemberList contractor={contractor} />
+                  <RecruitingPostArea spectrum_id={contractor.spectrum_id} />
                 </Grid>
               </TabPanel>
             </Grid>
