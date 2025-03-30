@@ -342,35 +342,27 @@ export function NotificationContractorInvite(props: { notif: Notification }) {
 
   const issueAlert = useAlertHook()
 
-  async function submitInviteForm(choice: string): Promise<boolean | void> {
+  async function submitInviteForm(
+    choice: "accept" | "decline",
+  ): Promise<boolean | void> {
     // event.preventDefault();
-    let res: {
-      data?: any
-      error?: any
-    }
-    if (choice === "accept") {
-      res = await acceptInvite({
-        contractor: invite.spectrum_id,
-      })
-    } else {
-      res = await declineInvite({
-        contractor: invite.spectrum_id,
-      })
+    const funs = {
+      accept: acceptInvite,
+      decline: declineInvite,
     }
 
-    if (res?.data && !res?.error) {
-      issueAlert({
-        message: "Submitted!",
-        severity: "success",
+    funs[choice]({
+      contractor: invite.spectrum_id,
+    })
+      .unwrap()
+      .then(() => {
+        issueAlert({
+          message: "Submitted!",
+          severity: "success",
+        })
       })
-    } else {
-      issueAlert({
-        message: `Failed to submit! ${
-          res.error?.error || res.error?.data?.error || res.error
-        }`,
-        severity: "error",
-      })
-    }
+      .catch((err) => issueAlert(err))
+
     return false
   }
 
