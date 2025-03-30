@@ -19,7 +19,7 @@ import { useInviteContractorMembersMutation } from "../../store/contractor"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 
-export function OrgInvite(props: {}) {
+export function OrgInvite() {
   const [currentOrg] = useCurrentOrg()
   const [query, setQuery] = useState("")
   const [buffer, setBuffer] = useState("")
@@ -48,28 +48,23 @@ export function OrgInvite(props: {}) {
   const submitInviteForm = useCallback(
     async (event: any) => {
       // event.preventDefault();
-      const res: { data?: any; error?: any } = await sendInvites({
+      sendInvites({
         contractor: currentOrg?.spectrum_id!,
         users: choices.map((u) => u.username),
         message: message,
       })
+        .unwrap()
+        .then(() => {
+          setChoices([])
+          setBuffer("")
 
-      if (res?.data && !res?.error) {
-        setChoices([])
-        setBuffer("")
+          issueAlert({
+            message: "Submitted!",
+            severity: "success",
+          })
+        })
+        .catch((err) => issueAlert(err))
 
-        issueAlert({
-          message: "Submitted!",
-          severity: "success",
-        })
-      } else {
-        issueAlert({
-          message: `Failed to submit! ${
-            res.error?.error || res.error?.data?.error || res.error
-          }`,
-          severity: "error",
-        })
-      }
       return false
     },
     [choices, currentOrg?.spectrum_id, message, sendInvites, issueAlert],
@@ -162,6 +157,7 @@ export function OrgInvite(props: {}) {
           variant={"outlined"}
           color={"primary"}
           onClick={submitInviteForm}
+          disabled={!choices.length}
         >
           Submit
         </Button>

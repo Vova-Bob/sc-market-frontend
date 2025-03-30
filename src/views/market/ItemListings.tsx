@@ -41,7 +41,6 @@ import {
   Card,
   CardActionArea,
   CardContent,
-  CardHeader,
   CardMedia,
   Chip,
   Divider,
@@ -70,7 +69,6 @@ import {
   MarketSearchResult,
   useGetListingsByContractor,
   useGetPublicListings,
-  useMarketGetAggregatesQuery,
   useMarketGetAllListingsQuery,
   useMarketGetBuyOrderListingsQuery,
   useMarketGetListingByUserQuery,
@@ -93,7 +91,7 @@ import { useGetUserProfileQuery } from "../../store/profile"
 import { RefreshRounded } from "@mui/icons-material"
 import moment from "moment/moment"
 import { Stack } from "@mui/system"
-import { formatMarketMultipleUrl, formatMarketUrl } from "../../util/urls"
+import { formatMarketMultipleUrl, formatMarketUrl } from "../../util/urls" // const listingIcons = {
 
 // const listingIcons = {
 //     "auction": <GavelIcon/>,
@@ -162,6 +160,7 @@ export function ItemListingBase(props: {
   const [timeDisplay, setTimeDisplay] = useState(
     auction_details ? getRelativeTime(new Date(auction_details.end_time)) : "",
   )
+
   useEffect(() => {
     if (auction_details) {
       const interval = setInterval(
@@ -213,15 +212,9 @@ export function ItemListingBase(props: {
         to={formatMarketUrl(complete)}
         style={{ textDecoration: "none", color: "inherit" }}
       >
-        <CardActionArea
-          sx={{
-            borderRadius: 3,
-            // ...makeCut('24px', theme),
-          }}
-        >
+        <CardActionArea sx={{ borderRadius: 2 }}>
           <Card
             sx={{
-              borderRadius: 2,
               height: 400,
               postition: "relative",
             }}
@@ -279,7 +272,7 @@ export function ItemListingBase(props: {
                 left: 0,
                 height: "100%",
                 width: "100%",
-                borderRadius: 2,
+                borderRadius: 1,
                 background: `linear-gradient(to bottom, transparent, transparent 25%, ${theme.palette.background.sidebar}AA 40%, ${theme.palette.background.sidebar} 100%)`,
               }}
             />
@@ -1030,7 +1023,7 @@ export function getCompareRating(
   if (
     ["unique", "multiple_listing", "aggregate_listing"].includes(listing.type)
   ) {
-    let r = getListingRating(market_listing.listing)
+    const r = getListingRating(market_listing.listing)
     return r.avg_rating * r.rating_count
   } else if (listing.type === "multiple") {
     const multiple = listing as MarketMultiple

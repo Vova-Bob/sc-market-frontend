@@ -83,7 +83,7 @@ export function OrgManage() {
               )}
               {canManageRoles && (
                 <Tab
-                  label="Roles"
+                  label="Roles and Members"
                   icon={<AccountBoxRounded />}
                   {...a11yProps(2)}
                 />
