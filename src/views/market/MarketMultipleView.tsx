@@ -357,9 +357,13 @@ export function MarketMultipleView() {
                         padding: 3,
                       }}
                     >
-                      <Divider light />
-                      <PurchaseArea listing={currentListing} />
-                      <Divider light />
+                      {currentListing.listing.status === "active" && (
+                        <>
+                          <Divider light />
+                          <PurchaseArea listing={currentListing} />
+                          <Divider light />
+                        </>
+                      )}
 
                       <Box sx={{ paddingTop: 2 }}>
                         <Typography

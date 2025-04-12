@@ -971,13 +971,17 @@ export function MarketListingView() {
                         paddingTop: 0,
                       }}
                     >
-                      <Divider light />
-                      {listing.sale_type === "auction" ? (
-                        <BidArea listing={complete as UniqueListing} />
-                      ) : (
-                        <PurchaseArea listing={complete} />
+                      {listing.status === "active" && (
+                        <>
+                          <Divider light />
+                          {listing.sale_type === "auction" ? (
+                            <BidArea listing={complete as UniqueListing} />
+                          ) : (
+                            <PurchaseArea listing={complete} />
+                          )}
+                          <Divider light />
+                        </>
                       )}
-                      <Divider light />
                       <Box sx={{ paddingTop: 2 }}>
                         <Typography
                           variant={"subtitle1"}
