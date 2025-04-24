@@ -154,27 +154,18 @@ export const offersApi = serviceApi.injectEndpoints({
       // ],
       transformResponse: unwrapResponse,
     }),
-    acceptOffer: builder.mutation<{ order_id: string }, string>({
-      query: (id) => ({
-        url: `/api/offer/${id}`,
-        body: { status: "accepted" },
+    updateOfferStatus: builder.mutation<
+      { order_id?: string },
+      { session_id: string; status: string }
+    >({
+      query: ({ session_id, status }) => ({
+        url: `/api/offer/${session_id}`,
+        body: { status },
         method: "PUT",
       }),
-      invalidatesTags: (result, error, id) => [
-        { type: "Offer" as const, id: id },
+      invalidatesTags: (result, error, { session_id, status }) => [
+        { type: "Offer" as const, id: session_id },
         "Orders" as const,
-        "Offers" as const,
-      ],
-      transformResponse: unwrapResponse,
-    }),
-    rejectOffer: builder.mutation<void, string>({
-      query: (id) => ({
-        url: `/api/offer/${id}`,
-        body: { status: "rejected" },
-        method: "PUT",
-      }),
-      invalidatesTags: (result, error, id) => [
-        { type: "Offer" as const, id: id },
         "Offers" as const,
       ],
       transformResponse: unwrapResponse,
@@ -211,8 +202,7 @@ export const offersApi = serviceApi.injectEndpoints({
 export const {
   useGetReceivedOffersQuery,
   useGetOfferSessionByIDQuery,
-  useAcceptOfferMutation,
-  useRejectOfferMutation,
+  useUpdateOfferStatusMutation,
   useCounterOfferMutation,
   useGetSentOffersQuery,
   useGetReceivedOffersOrgQuery,

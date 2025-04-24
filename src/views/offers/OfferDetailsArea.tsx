@@ -1,12 +1,12 @@
 import {
   OfferSession,
-  useAcceptOfferMutation,
   useCreateOfferThreadMutation,
-  useRejectOfferMutation,
+  useUpdateOfferStatusMutation,
 } from "../../store/offer"
 import {
   Chip,
   Grid,
+  Link as MaterialLink,
   Paper,
   Table,
   TableBody,
@@ -14,7 +14,6 @@ import {
   TableContainer,
   TableRow,
   Typography,
-  Link as MaterialLink,
 } from "@mui/material"
 import React, { useCallback, useEffect, useMemo } from "react"
 import { OrgDetails, UserDetails } from "../../components/list/UserDetails"
@@ -134,33 +133,27 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
     return false
   }, [profile, org, session])
 
-  const [acceptOffer, { isLoading: acceptLoading }] = useAcceptOfferMutation()
-  const [rejectOffer, { isLoading: rejectLoading }] = useRejectOfferMutation()
+  const showCancel =
+    !showAccept && !["Rejected", "Accepted"].includes(session.status)
+
+  const [updateStatus, { isLoading: isUpdatingStatus }] =
+    useUpdateOfferStatusMutation()
   const issueAlert = useAlertHook()
   const navigate = useNavigate()
 
-  const acceptCallback = useCallback(() => {
-    acceptOffer(session.id)
-      .unwrap()
-      .then((result) => navigate(`/contract/${result.order_id}`))
-      .catch((err) =>
-        issueAlert({
-          message: err.message,
-          severity: "error",
-        }),
-      )
-  }, [session.id, acceptOffer, navigate, issueAlert])
-
-  const rejectCallback = useCallback(() => {
-    rejectOffer(session.id)
-      .unwrap()
-      .catch((err) =>
-        issueAlert({
-          message: err.message,
-          severity: "error",
-        }),
-      )
-  }, [rejectOffer, session.id, issueAlert])
+  const updateStatusCallback = useCallback(
+    (status: "accept" | "rejected" | "cancelled") => {
+      updateStatus({ session_id: session.id, status: status })
+        .unwrap()
+        .then((result) => {
+          if (result.order_id) navigate(`/contract/${result.order_id}`)
+        })
+        .catch((err) => {
+          issueAlert(err)
+        })
+    },
+    [session.id, updateStatus, navigate, issueAlert],
+  )
 
   const [createThread, { isLoading: createThreadLoading }] =
     useCreateOfferThreadMutation()
@@ -169,15 +162,6 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
     <Grid item xs={12} lg={8} md={6}>
       <TableContainer component={Paper}>
         <Table aria-label="details table">
-          {/*<TableHead>*/}
-          {/*  <TableRow>*/}
-          {/*    <TableCell>Dessert (100g serving)</TableCell>*/}
-          {/*    <TableCell align="right">Calories</TableCell>*/}
-          {/*    <TableCell align="right">Fat&nbsp;(g)</TableCell>*/}
-          {/*    <TableCell align="right">Carbs&nbsp;(g)</TableCell>*/}
-          {/*    <TableCell align="right">Protein&nbsp;(g)</TableCell>*/}
-          {/*  </TableRow>*/}
-          {/*</TableHead>*/}
           <TableBody>
             <TableRow
               sx={{
@@ -304,7 +288,6 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
                 </Stack>
               </TableCell>
             </TableRow>
-
             <TableRow
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
@@ -327,7 +310,6 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
                 </Stack>
               </TableCell>
             </TableRow>
-
             {session.discord_server_id && (
               <TableRow
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -372,7 +354,6 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
                 </TableCell>
               </TableRow>
             )}
-
             {showAccept && (
               <TableRow
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -385,8 +366,8 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
                     <LoadingButton
                       color={"success"}
                       variant={"contained"}
-                      loading={acceptLoading}
-                      onClick={acceptCallback}
+                      loading={isUpdatingStatus}
+                      onClick={() => updateStatusCallback("accept")}
                     >
                       Accept
                     </LoadingButton>
@@ -398,10 +379,31 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
                     <LoadingButton
                       color={"error"}
                       variant={"contained"}
-                      loading={rejectLoading}
-                      onClick={rejectCallback}
+                      loading={isUpdatingStatus}
+                      onClick={() => updateStatusCallback("rejected")}
                     >
                       Reject
+                    </LoadingButton>
+                  </Stack>
+                </TableCell>
+              </TableRow>
+            )}
+            {showCancel && (
+              <TableRow
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  Cancel Order
+                </TableCell>
+                <TableCell align="right">
+                  <Stack direction="row" justifyContent={"right"} spacing={1}>
+                    <LoadingButton
+                      color={"error"}
+                      variant={"contained"}
+                      loading={isUpdatingStatus}
+                      onClick={() => updateStatusCallback("cancelled")}
+                    >
+                      Cancel
                     </LoadingButton>
                   </Stack>
                 </TableCell>
