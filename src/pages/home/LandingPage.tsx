@@ -636,7 +636,7 @@ function SupportersSection() {
                 <img
                   src={supporter.avatar}
                   style={{ maxHeight: 128, maxWidth: "100%", borderRadius: 4 }}
-                  alt={supporter.name}
+                  alt={`${supporter.name} logo`}
                 />
               </ButtonBase>
 
