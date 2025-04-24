@@ -42,6 +42,7 @@ import { MetricSection } from "../../views/orders/OrderMetrics"
 import AnimatedNumbers from "react-animated-numbers"
 import { Stack } from "@mui/system"
 import CharLogo from "../../assets/CharHoldings_Logo.png"
+import UNNLogo from "../../assets/UNN_Traders_Logo.jpg"
 
 const bg = "https://media.tenor.com/4LKXThFQuHMAAAAd/perseus-star-citizen.gif"
 
@@ -574,6 +575,11 @@ function SupportersSection() {
       url: "https://robertsspaceindustries.com/orgs/CHAR",
       name: "Char Holdings",
     },
+    {
+      avatar: UNNLogo,
+      url: "https://joinunn.com/",
+      name: "The Unnamed",
+    },
   ]
 
   return (
@@ -603,7 +609,8 @@ function SupportersSection() {
         supporters
       </Typography>
       <Stack
-        sx={{ maxWidth: "100%", overflow: "scroll" }}
+        sx={{ maxWidth: "100%", overflow: "scroll", flexWrap: "wrap" }}
+        useFlexGap
         spacing={2}
         direction={"row"}
         justifyContent={"center"}
@@ -612,7 +619,10 @@ function SupportersSection() {
         {supporters.map((supporter) => (
           <Link
             to={supporter.url}
-            style={{ color: "inherit", textDecoration: "none" }}
+            style={{
+              color: "inherit",
+              textDecoration: "none",
+            }}
             key={supporter.name}
           >
             <Stack
@@ -622,10 +632,10 @@ function SupportersSection() {
               justifyContent={"center"}
               alignItems={"center"}
             >
-              <ButtonBase>
+              <ButtonBase sx={{ borderRadius: 1 }}>
                 <img
                   src={supporter.avatar}
-                  style={{ maxHeight: 128, borderRadius: 4, maxWidth: "100%" }}
+                  style={{ maxHeight: 128, maxWidth: "100%", borderRadius: 4 }}
                   alt={supporter.name}
                 />
               </ButtonBase>
