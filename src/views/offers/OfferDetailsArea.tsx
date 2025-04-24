@@ -142,7 +142,7 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
   const navigate = useNavigate()
 
   const updateStatusCallback = useCallback(
-    (status: "accept" | "rejected" | "cancelled") => {
+    (status: "accepted" | "rejected" | "cancelled") => {
       updateStatus({ session_id: session.id, status: status })
         .unwrap()
         .then((result) => {
@@ -367,7 +367,7 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
                       color={"success"}
                       variant={"contained"}
                       loading={isUpdatingStatus}
-                      onClick={() => updateStatusCallback("accept")}
+                      onClick={() => updateStatusCallback("accepted")}
                     >
                       Accept
                     </LoadingButton>
