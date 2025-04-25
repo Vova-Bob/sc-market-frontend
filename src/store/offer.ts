@@ -1,7 +1,7 @@
 import { serviceApi } from "./service"
 import { MinimalUser } from "../datatypes/User"
 import { MinimalContractor } from "../datatypes/Contractor"
-import { Service } from "../datatypes/Order"
+import { OrderAvailability, Service } from "../datatypes/Order"
 import { UniqueListing } from "../datatypes/MarketListing"
 import { unwrapResponse } from "./orders"
 
@@ -32,6 +32,7 @@ export interface OfferSession {
   contract_id?: string | null
   discord_thread_id: string | null
   discord_server_id: string | null
+  availability: OrderAvailability
 }
 
 export interface Offer {

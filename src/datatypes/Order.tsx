@@ -58,13 +58,15 @@ export interface Order {
   contractor_review?: OrderReview
   service_id?: string | null
   payment_type: "one-time" | "daily" | "hourly"
-  availability?: {
-    customer: AvailabilitySelection[]
-    assigned: AvailabilitySelection[] | null
-  }
+  availability?: OrderAvailability
   offer_session_id: string | null
   discord_thread_id: string | null
   discord_server_id: string | null
+}
+
+export interface OrderAvailability {
+  customer: AvailabilitySelection[]
+  assigned: AvailabilitySelection[] | null
 }
 
 export interface OrderApplicant {
