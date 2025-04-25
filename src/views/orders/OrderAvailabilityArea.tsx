@@ -10,12 +10,12 @@ export function OrderAvailabilityArea(props: { order: Order | OfferSession }) {
   const customerName =
     typeof order.customer === "string"
       ? order.customer
-      : (order.customer as MinimalUser).display_name
+      : (order.customer as MinimalUser).username
 
   const assignedName =
     typeof order.assigned_to === "string"
       ? order.assigned_to
-      : (order.assigned_to as MinimalUser)?.display_name
+      : (order.assigned_to as MinimalUser)?.username
 
   return (
     <>

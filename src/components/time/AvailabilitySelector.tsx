@@ -4,8 +4,11 @@ import {
   AvailabilityHookContext,
   useAvailability,
 } from "../../hooks/time/AvailabilityHook"
-import { Button, Grid, GridProps } from "@mui/material"
+import { Button, Grid, GridProps, IconButton } from "@mui/material"
 import { Section } from "../paper/Section"
+import { useGetUserProfileQuery } from "../../store/profile"
+import CreateRoundedIcon from "@mui/icons-material/CreateRounded"
+import { Link } from "react-router-dom"
 
 function AvailabilityItem(props: {
   day: number
@@ -228,6 +231,7 @@ export function AvailabilityDisplay(
 ) {
   const { value, name, ...gridprops } = props
   const availability = useMemo(() => arrayRotate(value, tzOffset), [value])
+  const { data: profile } = useGetUserProfileQuery()
 
   return (
     <Section
@@ -237,6 +241,15 @@ export function AvailabilityDisplay(
       title={`Availability for ${name} - (${
         Intl.DateTimeFormat().resolvedOptions().timeZone
       })`}
+      subtitle={
+        profile?.username === name ? (
+          <Link to={"/availability"} style={{ color: "inherit" }}>
+            <IconButton>
+              <CreateRoundedIcon />
+            </IconButton>
+          </Link>
+        ) : undefined
+      }
       {...gridprops}
     >
       <Grid item xs={12} sx={{ display: "flex" }}>
@@ -245,6 +258,7 @@ export function AvailabilityDisplay(
             <tr style={{ height: 23.5 }}></tr>
             {[...Array(25).keys()].map((i: number) => (
               <tr
+                key={i}
                 style={{
                   position: "relative",
                   boxSizing: "border-box",
