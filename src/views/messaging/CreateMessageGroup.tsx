@@ -170,48 +170,6 @@ function CreateChatBody(props: {}) {
   )
 }
 
-function MessageSendArea(props: { onSend: (content: string) => void }) {
-  const theme = useTheme<ExtendedTheme>()
-  const [textEntry, setTextEntry] = useState("")
-
-  return (
-    <Box
-      sx={{
-        width: "100%",
-        padding: 2,
-        borderTopColor: theme.palette.outline.main,
-        boxSizing: "border-box",
-        borderWidth: 0,
-        borderTop: `solid 1px ${theme.palette.outline.main}`,
-        display: "flex",
-        bgcolor: theme.palette.background.paper,
-      }}
-    >
-      <TextField
-        fullWidth
-        multiline
-        maxRows={4}
-        variant={"outlined"}
-        sx={{ marginRight: 2 }}
-        value={textEntry}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          setTextEntry(event.target.value)
-        }}
-      />
-      <Button
-        variant={"outlined"}
-        sx={{ maxHeight: 60 }}
-        onClick={() => {
-          props.onSend(textEntry)
-          setTextEntry("")
-        }}
-      >
-        Send
-      </Button>
-    </Box>
-  )
-}
-
 export function CreateMessageGroupBody() {
   return (
     <React.Fragment>
