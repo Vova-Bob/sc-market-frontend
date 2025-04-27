@@ -34,6 +34,8 @@ export function ConfigureDiscord(props: { org?: boolean }) {
     } else {
       setUseUserOfficial()
     }
+
+    window.open("https://discord.com/invite/N4Gy8py8J4", "_blank")
   }, [
     currentOrg?.spectrum_id,
     props.org,
