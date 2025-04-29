@@ -334,7 +334,7 @@ function MessageEntry(props: { message: Message }) {
   const convertedContent = useMemo(
     () => replaceDiscordTimestamps(message.content),
     [message.content],
-  )
+  ) // todo add a popover for the original date content
 
   if (message.author === profile?.username) {
     return (

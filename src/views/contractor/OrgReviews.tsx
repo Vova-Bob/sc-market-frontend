@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useMemo } from "react"
+import React, { MouseEventHandler, useCallback, useMemo } from "react"
 import {
   Avatar,
   Box,
@@ -33,6 +33,16 @@ function ReviewRow(props: {
 }) {
   const { row, onClick, isItemSelected, labelId } = props
   const theme = useTheme<ExtendedTheme>()
+
+  const formatDate = useCallback(
+    (date: number) =>
+      Intl.DateTimeFormat("default", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }).format(new Date(date)),
+    [],
+  )
 
   return (
     <>
@@ -102,6 +112,9 @@ function ReviewRow(props: {
               overflow: "hidden",
             }}
           >
+            <Typography variant={"subtitle2"} color={"text.secondary"}>
+              {formatDate(row.timestamp)}
+            </Typography>
             <Typography variant={"subtitle1"}>{row.content}</Typography>
           </Box>
         </TableCell>
