@@ -3,6 +3,7 @@ import { Grid, List, Typography } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
 import { ExtendedTheme } from "../../hooks/styles/Theme"
 import { FAQQuestion } from "../../pages/home/LandingPage"
+import { DISCORD_INVITE } from "../../util/constants"
 
 export function DiscordBotDetails(props: { org?: boolean }) {
   const theme = useTheme<ExtendedTheme>()
@@ -31,7 +32,7 @@ export function DiscordBotDetails(props: { org?: boolean }) {
             answer={
               "Add the official [SC Market Discord Bot](https://discord.com/oauth2/authorize?client_id=868709691469987860&permissions=361314126849&integration_type=0&scope=bot) to your server " +
               "to automatically receive direct messages when an order is placed with you or assigned to you. " +
-              "Alternatively, use the below configuration to fulfill orders through [SC Market's Official Server](https://discord.com/invite/N4Gy8py8J4)."
+              `Alternatively, use the below configuration to fulfill orders through [SC Market's Official Server](${DISCORD_INVITE}).`
             }
             first
           />

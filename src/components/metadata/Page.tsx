@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet"
 import { useGetContractorBySpectrumIDQuery } from "../../store/contractor"
 import { CircularProgress } from "@mui/material"
 import { Stack } from "@mui/system"
+import { Navigate, useLocation, useRouteError } from "react-router-dom"
 
 export function Page(props: { title: string } & PropsWithChildren<any>) {
   useEffect(() => {
@@ -14,6 +15,26 @@ export function Page(props: { title: string } & PropsWithChildren<any>) {
     CURRENT_CUSTOM_ORG!,
     { skip: !CURRENT_CUSTOM_ORG },
   )
+
+  const location = useLocation()
+  useEffect(() => {
+    console.log(location)
+  }, [location])
+
+  const error = useRouteError()
+  if (error) {
+    return (
+      <Navigate
+        to={
+          "/error?" +
+          new URLSearchParams([
+            ["message", error.toString()],
+            ["target", location.pathname],
+          ]).toString()
+        }
+      />
+    )
+  }
 
   return CURRENT_CUSTOM_ORG && customOrgData ? (
     <>

@@ -4,6 +4,7 @@ import { HookProvider } from "./hooks/HookProvider"
 import { Root } from "./components/layout/Root"
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom"
 import { PageFallback } from "./components/metadata/Page"
+import { FrontendErrorElement } from "./pages/errors/FrontendError"
 
 function App() {
   return <RouterProvider router={router} />
@@ -11,6 +12,7 @@ function App() {
 
 const router = createBrowserRouter([
   {
+    errorElement: <FrontendErrorElement />,
     element: (
       <HookProvider>
         <Root>
@@ -555,6 +557,13 @@ const router = createBrowserRouter([
             ],
           },
         ],
+      },
+      {
+        path: "/error",
+        lazy: async () => ({
+          Component: (await import("./pages/errors/FrontendError"))
+            .FrontendErrorPage,
+        }),
       },
       {
         path: "/*",

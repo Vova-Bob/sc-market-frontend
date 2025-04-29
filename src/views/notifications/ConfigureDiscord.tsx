@@ -12,6 +12,7 @@ import {
 } from "../../store/contractor"
 import { Stack } from "@mui/system"
 import { UnderlineLink } from "../../components/typography/UnderlineLink"
+import { DISCORD_INVITE } from "../../util/constants"
 
 export function ConfigureDiscord(props: { org?: boolean }) {
   const [currentOrg] = useCurrentOrg()
@@ -35,7 +36,7 @@ export function ConfigureDiscord(props: { org?: boolean }) {
       setUseUserOfficial()
     }
 
-    window.open("https://discord.com/invite/N4Gy8py8J4", "_blank")
+    window.open(DISCORD_INVITE, "_blank")
   }, [
     currentOrg?.spectrum_id,
     props.org,
@@ -75,11 +76,7 @@ export function ConfigureDiscord(props: { org?: boolean }) {
         >
           <Typography>
             Use The Official{" "}
-            <a
-              href={"https://discord.com/invite/N4Gy8py8J4"}
-              target={"_blank"}
-              rel="noreferrer"
-            >
+            <a href={DISCORD_INVITE} target={"_blank"} rel="noreferrer">
               <UnderlineLink color={"primary"}>SC Market Server</UnderlineLink>
             </a>{" "}
             for Orders. This will replace your existing integration settings.

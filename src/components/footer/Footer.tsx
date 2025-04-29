@@ -1,6 +1,7 @@
 import { UnderlineLink } from "../typography/UnderlineLink"
 import { Divider, Grid, Link, Typography } from "@mui/material"
 import React from "react"
+import { DISCORD_INVITE } from "../../util/constants"
 
 export function Footer() {
   return (
@@ -14,7 +15,7 @@ export function Footer() {
             <Link
               rel="noopener noreferrer"
               target="_blank"
-              href={"https://discord.com/invite/N4Gy8py8J4"}
+              href={DISCORD_INVITE}
             >
               <UnderlineLink color={"text.secondary"}>Support</UnderlineLink>
             </Link>
@@ -22,7 +23,7 @@ export function Footer() {
             <Link
               rel="noopener noreferrer"
               target="_blank"
-              href={"https://discord.com/invite/N4Gy8py8J4"}
+              href={DISCORD_INVITE}
             >
               <UnderlineLink color={"text.secondary"}>Discord</UnderlineLink>
             </Link>

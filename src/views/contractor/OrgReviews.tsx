@@ -33,7 +33,6 @@ function ReviewRow(props: {
 }) {
   const { row, onClick, isItemSelected, labelId } = props
   const theme = useTheme<ExtendedTheme>()
-
   const formatDate = useCallback(
     (date: number) =>
       Intl.DateTimeFormat("default", {
