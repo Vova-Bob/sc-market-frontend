@@ -2,7 +2,12 @@ import React, { createElement, Suspense } from "react"
 
 import { HookProvider } from "./hooks/HookProvider"
 import { Root } from "./components/layout/Root"
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom"
+import {
+  createBrowserRouter,
+  Navigate,
+  Outlet,
+  RouterProvider,
+} from "react-router-dom"
 import { PageFallback } from "./components/metadata/Page"
 import { FrontendErrorElement } from "./pages/errors/FrontendError"
 
@@ -63,6 +68,10 @@ const router = createBrowserRouter([
           Component: (await import("./pages/market/ViewMarketMultiple"))
             .ViewMarketMultiple,
         }),
+      },
+      {
+        path: "/services",
+        element: <Navigate to={"/market/services"} />,
       },
       {
         path: "/market/services",
