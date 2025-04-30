@@ -62,7 +62,7 @@ export function ServiceSearchArea() {
         borderColor: theme.palette.outline.main,
       }}
     >
-      <Grid container spacing={3}>
+      <Grid container spacing={2}>
         <Grid item xs={12}>
           <TextField
             fullWidth
@@ -73,6 +73,7 @@ export function ServiceSearchArea() {
             value={query}
             onChange={handleQueryChange}
             color={"secondary"}
+            size={"small"}
           />
         </Grid>
         <Grid item xs={12}>
@@ -87,6 +88,7 @@ export function ServiceSearchArea() {
             value={kind}
             label="Contract Type"
             onChange={handleKindChange}
+            size={"small"}
             color={"secondary"}
             SelectProps={{
               IconComponent: KeyboardArrowDownRoundedIcon,
@@ -111,6 +113,7 @@ export function ServiceSearchArea() {
             value={minOffer}
             label="Minimum Cost"
             onChange={handleMinCostChange}
+            size={"small"}
             color={"secondary"}
             inputProps={{
               inputMode: "numeric",
@@ -130,6 +133,7 @@ export function ServiceSearchArea() {
             value={maxOffer == null ? "" : maxOffer}
             label="Maximum Cost"
             onChange={handleMaxCostChange}
+            size={"small"}
             color={"secondary"}
             inputProps={{
               inputMode: "numeric",
@@ -148,6 +152,7 @@ export function ServiceSearchArea() {
             select
             label={"Payment Type"}
             value={paymentType}
+            size={"small"}
             onChange={handlePaymentTypeChange}
             fullWidth
             SelectProps={{
