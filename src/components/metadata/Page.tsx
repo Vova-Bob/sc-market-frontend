@@ -17,10 +17,6 @@ export function Page(props: { title: string } & PropsWithChildren<any>) {
   )
 
   const location = useLocation()
-  useEffect(() => {
-    console.log(location)
-  }, [location])
-
   const error = useRouteError()
   if (error) {
     return (

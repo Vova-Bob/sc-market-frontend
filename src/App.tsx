@@ -65,9 +65,15 @@ const router = createBrowserRouter([
         }),
       },
       {
+        path: "/market/services",
+        lazy: async () => ({
+          Component: (await import("./pages/market/MarketPage")).MarketPage,
+        }),
+      },
+      {
         path: "/market/category/:name",
         lazy: async () => ({
-          Component: (await import("./pages/market/ItemMarket")).ItemMarket,
+          Component: (await import("./pages/market/MarketPage")).MarketPage,
         }),
       },
       {
@@ -80,19 +86,19 @@ const router = createBrowserRouter([
       {
         path: "/market",
         lazy: async () => ({
-          Component: (await import("./pages/market/ItemMarket")).ItemMarket,
+          Component: (await import("./pages/market/MarketPage")).MarketPage,
         }),
       },
       {
         path: "/bulk",
         lazy: async () => ({
-          Component: (await import("./pages/market/ItemMarket")).BulkItems,
+          Component: (await import("./pages/market/MarketPage")).BulkItems,
         }),
       },
       {
         path: "/buyorders",
         lazy: async () => ({
-          Component: (await import("./pages/market/ItemMarket")).BuyOrderItems,
+          Component: (await import("./pages/market/MarketPage")).BuyOrderItems,
         }),
       },
       {
@@ -120,12 +126,6 @@ const router = createBrowserRouter([
         lazy: async () => ({
           Component: (await import("./pages/contracting/CreateOrder"))
             .ServiceCreateOrder,
-        }),
-      },
-      {
-        path: "/services",
-        lazy: async () => ({
-          Component: (await import("./pages/contracting/Services")).Services,
         }),
       },
       {

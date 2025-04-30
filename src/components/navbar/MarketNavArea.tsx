@@ -24,7 +24,6 @@ import React, {
   useState,
 } from "react"
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded"
-import { item_types, ItemType } from "../../datatypes/MarketListing"
 import SearchIcon from "@mui/icons-material/Search"
 import { FilterAltRounded, SearchRounded } from "@mui/icons-material"
 import { sidebarDrawerWidth, useDrawerOpen } from "../../hooks/layout/Drawer"
@@ -35,10 +34,7 @@ import { useGetUserProfileQuery } from "../../store/profile"
 import { useMarketSidebar } from "../../hooks/market/MarketSidebar"
 import { useSearchParams } from "react-router-dom"
 import { useMarketSearch } from "../../hooks/market/MarketSearch"
-import {
-  SelectGameCategory,
-  SelectGameCategoryOption,
-} from "../select/SelectGameItem"
+import { SelectGameCategoryOption } from "../select/SelectGameItem"
 
 export function MarketNavEntry(
   props: { title: string; children: React.ReactElement } & PaperProps,
@@ -94,10 +90,15 @@ export function HideOnScroll(props: { children: React.ReactNode }) {
   const { children } = props
 
   const ref = useRef<HTMLDivElement | null>(null)
-  const isVisible = useOnScreen(ref)
+  const [loaded, setLoaded] = useState(false)
+  const isVisible = useOnScreen(ref) || !loaded
 
   const theme = useTheme()
   const drawerOpen = useDrawerOpen()
+
+  useEffect(() => {
+    setLoaded(true)
+  }, [])
 
   return (
     <>

@@ -1,12 +1,5 @@
-import {
-  Breadcrumbs,
-  Grid,
-  Link as MaterialLink,
-  Typography,
-  TypographyProps,
-} from "@mui/material"
+import { Grid, Typography, TypographyProps } from "@mui/material"
 import React from "react"
-import { Link } from "react-router-dom"
 
 export function HeaderTitle(
   props: {
@@ -22,9 +15,9 @@ export function HeaderTitle(
     <Grid
       item
       xs={props.xs || 12}
-      lg={props.lg || 12}
-      xl={props.xl || 12}
-      md={props.md || 12}
+      lg={props.lg}
+      xl={props.xl}
+      md={props.md}
       justifyContent={props.center ? "center" : "left"}
     >
       <Typography

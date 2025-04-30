@@ -100,6 +100,11 @@ export const all_sidebar_entries: SidebarSectionProps[] = [
             icon: <ShieldRounded />,
           },
           {
+            to: "/market/services",
+            text: "Contractor Services",
+            icon: <DesignServicesRounded />,
+          },
+          {
             to: "/bulk",
             text: "Bulk Items",
             icon: <GavelIcon />,
@@ -167,11 +172,6 @@ export const all_sidebar_entries: SidebarSectionProps[] = [
         text: "Open Contracts",
         icon: <AssignmentIcon />,
         custom: false,
-      },
-      {
-        to: "/services",
-        text: "Contractor Services",
-        icon: <DesignServicesRounded />,
       },
       {
         to: "/contracts",
