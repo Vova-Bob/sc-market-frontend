@@ -378,7 +378,8 @@ const router = createBrowserRouter([
           {
             path: "/settings",
             lazy: async () => ({
-              Component: (await import("./pages/people/Settings")).Settings,
+              Component: (await import("./pages/people/SettingsPage"))
+                .SettingsPage,
             }),
           },
           {

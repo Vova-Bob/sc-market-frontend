@@ -20,7 +20,7 @@ import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { UnderlineLink } from "../../components/typography/UnderlineLink"
 
 export function isAlphaNumeric(str: string) {
-  var code, i, len
+  let code, i, len
 
   for (i = 0, len = str.length; i < len; i++) {
     code = str.charCodeAt(i)
@@ -39,7 +39,7 @@ export function isAlphaNumeric(str: string) {
 }
 
 export function isAlpha(str: string) {
-  var code, i, len
+  let code, i, len
 
   for (i = 0, len = str.length; i < len; i++) {
     code = str.charCodeAt(i)
@@ -56,7 +56,7 @@ export function isAlpha(str: string) {
   return true
 }
 
-export function AuthenticateRSI(props: {}) {
+export function AuthenticateRSI() {
   const { refetch: refetchProfile } = useGetUserProfileQuery()
   const identifier = useGetAuthenticatorIdentifier()
   const [username, setUsername] = useState("")
@@ -84,17 +84,14 @@ export function AuthenticateRSI(props: {}) {
       })
         .unwrap()
         .then((result) => {
-          // navigate("/")
-          // window.location.reload()
-          refetchProfile()
+          issueAlert({
+            message: `Authenticated!`,
+            severity: "success",
+          })
+          setUsername("")
         })
         .catch((error) => {
-          issueAlert({
-            message: `Failed to authenticate! ${
-              error?.error || error?.data?.error || error
-            }`,
-            severity: "error",
-          })
+          issueAlert(error)
         })
 
       return false

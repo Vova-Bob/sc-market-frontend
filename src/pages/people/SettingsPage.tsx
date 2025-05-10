@@ -2,7 +2,7 @@ import { Grid, Tab, Tabs } from "@mui/material"
 import InfoIcon from "@mui/icons-material/Info"
 import { a11yProps, TabPanel } from "../../components/tabs/Tabs"
 import { ContainerGrid } from "../../components/layout/ContainerGrid"
-import React, { useEffect } from "react"
+import React from "react"
 import { useGetUserProfileQuery } from "../../store/profile"
 import { HeaderTitle } from "../../components/typography/HeaderTitle"
 import { AuthenticateRSI } from "../../views/authentication/AuthenticateRSI"
@@ -16,14 +16,10 @@ import { Discord } from "../../components/icon/DiscordIcon"
 import { ConfigureDiscord } from "../../views/notifications/ConfigureDiscord"
 import { MarketEditTemplate } from "../../views/market/MarketEditTemplate"
 
-export function Settings() {
-  const profile = useGetUserProfileQuery()
+export function SettingsPage() {
+  const { data: profile } = useGetUserProfileQuery()
 
   const [page, setPage] = React.useState(0)
-
-  useEffect(() => {
-    setPage(profile?.data?.rsi_confirmed ? 1 : 0)
-  }, [profile?.data?.rsi_confirmed])
 
   const handleChange = (event: React.SyntheticEvent, newPage: number) => {
     setPage(newPage)
@@ -41,14 +37,12 @@ export function Settings() {
             textColor="secondary"
             indicatorColor="secondary"
           >
-            {!profile?.data?.rsi_confirmed && (
-              <Tab
-                label="Profile"
-                icon={<InfoIcon />}
-                {...a11yProps(0)}
-                value={0}
-              />
-            )}
+            <Tab
+              label="Profile"
+              icon={<InfoIcon />}
+              {...a11yProps(0)}
+              value={0}
+            />
             <Tab
               label="Privacy"
               icon={<PrivacyTipRounded />}
@@ -94,7 +88,11 @@ export function Settings() {
         <Grid item xs={12}>
           <TabPanel value={page} index={0}>
             <Grid container spacing={4} alignItems={"flex-start"}>
-              <HeaderTitle>Authenticate with RSI</HeaderTitle>
+              <HeaderTitle>
+                {profile?.rsi_confirmed
+                  ? "Update Username and Re-Verify Account"
+                  : "Authenticate with RSI"}
+              </HeaderTitle>
               <AuthenticateRSI />
             </Grid>
           </TabPanel>

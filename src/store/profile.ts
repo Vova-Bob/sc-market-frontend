@@ -9,6 +9,7 @@ import {
 import { OrderReview } from "../datatypes/Order"
 import { serviceApi } from "./service"
 import { DiscordSettings, OrderWebhook } from "../datatypes/Contractor"
+import { unwrapResponse } from "./orders"
 
 export interface SerializedError {
   error?: string
@@ -80,6 +81,7 @@ export const userApi = serviceApi.injectEndpoints({
         method: "POST",
         body,
       }),
+      transformResponse: unwrapResponse,
       invalidatesTags: [{ type: "MyProfile" as const }, "MyProfile" as const],
     }),
     profileUpdateSettings: builder.mutation<void, AccountSettingsBody>({
