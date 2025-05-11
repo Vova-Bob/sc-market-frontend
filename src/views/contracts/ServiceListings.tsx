@@ -5,7 +5,6 @@ import {
   Box,
   Card,
   CardActionArea,
-  CardActions,
   CardContent,
   CardHeader,
   Chip,
@@ -22,8 +21,6 @@ import { MarkdownRender } from "../../components/markdown/Markdown"
 import { useServiceSearch } from "../../hooks/contract/ServiceSearch"
 import { dateDiffInDays } from "../market/MarketListingView"
 import { ListingNameAndRating } from "../../components/rating/ListingRating"
-import { useTheme } from "@mui/material/styles"
-import { ExtendedTheme, MISSING_IMAGE_URL } from "../../hooks/styles/Theme"
 import { RecentListingsSkeleton } from "../../pages/home/LandingPage"
 import { CURRENT_CUSTOM_ORG } from "../../hooks/contractor/CustomDomain"
 import { Stack } from "@mui/system"
@@ -270,7 +267,9 @@ export function ServiceListings(props: { user?: string; contractor?: string }) {
 
   return (
     <React.Fragment>
-      <div ref={ref} />
+      <Grid item xs={12}>
+        <div ref={ref} />
+      </Grid>
       {filteredListings
         .filter(
           (item, index) =>
