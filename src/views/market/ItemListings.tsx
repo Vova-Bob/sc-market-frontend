@@ -1351,7 +1351,10 @@ export function DisplayListings(props: {
 
   return (
     <React.Fragment>
-      <div ref={ref} />
+      <Grid item xs={12}>
+        <div ref={ref} />
+      </Grid>
+
       {loading
         ? new Array(perPage)
             .fill(undefined)
@@ -1649,7 +1652,9 @@ export function DisplayBuyOrderListings(props: {
 
   return (
     <>
-      <div ref={ref} />
+      <Grid item xs={12}>
+        <div ref={ref} />
+      </Grid>
 
       {props.loading
         ? new Array(perPage)
@@ -1759,7 +1764,9 @@ export function ItemListings(props: {
 
   return (
     <>
-      <div ref={ref} />
+      <Grid item xs={12}>
+        <div ref={ref} />
+      </Grid>
       <DisplayListingsMin listings={listings || []} loading={isLoading} />
 
       <Grid item xs={12}>
@@ -1853,7 +1860,9 @@ export function BulkListingsRefactor(props: {
 
   return (
     <>
-      <div ref={ref} />
+      <Grid item xs={12}>
+        <div ref={ref} />
+      </Grid>
       <DisplayListingsMin listings={listings || []} loading={isLoading} />
 
       <Grid item xs={12}>
