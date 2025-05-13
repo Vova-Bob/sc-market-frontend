@@ -591,13 +591,16 @@ export function MessagesBody(props: { maxHeight?: number }) {
     }
 
     function onServerMessage(message: Message): void {
-      setCurrentChat(
-        (chat) =>
-          chat && {
+      setCurrentChat((chat) => {
+        if (chat && message.chat_id == chat.chat_id) {
+          return {
             ...chat,
             messages: chat.messages.concat([message]),
-          },
-      )
+          }
+        } else {
+          return chat
+        }
+      })
     }
 
     socket.on("connect", onConnect)

@@ -9,6 +9,7 @@ export interface Message {
   author: string | null
   content: string
   timestamp: number
+  chat_id: string
 }
 
 // export function makeChats(): Chat[] {
