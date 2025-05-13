@@ -13,7 +13,14 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material"
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import React, {
+  RefObject,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 import { Link } from "react-router-dom"
 import { useTheme } from "@mui/material/styles"
 import { ExtendedTheme } from "../../hooks/styles/Theme"
@@ -50,7 +57,7 @@ function MessageHeader() {
         width: "100%",
         padding: 2,
         paddingTop: 2,
-        paddingLeft: 3,
+        paddingLeft: 2,
         boxSizing: "border-box",
         borderWidth: 0,
         borderBottom: `solid 1px ${theme.palette.outline.main}`,
@@ -340,9 +347,9 @@ function MessageEntry(props: { message: Message }) {
     return (
       <Stack
         direction={"row"}
-        spacing={1.5}
+        spacing={1}
         justifyContent={"flex-end"}
-        sx={{ marginBottom: 4 }}
+        sx={{ marginBottom: 1 }}
       >
         <Box sx={{ flexGrow: 1, maxWidth: "80%" }}>
           <MsgPaper author={author}>
@@ -350,7 +357,11 @@ function MessageEntry(props: { message: Message }) {
               color={theme.palette.secondary.contrastText}
               align={"left"}
               width={"100%"}
-              sx={{ fontWeight: 400, overflowWrap: "break-word" }}
+              sx={{
+                fontWeight: 400,
+                overflowWrap: "break-word",
+                fontSize: ".9em",
+              }}
             >
               {convertedContent}
             </Typography>
@@ -362,7 +373,7 @@ function MessageEntry(props: { message: Message }) {
             sx={{
               marginTop: 0.5,
               marginRight: 4,
-              fontSize: "0.75rem",
+              fontSize: "0.75em",
               lineHeight: 1.66,
             }}
           >
@@ -383,22 +394,26 @@ function MessageEntry(props: { message: Message }) {
     return (
       <Stack
         direction={"row"}
-        spacing={1.5}
+        spacing={1}
         justifyContent={"flex-start"}
-        sx={{ marginBottom: 4 }}
+        sx={{ marginBottom: 1 }}
       >
         <Avatar
           variant="rounded"
           sx={{ width: 48, height: 48 }}
           src={SCMarketLogo}
         />
-        <Box sx={{ flexGrow: 1, maxWidth: "80%" }}>
+        <Box sx={{ flexGrow: 1, maxWidth: "90%" }}>
           <MsgPaper other author={author}>
             <Typography
               color={theme.palette.text.secondary}
               align={"left"}
               width={"100%"}
-              sx={{ fontWeight: 400, overflowWrap: "break-word" }}
+              sx={{
+                fontWeight: 400,
+                overflowWrap: "break-word",
+                fontSize: ".9em",
+              }}
             >
               {convertedContent}
             </Typography>
@@ -410,7 +425,7 @@ function MessageEntry(props: { message: Message }) {
             sx={{
               marginTop: 0.5,
               marginLeft: 2,
-              fontSize: "0.75rem",
+              fontSize: "0.75em",
               lineHeight: 1.66,
             }}
           >
@@ -423,7 +438,7 @@ function MessageEntry(props: { message: Message }) {
     return (
       <Grid
         container
-        spacing={1.5}
+        spacing={1}
         justifyContent={"flex-start"}
         sx={{ marginBottom: 4 }}
       >
@@ -450,12 +465,12 @@ function MessageEntry(props: { message: Message }) {
           <Typography
             align={"left"}
             color={"text.primary"}
-            variant={"subtitle2"}
+            variant={"body2"}
             sx={{
               marginTop: 0.5,
               marginLeft: 2,
-              fontSize: "0.75rem",
-              lineHeight: 1.66,
+              fontSize: ".5em",
+              // lineHeight: 1.66,
             }}
           >
             {getRelativeTime(new Date(message.timestamp))}
@@ -468,10 +483,9 @@ function MessageEntry(props: { message: Message }) {
 
 function MessagesArea(props: {
   messages: Message[]
-  messageEndRef: React.Ref<HTMLDivElement>
+  messageEndRef: RefObject<HTMLDivElement>
   maxHeight?: number
 }) {
-  const profile = useGetUserProfileQuery()
   const theme = useTheme<ExtendedTheme>()
   const { messageEndRef } = props
 
@@ -479,7 +493,6 @@ function MessagesArea(props: {
 
   useEffect(() => {
     if (!chat?.order_id) {
-      // @ts-ignore
       messageEndRef?.current?.scrollIntoView({
         block: "end",
       })
@@ -493,7 +506,7 @@ function MessagesArea(props: {
         sx={{
           flexGrow: 1,
           width: "100%",
-          padding: 4,
+          padding: 2,
           borderColor: theme.palette.outline.main,
           boxSizing: "border-box",
           borderWidth: 0,
@@ -519,7 +532,7 @@ function MessageSendArea(props: { onSend: (content: string) => void }) {
     <Box
       sx={{
         width: "100%",
-        padding: 2,
+        padding: 1,
         borderTopColor: theme.palette.outline.main,
         boxSizing: "border-box",
         borderWidth: 0,
