@@ -11,7 +11,6 @@ import {
 } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
 import SearchIcon from "@mui/icons-material/Search"
-import CloseIcon from "@mui/icons-material/Close"
 import React, { useCallback, useEffect, useState } from "react"
 
 import { ExtendedTheme } from "../../hooks/styles/Theme"
@@ -21,14 +20,12 @@ import {
   useMarketSidebar,
 } from "../../hooks/market/MarketSidebar"
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded"
-import { item_types, ItemType } from "../../datatypes/MarketListing"
 import { useSearchParams } from "react-router-dom"
 import { SearchRounded } from "@mui/icons-material"
 import { useMarketSearch } from "../../hooks/market/MarketSearch"
 import { SelectGameCategoryOption } from "../../components/select/SelectGameItem"
 
-export function MarketSidebar(props: { status?: boolean }) {
-  const { status } = props
+export function MarketSearchArea(props: { status?: boolean }) {
   const theme: ExtendedTheme = useTheme()
 
   const [searchParams, setSearchParams] = useSearchParams()
@@ -50,13 +47,6 @@ export function MarketSidebar(props: { status?: boolean }) {
   const [activity, setActivity] = useState<string>(
     searchState.status ? "active" : "",
   )
-  const [drawerOpen] = useDrawerOpen()
-  const [open, setOpen] = useMarketSidebar()
-
-  // const xs = useMediaQuery(theme.breakpoints.down('lg'));
-  // useEffect(() => {
-  //     setOpen(!xs)
-  // }, [setOpen, xs])
 
   const handleKindChange = (event: { target: { value: string } }) => {
     setKind(event.target.value)
@@ -111,6 +101,211 @@ export function MarketSidebar(props: { status?: boolean }) {
   }, [searchParams])
 
   return (
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+        flexDirection: "column",
+        display: "flex",
+        padding: theme.spacing(3),
+        paddingTop: theme.spacing(3),
+        borderColor: theme.palette.outline.main,
+      }}
+    >
+      <Grid container spacing={3}>
+        <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <Button
+            onClick={searchClickCallback}
+            startIcon={<SearchRounded />}
+            variant={"contained"}
+          >
+            Search
+          </Button>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
+            label={"Search"}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <IconButton>
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            value={query}
+            onChange={handleQueryChange}
+            color={"secondary"}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant={"subtitle2"} fontWeight={"bold"}>
+            Sorting
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            select
+            fullWidth
+            label="Sort Attribute"
+            value={sort || ""}
+            onChange={handleSortChange}
+            color={"secondary"}
+            SelectProps={{
+              IconComponent: KeyboardArrowDownRoundedIcon,
+            }}
+          >
+            <MenuItem value={""}>None</MenuItem>
+            <MenuItem value={"title"}>Title</MenuItem>
+            <MenuItem value={"price-low"}>Price (Low to High)</MenuItem>
+            <MenuItem value={"price-high"}>Price (High to Low)</MenuItem>
+            <MenuItem value={"quantity-low"}>
+              Quantity Available (Low to High)
+            </MenuItem>
+            <MenuItem value={"quantity-high"}>
+              Quantity Available (High to Low)
+            </MenuItem>
+            <MenuItem value={"date-new"}>Date Listed (Old to New)</MenuItem>
+            <MenuItem value={"date-old"}>Date Listed (New to Old)</MenuItem>
+            <MenuItem value={"activity"}>Recent Activity</MenuItem>
+            <MenuItem value={"rating"}>Rating (High to Low)</MenuItem>
+          </TextField>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant={"subtitle2"} fontWeight={"bold"}>
+            Filtering
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
+            label="Quantity Available"
+            color={"secondary"}
+            inputProps={{
+              inputMode: "numeric",
+              pattern: "[0-9]*",
+            }}
+            InputProps={{
+              // endAdornment: <InputAdornment
+              //     position="start">
+              //     {`of ${listing.quantity_available} available`}
+              // </InputAdornment>,
+              inputMode: "numeric",
+            }}
+            onChange={handleQuantityChange}
+          />
+        </Grid>
+        {status && (
+          <Grid item xs={12}>
+            <TextField
+              select
+              fullWidth
+              value={activity || ""}
+              onChange={handleActivityChange}
+              label="Listing Status"
+              color={"secondary"}
+              SelectProps={{
+                IconComponent: KeyboardArrowDownRoundedIcon,
+              }}
+            >
+              <MenuItem value={""}>Either</MenuItem>
+              <MenuItem value={"active"}>Active</MenuItem>
+              <MenuItem value={"inactive"}>Inactive</MenuItem>
+            </TextField>
+          </Grid>
+        )}
+        <Grid item xs={12}>
+          <TextField
+            select
+            fullWidth
+            value={kind}
+            onChange={handleKindChange}
+            label="Sale Type"
+            color={"secondary"}
+            SelectProps={{
+              IconComponent: KeyboardArrowDownRoundedIcon,
+            }}
+          >
+            <MenuItem value={"any"}>Any</MenuItem>
+            <MenuItem value={"sale"}>Sale</MenuItem>
+            <MenuItem value={"aggregate"}>Commodity</MenuItem>
+            <MenuItem value={"auction"}>Auction</MenuItem>
+          </TextField>
+        </Grid>
+        <Grid item xs={12}>
+          <SelectGameCategoryOption
+            item_type={type}
+            onTypeChange={handleTypeChange}
+            TextfieldProps={{
+              size: "small",
+            }}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <Typography variant={"subtitle2"} fontWeight={"bold"}>
+            Cost
+          </Typography>
+        </Grid>
+
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
+            label="Minimum Cost"
+            onChange={handleMinCostChange}
+            value={minCost}
+            color={"secondary"}
+            inputProps={{
+              inputMode: "numeric",
+              pattern: "[0-9]*",
+            }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="start">{`aUEC`}</InputAdornment>
+              ),
+              inputMode: "numeric",
+            }}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
+            value={maxCost == null ? "" : maxCost}
+            onChange={handleMaxCostChange}
+            label="Maximum Cost"
+            color={"secondary"}
+            inputProps={{
+              inputMode: "numeric",
+              pattern: "[0-9]*",
+            }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="start">{`aUEC`}</InputAdornment>
+              ),
+              inputMode: "numeric",
+            }}
+          />
+        </Grid>
+      </Grid>
+    </Box>
+  )
+}
+
+export function MarketSidebar(props: { status?: boolean }) {
+  const { status } = props
+
+  const [drawerOpen] = useDrawerOpen()
+  const [open, setOpen] = useMarketSidebar()
+  const theme = useTheme<ExtendedTheme>()
+
+  // const xs = useMediaQuery(theme.breakpoints.down('lg'));
+  // useEffect(() => {
+  //     setOpen(!xs)
+  // }, [setOpen, xs])
+
+  return (
     <Drawer
       variant="permanent"
       open
@@ -161,200 +356,8 @@ export function MarketSidebar(props: { status?: boolean }) {
           width: "100%",
         }}
       />
-      <Box
-        sx={{
-          width: "100%",
-          height: "100%",
-          flexDirection: "column",
-          display: "flex",
-          padding: theme.spacing(3),
-          paddingTop: theme.spacing(3),
-          borderColor: theme.palette.outline.main,
-        }}
-      >
-        <Grid container spacing={3}>
-          <Grid item>
-            <IconButton onClick={() => setOpen(false)} color={"secondary"}>
-              <CloseIcon />
-            </IconButton>
-          </Grid>
-          <Grid item>
-            <Button
-              onClick={searchClickCallback}
-              startIcon={<SearchRounded />}
-              variant={"contained"}
-            >
-              Search
-            </Button>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label={"Search"}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <IconButton>
-                      <SearchIcon />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              value={query}
-              onChange={handleQueryChange}
-              color={"secondary"}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant={"subtitle2"} fontWeight={"bold"}>
-              Sorting
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              select
-              fullWidth
-              label="Sort Attribute"
-              value={sort || ""}
-              onChange={handleSortChange}
-              color={"secondary"}
-              SelectProps={{
-                IconComponent: KeyboardArrowDownRoundedIcon,
-              }}
-            >
-              <MenuItem value={""}>None</MenuItem>
-              <MenuItem value={"title"}>Title</MenuItem>
-              <MenuItem value={"price-low"}>Price (Low to High)</MenuItem>
-              <MenuItem value={"price-high"}>Price (High to Low)</MenuItem>
-              <MenuItem value={"quantity-low"}>
-                Quantity Available (Low to High)
-              </MenuItem>
-              <MenuItem value={"quantity-high"}>
-                Quantity Available (High to Low)
-              </MenuItem>
-              <MenuItem value={"date-new"}>Date Listed (Old to New)</MenuItem>
-              <MenuItem value={"date-old"}>Date Listed (New to Old)</MenuItem>
-              <MenuItem value={"activity"}>Recent Activity</MenuItem>
-              <MenuItem value={"rating"}>Rating (High to Low)</MenuItem>
-            </TextField>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant={"subtitle2"} fontWeight={"bold"}>
-              Filtering
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Quantity Available"
-              color={"secondary"}
-              inputProps={{
-                inputMode: "numeric",
-                pattern: "[0-9]*",
-              }}
-              InputProps={{
-                // endAdornment: <InputAdornment
-                //     position="start">
-                //     {`of ${listing.quantity_available} available`}
-                // </InputAdornment>,
-                inputMode: "numeric",
-              }}
-              onChange={handleQuantityChange}
-            />
-          </Grid>
-          {status && (
-            <Grid item xs={12}>
-              <TextField
-                select
-                fullWidth
-                value={activity || ""}
-                onChange={handleActivityChange}
-                label="Listing Status"
-                color={"secondary"}
-                SelectProps={{
-                  IconComponent: KeyboardArrowDownRoundedIcon,
-                }}
-              >
-                <MenuItem value={""}>Either</MenuItem>
-                <MenuItem value={"active"}>Active</MenuItem>
-                <MenuItem value={"inactive"}>Inactive</MenuItem>
-              </TextField>
-            </Grid>
-          )}
-          <Grid item xs={12}>
-            <TextField
-              select
-              fullWidth
-              value={kind}
-              onChange={handleKindChange}
-              label="Sale Type"
-              color={"secondary"}
-              SelectProps={{
-                IconComponent: KeyboardArrowDownRoundedIcon,
-              }}
-            >
-              <MenuItem value={"any"}>Any</MenuItem>
-              <MenuItem value={"sale"}>Sale</MenuItem>
-              <MenuItem value={"aggregate"}>Commodity</MenuItem>
-              <MenuItem value={"auction"}>Auction</MenuItem>
-            </TextField>
-          </Grid>
-          <Grid item xs={12}>
-            <SelectGameCategoryOption
-              item_type={type}
-              onTypeChange={handleTypeChange}
-              TextfieldProps={{
-                size: "small",
-              }}
-            />
-          </Grid>
 
-          <Grid item xs={12}>
-            <Typography variant={"subtitle2"} fontWeight={"bold"}>
-              Cost
-            </Typography>
-          </Grid>
-
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Minimum Cost"
-              onChange={handleMinCostChange}
-              value={minCost}
-              color={"secondary"}
-              inputProps={{
-                inputMode: "numeric",
-                pattern: "[0-9]*",
-              }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="start">{`aUEC`}</InputAdornment>
-                ),
-                inputMode: "numeric",
-              }}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              value={maxCost == null ? "" : maxCost}
-              onChange={handleMaxCostChange}
-              label="Maximum Cost"
-              color={"secondary"}
-              inputProps={{
-                inputMode: "numeric",
-                pattern: "[0-9]*",
-              }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="start">{`aUEC`}</InputAdornment>
-                ),
-                inputMode: "numeric",
-              }}
-            />
-          </Grid>
-        </Grid>
-      </Box>
+      <MarketSearchArea status={status} />
     </Drawer>
   )
 }
