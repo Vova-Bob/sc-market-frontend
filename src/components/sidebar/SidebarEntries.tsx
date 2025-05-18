@@ -3,6 +3,7 @@ import LocalShipping from "@mui/icons-material/LocalShipping"
 import ForumRoundedIcon from "@mui/icons-material/ForumRounded"
 import GavelIcon from "@mui/icons-material/GavelRounded"
 import {
+  CableRounded,
   CalendarMonthRounded,
   DashboardCustomizeRounded,
   DesignServicesRounded,
@@ -203,7 +204,7 @@ export const all_sidebar_entries: SidebarSectionProps[] = [
             to: "/market/category/component",
             text: "Components",
             params: "type=component",
-            icon: <ShieldRounded />,
+            icon: <CableRounded />,
           },
           {
             to: "/bulk",
