@@ -4,10 +4,9 @@ import { MarketSearchArea } from "../../views/market/MarketSidebar"
 import { ContainerGrid } from "../../components/layout/ContainerGrid"
 import { MarketSidebarContext } from "../../hooks/market/MarketSidebar"
 import { Page } from "../../components/metadata/Page"
-import { MyItemStock } from "../../views/market/ItemStockDataGrid"
-import { ItemStockContext } from "../../views/market/ItemStock"
+import { ItemStockContext, MyItemStock } from "../../views/market/ItemStock"
 import { useMarketSearch } from "../../hooks/market/MarketSearch"
-import { BaseListingType } from "../../datatypes/MarketListing"
+import { UniqueListing } from "../../datatypes/MarketListing"
 import { HeaderTitle } from "../../components/typography/HeaderTitle"
 import { ManageListingsActions } from "../../components/button/MarketActions"
 import { UnderlineLink } from "../../components/typography/UnderlineLink"
@@ -25,9 +24,7 @@ export function ManageStock() {
     })
   }, [])
 
-  const [selectedListings, setSelectedListings] = useState<BaseListingType[]>(
-    [],
-  )
+  const [selectedListings, setSelectedListings] = useState<UniqueListing[]>([])
 
   return (
     <Page title={"My Market Listings"}>

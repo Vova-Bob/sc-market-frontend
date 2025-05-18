@@ -34,6 +34,8 @@ export type SellerListingType =
   | MarketAggregateListingComposite
   | MarketMultipleListingComposite
 
+export type StockManageType = UniqueListing | MarketAggregateListingComposite
+
 export type BaseListingType =
   | UniqueListing
   | MarketAggregateListingComposite
@@ -75,6 +77,11 @@ export interface UniqueListing {
     status: string
     minimum_bid_increment: number
     end_time: number
+  }
+  stats?: {
+    order_count: number
+    offer_count: number
+    view_count: number
   }
 }
 

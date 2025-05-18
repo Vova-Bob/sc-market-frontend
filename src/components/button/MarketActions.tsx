@@ -7,11 +7,13 @@ import {
 } from "@mui/icons-material"
 import React, { useCallback, useContext } from "react"
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded"
-import { ItemStockContext } from "../../views/market/ItemStock"
-import { MarketListingUpdateBody } from "../../datatypes/MarketListing"
+import { ItemStockContext, ManageStockArea } from "../../views/market/ItemStock"
+import {
+  MarketListingUpdateBody,
+  UniqueListing,
+} from "../../datatypes/MarketListing"
 import { useUpdateMarketListing } from "../../store/market"
 import LoadingButton from "@mui/lab/LoadingButton"
-import { ManageStockArea } from "../../views/market/ItemStockDataGrid"
 
 export function MarketActions() {
   return (
@@ -103,7 +105,7 @@ export function ManageListingsActions() {
         </Grid>
 
         <Grid item>
-          <ManageStockArea listings={selectedListings} />
+          <ManageStockArea listings={selectedListings as UniqueListing[]} />
         </Grid>
       </Grid>
     </Grid>

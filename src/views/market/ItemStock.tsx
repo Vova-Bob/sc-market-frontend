@@ -1,99 +1,67 @@
-import React, { useCallback, useContext, useMemo, useState } from "react"
-import { BaseListingType } from "../../datatypes/MarketListing"
-import { useMarketSearch } from "../../hooks/market/MarketSearch"
 import {
-  useMarketGetMyListingsQuery,
-  useMarketUpdateListingQuantityMutation,
-} from "../../store/market"
-import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
-import { HeadCell } from "../../components/table/PaginatedTable"
+  DataGrid,
+  GridColDef,
+  GridRenderCellParams,
+  GridRowSelectionModel,
+} from "@mui/x-data-grid"
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react"
 import {
   Avatar,
   Box,
   Button,
   ButtonGroup,
-  Checkbox,
-  Divider,
-  Grid,
+  IconButton,
   Link as MaterialLink,
-  Table,
-  TableBody,
-  TableCell,
-  tableCellClasses,
-  TableContainer,
-  TableRow,
-  tableRowClasses,
   TextField,
   Typography,
-  useMediaQuery,
 } from "@mui/material"
-import { useAlertHook } from "../../hooks/alert/AlertHook"
 import {
   AddRounded,
+  CreateRounded,
   RadioButtonCheckedRounded,
+  RefreshOutlined,
   RemoveRounded,
 } from "@mui/icons-material"
-import { useTheme } from "@mui/material/styles"
-import { ExtendedTheme } from "../../hooks/styles/Theme"
+import { useMarketSearch } from "../../hooks/market/MarketSearch"
 import { filterListings } from "./ItemListings"
-import { Link } from "react-router-dom"
-import { Stack } from "@mui/system"
-import { NumericFormat } from "react-number-format"
 import { formatMarketUrl } from "../../util/urls"
+import { Link } from "react-router-dom"
+import { UniqueListing } from "../../datatypes/MarketListing"
+import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
+import {
+  useMarketGetMyListingsQuery,
+  useMarketRefreshListingMutation,
+  useMarketUpdateListingQuantityMutation,
+} from "../../store/market"
+import { Stack } from "@mui/system"
+import { useAlertHook } from "../../hooks/alert/AlertHook"
+import { NumericFormat } from "react-number-format"
+import { RefreshCircle } from "mdi-material-ui"
+import { formatMostSignificantDiff } from "../../util/time"
 
-export const mobileHeadCells: readonly HeadCell<StockRow>[] = [
-  {
-    id: "title",
-    numeric: false,
-    disablePadding: false,
-    label: "Title",
-  },
-  {
-    id: "quantity_available",
-    numeric: false,
-    disablePadding: false,
-    label: "Current Quantity",
-  },
-  {
-    id: "quantity_available",
-    numeric: true,
-    disablePadding: false,
-    label: "",
-  },
-]
+export const ItemStockContext = React.createContext<
+  | [UniqueListing[], React.Dispatch<React.SetStateAction<UniqueListing[]>>]
+  | null
+>(null)
 
-export interface StockRow {
-  title: string
-  quantity_available: number
-  listing_id: string
-  price: number
-  status: string
-  image_url: string
-}
-
-export interface StockRowProps {
-  row: StockRow
-  index: number
-  selected: boolean
-  onSelected: () => void
-}
-
-export function ManageStockArea(props: { listing: StockRow }) {
+export function ManageStockArea(props: { listings: UniqueListing[] }) {
   const [quantity, setQuantity] = useState(1)
-  const { listing } = props
+  const { listings } = props
 
-  const [
-    updateListing, // This is the mutation trigger
-  ] = useMarketUpdateListingQuantityMutation()
+  const [updateListing] = useMarketUpdateListingQuantityMutation()
 
   const issueAlert = useAlertHook()
 
   const updateListingCallback = useCallback(
-    async (body: { quantity_available: number }) => {
-      let res: { data?: any; error?: any }
-
+    async (listing: UniqueListing, body: { quantity_available: number }) => {
       updateListing({
-        listing_id: listing.listing_id,
+        listing_id: listing.listing.listing_id,
         body,
       })
         .unwrap()
@@ -105,7 +73,7 @@ export function ManageStockArea(props: { listing: StockRow }) {
         )
         .catch((err) => issueAlert(err))
     },
-    [listing.listing_id, issueAlert, updateListing],
+    [listings, issueAlert, updateListing],
   )
 
   return (
@@ -124,7 +92,7 @@ export function ManageStockArea(props: { listing: StockRow }) {
         allowNegative={false}
         customInput={TextField}
         thousandSeparator
-        onValueChange={async (values, sourceInfo) => {
+        onValueChange={async (values) => {
           setQuantity(values.floatValue || 0)
         }}
         inputProps={{
@@ -151,9 +119,12 @@ export function ManageStockArea(props: { listing: StockRow }) {
         <Button
           size={"small"}
           onClick={() =>
-            updateListingCallback({
-              quantity_available: listing.quantity_available + quantity,
-            })
+            listings.map((listing) =>
+              updateListingCallback(listing, {
+                quantity_available:
+                  listing.listing.quantity_available + quantity,
+              }),
+            )
           }
           color={"success"}
         >
@@ -161,7 +132,11 @@ export function ManageStockArea(props: { listing: StockRow }) {
         </Button>
         <Button
           size={"small"}
-          onClick={() => updateListingCallback({ quantity_available: 0 })}
+          onClick={() =>
+            listings.map((listing) =>
+              updateListingCallback(listing, { quantity_available: 0 }),
+            )
+          }
           color={"warning"}
         >
           0
@@ -169,9 +144,12 @@ export function ManageStockArea(props: { listing: StockRow }) {
         <Button
           size={"small"}
           onClick={() =>
-            updateListingCallback({
-              quantity_available: listing.quantity_available - quantity,
-            })
+            listings.map((listing) =>
+              updateListingCallback(listing, {
+                quantity_available:
+                  listing.listing.quantity_available - quantity,
+              }),
+            )
           }
           color={"error"}
         >
@@ -182,246 +160,227 @@ export function ManageStockArea(props: { listing: StockRow }) {
   )
 }
 
-export function MobileStockRow(props: StockRowProps) {
-  const { row: listing, index, selected, onSelected } = props // TODO: Add `assigned_to` column
-  const theme = useTheme<ExtendedTheme>()
-
-  const md = useMediaQuery(theme.breakpoints.down("md"))
-
-  return (
-    <TableRow
-      hover
-      role="checkbox"
-      tabIndex={-1}
-      key={index}
-      onClick={onSelected}
-      selected={selected}
-      // component={Link} to={`/contract/${row.order_id}`}
-      sx={{
-        textDecoration: "none",
-        color: "inherit",
-        borderBottom: "none",
-        border: "none",
-        [`& .${tableCellClasses.root}`]: {
-          paddingTop: 0,
-          paddingBottom: 0,
-        },
-        [`& .${tableRowClasses.root}`]: {
-          paddingTop: 0,
-          paddingBottom: 0,
-        },
-      }}
-    >
-      <TableCell padding={"checkbox"}>
-        <Checkbox checked={selected} onChange={onSelected} />
-      </TableCell>
-      {md ? (
-        <TableCell align={"left"}>
-          <Stack direction={"row"} alignItems={"center"} spacing={1}>
-            <Avatar src={listing.image_url} variant={"rounded"} />
-            <Stack direction={"column"} justifyContent={"center"}>
-              <Box
-                sx={{
-                  alignItems: "center",
-                  display: "inline-flex",
-                }}
-              >
-                <span
-                  style={{
-                    maxWidth: 200,
-                    textOverflow: "ellipsis",
-                    overflow: "hidden",
-                  }}
-                >
-                  <MaterialLink
-                    component={Link}
-                    to={formatMarketUrl({
-                      type: "unique",
-                      details: { title: listing.title },
-                      listing,
-                    })}
-                    sx={{
-                      fontWeight: "bold",
-                    }}
-                    variant={"subtitle1"}
-                    underline={"hover"}
-                    color={"text.secondary"}
-                  >
-                    {listing.title}
-                  </MaterialLink>
-                </span>
-              </Box>
-
-              <Typography variant={"subtitle2"}>
-                {listing.price.toLocaleString("en-US")} aUEC
-              </Typography>
-            </Stack>
-          </Stack>
-
-          <ManageStockArea listing={listing} />
-        </TableCell>
-      ) : (
-        <>
-          <TableCell align={"left"}>
-            <Stack direction={"row"} spacing={1} alignItems={"center"}>
-              <Avatar src={listing.image_url} variant={"rounded"} />
-              <Stack direction={"column"} justifyContent={"center"}>
-                <Box
-                  sx={{
-                    alignItems: "center",
-                    display: "inline-flex",
-                  }}
-                >
-                  <span
-                    style={{
-                      maxWidth: 200,
-                      textOverflow: "ellipsis",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <MaterialLink
-                      underline={"hover"}
-                      component={Link}
-                      to={formatMarketUrl({
-                        type: "unique",
-                        details: { title: listing.title },
-                        listing,
-                      })}
-                      sx={{
-                        fontWeight: "bold",
-                      }}
-                      variant={"subtitle1"}
-                      color={"text.secondary"}
-                    >
-                      {listing.title}
-                    </MaterialLink>
-                  </span>
-                </Box>
-                <Typography variant={"subtitle2"}>
-                  {listing.price.toLocaleString("en-US")} aUEC
-                </Typography>
-              </Stack>
-            </Stack>
-          </TableCell>
-          <TableCell padding={"checkbox"}>
-            <Stack>
-              <Typography
-                display={"inline"}
-                color={listing.status === "active" ? "primary" : "error"}
-              >
-                {listing.status === "active" ? (
-                  <RadioButtonCheckedRounded />
-                ) : (
-                  <RadioButtonCheckedRounded />
-                )}
-              </Typography>
-            </Stack>
-          </TableCell>
-
-          <TableCell
-            padding="checkbox"
-            onClick={(event) => {
-              event.stopPropagation()
-            }}
-            align={"right"}
-          >
-            <ManageStockArea listing={listing} />
-          </TableCell>
-        </>
-      )}
-    </TableRow>
-  )
+export interface StockRow {
+  title: string
+  quantity_available: number
+  listing_id: string
+  price: number
+  status: string
+  image_url: string
+  expiration: string
+  order_count: number
+  offer_count: number
 }
 
-export function DisplayStock(props: { listings: BaseListingType[] }) {
+export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
   const [searchState] = useMarketSearch()
-  const [selectedListings, setSelectedListings] = useContext(ItemStockContext)!
-  const { listings } = props
-  const theme = useTheme<ExtendedTheme>()
+  const [, setSelectedListings] = useContext(ItemStockContext)!
+  const [refresh] = useMarketRefreshListingMutation()
 
   const filteredListings = useMemo(
     () => filterListings(listings, searchState),
     [listings, searchState],
   )
 
-  return (
-    <Grid item xs={12}>
-      <Divider light />
-      <TableContainer sx={{ width: "100%" }}>
-        <Table
-          sx={{
-            borderRadius: 2,
-            [`& .${tableCellClasses.root}`]: {
-              borderColor: theme.palette.outline.main,
-            },
-          }}
-          aria-labelledby="tableTitle"
-          size={"medium"}
-          stickyHeader
+  const rows: StockRow[] = useMemo(
+    () =>
+      filteredListings.map((listing) => ({
+        ...listing.details,
+        ...listing.listing,
+        ...(listing.stats || {
+          offer_count: 0,
+          order_count: 0,
+          view_count: 0,
+        }),
+        image_url: listing.photos[0],
+      })),
+    [filteredListings],
+  )
+
+  const columns: GridColDef<StockRow>[] = [
+    {
+      field: "image",
+      hideSortIcons: true,
+      headerName: "Image",
+      renderHeader: () => null,
+      width: 80,
+      sortable: false,
+      renderCell: (params: GridRenderCellParams) => (
+        <Stack justifyContent={"center"}>
+          <Avatar src={params.row.image_url} variant="rounded" />
+        </Stack>
+      ),
+      display: "flex",
+    },
+    {
+      field: "title",
+      headerName: "Title",
+      flex: 1,
+      renderCell: (params: GridRenderCellParams) => (
+        <MaterialLink
+          component={Link}
+          to={formatMarketUrl({
+            type: "unique",
+            details: { title: params.row.title },
+            listing: params.row,
+          })}
+          sx={{ fontWeight: "bold" }}
+          underline="hover"
         >
-          <TableBody>
-            {filteredListings.map((listing, index) => (
-              <MobileStockRow
-                key={listing.listing.listing_id}
-                row={{
-                  ...listing.details,
-                  ...listing.listing,
-                  image_url: listing.photos[0],
-                }}
-                index={index}
-                selected={
-                  !!selectedListings.find(
-                    (selectedListing) =>
-                      selectedListing.listing.listing_id ===
-                      listing.listing.listing_id,
-                  )
-                }
-                onSelected={() => {
-                  if (
-                    selectedListings.find(
-                      (selectedListing) =>
-                        selectedListing.listing.listing_id ===
-                        listing.listing.listing_id,
-                    )
-                  ) {
-                    setSelectedListings(
-                      selectedListings.filter(
-                        (l) =>
-                          l.listing.listing_id !== listing.listing.listing_id,
-                      ),
-                    )
-                  } else {
-                    setSelectedListings([...selectedListings, listing])
-                  }
-                }}
-              />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Grid>
+          {params.row.title}
+        </MaterialLink>
+      ),
+    },
+    {
+      field: "price",
+      headerName: "Price",
+      width: 150,
+      valueFormatter: (value: number) =>
+        `${value.toLocaleString(undefined)} aUEC`,
+    },
+    {
+      field: "quantity_available",
+      headerName: "Quantity",
+      // renderHeader: () => <NumbersRounded />,
+      width: 90,
+      valueFormatter: (value: number) => value.toLocaleString(undefined),
+    },
+    {
+      field: "offer_count",
+      headerName: "Offers Accepted",
+      width: 120,
+      display: "flex",
+      renderCell: (params: GridRenderCellParams) => (
+        <Typography
+          variant={"subtitle2"}
+          color={
+            +params.row.offer_count === 0 && +params.row.order_count > 1
+              ? "success"
+              : "warning"
+          }
+        >
+          {(+params.row.order_count).toLocaleString(undefined)} /{" "}
+          {(+params.row.order_count + +params.row.offer_count).toLocaleString(
+            undefined,
+          )}
+        </Typography>
+      ),
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 100,
+      display: "flex",
+      renderCell: (params: GridRenderCellParams) => (
+        <Typography
+          color={params.value === "active" ? "success" : "error"}
+          justifyContent={"center"}
+          alignContent={"center"}
+          display={"flex"}
+          alignItems={"center"}
+          variant={"subtitle2"}
+        >
+          <RadioButtonCheckedRounded
+            fontSize="small"
+            style={{ marginRight: 1 }}
+          />{" "}
+          {params.value === "active" ? "Active" : "Inactive"}
+        </Typography>
+      ),
+    },
+    {
+      field: "expiration",
+      headerName: "Expiration",
+      renderHeader: () => <RefreshCircle />,
+      width: 50,
+      renderCell: (params: GridRenderCellParams) => (
+        <div>
+          {new Date(params.value) > new Date() ? (
+            formatMostSignificantDiff(params.value)
+          ) : (
+            <IconButton
+              sx={{ color: "error.main" }}
+              onClick={(event) => {
+                event.stopPropagation()
+                event.preventDefault()
+                refresh(params.row.listing_id)
+              }}
+            >
+              <RefreshOutlined />
+            </IconButton>
+          )}
+        </div>
+      ),
+    },
+    {
+      sortable: false,
+      field: "listing_id",
+      renderHeader: () => null,
+      headerName: "Edit",
+      width: 50,
+      renderCell: (params: GridRenderCellParams) => (
+        <Link to={`/market_edit/${params.value}`} style={{ color: "inherit" }}>
+          <IconButton>
+            <CreateRounded />
+          </IconButton>
+        </Link>
+      ),
+    },
+  ]
+
+  const [rowSelectionModel, setRowSelectionModel] =
+    React.useState<GridRowSelectionModel>({ type: "include", ids: new Set() })
+
+  useEffect(() => {
+    setSelectedListings(
+      [...rowSelectionModel.ids]
+        .map(
+          (id) =>
+            listings.find((listing) => listing.listing.listing_id === id)!,
+        )
+        .filter((x) => x), // filter not null
+    )
+  }, [rowSelectionModel, listings])
+
+  return (
+    <Box sx={{ width: "100%" }}>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        getRowId={(row) => row.listing_id}
+        checkboxSelection
+        onRowSelectionModelChange={setRowSelectionModel}
+        rowSelectionModel={rowSelectionModel}
+        sx={{
+          borderColor: "outline.main",
+          [`& .MuiDataGrid-cell, & .MuiDataGrid-filler > *, & .MuiDataGrid-footerContainer, & .MuiDataGrid-columnSeparator`]:
+            {
+              borderColor: "outline.main",
+            },
+          ".MuiDataGrid-columnSeparator": {
+            color: "outline.main",
+          },
+          [".MuiDataGrid-menu"]: {
+            color: "white",
+          },
+        }}
+      />
+    </Box>
   )
 }
-
-export const ItemStockContext = React.createContext<
-  | [BaseListingType[], React.Dispatch<React.SetStateAction<BaseListingType[]>>]
-  | null
->(null)
 
 export function MyItemStock() {
   const [currentOrg] = useCurrentOrg()
   const { data: listings } = useMarketGetMyListingsQuery(
     currentOrg?.spectrum_id,
   )
-  const filteredListings = useMemo(() => listings || [], [listings])
-
-  return (
-    <DisplayStock
-      listings={
-        filteredListings.filter(
-          (l) => l.type !== "multiple" && l.listing.status !== "archived",
-        ) as BaseListingType[]
-      }
-    />
+  const filteredListings = useMemo(
+    () =>
+      (listings || []).filter(
+        (l) => l.type !== "multiple" && l.listing.status !== "archived",
+      ) as UniqueListing[],
+    [listings],
   )
+
+  return <DisplayStock listings={filteredListings} />
 }

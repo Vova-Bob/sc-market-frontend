@@ -3,7 +3,7 @@ import {
   MarketMultiple,
 } from "../datatypes/MarketListing"
 import { Service } from "../datatypes/Order"
-import { Contractor } from "../datatypes/newfile"
+import { Contractor } from "../datatypes/Contractor"
 
 interface FormattableListingType {
   type: string
