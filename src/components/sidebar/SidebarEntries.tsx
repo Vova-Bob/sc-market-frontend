@@ -46,6 +46,13 @@ export const all_sidebar_entries: SidebarSectionProps[] = [
         org: true,
       },
       {
+        to: "/market/manage",
+        text: "Manage Market Listings",
+        icon: <WarehouseRounded />,
+        logged_in: true,
+        org: false,
+      },
+      {
         to: "/order/services",
         text: "Manage Services",
         icon: <DashboardCustomizeRounded />,
@@ -72,113 +79,6 @@ export const all_sidebar_entries: SidebarSectionProps[] = [
         icon: <ForumRoundedIcon />,
         hidden: true,
         logged_in: true,
-      },
-    ],
-  },
-  {
-    title: "Market",
-    items: [
-      {
-        text: "Player Market",
-        icon: <StoreRounded />,
-        children: [
-          {
-            to: "/market",
-            text: "Everything",
-            icon: <HomeRounded />,
-          },
-          {
-            to: "/market/category/weapon",
-            params: "type=weapon",
-            text: "Weapons",
-            icon: <Pistol />,
-          },
-          {
-            to: "/market/category/armor",
-            text: "Armor",
-            params: "type=armor",
-            icon: <ShieldRounded />,
-          },
-          {
-            to: "/market/services",
-            text: "Contractor Services",
-            icon: <DesignServicesRounded />,
-          },
-          {
-            to: "/bulk",
-            text: "Bulk Items",
-            icon: <GavelIcon />,
-          },
-          {
-            to: "/buyorders",
-            text: "Buy Orders",
-            icon: <RequestQuoteRounded />,
-          },
-        ],
-      },
-      // {
-      //   to: "/market/me",
-      //   text: "My Listings",
-      //   icon: <ManageAccountsRounded />,
-      //   logged_in: true,
-      //   org: false,
-      // },
-      // {
-      //   to: "/market/me",
-      //   text: "My Org's Listings",
-      //   icon: <ManageAccountsRounded />,
-      //   org: true,
-      // },
-      {
-        to: "/market/manage",
-        text: "Manage Listings",
-        icon: <WarehouseRounded />,
-        logged_in: true,
-        org: false,
-      },
-      {
-        to: "/market/manage",
-        text: "Manage Listings",
-        icon: <WarehouseRounded />,
-        logged_in: true,
-        org: true,
-      },
-      {
-        to: "/sell",
-        text: "Sell Materials",
-        icon: <PaidIcon />,
-        hidden: true,
-        logged_in: true,
-      },
-    ],
-  },
-  {
-    title: "Contracting",
-    items: [
-      {
-        to: "/orders",
-        text: "My Orders",
-        icon: <CreateIcon />,
-        logged_in: true,
-      },
-      {
-        to: "/contractors",
-        text: "Contractors",
-        icon: <BusinessIcon />,
-        custom: false,
-      },
-      {
-        to: "/contracts",
-        text: "Open Contracts",
-        icon: <AssignmentIcon />,
-        custom: false,
-      },
-      {
-        to: "/contracts",
-        text: "Open Contracts",
-        icon: <AssignmentIcon />,
-        custom: true,
-        org: true,
       },
     ],
   },
@@ -214,6 +114,13 @@ export const all_sidebar_entries: SidebarSectionProps[] = [
             to: "/org/manage",
             text: "Settings",
             icon: <SettingsIcon />,
+          },
+          {
+            to: "/market/manage",
+            text: "Manage Listings",
+            icon: <WarehouseRounded />,
+            logged_in: true,
+            org: true,
           },
           {
             to: "/order/services",
@@ -264,6 +171,107 @@ export const all_sidebar_entries: SidebarSectionProps[] = [
             hidden: true,
           },
         ],
+      },
+    ],
+  },
+
+  {
+    title: "Market",
+    items: [
+      {
+        text: "Player Market",
+        icon: <StoreRounded />,
+        children: [
+          {
+            to: "/market",
+            text: "Everything",
+            icon: <HomeRounded />,
+          },
+          {
+            to: "/market/category/weapon",
+            params: "type=weapon",
+            text: "Weapons",
+            icon: <Pistol />,
+          },
+          {
+            to: "/market/category/armor",
+            text: "Armor",
+            params: "type=armor",
+            icon: <ShieldRounded />,
+          },
+          {
+            to: "/market/category/component",
+            text: "Components",
+            params: "type=component",
+            icon: <ShieldRounded />,
+          },
+          {
+            to: "/bulk",
+            text: "Bulk Items",
+            icon: <GavelIcon />,
+          },
+          {
+            to: "/buyorders",
+            text: "Buy Orders",
+            icon: <RequestQuoteRounded />,
+          },
+        ],
+      },
+
+      {
+        to: "/market/services",
+        text: "Contractor Services",
+        icon: <DesignServicesRounded />,
+      },
+      // {
+      //   to: "/market/me",
+      //   text: "My Listings",
+      //   icon: <ManageAccountsRounded />,
+      //   logged_in: true,
+      //   org: false,
+      // },
+      // {
+      //   to: "/market/me",
+      //   text: "My Org's Listings",
+      //   icon: <ManageAccountsRounded />,
+      //   org: true,
+      // },
+      {
+        to: "/sell",
+        text: "Sell Materials",
+        icon: <PaidIcon />,
+        hidden: true,
+        logged_in: true,
+      },
+    ],
+  },
+  {
+    title: "Contracting",
+    items: [
+      {
+        to: "/orders",
+        text: "My Orders",
+        icon: <CreateIcon />,
+        logged_in: true,
+      },
+      {
+        to: "/contractors",
+        text: "Contractors",
+        icon: <BusinessIcon />,
+        custom: false,
+      },
+      {
+        to: "/contracts",
+        text: "Open Contracts",
+        icon: <AssignmentIcon />,
+        custom: false,
+      },
+      {
+        to: "/contracts",
+        text: "Open Contracts",
+        icon: <AssignmentIcon />,
+        custom: true,
+        org: true,
       },
     ],
   },
