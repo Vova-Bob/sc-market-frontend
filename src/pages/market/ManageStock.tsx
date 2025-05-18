@@ -10,6 +10,8 @@ import { useMarketSearch } from "../../hooks/market/MarketSearch"
 import { BaseListingType } from "../../datatypes/MarketListing"
 import { HeaderTitle } from "../../components/typography/HeaderTitle"
 import { ManageListingsActions } from "../../components/button/MarketActions"
+import { UnderlineLink } from "../../components/typography/UnderlineLink"
+import { Link } from "react-router-dom"
 
 export function ManageStock() {
   const [open, setOpen] = useState(true)
@@ -49,6 +51,16 @@ export function ManageStock() {
                   <MyItemStock />
                 </Grid>
               </Grid>
+            </Grid>
+
+            <Grid
+              item
+              xs={12}
+              sx={{ display: "flex", justifyContent: "flex-end" }}
+            >
+              <Link to={"/market/me"} style={{ color: "inherit" }}>
+                <UnderlineLink>Archived Listings</UnderlineLink>
+              </Link>
             </Grid>
           </ContainerGrid>
         </MarketSidebarContext.Provider>
