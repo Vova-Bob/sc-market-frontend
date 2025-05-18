@@ -23,6 +23,7 @@ import {
 } from "@mui/material"
 import {
   AddRounded,
+  CreateRounded,
   RadioButtonCheckedRounded,
   RefreshOutlined,
   RemoveRounded,
@@ -180,7 +181,8 @@ export function DisplayStock({ listings }: { listings: BaseListingType[] }) {
     {
       field: "image",
       hideSortIcons: true,
-      headerName: "",
+      headerName: "Image",
+      renderHeader: () => null,
       width: 80,
       sortable: false,
       renderCell: (params: GridRenderCellParams) => (
@@ -245,6 +247,7 @@ export function DisplayStock({ listings }: { listings: BaseListingType[] }) {
     },
     {
       field: "expiration",
+      headerName: "Expiration",
       renderHeader: () => <RefreshCircle />,
       width: 50,
       renderCell: (params: GridRenderCellParams) => (
@@ -264,6 +267,20 @@ export function DisplayStock({ listings }: { listings: BaseListingType[] }) {
             </IconButton>
           )}
         </div>
+      ),
+    },
+    {
+      sortable: false,
+      field: "listing_id",
+      renderHeader: () => null,
+      headerName: "Edit",
+      width: 50,
+      renderCell: (params: GridRenderCellParams) => (
+        <Link to={`/market_edit/${params.value}`} style={{ color: "inherit" }}>
+          <IconButton>
+            <CreateRounded />
+          </IconButton>
+        </Link>
       ),
     },
   ]
