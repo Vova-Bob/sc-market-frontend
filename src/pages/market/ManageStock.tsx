@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react"
-import { HeaderTitle } from "../../components/typography/HeaderTitle"
 import { Grid, Paper } from "@mui/material"
 import { MarketSearchArea } from "../../views/market/MarketSidebar"
 import { ContainerGrid } from "../../components/layout/ContainerGrid"
 import { MarketSidebarContext } from "../../hooks/market/MarketSidebar"
 import { Page } from "../../components/metadata/Page"
-import { ManageListingsActions } from "../../components/button/MarketActions"
 import { MyItemStock } from "../../views/market/ItemStockDataGrid"
 import { ItemStockContext } from "../../views/market/ItemStock"
 import { useMarketSearch } from "../../hooks/market/MarketSearch"
 import { BaseListingType } from "../../datatypes/MarketListing"
+import { HeaderTitle } from "../../components/typography/HeaderTitle"
+import { ManageListingsActions } from "../../components/button/MarketActions"
 
 export function ManageStock() {
   const [open, setOpen] = useState(true)
@@ -34,6 +34,8 @@ export function ManageStock() {
       >
         <MarketSidebarContext.Provider value={[open, setOpen]}>
           <ContainerGrid maxWidth={"xl"} sidebarOpen={true}>
+            <HeaderTitle>Manage Stock</HeaderTitle>
+
             <Grid item xs={12} md={3}>
               <Paper>
                 <MarketSearchArea status />
@@ -41,13 +43,8 @@ export function ManageStock() {
             </Grid>
 
             <Grid item xs={12} md={9}>
-              <Grid container spacing={1}>
-                <HeaderTitle lg={7} xl={7}>
-                  Manage Stock
-                </HeaderTitle>
-
+              <Grid container>
                 <ManageListingsActions />
-
                 <Grid item xs={12}>
                   <MyItemStock />
                 </Grid>

@@ -73,28 +73,12 @@ export function ManageListingsActions() {
     <Grid item>
       <Grid container spacing={1} alignItems={"center"}>
         <Grid item>
-          <Link
-            to={"/market/create"}
-            style={{ color: "inherit", textDecoration: "none" }}
-          >
-            <Button
-              color={"secondary"}
-              startIcon={<CreateRounded />}
-              variant={"contained"}
-              size={"large"}
-            >
-              Create Listing
-            </Button>
-          </Link>
-        </Grid>
-        <Grid item>
           <LoadingButton
             color={"success"}
             startIcon={<RadioButtonCheckedRounded />}
-            variant={"contained"}
+            variant={"outlined"}
             size={"large"}
             loading={isLoading}
-            disabled={!selectedListings.length}
             onClick={() => {
               updateListingCallback({ status: "active" })
             }}
@@ -107,9 +91,8 @@ export function ManageListingsActions() {
           <LoadingButton
             color={"error"}
             startIcon={<RadioButtonUncheckedRounded />}
-            variant={"contained"}
+            variant={"outlined"}
             size={"large"}
-            disabled={!selectedListings.length}
             loading={isLoading}
             onClick={() => {
               updateListingCallback({ status: "inactive" })

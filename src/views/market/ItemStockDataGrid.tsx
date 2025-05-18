@@ -83,7 +83,7 @@ export function ManageStockArea(props: { listings: BaseListingType[] }) {
         allowNegative={false}
         customInput={TextField}
         thousandSeparator
-        onValueChange={async (values, sourceInfo) => {
+        onValueChange={async (values) => {
           setQuantity(values.floatValue || 0)
         }}
         inputProps={{
@@ -219,8 +219,18 @@ export function DisplayStock({ listings }: { listings: BaseListingType[] }) {
       width: 100,
       display: "flex",
       renderCell: (params: GridRenderCellParams) => (
-        <Typography color={params.value === "active" ? "primary" : "error"}>
-          <RadioButtonCheckedRounded fontSize="small" />
+        <Typography
+          color={params.value === "active" ? "success" : "error"}
+          justifyContent={"center"}
+          alignContent={"center"}
+          display={"flex"}
+          alignItems={"center"}
+        >
+          <RadioButtonCheckedRounded
+            fontSize="small"
+            style={{ marginRight: 1 }}
+          />{" "}
+          {params.value === "active" ? "Active" : "Inactive"}
         </Typography>
       ),
     },
