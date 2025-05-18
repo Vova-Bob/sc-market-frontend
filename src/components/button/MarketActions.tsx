@@ -71,7 +71,7 @@ export function ManageListingsActions() {
 
   return (
     <Grid item>
-      <Grid container spacing={2}>
+      <Grid container spacing={1} alignItems={"center"}>
         <Grid item>
           <Link
             to={"/market/create"}

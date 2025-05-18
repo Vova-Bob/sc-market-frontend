@@ -24,6 +24,8 @@ import { useSearchParams } from "react-router-dom"
 import { SearchRounded } from "@mui/icons-material"
 import { useMarketSearch } from "../../hooks/market/MarketSearch"
 import { SelectGameCategoryOption } from "../../components/select/SelectGameItem"
+import CloseIcon from "@mui/icons-material/CloseRounded"
+import MenuIcon from "@mui/icons-material/MenuRounded"
 
 export function MarketSearchArea(props: { status?: boolean }) {
   const theme: ExtendedTheme = useTheme()
@@ -107,13 +109,12 @@ export function MarketSearchArea(props: { status?: boolean }) {
         height: "100%",
         flexDirection: "column",
         display: "flex",
-        padding: theme.spacing(3),
-        paddingTop: theme.spacing(3),
+        padding: theme.spacing(2),
         borderColor: theme.palette.outline.main,
       }}
     >
-      <Grid container spacing={3}>
-        <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end" }}>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
           <Button
             onClick={searchClickCallback}
             startIcon={<SearchRounded />}
@@ -126,6 +127,7 @@ export function MarketSearchArea(props: { status?: boolean }) {
           <TextField
             fullWidth
             label={"Search"}
+            size={"small"}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -149,6 +151,7 @@ export function MarketSearchArea(props: { status?: boolean }) {
           <TextField
             select
             fullWidth
+            size={"small"}
             label="Sort Attribute"
             value={sort || ""}
             onChange={handleSortChange}
@@ -183,6 +186,7 @@ export function MarketSearchArea(props: { status?: boolean }) {
             fullWidth
             label="Quantity Available"
             color={"secondary"}
+            size={"small"}
             inputProps={{
               inputMode: "numeric",
               pattern: "[0-9]*",
@@ -205,6 +209,7 @@ export function MarketSearchArea(props: { status?: boolean }) {
               value={activity || ""}
               onChange={handleActivityChange}
               label="Listing Status"
+              size={"small"}
               color={"secondary"}
               SelectProps={{
                 IconComponent: KeyboardArrowDownRoundedIcon,
@@ -224,6 +229,7 @@ export function MarketSearchArea(props: { status?: boolean }) {
             onChange={handleKindChange}
             label="Sale Type"
             color={"secondary"}
+            size={"small"}
             SelectProps={{
               IconComponent: KeyboardArrowDownRoundedIcon,
             }}
@@ -256,6 +262,7 @@ export function MarketSearchArea(props: { status?: boolean }) {
             label="Minimum Cost"
             onChange={handleMinCostChange}
             value={minCost}
+            size={"small"}
             color={"secondary"}
             inputProps={{
               inputMode: "numeric",
@@ -275,6 +282,7 @@ export function MarketSearchArea(props: { status?: boolean }) {
             value={maxCost == null ? "" : maxCost}
             onChange={handleMaxCostChange}
             label="Maximum Cost"
+            size={"small"}
             color={"secondary"}
             inputProps={{
               inputMode: "numeric",
@@ -359,5 +367,29 @@ export function MarketSidebar(props: { status?: boolean }) {
 
       <MarketSearchArea status={status} />
     </Drawer>
+  )
+}
+
+export function MarketSideBarToggleButton() {
+  const [open, setOpen] = useMarketSidebar()
+  const theme = useTheme<ExtendedTheme>()
+  const [drawerOpen] = useDrawerOpen()
+
+  return (
+    <IconButton
+      color="secondary"
+      aria-label="toggle market sidebar"
+      sx={{
+        zIndex: theme.zIndex.drawer - 2,
+        position: "absolute",
+        left: (drawerOpen ? sidebarDrawerWidth : 0) + 24,
+        top: 64 + 24,
+      }}
+      onClick={() => {
+        setOpen((value) => !value)
+      }}
+    >
+      {open ? <CloseIcon /> : <MenuIcon />}
+    </IconButton>
   )
 }

@@ -16,7 +16,6 @@ import {
   Box,
   Button,
   ButtonGroup,
-  Divider,
   Link as MaterialLink,
   TextField,
   Typography,
@@ -249,7 +248,6 @@ export function DisplayStock({ listings }: { listings: BaseListingType[] }) {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Divider light sx={{ mb: 2 }} />
       <DataGrid
         rows={rows}
         columns={columns}
