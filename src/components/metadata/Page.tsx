@@ -18,6 +18,12 @@ export function Page(props: { title: string } & PropsWithChildren<any>) {
 
   const location = useLocation()
   const error = useRouteError()
+  useEffect(() => {
+    if (import.meta.env.DEV && error) {
+      console.error(error)
+    }
+  }, [error])
+
   if (error) {
     return (
       <Navigate

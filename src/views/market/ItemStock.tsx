@@ -15,6 +15,7 @@ import {
   Checkbox,
   Divider,
   Grid,
+  Link as MaterialLink,
   Table,
   TableBody,
   TableCell,
@@ -25,7 +26,6 @@ import {
   TextField,
   Typography,
   useMediaQuery,
-  Link as MaterialLink,
 } from "@mui/material"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import {
@@ -62,7 +62,7 @@ export const mobileHeadCells: readonly HeadCell<StockRow>[] = [
   },
 ]
 
-interface StockRow {
+export interface StockRow {
   title: string
   quantity_available: number
   listing_id: string
@@ -78,7 +78,7 @@ export interface StockRowProps {
   onSelected: () => void
 }
 
-function ManageStockArea(props: { listing: StockRow }) {
+export function ManageStockArea(props: { listing: StockRow }) {
   const [quantity, setQuantity] = useState(1)
   const { listing } = props
 
@@ -92,24 +92,18 @@ function ManageStockArea(props: { listing: StockRow }) {
     async (body: { quantity_available: number }) => {
       let res: { data?: any; error?: any }
 
-      res = await updateListing({
+      updateListing({
         listing_id: listing.listing_id,
         body,
       })
-
-      if (res?.data && !res?.error) {
-        issueAlert({
-          message: "Updated!",
-          severity: "success",
-        })
-      } else {
-        issueAlert({
-          message: `Error while updating! ${
-            res.error?.error || res.error?.data?.error || res.error
-          }`,
-          severity: "error",
-        })
-      }
+        .unwrap()
+        .then(() =>
+          issueAlert({
+            message: "Updated!",
+            severity: "success",
+          }),
+        )
+        .catch((err) => issueAlert(err))
     },
     [listing.listing_id, issueAlert, updateListing],
   )
@@ -125,17 +119,6 @@ function ManageStockArea(props: { listing: StockRow }) {
         // justifyContent: 'space-between'
       }}
     >
-      <Box
-        sx={{
-          alignItems: "center",
-          display: "inline-flex",
-          paddingRight: 2,
-        }}
-      >
-        <Typography noWrap>
-          Current Quantity: {listing.quantity_available}
-        </Typography>
-      </Box>
       <NumericFormat
         decimalScale={0}
         allowNegative={false}
@@ -148,6 +131,7 @@ function ManageStockArea(props: { listing: StockRow }) {
           inputMode: "numeric",
           pattern: "[0-9]*",
           type: "numeric",
+          size: "small",
         }}
         sx={{
           marginRight: 2,
@@ -155,7 +139,7 @@ function ManageStockArea(props: { listing: StockRow }) {
         }}
         fullWidth
         size="small"
-        label={"Amount"}
+        label={"Update Amount"}
         value={quantity}
         color={"secondary"}
       />
@@ -385,19 +369,29 @@ export function DisplayStock(props: { listings: BaseListingType[] }) {
                   image_url: listing.photos[0],
                 }}
                 index={index}
-                selected={selectedListings.includes(listing.listing.listing_id)}
+                selected={
+                  !!selectedListings.find(
+                    (selectedListing) =>
+                      selectedListing.listing.listing_id ===
+                      listing.listing.listing_id,
+                  )
+                }
                 onSelected={() => {
-                  if (selectedListings.includes(listing.listing.listing_id)) {
+                  if (
+                    selectedListings.find(
+                      (selectedListing) =>
+                        selectedListing.listing.listing_id ===
+                        listing.listing.listing_id,
+                    )
+                  ) {
                     setSelectedListings(
                       selectedListings.filter(
-                        (l) => l !== listing.listing.listing_id,
+                        (l) =>
+                          l.listing.listing_id !== listing.listing.listing_id,
                       ),
                     )
                   } else {
-                    setSelectedListings([
-                      ...selectedListings,
-                      listing.listing.listing_id,
-                    ])
+                    setSelectedListings([...selectedListings, listing])
                   }
                 }}
               />
@@ -407,16 +401,11 @@ export function DisplayStock(props: { listings: BaseListingType[] }) {
       </TableContainer>
     </Grid>
   )
-
-  // <PaginatedTable
-  //     rows={filteredListings} initialSort={'title'}
-  //     generateRow={MobileStockRow}
-  //     keyAttr={'listing_id'}
-  //     headCells={[]} disableSelect/>
 }
 
 export const ItemStockContext = React.createContext<
-  [string[], React.Dispatch<React.SetStateAction<string[]>>] | null
+  | [BaseListingType[], React.Dispatch<React.SetStateAction<BaseListingType[]>>]
+  | null
 >(null)
 
 export function MyItemStock() {

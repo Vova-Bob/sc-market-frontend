@@ -9,10 +9,12 @@ import MenuIcon from "@mui/icons-material/MenuRounded"
 import { MarketSidebarContext } from "../../hooks/market/MarketSidebar"
 import { Page } from "../../components/metadata/Page"
 import { ManageListingsActions } from "../../components/button/MarketActions"
-import { ItemStockContext, MyItemStock } from "../../views/market/ItemStock"
+import { MyItemStock } from "../../views/market/ItemStockDataGrid"
+import { ItemStockContext } from "../../views/market/ItemStock"
 import { useMarketSearch } from "../../hooks/market/MarketSearch"
+import { BaseListingType } from "../../datatypes/MarketListing"
 
-export function ManageStock(props: {}) {
+export function ManageStock() {
   const [open, setOpen] = useState(true)
   const [drawerOpen] = useDrawerOpen()
   const [searchState, setSearchState] = useMarketSearch()
@@ -25,7 +27,9 @@ export function ManageStock(props: {}) {
     })
   }, [])
 
-  const [selectedListings, setSelectedListings] = useState<string[]>([])
+  const [selectedListings, setSelectedListings] = useState<BaseListingType[]>(
+    [],
+  )
 
   return (
     <Page title={"My Market Listings"}>

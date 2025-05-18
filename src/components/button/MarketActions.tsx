@@ -11,6 +11,7 @@ import { ItemStockContext } from "../../views/market/ItemStock"
 import { MarketListingUpdateBody } from "../../datatypes/MarketListing"
 import { useUpdateMarketListing } from "../../store/market"
 import LoadingButton from "@mui/lab/LoadingButton"
+import { ManageStockArea } from "../../views/market/ItemStockDataGrid"
 
 export function MarketActions() {
   return (
@@ -58,9 +59,9 @@ export function ManageListingsActions() {
   const [updateListing, { isLoading }] = useUpdateMarketListing()
   const updateListingCallback = useCallback(
     async (body: MarketListingUpdateBody) => {
-      selectedListings.forEach((listing_id) => {
+      selectedListings.forEach((listing) => {
         updateListing({
-          listing_id,
+          listing_id: listing.listing.listing_id,
           body,
         })
       })
@@ -116,6 +117,10 @@ export function ManageListingsActions() {
           >
             Deactivate Listings
           </LoadingButton>
+        </Grid>
+
+        <Grid item>
+          <ManageStockArea listings={selectedListings} />
         </Grid>
       </Grid>
     </Grid>

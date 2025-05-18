@@ -51,12 +51,12 @@ export function ServiceListingBase(props: { service: Service; index: number }) {
       >
         <CardActionArea
           sx={{
-            borderRadius: 2,
+            borderRadius: 1,
           }}
         >
           <Card
             sx={{
-              borderRadius: 2,
+              borderRadius: 1,
             }}
           >
             <CardHeader
@@ -267,7 +267,7 @@ export function ServiceListings(props: { user?: string; contractor?: string }) {
 
   return (
     <React.Fragment>
-      <Grid item xs={12}>
+      <Grid item xs={12} sx={{ paddingTop: 0 }}>
         <div ref={ref} />
       </Grid>
       {filteredListings
