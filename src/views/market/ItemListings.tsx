@@ -1429,7 +1429,7 @@ export function convertToLegacy(l: MarketSearchResult): MarketListingType {
           timestamp: l.timestamp,
           quantity_available: +l.quantity_available,
           status: l.status,
-          expiration: +new Date(),
+          expiration: new Date().toString(),
           user_seller: l.user_seller
             ? {
                 username: l.user_seller,
@@ -1506,7 +1506,7 @@ export function convertToLegacy(l: MarketSearchResult): MarketListingType {
             timestamp: l.timestamp,
             quantity_available: +l.quantity_available,
             status: l.status,
-            expiration: 0,
+            expiration: new Date().toString(),
           },
           photos: [l.photo],
         },
@@ -1520,7 +1520,7 @@ export function convertToLegacy(l: MarketSearchResult): MarketListingType {
               timestamp: l.timestamp,
               quantity_available: +l.quantity_available,
               status: l.status,
-              expiration: 0,
+              expiration: new Date().toString(),
             },
             details: {
               details_id: "",

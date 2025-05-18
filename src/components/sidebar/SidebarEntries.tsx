@@ -116,19 +116,19 @@ export const all_sidebar_entries: SidebarSectionProps[] = [
           },
         ],
       },
-      {
-        to: "/market/me",
-        text: "My Listings",
-        icon: <ManageAccountsRounded />,
-        logged_in: true,
-        org: false,
-      },
-      {
-        to: "/market/me",
-        text: "My Org's Listings",
-        icon: <ManageAccountsRounded />,
-        org: true,
-      },
+      // {
+      //   to: "/market/me",
+      //   text: "My Listings",
+      //   icon: <ManageAccountsRounded />,
+      //   logged_in: true,
+      //   org: false,
+      // },
+      // {
+      //   to: "/market/me",
+      //   text: "My Org's Listings",
+      //   icon: <ManageAccountsRounded />,
+      //   org: true,
+      // },
       {
         to: "/market/manage",
         text: "Manage Listings",

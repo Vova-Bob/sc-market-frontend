@@ -16,6 +16,7 @@ import {
   Box,
   Button,
   ButtonGroup,
+  IconButton,
   Link as MaterialLink,
   TextField,
   Typography,
@@ -23,6 +24,7 @@ import {
 import {
   AddRounded,
   RadioButtonCheckedRounded,
+  RefreshOutlined,
   RemoveRounded,
 } from "@mui/icons-material"
 import { ItemStockContext, StockRow } from "./ItemStock"
@@ -34,11 +36,14 @@ import { BaseListingType } from "../../datatypes/MarketListing"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 import {
   useMarketGetMyListingsQuery,
+  useMarketRefreshListingMutation,
   useMarketUpdateListingQuantityMutation,
 } from "../../store/market"
 import { Stack } from "@mui/system"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { NumericFormat } from "react-number-format"
+import { RefreshCircle } from "mdi-material-ui"
+import { formatMostSignificantDiff } from "../../util/time"
 
 export function ManageStockArea(props: { listings: BaseListingType[] }) {
   const [quantity, setQuantity] = useState(1)
@@ -154,10 +159,7 @@ export function ManageStockArea(props: { listings: BaseListingType[] }) {
 export function DisplayStock({ listings }: { listings: BaseListingType[] }) {
   const [searchState] = useMarketSearch()
   const [, setSelectedListings] = useContext(ItemStockContext)!
-
-  useEffect(() => {
-    console.log(searchState)
-  }, [searchState])
+  const [refresh] = useMarketRefreshListingMutation()
 
   const filteredListings = useMemo(
     () => filterListings(listings, searchState),
@@ -209,8 +211,15 @@ export function DisplayStock({ listings }: { listings: BaseListingType[] }) {
     },
     {
       field: "price",
-      headerName: "Price (aUEC)",
+      headerName: "Price",
       width: 150,
+      valueFormatter: (value: number) =>
+        `${value.toLocaleString(undefined)} aUEC`,
+    },
+    {
+      field: "quantity_available",
+      headerName: "Quantity",
+      width: 120,
       valueFormatter: (value: number) => value.toLocaleString(undefined),
     },
     {
@@ -235,10 +244,27 @@ export function DisplayStock({ listings }: { listings: BaseListingType[] }) {
       ),
     },
     {
-      field: "quantity_available",
-      headerName: "Quantity",
-      width: 120,
-      valueFormatter: (value: number) => value.toLocaleString(undefined),
+      field: "expiration",
+      renderHeader: () => <RefreshCircle />,
+      width: 50,
+      renderCell: (params: GridRenderCellParams) => (
+        <div>
+          {new Date(params.value) > new Date() ? (
+            formatMostSignificantDiff(params.value)
+          ) : (
+            <IconButton
+              sx={{ color: "error.main" }}
+              onClick={(event) => {
+                event.stopPropagation()
+                event.preventDefault()
+                refresh(params.row.listing_id)
+              }}
+            >
+              <RefreshOutlined />
+            </IconButton>
+          )}
+        </div>
+      ),
     },
   ]
 
@@ -273,6 +299,9 @@ export function DisplayStock({ listings }: { listings: BaseListingType[] }) {
             },
           ".MuiDataGrid-columnSeparator": {
             color: "outline.main",
+          },
+          [".MuiDataGrid-menu"]: {
+            color: "white",
           },
         }}
       />

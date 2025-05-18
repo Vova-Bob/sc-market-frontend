@@ -59,7 +59,7 @@ export interface MarketListing {
   user_seller?: MinimalUser | null
   contractor_seller?: MinimalContractor | null
   orders?: Order[] | null
-  expiration: number
+  expiration: string
 }
 
 export interface UniqueListing {

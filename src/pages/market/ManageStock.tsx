@@ -34,7 +34,7 @@ export function ManageStock() {
       >
         <MarketSidebarContext.Provider value={[open, setOpen]}>
           <ContainerGrid maxWidth={"xl"} sidebarOpen={true}>
-            <HeaderTitle>Manage Stock</HeaderTitle>
+            <HeaderTitle>Manage Listings</HeaderTitle>
 
             <Grid item xs={12} md={3}>
               <Paper>

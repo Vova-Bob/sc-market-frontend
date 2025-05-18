@@ -79,6 +79,20 @@ export const themeBase: ExtendedThemeOptions = {
     },
   },
   components: {
+    MuiSvgIcon: {
+      styleOverrides: {
+        root: {
+          color: "inherit",
+        },
+      },
+    },
+    MuiListItemIcon: {
+      styleOverrides: {
+        root: {
+          color: "inherit",
+        },
+      },
+    },
     MuiTypography: {
       defaultProps: {
         fontFamily: `Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"`,
