@@ -18,7 +18,6 @@ import {
   useMarketCreateAggregateListingMutation,
   useMarketCreateMultipleListingMutation,
   useMarketGetAggregateByIDQuery,
-  useMarketGetAggregatesQuery,
   useMarketGetMyListingsQuery,
   useSearchMarketQuery,
 } from "../../store/market"
@@ -407,7 +406,6 @@ export function AggregateMarketListingForm() {
   const { data: aggregate } = useMarketGetAggregateByIDQuery(state.wiki_id, {
     skip: !state.wiki_id,
   })
-  const { data: aggregates } = useMarketGetAggregatesQuery()
 
   const issueAlert = useAlertHook()
 

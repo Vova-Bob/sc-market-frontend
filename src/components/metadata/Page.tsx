@@ -4,9 +4,16 @@ import { Helmet } from "react-helmet"
 import { useGetContractorBySpectrumIDQuery } from "../../store/contractor"
 import { CircularProgress } from "@mui/material"
 import { Stack } from "@mui/system"
-import { Navigate, useLocation, useRouteError } from "react-router-dom"
+import {
+  Navigate,
+  useLocation,
+  useNavigate,
+  useRouteError,
+} from "react-router-dom"
 
-export function Page(props: { title: string } & PropsWithChildren<any>) {
+export function Page(
+  props: PropsWithChildren<{ title?: string | null; canonUrl?: string }>,
+) {
   useEffect(() => {
     document.title = props.title ? `${props.title} - SC Market` : "SC Market"
   }, [props.title])
@@ -17,12 +24,22 @@ export function Page(props: { title: string } & PropsWithChildren<any>) {
   )
 
   const location = useLocation()
+  const navigate = useNavigate()
   const error = useRouteError()
   useEffect(() => {
     if (import.meta.env.DEV && error) {
       console.error(error)
     }
   }, [error])
+
+  useEffect(() => {
+    if (
+      props.canonUrl &&
+      props.canonUrl != `${location.pathname}${location.hash}`
+    ) {
+      navigate(props.canonUrl)
+    }
+  }, [location.pathname, location.hash, props.canonUrl])
 
   if (error) {
     return (
@@ -46,7 +63,12 @@ export function Page(props: { title: string } & PropsWithChildren<any>) {
       {props.children}
     </>
   ) : (
-    props.children
+    <>
+      <Helmet>
+        {props.canonUrl && <link rel="canonical" href={props.canonUrl} />}
+      </Helmet>
+      {props.children}
+    </>
   )
 }
 

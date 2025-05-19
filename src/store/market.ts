@@ -65,7 +65,7 @@ export interface MarketSearchResult {
   auction_end_time: number
 }
 
-let baseUrl = `${BACKEND_URL}/api/market`
+const baseUrl = `${BACKEND_URL}/api/market`
 // Define a service using a base URL and expected endpoints
 export const marketApi = serviceApi.injectEndpoints({
   overrideExisting: false,
@@ -414,19 +414,6 @@ export const marketApi = serviceApi.injectEndpoints({
       //     {type: 'Listing', id: arg.body.listing_id}, {type: 'Listing'},
       // ],
     }),
-    marketAcceptOffer: builder.mutation<
-      void,
-      { listing_id: string; offer_id: string }
-    >({
-      query: (body) => ({
-        url: `${baseUrl}/offer/accept`,
-        method: "POST",
-        body,
-      }),
-      invalidatesTags: (result, error, arg) => [
-        { type: "Listing" as const, id: arg.listing_id },
-      ],
-    }),
     marketBid: builder.mutation<
       void,
       {
@@ -542,8 +529,6 @@ export const {
   useMarketGetAggregateByIDQuery,
   useMarketGetAggregateChartByIDQuery,
   useMarketGetAggregateHistoryByIDQuery,
-  useMarketGetAggregateListingByIDQuery,
-  useMarketGetAggregatesQuery,
   useMarketGetListingByUserQuery,
   useMarketUpdateAggregateAdminMutation,
   useMarketCreateMultipleListingMutation,
@@ -568,8 +553,6 @@ export const usePurchaseListing = marketApi.endpoints.marketPurchase.useMutation
 export const useMarketBid = marketApi.endpoints.marketBid.useMutation
 export const useMarketAcceptBid =
   marketApi.endpoints.marketAcceptBid.useMutation
-export const useMarketAcceptOffer =
-  marketApi.endpoints.marketAcceptOffer.useMutation
 export const useUpdateMarketListing =
   marketApi.endpoints.marketUpdateListing.useMutation
 export const useCreateListing =

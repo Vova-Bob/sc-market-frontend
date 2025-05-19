@@ -14,6 +14,7 @@ import { Button, Grid } from "@mui/material"
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded"
 import { BackArrow } from "../../components/button/BackArrow"
 import { MarketMultipleEditView } from "../../views/market/MarketMultipleEditView"
+import { formatMarketUrl } from "../../util/urls"
 
 export function ViewMarketListing(props: {}) {
   const { id } = useParams<{ id: string }>()
@@ -29,7 +30,10 @@ export function ViewMarketListing(props: {}) {
   const { data: listing, error, refetch } = useGetListingByIDQuery(id!)
 
   return (
-    <Page title={listing?.details?.title}>
+    <Page
+      title={listing?.details?.title}
+      canonUrl={listing && formatMarketUrl(listing)}
+    >
       <ContainerGrid sidebarOpen={true} maxWidth={"xl"}>
         <Grid
           item
