@@ -47,7 +47,7 @@ export const all_sidebar_entries: SidebarSectionProps[] = [
         org: true,
       },
       {
-        to: "/market/manage",
+        to: "/market/manage?quantityAvailable=0",
         text: "Manage Market Listings",
         icon: <WarehouseRounded />,
         logged_in: true,
@@ -117,7 +117,7 @@ export const all_sidebar_entries: SidebarSectionProps[] = [
             icon: <SettingsIcon />,
           },
           {
-            to: "/market/manage",
+            to: "/market/manage?quantityAvailable=0",
             text: "Manage Listings",
             icon: <WarehouseRounded />,
             logged_in: true,

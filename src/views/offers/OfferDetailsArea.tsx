@@ -41,6 +41,7 @@ import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { Link, useNavigate } from "react-router-dom"
 import { paymentTypeMessages } from "../orders/Services"
 import { useGetPublicContractQuery } from "../../store/public_contracts"
+import { ListingSellerRating } from "../../components/rating/ListingRating"
 
 export function OfferMessagesArea(props: { offer: OfferSession }) {
   const { offer } = props
@@ -173,7 +174,10 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
-                  <UserDetails user={session.customer} />
+                  <Stack direction={"column"}>
+                    <UserDetails user={session.customer} />
+                    <ListingSellerRating user={session.customer} />
+                  </Stack>
                 </Stack>
               </TableCell>
             </TableRow>
@@ -206,12 +210,18 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
-                  {session.assigned_to && (
-                    <UserDetails user={session.assigned_to} />
-                  )}
-                  {session.contractor && (
-                    <OrgDetails org={session.contractor} />
-                  )}
+                  <Stack direction={"column"}>
+                    {session.assigned_to && (
+                      <UserDetails user={session.assigned_to} />
+                    )}
+                    {session.contractor && (
+                      <OrgDetails org={session.contractor} />
+                    )}
+                    <ListingSellerRating
+                      user={session.assigned_to}
+                      contractor={session.contractor}
+                    />
+                  </Stack>
                 </Stack>
               </TableCell>
             </TableRow>
