@@ -13,7 +13,7 @@ interface FormattableListingType {
 
 export function formatListingSlug(title: string) {
   return title
-    .toLocaleLowerCase()
+    .toLowerCase()
     .replace(/ /g, "-")
     .replace(/[^\w-]+/g, "")
 }

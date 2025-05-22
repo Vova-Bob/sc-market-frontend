@@ -41,6 +41,8 @@ export function Page(
     }
   }, [location.pathname, location.hash, props.canonUrl])
 
+  const backupCanonUrl = `${location.pathname}${location.search}`
+
   if (error) {
     return (
       <Navigate
@@ -65,7 +67,12 @@ export function Page(
   ) : (
     <>
       <Helmet>
-        {props.canonUrl && <link rel="canonical" href={props.canonUrl} />}
+        {
+          <link
+            rel="canonical"
+            href={`https://sc-market.space${props.canonUrl || backupCanonUrl}`}
+          />
+        }
       </Helmet>
       {props.children}
     </>
