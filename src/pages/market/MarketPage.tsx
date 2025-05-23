@@ -52,7 +52,7 @@ export function MarketPage() {
   )
 
   return (
-    <Page title={"Market"} dontUseDefaultCanonUrl={false}>
+    <Page title={"Market"} dontUseDefaultCanonUrl={true}>
       <OpenLayout sidebarOpen={true}>
         <Container maxWidth={"lg"} sx={{ paddingTop: 8 }}>
           <Grid
