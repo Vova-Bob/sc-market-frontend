@@ -12,7 +12,11 @@ import {
 } from "react-router-dom"
 
 export function Page(
-  props: PropsWithChildren<{ title?: string | null; canonUrl?: string }>,
+  props: PropsWithChildren<{
+    title?: string | null
+    canonUrl?: string
+    dontUseDefaultCanonUrl?: boolean
+  }>,
 ) {
   useEffect(() => {
     document.title = props.title ? `${props.title} - SC Market` : "SC Market"
@@ -35,13 +39,13 @@ export function Page(
   useEffect(() => {
     if (
       props.canonUrl &&
-      props.canonUrl != `${location.pathname}${location.hash}`
+      props.canonUrl != location.pathname + location.search + location.hash
     ) {
       navigate(props.canonUrl)
     }
   }, [location.pathname, location.hash, props.canonUrl])
 
-  const backupCanonUrl = `${location.pathname}${location.search}`
+  const backupCanonUrl = location.pathname
 
   if (error) {
     return (
@@ -67,12 +71,12 @@ export function Page(
   ) : (
     <>
       <Helmet>
-        {
+        {(props.canonUrl || !props.dontUseDefaultCanonUrl) && (
           <link
             rel="canonical"
             href={`https://sc-market.space${props.canonUrl || backupCanonUrl}`}
           />
-        }
+        )}
       </Helmet>
       {props.children}
     </>
