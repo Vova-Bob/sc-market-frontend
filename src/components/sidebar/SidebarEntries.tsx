@@ -231,12 +231,12 @@ export const all_sidebar_entries: SidebarSectionProps[] = [
       //   logged_in: true,
       //   org: false,
       // },
-      // {
-      //   to: "/market/me",
-      //   text: "My Org's Listings",
-      //   icon: <ManageAccountsRounded />,
-      //   org: true,
-      // },
+      {
+        to: "/market/me",
+        text: "My Org's Listings",
+        icon: <ManageAccountsRounded />,
+        org: true,
+      },
       {
         to: "/sell",
         text: "Sell Materials",
