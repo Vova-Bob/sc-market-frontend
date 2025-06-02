@@ -210,7 +210,7 @@ export function OffersViewPaginated(props: {
   const { mine, assigned, contractor } = props
   const { data: profile } = useGetUserProfileQuery()
   const [statusFilter, setStatusFilter] = useState<null | OfferSearchStatus>(
-    null,
+    mine ? "to-customer" : "to-seller",
   )
   const [pageSize, setPageSize] = useState(5)
   const [page, setPage] = useState(0)

@@ -1,4 +1,4 @@
-import { AppBar, Button, IconButton, Toolbar, Typography } from "@mui/material"
+import { AppBar, IconButton, Toolbar, Tooltip, Typography } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
 import { ExtendedTheme } from "../../hooks/styles/Theme"
 import React from "react"
@@ -74,13 +74,15 @@ export function Navbar(props: { children?: React.ReactNode }) {
         }}
       >
         {!drawerOpen && (
-          <IconButton
-            color={"secondary"}
-            onClick={() => setDrawerOpen(true)}
-            sx={{ marginLeft: 2 }}
-          >
-            <MenuRounded />
-          </IconButton>
+          <Tooltip title="Toggle Drawer">
+            <IconButton
+              color={"secondary"}
+              onClick={() => setDrawerOpen(true)}
+              sx={{ marginLeft: 2 }}
+            >
+              <MenuRounded />
+            </IconButton>
+          </Tooltip>
         )}
 
         {props.children}

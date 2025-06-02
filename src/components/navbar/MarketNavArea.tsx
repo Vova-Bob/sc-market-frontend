@@ -12,6 +12,7 @@ import {
   TextField,
   Theme,
   Toolbar,
+  Tooltip,
   Typography,
 } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
@@ -288,17 +289,19 @@ export function MarketNavArea(props: { top?: boolean }) {
             </Grid>
 
             <Grid item sx={{ paddingTop: 2 }}>
-              <IconButton onClick={() => setFilterOpen((o) => !o)}>
-                <FilterAltRounded
-                  style={{
-                    color: filterOpen
-                      ? theme.palette.secondary.main
-                      : theme.palette.getContrastText(
-                          theme.palette.background.default,
-                        ),
-                  }}
-                />
-              </IconButton>
+              <Tooltip title="Filters">
+                <IconButton onClick={() => setFilterOpen((o) => !o)}>
+                  <FilterAltRounded
+                    style={{
+                      color: filterOpen
+                        ? theme.palette.secondary.main
+                        : theme.palette.getContrastText(
+                            theme.palette.background.default,
+                          ),
+                    }}
+                  />
+                </IconButton>
+              </Tooltip>
             </Grid>
 
             <Grid item sx={{ paddingTop: 2 }}>
