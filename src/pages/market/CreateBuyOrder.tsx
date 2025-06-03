@@ -7,7 +7,7 @@ import React, { useMemo, useState } from "react"
 import { BuyOrderForm } from "../../views/market/BuyOrderForm"
 import { Page } from "../../components/metadata/Page"
 import { ContainerGrid } from "../../components/layout/ContainerGrid"
-import { SelectGameItem } from "../../components/select/SelectGameItem"
+import { SelectGameItemStack } from "../../components/select/SelectGameItem"
 
 export function CreateBuyOrder() {
   const [itemType, setItemType] = useState<string>("Other")
@@ -33,7 +33,7 @@ export function CreateBuyOrder() {
     <Page title={"Create Buy Order"}>
       <ContainerGrid sidebarOpen={true}>
         <FlatSection title={"Select Item"}>
-          <SelectGameItem
+          <SelectGameItemStack
             onItemChange={(value) => setItemName(value)}
             onTypeChange={(value) => {
               setItemType(value)

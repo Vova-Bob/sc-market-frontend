@@ -5,12 +5,15 @@ import {
   useMarketItemsByCategoryQuery,
 } from "../../store/market"
 
-export function SelectGameItem(props: {
+export interface SelectGameItemProps {
   item_type: string
   item_name: string | null
   onTypeChange: (newValue: string) => void
   onItemChange: (newValue: string | null) => void
-}) {
+  TextfieldProps?: TextFieldProps
+}
+
+export function SelectGameItemStack(props: SelectGameItemProps) {
   const { data: categories } = useMarketCategoriesQuery()
   const { data: items, isLoading: itemsLoading } =
     useMarketItemsByCategoryQuery(props.item_type!, {
@@ -51,7 +54,11 @@ export function SelectGameItem(props: {
           groupBy={(o) => o.category}
           color={"secondary"}
           renderInput={(params) => (
-            <TextField {...params} label={"Item Type"} />
+            <TextField
+              {...params}
+              label={"Item Type"}
+              {...props.TextfieldProps}
+            />
           )}
           getOptionLabel={(option) => option.subcategory}
         />
@@ -67,13 +74,89 @@ export function SelectGameItem(props: {
           }}
           color={"secondary"}
           renderInput={(params) => (
-            <TextField {...params} label={"Item Name"} />
+            <TextField
+              {...params}
+              label={"Item Name"}
+              {...props.TextfieldProps}
+            />
           )}
           getOptionLabel={(option) => option.name}
           disabled={!props.item_type || !items || items.length === 0}
           loading={itemsLoading}
         />
       </Grid>
+    </>
+  )
+}
+
+export function SelectGameItem(props: SelectGameItemProps) {
+  const { data: categories } = useMarketCategoriesQuery()
+  const { data: items, isLoading: itemsLoading } =
+    useMarketItemsByCategoryQuery(props.item_type!, {
+      skip: !props.item_type,
+    })
+
+  const category_value = useMemo(
+    () =>
+      categories
+        ? (categories || []).find((o) => o.subcategory === props.item_type) || {
+            category: "Other",
+            subcategory: "Other",
+          }
+        : { category: "Other", subcategory: "Other" },
+    [categories, props.item_type],
+  )
+  const item_name_value = useMemo(
+    () =>
+      props.item_name
+        ? (items || []).find((o) => o.name === props.item_name) || null
+        : null,
+    [items, props.item_name],
+  )
+
+  return (
+    <>
+      <Autocomplete
+        // fullWidth
+        options={categories || []}
+        id="item-type"
+        value={category_value}
+        onChange={(event, value) => {
+          if (value) {
+            props.onTypeChange(value.subcategory)
+          }
+        }}
+        groupBy={(o) => o.category}
+        color={"secondary"}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label={"Item Type"}
+            {...props.TextfieldProps}
+          />
+        )}
+        getOptionLabel={(option) => option.subcategory}
+      />
+      <Autocomplete
+        // fullWidth
+        options={props.item_type ? items || [] : []}
+        id="item-name"
+        value={item_name_value}
+        onChange={(event, value) => {
+          props.onItemChange(value ? value.name : null)
+        }}
+        color={"secondary"}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label={"Item Name"}
+            {...props.TextfieldProps}
+          />
+        )}
+        getOptionLabel={(option) => option.name}
+        disabled={!props.item_type || !items || items.length === 0}
+        loading={itemsLoading}
+      />
     </>
   )
 }

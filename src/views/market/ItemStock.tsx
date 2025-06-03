@@ -3,6 +3,7 @@ import {
   GridColDef,
   GridRenderCellParams,
   GridRowSelectionModel,
+  Toolbar,
 } from "@mui/x-data-grid"
 import React, {
   useCallback,
@@ -25,6 +26,7 @@ import {
   AddRounded,
   CreateRounded,
   RadioButtonCheckedRounded,
+  RadioButtonUncheckedRounded,
   RefreshOutlined,
   RemoveRounded,
 } from "@mui/icons-material"
@@ -32,18 +34,23 @@ import { useMarketSearch } from "../../hooks/market/MarketSearch"
 import { filterListings } from "./ItemListings"
 import { formatMarketUrl } from "../../util/urls"
 import { Link } from "react-router-dom"
-import { UniqueListing } from "../../datatypes/MarketListing"
+import {
+  MarketListingUpdateBody,
+  UniqueListing,
+} from "../../datatypes/MarketListing"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 import {
   useMarketGetMyListingsQuery,
   useMarketRefreshListingMutation,
   useMarketUpdateListingQuantityMutation,
+  useUpdateMarketListing,
 } from "../../store/market"
 import { Stack } from "@mui/system"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { NumericFormat } from "react-number-format"
 import { RefreshCircle } from "mdi-material-ui"
 import { formatMostSignificantDiff } from "../../util/time"
+import LoadingButton from "@mui/lab/LoadingButton"
 
 export const ItemStockContext = React.createContext<
   | [UniqueListing[], React.Dispatch<React.SetStateAction<UniqueListing[]>>]
@@ -77,16 +84,7 @@ export function ManageStockArea(props: { listings: UniqueListing[] }) {
   )
 
   return (
-    <Box
-      sx={{
-        paddingBottom: 2,
-        paddingTop: 2,
-        display: "flex",
-        "& > *": { marginRight: 2 },
-        paddingRight: 2,
-        // justifyContent: 'space-between'
-      }}
-    >
+    <>
       <NumericFormat
         decimalScale={0}
         allowNegative={false}
@@ -102,22 +100,17 @@ export function ManageStockArea(props: { listings: UniqueListing[] }) {
           size: "small",
         }}
         sx={{
-          marginRight: 2,
           minWidth: 200,
         }}
-        fullWidth
         size="small"
         label={"Update Amount"}
         value={quantity}
         color={"secondary"}
       />
 
-      <ButtonGroup
-        variant="contained"
-        aria-label="outlined primary button group"
-      >
+      <ButtonGroup size={"small"}>
         <Button
-          size={"small"}
+          variant={"contained"}
           onClick={() =>
             listings.map((listing) =>
               updateListingCallback(listing, {
@@ -127,11 +120,13 @@ export function ManageStockArea(props: { listings: UniqueListing[] }) {
             )
           }
           color={"success"}
+          startIcon={<AddRounded />}
         >
-          <AddRounded />
+          Add
         </Button>
+
         <Button
-          size={"small"}
+          variant={"contained"}
           onClick={() =>
             listings.map((listing) =>
               updateListingCallback(listing, { quantity_available: 0 }),
@@ -142,7 +137,7 @@ export function ManageStockArea(props: { listings: UniqueListing[] }) {
           0
         </Button>
         <Button
-          size={"small"}
+          variant={"contained"}
           onClick={() =>
             listings.map((listing) =>
               updateListingCallback(listing, {
@@ -152,11 +147,12 @@ export function ManageStockArea(props: { listings: UniqueListing[] }) {
             )
           }
           color={"error"}
+          startIcon={<RemoveRounded />}
         >
-          <RemoveRounded />
+          Sub
         </Button>
       </ButtonGroup>
-    </Box>
+    </>
   )
 }
 
@@ -170,6 +166,53 @@ export interface StockRow {
   expiration: string
   order_count: number
   offer_count: number
+}
+
+function ItemStockToolbar() {
+  const [selectedListings] = useContext(ItemStockContext)!
+
+  const [updateListing, { isLoading }] = useUpdateMarketListing()
+  const updateListingCallback = useCallback(
+    async (body: MarketListingUpdateBody) => {
+      selectedListings.forEach((listing) => {
+        updateListing({
+          listing_id: listing.listing.listing_id,
+          body,
+        })
+      })
+    },
+    [selectedListings, updateListing],
+  )
+
+  return (
+    <Toolbar>
+      <ManageStockArea listings={selectedListings} />
+      <LoadingButton
+        color={"success"}
+        startIcon={<RadioButtonCheckedRounded />}
+        variant={"outlined"}
+        size={"small"}
+        loading={isLoading}
+        onClick={() => {
+          updateListingCallback({ status: "active" })
+        }}
+      >
+        Activate
+      </LoadingButton>
+      <LoadingButton
+        color={"error"}
+        startIcon={<RadioButtonUncheckedRounded />}
+        variant={"outlined"}
+        size={"small"}
+        loading={isLoading}
+        onClick={() => {
+          updateListingCallback({ status: "inactive" })
+        }}
+      >
+        Deactivate
+      </LoadingButton>
+    </Toolbar>
+  )
 }
 
 export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
@@ -199,36 +242,30 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
 
   const columns: GridColDef<StockRow>[] = [
     {
-      field: "image",
-      hideSortIcons: true,
-      headerName: "Image",
-      renderHeader: () => null,
-      width: 80,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams) => (
-        <Stack justifyContent={"center"}>
-          <Avatar src={params.row.image_url} variant="rounded" />
-        </Stack>
-      ),
-      display: "flex",
-    },
-    {
       field: "title",
       headerName: "Title",
       flex: 1,
       renderCell: (params: GridRenderCellParams) => (
-        <MaterialLink
-          component={Link}
-          to={formatMarketUrl({
-            type: "unique",
-            details: { title: params.row.title },
-            listing: params.row,
-          })}
-          sx={{ fontWeight: "bold" }}
-          underline="hover"
+        <Stack
+          justifyContent={"left"}
+          direction={"row"}
+          spacing={1}
+          alignItems={"center"}
         >
-          {params.row.title}
-        </MaterialLink>
+          <Avatar src={params.row.image_url} variant="rounded" />
+          <MaterialLink
+            component={Link}
+            to={formatMarketUrl({
+              type: "unique",
+              details: { title: params.row.title },
+              listing: params.row,
+            })}
+            sx={{ fontWeight: "bold" }}
+            underline="hover"
+          >
+            {params.row.title}
+          </MaterialLink>
+        </Stack>
       ),
     },
     {
@@ -253,11 +290,7 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
       renderCell: (params: GridRenderCellParams) => (
         <Typography
           variant={"subtitle2"}
-          color={
-            +params.row.offer_count === 0 && +params.row.order_count > 1
-              ? "success"
-              : "warning"
-          }
+          color={+params.row.offer_count === 0 ? "success" : "warning"}
         >
           {(+params.row.order_count).toLocaleString(undefined)} /{" "}
           {(+params.row.order_count + +params.row.offer_count).toLocaleString(
@@ -353,7 +386,7 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
         rowSelectionModel={rowSelectionModel}
         sx={{
           borderColor: "outline.main",
-          [`& .MuiDataGrid-cell, & .MuiDataGrid-filler > *, & .MuiDataGrid-footerContainer, & .MuiDataGrid-columnSeparator`]:
+          [`& .MuiDataGrid-cell, & .MuiDataGrid-filler > *, & .MuiDataGrid-footerContainer, & .MuiDataGrid-columnSeparator, & .MuiDataGrid-toolbar`]:
             {
               borderColor: "outline.main",
             },
@@ -364,6 +397,10 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
             color: "white",
           },
         }}
+        slots={{
+          toolbar: ItemStockToolbar,
+        }}
+        showToolbar
       />
     </Box>
   )

@@ -8,9 +8,9 @@ import { ItemStockContext, MyItemStock } from "../../views/market/ItemStock"
 import { useMarketSearch } from "../../hooks/market/MarketSearch"
 import { UniqueListing } from "../../datatypes/MarketListing"
 import { HeaderTitle } from "../../components/typography/HeaderTitle"
-import { ManageListingsActions } from "../../components/button/MarketActions"
 import { UnderlineLink } from "../../components/typography/UnderlineLink"
 import { Link } from "react-router-dom"
+import { ItemStockRework } from "../../views/market/ItemStockRework"
 
 export function ManageStock() {
   const [open, setOpen] = useState(true)
@@ -42,11 +42,13 @@ export function ManageStock() {
             </Grid>
 
             <Grid item xs={12} md={9}>
-              <Grid container>
-                <ManageListingsActions />
+              <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <MyItemStock />
                 </Grid>
+                {/*<Grid item xs={12}>*/}
+                {/*  <ItemStockRework />*/}
+                {/*</Grid>*/}
               </Grid>
             </Grid>
 

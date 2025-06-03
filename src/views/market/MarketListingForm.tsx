@@ -42,7 +42,7 @@ import { NumericFormat } from "react-number-format"
 import { FormPaper } from "../../components/paper/FormPaper"
 import {
   SelectGameCategory,
-  SelectGameItem,
+  SelectGameItemStack,
 } from "../../components/select/SelectGameItem"
 import LoadingButton from "@mui/lab/LoadingButton"
 import { SelectPhotosArea } from "../../components/modal/SelectPhotosArea"
@@ -164,7 +164,7 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
           />
         </Grid>
 
-        <SelectGameItem
+        <SelectGameItemStack
           onItemChange={(value) =>
             setState((state) => ({ ...state, item_name: value }))
           }

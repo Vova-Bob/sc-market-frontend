@@ -38,7 +38,7 @@ import {
 } from "../../datatypes/MarketListing"
 import { has_permission } from "../contractor/OrgRoles"
 import { NumericFormat } from "react-number-format"
-import { SelectGameItem } from "../../components/select/SelectGameItem"
+import { SelectGameItemStack } from "../../components/select/SelectGameItem"
 import { Stack } from "@mui/system"
 import { SelectPhotosArea } from "../../components/modal/SelectPhotosArea"
 
@@ -236,7 +236,7 @@ export function MarketListingEditView() {
                         "& > *": { marginRight: 2 },
                       }}
                     >
-                      <SelectGameItem
+                      <SelectGameItemStack
                         onItemChange={(value) => setItem(value)}
                         onTypeChange={(value) => {
                           setType(value)

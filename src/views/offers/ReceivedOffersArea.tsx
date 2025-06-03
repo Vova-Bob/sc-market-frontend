@@ -9,10 +9,8 @@ import {
 } from "../../components/table/PaginatedTable"
 import React, { MouseEventHandler, useMemo, useState } from "react"
 import {
-  Avatar,
   Chip,
   Grid,
-  Link as MaterialLink,
   Paper,
   Tab,
   TableCell,
@@ -21,7 +19,6 @@ import {
   Typography,
 } from "@mui/material"
 import { Link } from "react-router-dom"
-import { UnderlineLink } from "../../components/typography/UnderlineLink"
 import {
   Announcement,
   Cancel,
@@ -34,6 +31,7 @@ import { useTheme } from "@mui/material/styles"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 import { useGetUserProfileQuery } from "../../store/profile"
 import { OrderSearchSortMethod } from "../../datatypes/Order"
+import { UserAvatar } from "../../components/avatar/UserAvatar"
 
 export const OffersHeadCells: readonly HeadCell<
   OfferSessionStub & { customer_name: string }
@@ -138,36 +136,7 @@ export function OfferRow(props: {
         </Stack>
       </TableCell>
       <TableCell align={"right"}>
-        <Stack
-          spacing={1}
-          direction={"row"}
-          justifyContent={"right"}
-          alignItems={"center"}
-        >
-          <Avatar src={row.customer.avatar} />
-          <Stack
-            direction={"column"}
-            justifyContent={"center"}
-            alignItems={"center"}
-          >
-            <MaterialLink
-              component={Link}
-              to={`/user/${row.customer.username}`}
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <UnderlineLink
-                color={"text.secondary"}
-                variant={"subtitle1"}
-                fontWeight={"bold"}
-              >
-                {row.customer.username}
-              </UnderlineLink>
-            </MaterialLink>
-            <Typography variant={"subtitle2"}>
-              {row.customer.display_name}
-            </Typography>
-          </Stack>
-        </Stack>
+        <UserAvatar user={row.customer} />
       </TableCell>
       <TableCell align={"right"}>
         <Chip label={row.status} color={statusColor} icon={icon} />
