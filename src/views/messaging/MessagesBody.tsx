@@ -492,11 +492,11 @@ function MessagesArea(props: {
   const [chat] = useCurrentChat()
 
   useEffect(() => {
-    if (!chat?.order_id) {
+    // if (!chat?.order_id) {
       messageEndRef?.current?.scrollIntoView({
         block: "end",
       })
-    }
+    // }
   }, [messageEndRef, chat])
 
   const { messages } = props
