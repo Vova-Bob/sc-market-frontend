@@ -67,8 +67,8 @@ import {
 } from "../../hooks/market/MarketSearch"
 import {
   MarketSearchResult,
-  useGetListingsByContractor,
-  useGetPublicListings,
+  useMarketGetListingsByContractorQuery,
+  useMarketGetPublicQuery,
   useMarketGetAllListingsQuery,
   useMarketGetBuyOrderListingsQuery,
   useMarketGetListingByUserQuery,
@@ -1888,7 +1888,7 @@ export function BulkListingsRefactor(props: {
 }
 
 export function BulkListings() {
-  const { data: listings, isLoading } = useGetPublicListings()
+  const { data: listings, isLoading } = useMarketGetPublicQuery()
 
   const [searchState, setSearchState] = useMarketSearch()
   useEffect(() => {
@@ -1923,7 +1923,7 @@ export function BuyOrders() {
 
 export function OrgListings(props: { org: string }) {
   const { org } = props
-  const { data: listings, isLoading } = useGetListingsByContractor(org)
+  const { data: listings, isLoading } = useMarketGetListingsByContractorQuery(org)
   const filteredListings = useMemo(() => listings || [], [listings, org])
 
   const [searchState, setSearchState] = useMarketSearch()
@@ -1944,7 +1944,7 @@ export function OrgListings(props: { org: string }) {
 
 export function OrgRecentListings(props: { org: string }) {
   const { org } = props
-  const { data: listings } = useGetListingsByContractor(org)
+  const { data: listings } = useMarketGetListingsByContractorQuery(org)
 
   const filteredListings = useMemo(() => {
     return [...(listings || [])]

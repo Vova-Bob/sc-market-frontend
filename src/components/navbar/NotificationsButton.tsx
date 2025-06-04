@@ -43,7 +43,7 @@ import {
   useNotificationUpdateMutation,
 } from "../../store/notification"
 import { MarketBid } from "../../datatypes/MarketListing"
-import { useGetListingByIDQuery } from "../../store/market"
+import { useMarketGetListingByIDQuery } from "../../store/market"
 import { OfferSession } from "../../store/offer"
 
 /*
@@ -408,7 +408,7 @@ export function NotificationBid(props: { notif: Notification }) {
   const { notif } = props
   const theme = useTheme<ExtendedTheme>()
   const bid = useMemo(() => notif.entity as MarketBid, [notif.entity])
-  const { data: listing } = useGetListingByIDQuery(bid.listing_id)
+  const { data: listing } = useMarketGetListingByIDQuery(bid.listing_id)
 
   return (
     <NotificationBase

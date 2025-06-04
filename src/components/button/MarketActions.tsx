@@ -12,7 +12,7 @@ import {
   MarketListingUpdateBody,
   UniqueListing,
 } from "../../datatypes/MarketListing"
-import { useUpdateMarketListing } from "../../store/market"
+import { useMarketUpdateListingMutation } from "../../store/market"
 import LoadingButton from "@mui/lab/LoadingButton"
 
 export function MarketActions() {
@@ -58,7 +58,7 @@ export function MarketActions() {
 export function ManageListingsActions() {
   const [selectedListings] = useContext(ItemStockContext)!
 
-  const [updateListing, { isLoading }] = useUpdateMarketListing()
+  const [updateListing, { isLoading }] = useMarketUpdateListingMutation()
   const updateListingCallback = useCallback(
     async (body: MarketListingUpdateBody) => {
       selectedListings.forEach((listing) => {

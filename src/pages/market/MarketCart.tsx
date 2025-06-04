@@ -18,7 +18,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { UnderlineLink } from "../../components/typography/UnderlineLink"
 import { useGetUserByUsernameQuery } from "../../store/profile"
 import { useGetContractorBySpectrumIDQuery } from "../../store/contractor"
-import { useGetListingByIDQuery, usePurchaseListing } from "../../store/market"
+import { useMarketGetListingByIDQuery, useMarketPurchaseMutation } from "../../store/market"
 import { LocalOfferRounded } from "@mui/icons-material"
 import { TrashCan } from "mdi-material-ui"
 import LoadingButton from "@mui/lab/LoadingButton"
@@ -36,7 +36,7 @@ export function CartItemEntry(props: {
   removeCartItem: (item: CartItem) => void
 }) {
   const { item, updateCart, removeCartItem } = props
-  const { data: listing } = useGetListingByIDQuery(item.listing_id)
+  const { data: listing } = useMarketGetListingByIDQuery(item.listing_id)
   const composite = listing as MarketAggregateListingComposite | undefined
 
   useEffect(() => {
@@ -208,7 +208,7 @@ export function CartSellerEntry(props: {
   const [
     purchaseListing, // This is the mutation trigger
     { isLoading: purchaseLoading }, // This is the destructured mutation result
-  ] = usePurchaseListing()
+  ] = useMarketPurchaseMutation()
 
   const total = useMemo(
     () =>

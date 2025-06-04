@@ -18,7 +18,7 @@ import { PaginatedTable } from "../../components/table/PaginatedTable"
 import React, { useMemo, useState } from "react"
 import { MarketListingDetails } from "../../components/list/UserDetails"
 import {
-  useGetListingsByContractor,
+  useMarketGetListingsByContractorQuery,
   useMarketGetListingByUserQuery,
 } from "../../store/market"
 import { useCounterOffer } from "../../hooks/offer/CounterOfferDetails"
@@ -141,7 +141,7 @@ export function OfferMarketListingsEditArea(props: { offer: OfferSession }) {
       skip: !session.assigned_to?.username,
     },
   )
-  const { data: contractorListings } = useGetListingsByContractor(
+  const { data: contractorListings } = useMarketGetListingsByContractorQuery(
     session.contractor?.spectrum_id!,
     { skip: !session.contractor?.spectrum_id },
   )

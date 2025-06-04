@@ -524,7 +524,6 @@ export const marketApi = serviceApi.injectEndpoints({
 export const {
   useMarketGetAllListingsQuery,
   useMarketUpdateListingQuantityMutation,
-  useMarketUpdateAggregateListingQuantityMutation,
   useMarketCreateAggregateListingMutation,
   useMarketGetAggregateByIDQuery,
   useMarketGetAggregateChartByIDQuery,
@@ -544,17 +543,12 @@ export const {
   useMarketCategoriesQuery,
   useMarketItemsByCategoryQuery,
   useMarketGetBuyOrderListingsQuery,
+  useMarketPurchaseMutation,
+  useMarketGetListingByIDQuery,
+  useMarketGetListingsByContractorQuery,
+  useMarketBidMutation,
+  useMarketAcceptBidMutation,
+  useMarketUpdateListingMutation,
+  useMarketCreateListingMutation,
+  useMarketGetPublicQuery,
 } = marketApi
-export const useGetListingByIDQuery =
-  marketApi.endpoints.marketGetListingByID.useQuery
-export const useGetListingsByContractor =
-  marketApi.endpoints.marketGetListingsByContractor.useQuery
-export const usePurchaseListing = marketApi.endpoints.marketPurchase.useMutation
-export const useMarketBid = marketApi.endpoints.marketBid.useMutation
-export const useMarketAcceptBid =
-  marketApi.endpoints.marketAcceptBid.useMutation
-export const useUpdateMarketListing =
-  marketApi.endpoints.marketUpdateListing.useMutation
-export const useCreateListing =
-  marketApi.endpoints.marketCreateListing.useMutation
-export const useGetPublicListings = marketApi.endpoints.marketGetPublic.useQuery

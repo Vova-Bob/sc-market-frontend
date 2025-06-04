@@ -10,7 +10,7 @@ import {
 import { Link } from "react-router-dom"
 import { UnderlineLink } from "../../components/typography/UnderlineLink"
 import { getRelativeTime } from "../../util/time"
-import { useMarketAcceptBid } from "../../store/market"
+import { useMarketAcceptBidMutation } from "../../store/market"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 
 export interface BidRowProps {

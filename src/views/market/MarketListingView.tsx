@@ -13,7 +13,6 @@ import {
   IconButton,
   InputAdornment,
   Link as MaterialLink,
-  Slide,
   TextField,
   Typography,
 } from "@mui/material"
@@ -27,14 +26,16 @@ import {
   AddShoppingCartRounded,
   CreateRounded,
   GavelRounded,
-  KeyboardArrowLeftRounded,
   PersonRounded,
   RefreshRounded,
 } from "@mui/icons-material"
 import { useCurrentMarketListing } from "../../hooks/market/CurrentMarketItem"
 import { BaseListingType, UniqueListing } from "../../datatypes/MarketListing"
 import { UserList } from "../../components/list/UserList"
-import { useMarketBid, usePurchaseListing } from "../../store/market"
+import {
+  useMarketBidMutation,
+  useMarketPurchaseMutation,
+} from "../../store/market"
 import { OrderList } from "../../components/list/OrderList"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { MarkdownRender } from "../../components/markdown/Markdown"
@@ -84,73 +85,8 @@ export function PurchaseArea(props: { listing: BaseListingType }) {
   const containerRef = React.useRef(null)
   const issueAlert = useAlertHook()
 
-  const [
-    purchaseListing, // This is the mutation trigger
-    { isLoading: purchaseLoading }, // This is the destructured mutation result
-  ] = usePurchaseListing()
-
-  // const [
-  //     offerListing, // This is the mutation trigger
-  //     {isLoading: offerLoading}, // This is the destructured mutation result
-  // ] = useMarketOffer()
-
-  const navigate = useNavigate()
   const { data: profile } = useGetUserProfileQuery()
   const location = useLocation()
-
-  const handlePurchase = useCallback(async () => {
-    const res: { data?: any; error?: any } = await purchaseListing({
-      body: {
-        items: [{ listing_id: listing.listing.listing_id, quantity }],
-        note: "",
-      },
-    })
-
-    if (!profile) {
-      window.location.href = `${BACKEND_URL}/auth/discord?path=${encodeURIComponent(
-        location.pathname === "/" ? "/market" : location.pathname,
-      )}`
-      return
-    }
-
-    if (res?.data && !res?.error) {
-      setQuantity(0)
-
-      issueAlert({
-        message: "Purchase successful!",
-        severity: "success",
-      })
-
-      setPurchaseOpen(false)
-
-      if (res.data.discord_invite) {
-        const newWindow = window.open(
-          `https://discord.gg/${res.data.discord_invite}`,
-          "_blank",
-        )
-        if (newWindow) {
-          newWindow.focus()
-        }
-      }
-
-      navigate(`/contract/${res.data.order_id}`)
-    } else {
-      issueAlert({
-        message: `Error while purchasing! ${
-          res.error?.error || res.error?.data?.error || res.error
-        }`,
-        severity: "error",
-      })
-    }
-  }, [
-    listing.listing.listing_id,
-    location.pathname,
-    navigate,
-    profile,
-    purchaseListing,
-    quantity,
-    issueAlert,
-  ])
 
   const [cookies, setCookie] = useCookies(["market_cart"])
   const [cartRedirect, setCartRedirect] = useState(false)
@@ -246,30 +182,6 @@ export function PurchaseArea(props: { listing: BaseListingType }) {
     setCookie,
   ])
 
-  // const handleOffer = useCallback(async () => {
-  //     const res: { data?: any, error?: any } = await offerListing({
-  //         body: {listing_id: listing.listing_id, quantity, offer},
-  //     })
-  //
-  //     if (res?.data && !res?.error) {
-  //         await setQuantity(0)
-  //
-  //         await issueAlert({
-  //             message: "Offer successful!",
-  //             severity: 'success'
-  //         })
-  //
-  //         await setPurchaseOpen(false)
-  //     } else {
-  //         issueAlert({
-  //             message: `Error while offering! ${res.error?.error || res.error?.data?.error || res.error}`,
-  //             severity: 'error'
-  //         })
-  //     }
-  // }, [listing.listing_id, offer, offerListing, quantity, issueAlert])
-
-  const theme = useTheme()
-
   return (
     <Box
       ref={containerRef}
@@ -278,278 +190,79 @@ export function PurchaseArea(props: { listing: BaseListingType }) {
       }}
     >
       {cartRedirect && <Navigate to={"/market/cart"} />}
-
-      <Slide
-        in={!purchaseOpen && !offerOpen}
-        direction={"right"}
-        container={containerRef.current}
-      >
-        <Stack direction={"row"} justifyContent={"space-between"} padding={2}>
-          <Stack
-            spacing={1}
-            direction={"column"}
-            justifyContent={"space-between"}
-          >
-            <Box>
-              <Typography
-                variant={"body1"}
-                fontWeight={"bold"}
-                color={"text.secondary"}
-              >
-                Price
-              </Typography>
-              <Typography
-                variant={"h5"}
-                sx={{
-                  fontWeight: "bold",
-                }}
-                // color={'primary'}
-              >
-                {listing.listing.price.toLocaleString(undefined)} aUEC
-              </Typography>
-            </Box>
-            <NumericFormat
-              decimalScale={0}
-              allowNegative={false}
-              customInput={TextField}
-              thousandSeparator
-              onValueChange={async (values, sourceInfo) => {
-                setQuantity(values.floatValue || 0)
-              }}
-              inputProps={{
-                inputMode: "numeric",
-                pattern: "[0-9]*",
-              }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="start">
-                    {`of ${listing.listing.quantity_available.toLocaleString(
-                      undefined,
-                    )} available`}
-                  </InputAdornment>
-                ),
-                inputMode: "numeric",
-              }}
-              size="small"
-              label={"Quantity"}
-              value={quantity}
-              color={"secondary"}
-            />
-          </Stack>
-          <Stack
-            spacing={1}
-            direction={"column"}
-            justifyContent={"space-between"}
-          >
-            <Box />
-            <Button
-              variant={"contained"}
-              color={"primary"}
-              startIcon={<AddShoppingCartRounded />}
-              size={"large"}
-              onClick={addToCart}
-              sx={{
-                display: purchaseOpen || offerOpen ? "none" : undefined,
-                marginBottom: 1,
-              }}
+      <Stack direction={"row"} justifyContent={"space-between"} padding={2}>
+        <Stack
+          spacing={1}
+          direction={"column"}
+          justifyContent={"space-between"}
+        >
+          <Box>
+            <Typography
+              variant={"body1"}
+              fontWeight={"bold"}
+              color={"text.secondary"}
             >
-              Add to Cart
-            </Button>
-
-            {/*<Button*/}
-            {/*  variant={"outlined"}*/}
-            {/*  color={"primary"}*/}
-            {/*  startIcon={<ShoppingCartRoundedIcon />}*/}
-            {/*  size={"large"}*/}
-            {/*  onClick={() => setPurchaseOpen(true)}*/}
-            {/*  sx={{ display: purchaseOpen || offerOpen ? "none" : undefined }}*/}
-            {/*>*/}
-            {/*  Buy it Now*/}
-            {/*</Button>*/}
-          </Stack>
+              Price
+            </Typography>
+            <Typography
+              variant={"h5"}
+              sx={{
+                fontWeight: "bold",
+              }}
+              // color={'primary'}
+            >
+              {listing.listing.price.toLocaleString(undefined)} aUEC
+            </Typography>
+          </Box>
+          <NumericFormat
+            decimalScale={0}
+            allowNegative={false}
+            customInput={TextField}
+            thousandSeparator
+            onValueChange={async (values, sourceInfo) => {
+              setQuantity(values.floatValue || 0)
+            }}
+            inputProps={{
+              inputMode: "numeric",
+              pattern: "[0-9]*",
+            }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="start">
+                  {`of ${listing.listing.quantity_available.toLocaleString(
+                    undefined,
+                  )} available`}
+                </InputAdornment>
+              ),
+              inputMode: "numeric",
+            }}
+            size="small"
+            label={"Quantity"}
+            value={quantity}
+            color={"secondary"}
+          />
         </Stack>
-      </Slide>
-      <Slide
-        in={purchaseOpen}
-        direction={"left"}
-        container={containerRef.current}
-      >
-        <Box position={"absolute"} sx={{ top: 0, width: "100%" }}>
-          <Box
+        <Stack
+          spacing={1}
+          direction={"column"}
+          justifyContent={"space-between"}
+        >
+          <Box />
+          <Button
+            variant={"contained"}
+            color={"primary"}
+            startIcon={<AddShoppingCartRounded />}
+            size={"large"}
+            onClick={addToCart}
             sx={{
-              padding: 2,
-              "& > *": {
-                marginRight: 1,
-              },
-              [theme.breakpoints.down("sm")]: {
-                display: "flex",
-                flexDirection: "column",
-              },
-              [theme.breakpoints.up("sm")]: {
-                display: "flex",
-                justifyContent: "space-between",
-              },
+              display: purchaseOpen || offerOpen ? "none" : undefined,
+              marginBottom: 1,
             }}
           >
-            <Box>
-              <IconButton
-                onClick={() => setPurchaseOpen(false)}
-                color={"secondary"}
-              >
-                <KeyboardArrowLeftRounded />
-              </IconButton>
-            </Box>
-            <Box>
-              <Box
-                display={"flex"}
-                width={"100%"}
-                justifyContent={"space-between"}
-              >
-                <Box>
-                  <Typography noWrap>Price:</Typography>
-                  <Typography noWrap>Quantity:</Typography>
-                </Box>
-                <Box>
-                  <Typography noWrap sx={{ textAlign: "right" }}>
-                    {listing.listing.price.toLocaleString(undefined)} aUEC
-                  </Typography>
-                  <Typography noWrap sx={{ textAlign: "right" }}>
-                    x {quantity.toLocaleString(undefined)}
-                  </Typography>
-                </Box>
-              </Box>
-
-              <Divider light />
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                width={"100%"}
-              >
-                <Box>
-                  <Typography noWrap>Total Cost:</Typography>
-                </Box>
-                <Box>
-                  <Typography noWrap sx={{ textAlign: "right" }}>
-                    {(listing.listing.price * quantity).toLocaleString(
-                      undefined,
-                    )}{" "}
-                    aUEC
-                  </Typography>
-                </Box>
-              </Box>
-
-              <Box sx={{ marginTop: 2, width: "100%" }}>
-                <LoadingButton
-                  loading={purchaseLoading}
-                  loadingPosition="start"
-                  variant={"outlined"}
-                  sx={{ width: "100%" }}
-                  onClick={handlePurchase}
-                >
-                  Confirm Order
-                </LoadingButton>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-      </Slide>
-      <Slide in={offerOpen} direction={"left"} container={containerRef.current}>
-        <Box position={"absolute"} sx={{ top: 0, width: "100%" }}>
-          <Box
-            sx={{
-              padding: 2,
-              "& > *": {
-                marginRight: 1,
-              },
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <Box>
-              <IconButton
-                onClick={() => setOfferOpen(false)}
-                color={"secondary"}
-              >
-                <KeyboardArrowLeftRounded />
-              </IconButton>
-              <NumericFormat
-                decimalScale={0}
-                allowNegative={false}
-                customInput={TextField}
-                thousandSeparator
-                onValueChange={async (values, sourceInfo) => {
-                  setOffer(values.floatValue || 0)
-                }}
-                inputProps={{
-                  inputMode: "numeric",
-                  pattern: "[0-9]*",
-                }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="start">{"aUEC"}</InputAdornment>
-                  ),
-                  inputMode: "numeric",
-                }}
-                size="small"
-                label={"Offer Amount"}
-                value={offer}
-                // onChange={(event: React.ChangeEvent<{ value: string }>) => {
-                //   setOffer(displayLocaleNumber(offer, event.target.value))
-                // }}
-                color={"secondary"}
-              />
-            </Box>
-            <Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                width={240}
-              >
-                <Box sx={{ width: 120 }}>
-                  <Typography>Price:</Typography>
-                  <Typography>Quantity:</Typography>
-                </Box>
-                <Box sx={{ width: 120 }}>
-                  <Typography sx={{ textAlign: "right" }}>
-                    {offer.toLocaleString(undefined)} aUEC
-                  </Typography>
-                  <Typography sx={{ textAlign: "right" }}>
-                    x {quantity.toLocaleString(undefined)}
-                  </Typography>
-                </Box>
-              </Box>
-
-              <Divider light />
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                width={240}
-              >
-                <Box sx={{ width: 120 }}>
-                  <Typography>Total Cost:</Typography>
-                </Box>
-                <Box sx={{ width: 120 }}>
-                  <Typography sx={{ textAlign: "right" }}>
-                    {(offer * quantity).toLocaleString(undefined)} aUEC
-                  </Typography>
-                </Box>
-              </Box>
-
-              <Box sx={{ marginTop: 2, width: "100%" }}>
-                <LoadingButton
-                  // loading={offerLoading}
-                  loadingPosition="start"
-                  variant={"outlined"}
-                  sx={{ width: "100%" }}
-                  // onClick={handleOffer}
-                >
-                  Confirm Offer
-                </LoadingButton>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-      </Slide>
+            Add to Cart
+          </Button>
+        </Stack>
+      </Stack>
     </Box>
   )
 }
@@ -562,7 +275,7 @@ function BidArea(props: { listing: UniqueListing }) {
 
   const issueAlert = useAlertHook()
 
-  const [purchaseListing, { isLoading }] = useMarketBid()
+  const [purchaseListing, { isLoading }] = useMarketBidMutation()
 
   const handleBid = useCallback(async () => {
     const res: { data?: any; error?: any } = await purchaseListing({

@@ -43,7 +43,7 @@ import {
   useMarketGetMyListingsQuery,
   useMarketRefreshListingMutation,
   useMarketUpdateListingQuantityMutation,
-  useUpdateMarketListing,
+  useMarketUpdateListingMutation,
 } from "../../store/market"
 import { Stack } from "@mui/system"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
@@ -171,7 +171,7 @@ export interface StockRow {
 function ItemStockToolbar() {
   const [selectedListings] = useContext(ItemStockContext)!
 
-  const [updateListing, { isLoading }] = useUpdateMarketListing()
+  const [updateListing, { isLoading }] = useMarketUpdateListingMutation()
   const updateListingCallback = useCallback(
     async (body: MarketListingUpdateBody) => {
       selectedListings.forEach((listing) => {

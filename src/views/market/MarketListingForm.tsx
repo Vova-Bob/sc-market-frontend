@@ -14,7 +14,7 @@ import {
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded"
 import {
-  useCreateListing,
+  useMarketCreateListingMutation,
   useMarketCreateAggregateListingMutation,
   useMarketCreateMultipleListingMutation,
   useMarketGetAggregateByIDQuery,
@@ -82,7 +82,7 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
   const [
     createListing, // This is the mutation trigger
     { isLoading }, // This is the destructured mutation result
-  ] = useCreateListing()
+  ] = useMarketCreateListingMutation()
 
   const issueAlert = useAlertHook()
 

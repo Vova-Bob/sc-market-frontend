@@ -4,7 +4,7 @@ import React from "react"
 import { HeaderTitle } from "../../components/typography/HeaderTitle"
 import { CurrentMarketListingContext } from "../../hooks/market/CurrentMarketItem"
 import {
-  useGetListingByIDQuery,
+  useMarketGetListingByIDQuery,
   useMarketGetMultipleByIDQuery,
 } from "../../store/market"
 import { MarketListingView } from "../../views/market/MarketListingView"
@@ -27,7 +27,7 @@ export function ViewMarketListing(props: {}) {
    *   assigned person, payment
    */
 
-  const { data: listing, error, refetch } = useGetListingByIDQuery(id!)
+  const { data: listing, error, refetch } = useMarketGetListingByIDQuery(id!)
 
   return (
     <Page
@@ -96,7 +96,7 @@ export function EditMarketListing(props: {}) {
    *   assigned person, payment
    */
 
-  const { data: listing, error, refetch } = useGetListingByIDQuery(id!)
+  const { data: listing, error, refetch } = useMarketGetListingByIDQuery(id!)
 
   return (
     <Page title={listing?.details?.title}>

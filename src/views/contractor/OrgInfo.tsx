@@ -42,7 +42,7 @@ import {
   ServiceListings,
 } from "../contracts/ServiceListings"
 import { Section } from "../../components/paper/Section"
-import { useGetListingsByContractor } from "../../store/market"
+import { useMarketGetListingsByContractorQuery } from "../../store/market"
 import { RecruitingPostArea } from "../../pages/recruiting/RecruitingPostPage"
 import { useRecruitingGetPostByOrgQuery } from "../../store/recruiting"
 import {
@@ -67,7 +67,7 @@ const name_to_index = new Map([
 export function OrgRelevantListingsArea(props: { org: string }) {
   const { org } = props
 
-  const { data: listings } = useGetListingsByContractor(org)
+  const { data: listings } = useMarketGetListingsByContractorQuery(org)
   const { data: services } = useGetServicesContractorQuery(org)
 
   const order = useMemo(

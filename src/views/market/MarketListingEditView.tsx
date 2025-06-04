@@ -26,7 +26,7 @@ import {
 } from "@mui/icons-material"
 import { useGetContractorBySpectrumIDQuery } from "../../store/contractor"
 import { useCurrentMarketListing } from "../../hooks/market/CurrentMarketItem"
-import { useUpdateMarketListing } from "../../store/market"
+import { useMarketUpdateListingMutation } from "../../store/market"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { MarkdownEditor } from "../../components/markdown/Markdown"
 import { Navigate } from "react-router-dom"
@@ -81,7 +81,7 @@ export function MarketListingEditView() {
   const [
     updateListing, // This is the mutation trigger
     { isLoading }, // This is the destructured mutation result
-  ] = useUpdateMarketListing()
+  ] = useMarketUpdateListingMutation()
 
   const [quantity, setQuantity] = useState(listing.listing.quantity_available)
   const [price, setPrice] = useState(listing.listing.price)
