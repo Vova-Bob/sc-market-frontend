@@ -483,26 +483,26 @@ function MessageEntry(props: { message: Message }) {
 
 function MessagesArea(props: {
   messages: Message[]
-  messageEndRef: RefObject<HTMLDivElement>
+  messageBoxRef: RefObject<HTMLDivElement>
   maxHeight?: number
 }) {
   const theme = useTheme<ExtendedTheme>()
-  const { messageEndRef } = props
+  const { messageBoxRef } = props
 
   const [chat] = useCurrentChat()
 
   useEffect(() => {
-    // if (!chat?.order_id) {
-      messageEndRef?.current?.scrollIntoView({
-        block: "end",
-      })
-    // }
-  }, [messageEndRef, chat])
+    const currentRef = messageBoxRef.current
+    if (currentRef) {
+      currentRef.scrollTop = currentRef.scrollHeight
+    }
+  }, [messageBoxRef, chat])
 
   const { messages } = props
   return (
     <React.Fragment>
       <Box
+        ref={messageBoxRef}
         sx={{
           flexGrow: 1,
           width: "100%",
@@ -518,7 +518,7 @@ function MessagesArea(props: {
         {messages.map((message: Message) => (
           <MessageEntry message={message} key={message.timestamp} />
         ))}
-        <div ref={props.messageEndRef} />
+        <div ref={props.messageBoxRef} />
       </Box>
     </React.Fragment>
   )
@@ -571,6 +571,8 @@ export const socket = io(WS_URL, {
   path: "/ws",
   reconnectionDelay: 4000,
   autoConnect: false,
+  secure: true,
+  transports: ["websocket", "polling", "xhr-polling"],
 })
 
 /**
@@ -578,7 +580,7 @@ export const socket = io(WS_URL, {
  */
 export function MessagesBody(props: { maxHeight?: number }) {
   const [currentChat, setCurrentChat] = useCurrentChat()
-  const messageEndRef = useRef<HTMLDivElement>(null)
+  const messageBoxRef = useRef<HTMLDivElement>(null)
   const [isConnected, setIsConnected] = useState(false)
 
   const [sendChatMessage] = useSendChatMessageMutation()
@@ -648,16 +650,6 @@ export function MessagesBody(props: { maxHeight?: number }) {
     [currentChat, sendChatMessage],
   )
 
-  useEffect(() => {
-    if (!currentChat?.order_id) {
-      // @ts-ignore
-      messageEndRef?.current?.scrollIntoView({
-        // behavior: "smooth",
-        block: "start",
-      })
-    }
-  }, [currentChat])
-
   return (
     <>
       {currentChat && (
@@ -665,7 +657,7 @@ export function MessagesBody(props: { maxHeight?: number }) {
           <MessageHeader />
           <MessagesArea
             messages={currentChat.messages}
-            messageEndRef={messageEndRef}
+            messageBoxRef={messageBoxRef}
             maxHeight={props.maxHeight}
           />
           <MessageSendArea onSend={onSend} />
