@@ -211,6 +211,7 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
         </Grid>
 
         <Grid item xs={12}>
+          <Typography color={'text.secondary'} variant={'body2'}>Search for images or upload your own</Typography>
           <SelectPhotosArea
             setPhotos={(photos) => setState((state) => ({ ...state, photos }))}
             photos={state.photos}
