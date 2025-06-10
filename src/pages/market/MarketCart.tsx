@@ -18,7 +18,10 @@ import { Link, useNavigate } from "react-router-dom"
 import { UnderlineLink } from "../../components/typography/UnderlineLink"
 import { useGetUserByUsernameQuery } from "../../store/profile"
 import { useGetContractorBySpectrumIDQuery } from "../../store/contractor"
-import { useMarketGetListingByIDQuery, useMarketPurchaseMutation } from "../../store/market"
+import {
+  useMarketGetListingByIDQuery,
+  useMarketPurchaseMutation,
+} from "../../store/market"
 import { LocalOfferRounded } from "@mui/icons-material"
 import { TrashCan } from "mdi-material-ui"
 import LoadingButton from "@mui/lab/LoadingButton"
@@ -254,12 +257,7 @@ export function CartSellerEntry(props: {
           navigate(`/offer/${res.session_id}`)
         })
         .catch((error) => {
-          issueAlert({
-            message: `Error while purchasing! ${
-              error?.error || error?.data?.error || error
-            }`,
-            severity: "error",
-          })
+          issueAlert(error)
         })
     },
     [seller, purchaseListing, issueAlert],
