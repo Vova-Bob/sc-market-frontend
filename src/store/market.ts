@@ -6,13 +6,13 @@ import {
   GameItem,
   MarketAggregate,
   MarketAggregateListing,
-  MarketBuyOrderBody,
+  MarketBuyOrderBody, MarketListing,
   MarketListingBody,
   MarketListingType,
   MarketListingUpdateBody,
   MarketMultiple,
   MarketMultipleBody,
-  SellerListingType,
+  SellerListingType
 } from "../datatypes/MarketListing"
 import { serviceApi } from "./service"
 import { Order } from "../datatypes/Order"
@@ -292,7 +292,7 @@ export const marketApi = serviceApi.injectEndpoints({
       invalidatesTags: (result, error, arg) => [{ type: "Listing" as const }],
     }),
     marketCreateListing: builder.mutation<
-      void,
+      MarketListing,
       { body: MarketListingBody; spectrum_id?: string | null }
     >({
       query: ({ body, spectrum_id }) => ({

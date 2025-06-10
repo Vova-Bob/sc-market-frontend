@@ -92,41 +92,37 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
 
   const submitMarketListing = useCallback(
     async (event: any) => {
-      const res: { data?: any; error?: any } = await createListing({
+      createListing({
         body: state,
         spectrum_id: currentOrg?.spectrum_id,
       })
+        .unwrap()
+        .then((res) => {
+          setState({
+            title: "",
+            description: "",
+            sale_type: props.sale_type,
+            item_type: "Other",
+            price: 0,
+            quantity_available: 1,
+            photos: [],
+            minimum_bid_increment: 1000,
+            internal: false,
+            status: "active",
+            end_time: null,
+            item_name: null,
+          })
 
-      if (res?.data && !res?.error) {
-        setState({
-          title: "",
-          description: "",
-          sale_type: props.sale_type,
-          item_type: "Other",
-          price: 0,
-          quantity_available: 1,
-          photos: [],
-          minimum_bid_increment: 1000,
-          internal: false,
-          status: "active",
-          end_time: null,
-          item_name: null,
-        })
+          issueAlert({
+            message: "Submitted!",
+            severity: "success",
+          })
 
-        issueAlert({
-          message: "Submitted!",
-          severity: "success",
+          navigate(`/market/${res.listing_id}`)
         })
-
-        navigate(`/market/${res.data.listing_id}`)
-      } else {
-        issueAlert({
-          message: `Failed to submit! ${
-            res.error?.error || res.error?.data?.error || res.error
-          }`,
-          severity: "error",
+        .catch((err) => {
+          issueAlert(err)
         })
-      }
 
       return false
     },
