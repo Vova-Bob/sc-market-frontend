@@ -55,7 +55,9 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
     item_type: "Other",
     price: 0,
     quantity_available: 1,
-    photos: [],
+    photos: [
+      "https://media.starcitizen.tools/thumb/9/93/Placeholderv2.png/399px-Placeholderv2.png.webp",
+    ],
     minimum_bid_increment: 1000,
     internal: false,
     status: "active",
@@ -105,7 +107,9 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
             item_type: "Other",
             price: 0,
             quantity_available: 1,
-            photos: [],
+            photos: [
+              "https://media.starcitizen.tools/thumb/9/93/Placeholderv2.png/399px-Placeholderv2.png.webp",
+            ],
             minimum_bid_increment: 1000,
             internal: false,
             status: "active",
