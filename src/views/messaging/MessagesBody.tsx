@@ -436,28 +436,30 @@ function MessageEntry(props: { message: Message }) {
     )
   } else {
     return (
-      <Grid
-        container
+      <Stack
+        direction={"row"}
         spacing={1}
-        justifyContent={"flex-start"}
-        sx={{ marginBottom: 4 }}
+        justifyContent={"flex-end"}
+        sx={{ marginBottom: 1 }}
       >
-        <Grid item>
-          <Link to={`/user/${message.author}`}>
-            <Avatar
-              variant="rounded"
-              sx={{ width: 48, height: 48 }}
-              src={author?.avatar}
-            />
-          </Link>
-        </Grid>
-        <Grid item>
+        <Link to={`/user/${message.author}`}>
+          <Avatar
+            variant="rounded"
+            sx={{ width: 48, height: 48 }}
+            src={author?.avatar}
+          />
+        </Link>
+        <Box sx={{ flexGrow: 1, maxWidth: "90%" }}>
           <MsgPaper other author={author}>
             <Typography
               color={theme.palette.text.secondary}
               align={"left"}
               width={"100%"}
-              sx={{ fontWeight: 400, overflowWrap: "break-word" }}
+              sx={{
+                fontWeight: 400,
+                overflowWrap: "break-word",
+                fontSize: ".9em",
+              }}
             >
               {message.content}
             </Typography>
@@ -465,18 +467,18 @@ function MessageEntry(props: { message: Message }) {
           <Typography
             align={"left"}
             color={"text.primary"}
-            variant={"body2"}
+            variant={"subtitle2"}
             sx={{
               marginTop: 0.5,
               marginLeft: 2,
-              fontSize: ".5em",
-              // lineHeight: 1.66,
+              fontSize: "0.75em",
+              lineHeight: 1.66,
             }}
           >
             {getRelativeTime(new Date(message.timestamp))}
           </Typography>
-        </Grid>
-      </Grid>
+        </Box>
+      </Stack>
     )
   }
 }
