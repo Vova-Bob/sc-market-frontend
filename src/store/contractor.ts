@@ -385,6 +385,17 @@ export const contractorsApi = serviceApi.injectEndpoints({
       ],
       transformResponse: unwrapResponse,
     }),
+    leaveContractor: builder.mutation<void, string>({
+      query: (spectrum_id) => ({
+        url: `/api/contractors/${spectrum_id}/leave`,
+        method: "POST",
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Contractor" as const, id: arg },
+        "MyProfile",
+      ],
+      transformResponse: unwrapResponse,
+    }),
     adminExpressVerifyContractor: builder.mutation<
       void,
       {
@@ -445,4 +456,5 @@ export const {
   useCreateContractorInviteMutation,
   useDeleteContractorInviteMutation,
   useGetContractorsQuery,
+  useLeaveContractorMutation,
 } = contractorsApi
