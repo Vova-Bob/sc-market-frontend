@@ -20,6 +20,7 @@ import {
   IconButton,
   Link as MaterialLink,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material"
 import {
@@ -42,8 +43,8 @@ import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 import {
   useMarketGetMyListingsQuery,
   useMarketRefreshListingMutation,
-  useMarketUpdateListingQuantityMutation,
   useMarketUpdateListingMutation,
+  useMarketUpdateListingQuantityMutation,
 } from "../../store/market"
 import { Stack } from "@mui/system"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
@@ -51,6 +52,7 @@ import { NumericFormat } from "react-number-format"
 import { RefreshCircle } from "mdi-material-ui"
 import { formatMostSignificantDiff } from "../../util/time"
 import LoadingButton from "@mui/lab/LoadingButton"
+import { ThemedDataGrid } from "../../components/grid/ThemedDataGrid"
 
 export const ItemStockContext = React.createContext<
   | [UniqueListing[], React.Dispatch<React.SetStateAction<UniqueListing[]>>]
@@ -240,7 +242,7 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
     [filteredListings],
   )
 
-  const columns: GridColDef<StockRow>[] = [
+  const columns: GridColDef[] = [
     {
       field: "title",
       headerName: "Title",
@@ -331,16 +333,18 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
           {new Date(params.value) > new Date() ? (
             formatMostSignificantDiff(params.value)
           ) : (
-            <IconButton
-              sx={{ color: "error.main" }}
-              onClick={(event) => {
-                event.stopPropagation()
-                event.preventDefault()
-                refresh(params.row.listing_id)
-              }}
-            >
-              <RefreshOutlined />
-            </IconButton>
+            <Tooltip title={"Refresh listing"}>
+              <IconButton
+                sx={{ color: "error.main" }}
+                onClick={(event) => {
+                  event.stopPropagation()
+                  event.preventDefault()
+                  refresh(params.row.listing_id)
+                }}
+              >
+                <RefreshOutlined />
+              </IconButton>
+            </Tooltip>
           )}
         </div>
       ),
@@ -352,11 +356,16 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
       headerName: "Edit",
       width: 50,
       renderCell: (params: GridRenderCellParams) => (
-        <Link to={`/market_edit/${params.value}`} style={{ color: "inherit" }}>
-          <IconButton>
-            <CreateRounded />
-          </IconButton>
-        </Link>
+        <Tooltip title={"Edit Listing"}>
+          <Link
+            to={`/market_edit/${params.value}`}
+            style={{ color: "inherit" }}
+          >
+            <IconButton>
+              <CreateRounded />
+            </IconButton>
+          </Link>
+        </Tooltip>
       ),
     },
   ]
@@ -377,26 +386,13 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <DataGrid
+      <ThemedDataGrid
         rows={rows}
         columns={columns}
         getRowId={(row) => row.listing_id}
         checkboxSelection
         onRowSelectionModelChange={setRowSelectionModel}
         rowSelectionModel={rowSelectionModel}
-        sx={{
-          borderColor: "outline.main",
-          [`& .MuiDataGrid-cell, & .MuiDataGrid-filler > *, & .MuiDataGrid-footerContainer, & .MuiDataGrid-columnSeparator, & .MuiDataGrid-toolbar`]:
-            {
-              borderColor: "outline.main",
-            },
-          ".MuiDataGrid-columnSeparator": {
-            color: "outline.main",
-          },
-          [".MuiDataGrid-menu"]: {
-            color: "white",
-          },
-        }}
         slots={{
           toolbar: ItemStockToolbar,
         }}

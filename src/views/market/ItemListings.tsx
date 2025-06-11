@@ -1923,7 +1923,8 @@ export function BuyOrders() {
 
 export function OrgListings(props: { org: string }) {
   const { org } = props
-  const { data: listings, isLoading } = useMarketGetListingsByContractorQuery(org)
+  const { data: listings, isLoading } =
+    useMarketGetListingsByContractorQuery(org)
   const filteredListings = useMemo(() => listings || [], [listings, org])
 
   const [searchState, setSearchState] = useMarketSearch()

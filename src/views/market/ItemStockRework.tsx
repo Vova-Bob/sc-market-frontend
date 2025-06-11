@@ -11,6 +11,7 @@ import {
   GridRowParams,
   GridRowSelectionModel,
   GridRowsProp,
+  GridValidRowModel,
   Toolbar,
 } from "@mui/x-data-grid"
 import React, { useEffect } from "react"
@@ -18,7 +19,13 @@ import { SelectGameItem } from "../../components/select/SelectGameItem"
 import { Stack } from "@mui/system"
 import { MinimalUser } from "../../datatypes/User"
 import { defaultAvatar } from "../comments/CommentTree"
-import { Autocomplete, IconButton, TextField } from "@mui/material"
+import {
+  Autocomplete,
+  IconButton,
+  Switch,
+  TextField,
+  Tooltip,
+} from "@mui/material"
 import {
   AddRounded,
   CancelRounded,
@@ -29,8 +36,9 @@ import {
 import { useGetUserProfileQuery } from "../../store/profile"
 import { UserProfileState } from "../../hooks/login/UserProfile"
 import { UserAvatar } from "../../components/avatar/UserAvatar"
+import { ThemedDataGrid } from "../../components/grid/ThemedDataGrid"
 
-interface StockEntry {
+interface StockEntry extends GridValidRowModel {
   id: string
   listing_id: string | null
   item_name: string | null
@@ -40,6 +48,7 @@ interface StockEntry {
   status: string
   owner: MinimalUser | UserProfileState
   isNew: boolean
+  listed: boolean
 }
 
 export function StockEntryItemDisplay(props: {
@@ -47,7 +56,7 @@ export function StockEntryItemDisplay(props: {
   item_category: string
   listing_id: string
 }) {
-  return `${props.item_category} ${props.item_name}`
+  return `${props.item_category} / ${props.item_name || ""}`
 }
 
 declare module "@mui/x-data-grid" {
@@ -76,6 +85,7 @@ export function ItemStockRework() {
       quantity_available: 15,
       location: "Area-18",
       status: "",
+      listed: true,
       owner: profile || {
         username: "...",
         display_name: "...",
@@ -107,6 +117,14 @@ export function ItemStockRework() {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } })
   }
 
+  const handleToggleEnable = (id: GridRowId) => () => {
+    setRows(
+      rows.map((entry) =>
+        entry.id === id ? { ...entry, listed: !entry.listed } : entry,
+      ),
+    )
+  }
+
   const handleDeleteClick = (id: GridRowId) => () => {
     setRows(rows.filter((row) => row.id !== id))
   }
@@ -133,7 +151,7 @@ export function ItemStockRework() {
     setRowModesModel(newRowModesModel)
   }
 
-  const columns: GridColDef<StockEntry>[] = [
+  const columns: GridColDef[] = [
     {
       sortable: true,
       field: "owner",
@@ -205,7 +223,7 @@ export function ItemStockRework() {
     {
       sortable: true,
       field: "location",
-      width: 200,
+      width: 150,
       display: "flex",
       headerName: "Location",
       renderCell: (params: GridRenderCellParams) => {
@@ -289,6 +307,20 @@ export function ItemStockRework() {
         ]
       },
     },
+    {
+      sortable: true,
+      field: "listed",
+      display: "flex",
+      headerName: "Listed",
+      width: 75,
+      renderCell: ({ id, value }) => {
+        return (
+          <Tooltip title="Toggle whether stock is listed">
+            <Switch checked={value} onClick={handleToggleEnable(id)} />
+          </Tooltip>
+        )
+      },
+    },
   ]
 
   useEffect(() => {
@@ -296,27 +328,18 @@ export function ItemStockRework() {
   }, [rows])
 
   return (
-    <DataGrid
+    <ThemedDataGrid
       rows={rows}
       columns={columns}
       getRowId={(row) => row.id}
       disableRowSelectionOnClick
       onRowSelectionModelChange={setRowSelectionModel}
       rowSelectionModel={rowSelectionModel}
-      sx={{
-        borderColor: "outline.main",
-        [`& .MuiDataGrid-cell, & .MuiDataGrid-filler > *, & .MuiDataGrid-footerContainer, & .MuiDataGrid-columnSeparator, & .MuiDataGrid-toolbar`]:
-          {
-            borderColor: "outline.main",
-          },
-        ".MuiDataGrid-columnSeparator": {
-          color: "outline.main",
-        },
-        [".MuiDataGrid-menu"]: {
-          color: "white",
-        },
-      }}
-      processRowUpdate={processRowUpdate}
+      processRowUpdate={
+        processRowUpdate as unknown as (
+          newRow: GridValidRowModel,
+        ) => GridValidRowModel
+      }
       showToolbar
       slots={{
         toolbar: () => {
@@ -337,6 +360,7 @@ export function ItemStockRework() {
                       status: "",
                       owner: profile!,
                       isNew: true,
+                      listed: true,
                     },
                   ])
 

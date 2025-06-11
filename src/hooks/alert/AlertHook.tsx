@@ -34,7 +34,6 @@ export interface ErrorInterface {
 export function formatErrorAlert(
   error: UnwrappedErrorInterface,
 ): AlertInterface {
-  console.log("formatting error alert", error)
   let message = error.error?.message || error.message
   if (error.errors?.length) {
     message = message.concat(" ", error.errors[0].message)

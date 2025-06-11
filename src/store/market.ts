@@ -6,13 +6,14 @@ import {
   GameItem,
   MarketAggregate,
   MarketAggregateListing,
-  MarketBuyOrderBody, MarketListing,
+  MarketBuyOrderBody,
+  MarketListing,
   MarketListingBody,
   MarketListingType,
   MarketListingUpdateBody,
   MarketMultiple,
   MarketMultipleBody,
-  SellerListingType
+  SellerListingType,
 } from "../datatypes/MarketListing"
 import { serviceApi } from "./service"
 import { Order } from "../datatypes/Order"
