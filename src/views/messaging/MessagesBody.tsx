@@ -331,6 +331,69 @@ function replaceDiscordTimestamps(input: string) {
   )
 }
 
+function MessageEntry2(props: { message: Message }) {
+  const { message } = props
+  const { data: profile } = useGetUserProfileQuery()
+  const { data: author } = useGetUserByUsernameQuery(message.author!, {
+    skip: !message.author,
+  })
+  const theme = useTheme<ExtendedTheme>()
+  const convertedContent = useMemo(
+    () => replaceDiscordTimestamps(message.content),
+    [message.content],
+  )
+
+  return (
+    <Stack direction={"row"} spacing={1} justifyContent={"flex-start"}>
+      {message.author ? (
+        <Link to={`/user/${author?.username}`}>
+          <Avatar
+            variant="rounded"
+            sx={{ width: 42, height: 42 }}
+            src={author?.avatar || SCMarketLogo}
+          />
+        </Link>
+      ) : (
+        <Avatar
+          variant="rounded"
+          sx={{ width: 42, height: 42 }}
+          src={SCMarketLogo}
+        />
+      )}
+
+      <Stack direction={"column"}>
+        <Stack direction={"row"} spacing={1} alignItems={"flex-end"}>
+          {message.author ? (
+            <MaterialLink
+              component={Link}
+              to={`/user/${author?.username}`}
+              color={"text.secondary"}
+            >
+              <Typography variant={"subtitle2"}>{author?.username}</Typography>
+            </MaterialLink>
+          ) : (
+            <Typography variant={"subtitle2"}>SC Market</Typography>
+          )}
+          <Typography
+            align={"right"}
+            color={"text.primary"}
+            variant={"subtitle2"}
+            sx={{
+              marginTop: 0.5,
+              marginRight: 4,
+              fontSize: "0.75em",
+              lineHeight: 1.66,
+            }}
+          >
+            {getRelativeTime(new Date(message.timestamp))}
+          </Typography>
+        </Stack>
+        <Typography variant={"subtitle2"}>{convertedContent}</Typography>
+      </Stack>
+    </Stack>
+  )
+}
+
 function MessageEntry(props: { message: Message }) {
   const { message } = props
   const { data: profile } = useGetUserProfileQuery()
@@ -384,7 +447,7 @@ function MessageEntry(props: { message: Message }) {
         <Link to={`/user/${message.author}`}>
           <Avatar
             variant="rounded"
-            sx={{ width: 48, height: 48 }}
+            sx={{ width: 36, height: 36 }}
             src={author?.avatar}
           />
         </Link>
@@ -400,7 +463,7 @@ function MessageEntry(props: { message: Message }) {
       >
         <Avatar
           variant="rounded"
-          sx={{ width: 48, height: 48 }}
+          sx={{ width: 36, height: 36 }}
           src={SCMarketLogo}
         />
         <Box sx={{ flexGrow: 1, maxWidth: "90%" }}>
@@ -445,7 +508,7 @@ function MessageEntry(props: { message: Message }) {
         <Link to={`/user/${message.author}`}>
           <Avatar
             variant="rounded"
-            sx={{ width: 48, height: 48 }}
+            sx={{ width: 36, height: 36 }}
             src={author?.avatar}
           />
         </Link>
@@ -517,9 +580,11 @@ function MessagesArea(props: {
           maxHeight: props.maxHeight,
         }}
       >
-        {messages.map((message: Message) => (
-          <MessageEntry message={message} key={message.timestamp} />
-        ))}
+        <Stack spacing={1}>
+          {messages.map((message: Message) => (
+            <MessageEntry2 message={message} key={message.timestamp} />
+          ))}
+        </Stack>
         <div ref={props.messageBoxRef} />
       </Box>
     </React.Fragment>
