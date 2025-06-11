@@ -99,7 +99,7 @@ export function ViewOrder() {
 
   return (
     <Page title={order?.title ? `${order?.title} - Order` : null}>
-      <ContainerGrid sidebarOpen={true} maxWidth={"lg"}>
+      <ContainerGrid sidebarOpen={true} maxWidth={"xl"}>
         <Grid item xs={12}>
           <Breadcrumbs>
             <MaterialLink
