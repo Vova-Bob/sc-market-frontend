@@ -89,6 +89,7 @@ export function AuthenticateRSI() {
             severity: "success",
           })
           setUsername("")
+          navigate("/")
         })
         .catch((error) => {
           issueAlert(error)
