@@ -251,7 +251,7 @@ export function MarketAggregateView() {
                   (c, l) => (c > l.price ? c : l.price),
                   listings[0]?.price || 0,
                 ),
-                priceCurrency: "aUEC",
+                priceCurrency: "JPY",
               },
             })}
           </script>

@@ -154,7 +154,7 @@ export function MarketMultipleView() {
                       offers: {
                         "@type": "Offer",
                         url: `https://sc-market.space/market/${listing.listing_id}`,
-                        priceCurrency: "aUEC",
+                        priceCurrency: "JPY",
                         price: listing.price,
                         // "priceValidUntil": "2020-11-20",
                         // "itemCondition": "https://schema.org/NewCondition",
