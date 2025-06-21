@@ -648,7 +648,6 @@ export const socket = io(WS_URL, {
 export function MessagesBody(props: { maxHeight?: number }) {
   const [currentChat, setCurrentChat] = useCurrentChat()
   const messageBoxRef = useRef<HTMLDivElement>(null)
-  const [isConnected, setIsConnected] = useState(false)
 
   const [sendChatMessage] = useSendChatMessageMutation()
   const { isSuccess } = useGetUserProfileQuery()
@@ -658,23 +657,15 @@ export function MessagesBody(props: { maxHeight?: number }) {
       socket.connect()
     }
 
-    if (!isSuccess && socket.connected) {
+    if (!isSuccess || socket.connected) {
       socket.disconnect()
     }
   }, [isSuccess])
 
   useEffect(() => {
-    function onConnect() {
-      setIsConnected(true)
-    }
-
-    function onDisconnect() {
-      setIsConnected(false)
-    }
-
     function onServerMessage(message: Message): void {
       setCurrentChat((chat) => {
-        if (chat && message.chat_id == chat.chat_id) {
+        if (chat && message.chat_id === chat.chat_id) {
           return {
             ...chat,
             messages: chat.messages.concat([message]),
@@ -685,13 +676,9 @@ export function MessagesBody(props: { maxHeight?: number }) {
       })
     }
 
-    socket.on("connect", onConnect)
-    socket.on("disconnect", onDisconnect)
     socket.on("serverMessage", onServerMessage)
 
     return () => {
-      socket.off("connect", onConnect)
-      socket.off("disconnect", onDisconnect)
       socket.off("serverMessage", onServerMessage)
     }
   }, [])
