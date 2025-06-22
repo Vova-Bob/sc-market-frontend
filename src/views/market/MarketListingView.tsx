@@ -444,6 +444,11 @@ export function MarketListingView() {
 
                 <Helmet>
                   <meta name="description" content={details.description} />
+                  <meta name="thumbnail" content={photos[0]} />
+
+                  <meta property="og:description" content={details.description} />
+                  <meta property="og:image" content={photos[0]} />
+
                   <script type="application/ld+json">
                     {JSON.stringify({
                       "@context": "https://schema.org",
