@@ -7,7 +7,7 @@ export const MarketSidebarContext = React.createContext<
 >(null)
 
 export const useMarketSidebar = () => {
-  let val = React.useContext(MarketSidebarContext)
+  const val = React.useContext(MarketSidebarContext)
   if (val == null) {
     throw new Error(
       "Cannot use useMarketSidebar outside of MarketSidebarContext",
@@ -16,7 +16,7 @@ export const useMarketSidebar = () => {
   return val
 }
 export const useMarketSidebarExp = () => {
-  let val = React.useContext(MarketSidebarContext)
+  const val = React.useContext(MarketSidebarContext)
   if (val == null) {
     return false
   }

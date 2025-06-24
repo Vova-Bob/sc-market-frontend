@@ -5,7 +5,7 @@ export const MessageGroupCreateContext = React.createContext<
 >(null)
 
 export const useMessageGroupCreate = () => {
-  let val = React.useContext(MessageGroupCreateContext)
+  const val = React.useContext(MessageGroupCreateContext)
   if (val == null) {
     throw new Error(
       "Cannot use useMessageGroupCreate outside of MessageGroupCreateContext",

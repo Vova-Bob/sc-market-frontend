@@ -7,7 +7,7 @@ export const ContractSidebarContext = React.createContext<
 >(null)
 
 export const useContractSidebar = () => {
-  let val = React.useContext(ContractSidebarContext)
+  const val = React.useContext(ContractSidebarContext)
   if (val == null) {
     throw new Error(
       "Cannot use useContractSidebar outside of ContractSidebarContext",

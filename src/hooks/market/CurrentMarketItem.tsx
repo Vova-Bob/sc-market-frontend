@@ -6,7 +6,7 @@ export const CurrentMarketListingContext = React.createContext<
 >(null)
 
 export function useCurrentMarketListing<T>() {
-  let val = React.useContext(CurrentMarketListingContext)
+  const val = React.useContext(CurrentMarketListingContext)
   if (val == null) {
     throw new Error(
       "Cannot use useCurrentMarketListing outside of CurrentMarketListingContext",

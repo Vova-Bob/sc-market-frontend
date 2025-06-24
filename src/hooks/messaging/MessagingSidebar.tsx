@@ -5,7 +5,7 @@ export const MessagingSidebarContext = React.createContext<
 >(null)
 
 export const useMessagingSidebar = () => {
-  let val = React.useContext(MessagingSidebarContext)
+  const val = React.useContext(MessagingSidebarContext)
   if (val == null) {
     // throw new Error("Cannot use useMessagingSidebar outside MessagingSidebarContext")
     return [

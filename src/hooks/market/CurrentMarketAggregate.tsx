@@ -6,7 +6,7 @@ export const CurrentMarketAggregateContext = React.createContext<
 >(null)
 
 export const useCurrentMarketAggregate = () => {
-  let val = React.useContext(CurrentMarketAggregateContext)
+  const val = React.useContext(CurrentMarketAggregateContext)
   if (val == null) {
     throw new Error(
       "Cannot use useCurrentMarketAggregate outside of CurrentMarketAggregateContext",

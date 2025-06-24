@@ -2,7 +2,7 @@ import { BACKEND_URL } from "../util/constants"
 import { serviceApi } from "./service"
 import { unwrapResponse } from "./orders"
 
-let baseUrl = `/api/admin`
+const baseUrl = `/api/admin`
 // Define a service using a base URL and expected endpoints
 export const adminApi = serviceApi.injectEndpoints({
   overrideExisting: false,

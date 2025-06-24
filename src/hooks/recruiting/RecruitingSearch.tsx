@@ -25,7 +25,7 @@ export const RecruitingSearchContext = React.createContext<
 >(null)
 
 export const useRecruitingSearch = () => {
-  let val = React.useContext(RecruitingSearchContext)
+  const val = React.useContext(RecruitingSearchContext)
   if (val == null) {
     throw new Error(
       "Cannot use useRecruitingSearch outside of RecruitingSearchContext",

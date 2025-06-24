@@ -7,7 +7,7 @@ export const RecruitingSidebarContext = React.createContext<
 >(null)
 
 export const useRecruitingSidebar = () => {
-  let val = React.useContext(RecruitingSidebarContext)
+  const val = React.useContext(RecruitingSidebarContext)
   if (val == null) {
     throw new Error(
       "Cannot use useRecruitingSidebar outside of RecruitingSidebarContext",

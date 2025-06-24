@@ -6,7 +6,7 @@ export const ContainerSizeContext = React.createContext<
 >(null)
 
 export const useContainerSize = () => {
-  let val = React.useContext(ContainerSizeContext)
+  const val = React.useContext(ContainerSizeContext)
   if (val == null) {
     throw new Error(
       "Cannot use useContainerSize outside of ContainerSizeContext",

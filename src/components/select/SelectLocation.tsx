@@ -43,7 +43,7 @@ export function romanize(num: number) {
     roman = "",
     i = 3
   while (i--) {
-    let digit = digits.pop()
+    const digit = digits.pop()
     if (digit == null) break
     roman = (key[+digit + i * 10] || "") + roman
   }
@@ -86,7 +86,7 @@ export function SelectLocation() {
     )
     const data = await resp.json()
 
-    let extended: StarmapObject[] = []
+    const extended: StarmapObject[] = []
 
     await Promise.all(
       data.objects.resultset.map(async (obj: StarmapObject) => {

@@ -2,7 +2,7 @@ import { BACKEND_URL } from "../util/constants"
 import { serviceApi } from "./service"
 import { Notification } from "../hooks/login/UserProfile"
 
-let baseUrl = `${BACKEND_URL}/api/notification`
+const baseUrl = `${BACKEND_URL}/api/notification`
 // Define a service using a base URL and expected endpoints
 export const notificationApi = serviceApi.injectEndpoints({
   overrideExisting: false,

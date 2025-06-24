@@ -9,7 +9,7 @@ export const CurrentChatIDContext = React.createContext<
 >(null)
 
 export const useCurrentChatID = () => {
-  let val = React.useContext(CurrentChatIDContext)
+  const val = React.useContext(CurrentChatIDContext)
   if (val == null) {
     throw new Error("Cannot use useCurrentChat outside of CurrentChatContext")
   }

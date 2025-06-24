@@ -23,7 +23,7 @@ interface Span {
 export function convertAvailability(availability: AvailabilitySelection[]) {
   const result = generateInitialSelection()
 
-  for (let span of availability) {
+  for (const span of availability) {
     for (let i = span.start; i <= span.finish; i++) {
       result[i] = true
     }

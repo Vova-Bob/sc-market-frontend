@@ -7,7 +7,7 @@ export const CurrentOrgContext = React.createContext<
 >(null)
 
 export const useCurrentOrg = () => {
-  let val = React.useContext(CurrentOrgContext)
+  const val = React.useContext(CurrentOrgContext)
   if (val == null) {
     throw new Error("Cannot use useCurrentOrg outside of CurrentOrgContext")
   }

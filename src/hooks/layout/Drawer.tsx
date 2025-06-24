@@ -7,7 +7,7 @@ export const DrawerOpenContext = React.createContext<
 >(null)
 
 export const useDrawerOpen = () => {
-  let val = React.useContext(DrawerOpenContext)
+  const val = React.useContext(DrawerOpenContext)
   if (val == null) {
     throw new Error("Cannot use useDrawerWidth outside of DrawerWidthContext")
   }

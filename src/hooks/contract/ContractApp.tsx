@@ -5,7 +5,7 @@ export const ContractAppOpenContext = React.createContext<
 >(null)
 
 export const useContractAppOpen = () => {
-  let val = React.useContext(ContractAppOpenContext)
+  const val = React.useContext(ContractAppOpenContext)
   if (val == null) {
     throw new Error(
       "Cannot use useContractAppOpen outside of ContractAppOpenContext",

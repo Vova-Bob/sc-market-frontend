@@ -7,7 +7,7 @@ export const ServiceSidebarContext = React.createContext<
 >(null)
 
 export const useServiceSidebar = () => {
-  let val = React.useContext(ServiceSidebarContext)
+  const val = React.useContext(ServiceSidebarContext)
   if (val == null) {
     throw new Error(
       "Cannot use useServiceSidebar outside of ServiceSidebarContext",

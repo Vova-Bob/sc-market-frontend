@@ -7,7 +7,7 @@ export const LightThemeContext = React.createContext<
 >(null)
 
 export const useLightTheme = () => {
-  let val = React.useContext(LightThemeContext)
+  const val = React.useContext(LightThemeContext)
   if (val == null) {
     throw new Error("Cannot use useLightTheme outside of DrawerWidthContext")
   }

@@ -19,7 +19,7 @@ export const ServiceSearchContext = React.createContext<
 >(null)
 
 export const useServiceSearch = () => {
-  let val = React.useContext(ServiceSearchContext)
+  const val = React.useContext(ServiceSearchContext)
   if (val == null) {
     throw new Error(
       "Cannot use useServiceSearch outside of ServiceSearchContext",

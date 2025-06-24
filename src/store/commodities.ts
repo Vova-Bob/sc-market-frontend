@@ -6,7 +6,7 @@ export interface SerializedError {
   error?: string
 }
 
-let baseUrl = `${BACKEND_URL}/api/commodities`
+const baseUrl = `${BACKEND_URL}/api/commodities`
 // Define a service using a base URL and expected endpoints
 export const commodityApi = serviceApi.injectEndpoints({
   overrideExisting: false,

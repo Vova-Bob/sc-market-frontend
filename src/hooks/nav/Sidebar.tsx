@@ -5,7 +5,7 @@ export const SidebarContext = React.createContext<
 >(null)
 
 export const useSidebar = () => {
-  let val = React.useContext(SidebarContext)
+  const val = React.useContext(SidebarContext)
   if (val == null) {
     throw new Error("Cannot use useSidebar outside of SidebarContext")
   }

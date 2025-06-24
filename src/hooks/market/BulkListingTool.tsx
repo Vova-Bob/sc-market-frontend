@@ -12,7 +12,7 @@ export const BulkListingToolContext = React.createContext<
 >(null)
 
 export const useBulkListingTool = () => {
-  let val = React.useContext(BulkListingToolContext)
+  const val = React.useContext(BulkListingToolContext)
   if (val == null) {
     throw new Error(
       "Cannot use useBulkListingTool outside of BulkListingToolContext",

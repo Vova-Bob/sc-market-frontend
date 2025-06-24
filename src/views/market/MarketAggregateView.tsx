@@ -808,11 +808,11 @@ export function AggregateBuySellWall(props: { aggregate: MarketAggregate }) {
       .fill(undefined)
       .map((o, i) => ({ x: interval * i, y: 0 }))
 
-    for (let sell of sortedSell) {
+    for (const sell of sortedSell) {
       sellPoints[Math.floor(sell.price / interval)].y += 1
     }
 
-    for (let buy of sortedBuy) {
+    for (const buy of sortedBuy) {
       buyPoints[Math.floor(buy.price / interval)].y += 1
     }
 

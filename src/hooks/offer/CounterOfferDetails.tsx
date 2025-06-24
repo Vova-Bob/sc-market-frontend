@@ -7,7 +7,7 @@ export const CounterOfferDetailsContext = React.createContext<
 >(null)
 
 export const useCounterOffer = () => {
-  let val = React.useContext(CounterOfferDetailsContext)
+  const val = React.useContext(CounterOfferDetailsContext)
   if (val == null) {
     throw new Error(
       "Cannot use useCounterOffer outside of CounterOfferDetailsContext",

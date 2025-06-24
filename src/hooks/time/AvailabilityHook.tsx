@@ -14,7 +14,7 @@ export const AvailabilityHookContext =
   React.createContext<AvailabilityHookData | null>(null)
 
 export const useAvailability = () => {
-  let val = React.useContext(AvailabilityHookContext)
+  const val = React.useContext(AvailabilityHookContext)
   if (val == null) {
     throw new Error(
       "Cannot use useAvailabilityHook outside of AvailabilityHookContext",

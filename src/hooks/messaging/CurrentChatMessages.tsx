@@ -6,7 +6,7 @@ export const CurrentChatMessagesContext = React.createContext<
 >(null)
 
 export const useCurrentChatMessages = () => {
-  let val = React.useContext(CurrentChatMessagesContext)
+  const val = React.useContext(CurrentChatMessagesContext)
   if (val == null) {
     throw new Error(
       "Cannot use useCurrentChatMessages outside of CurrentChatMessagesContext",

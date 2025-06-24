@@ -7,7 +7,7 @@ export const ContractorSidebarContext = React.createContext<
 >(null)
 
 export const useContractorSidebar = () => {
-  let val = React.useContext(ContractorSidebarContext)
+  const val = React.useContext(ContractorSidebarContext)
   if (val == null) {
     throw new Error(
       "Cannot use useContractorSidebar outside of ContractorSidebarContext",

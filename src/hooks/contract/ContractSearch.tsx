@@ -20,7 +20,7 @@ export const ContractSearchContext = React.createContext<
 >(null)
 
 export const useContractSearch = () => {
-  let val = React.useContext(ContractSearchContext)
+  const val = React.useContext(ContractSearchContext)
   if (val == null) {
     throw new Error(
       "Cannot use useContractSearch outside of ContractSearchContext",

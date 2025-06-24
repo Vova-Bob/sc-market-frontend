@@ -6,7 +6,7 @@ export const CurrentOrderContext = React.createContext<
 >(null)
 
 export const useCurrentOrder = () => {
-  let val = React.useContext(CurrentOrderContext)
+  const val = React.useContext(CurrentOrderContext)
   if (val == null) {
     throw new Error("Cannot use useCurrentOrder outside of CurrentOrderContext")
   }
