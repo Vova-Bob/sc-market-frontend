@@ -4,6 +4,7 @@ import {
   AggregateMarketListingBody,
   BaseListingType,
   GameItem,
+  GameItemDescription,
   MarketAggregate,
   MarketAggregateListing,
   MarketBuyOrderBody,
@@ -76,6 +77,9 @@ export const marketApi = serviceApi.injectEndpoints({
       providesTags: (result, error, arg) => [
         { type: "Listing" as const, id: arg },
       ],
+    }),
+    marketGetGameItemByName: builder.query<GameItemDescription, string>({
+      query: (name) => `${baseUrl}/item/${encodeURIComponent(name)}`,
     }),
     marketGetListingByUser: builder.query<SellerListingType[], string>({
       query: (username) => `${baseUrl}/user/${username}`,
@@ -546,6 +550,7 @@ export const {
   useMarketGetBuyOrderListingsQuery,
   useMarketPurchaseMutation,
   useMarketGetListingByIDQuery,
+  useMarketGetGameItemByNameQuery,
   useMarketGetListingsByContractorQuery,
   useMarketBidMutation,
   useMarketAcceptBidMutation,

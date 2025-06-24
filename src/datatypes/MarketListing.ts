@@ -386,3 +386,11 @@ export interface GameItem {
   name: string
   id: string
 }
+
+export interface GameItemDescription {
+  id: string
+  name: string
+  type: string
+  description: string
+  image_url: string | null
+}
