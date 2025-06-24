@@ -1,5 +1,4 @@
 import {
-  DataGrid,
   GridActionsCellItem,
   GridColDef,
   GridEventListener,
@@ -14,13 +13,13 @@ import {
   GridValidRowModel,
   Toolbar,
 } from "@mui/x-data-grid"
-import React, { useEffect } from "react"
-import { SelectGameItem } from "../../components/select/SelectGameItem"
+import React, { useCallback, useEffect } from "react"
 import { Stack } from "@mui/system"
 import { MinimalUser } from "../../datatypes/User"
-import { defaultAvatar } from "../comments/CommentTree"
 import {
   Autocomplete,
+  Button,
+  ButtonGroup,
   IconButton,
   Switch,
   TextField,
@@ -31,18 +30,20 @@ import {
   CancelRounded,
   CreateRounded,
   DeleteRounded,
+  RemoveRounded,
   SaveRounded,
 } from "@mui/icons-material"
 import { useGetUserProfileQuery } from "../../store/profile"
 import { UserProfileState } from "../../hooks/login/UserProfile"
 import { UserAvatar } from "../../components/avatar/UserAvatar"
 import { ThemedDataGrid } from "../../components/grid/ThemedDataGrid"
+import { SelectMarketListing } from "../../components/select/SelectMarketListing.tsx"
+import { UniqueListing } from "../../datatypes/MarketListing.ts"
+import { NumericFormat } from "react-number-format"
 
 interface StockEntry extends GridValidRowModel {
   id: string
-  listing_id: string | null
-  item_name: string | null
-  item_category: string
+  listing: UniqueListing | null
   quantity_available: number
   location: string
   status: string
@@ -52,11 +53,82 @@ interface StockEntry extends GridValidRowModel {
 }
 
 export function StockEntryItemDisplay(props: {
-  item_name: string
-  item_category: string
-  listing_id: string
+  listing: UniqueListing | null
 }) {
-  return `${props.item_category} / ${props.item_name || ""}`
+  if (!props.listing || !props.listing.details) {
+    return "No item selected"
+  }
+  return `${props.listing.details.item_type} / ${props.listing.details.title}`
+}
+
+export function ManageStockArea(props: { 
+  selectedRows: StockEntry[]
+  onUpdateQuantity: (rowId: string, newQuantity: number) => void
+}) {
+  const [quantity, setQuantity] = React.useState(1)
+  const { selectedRows, onUpdateQuantity } = props
+
+  const updateSelectedRows = useCallback((operation: (currentQty: number) => number) => {
+    selectedRows.forEach((row) => {
+      const currentQuantity = row.quantity_available
+      const newQuantity = operation(currentQuantity)
+      onUpdateQuantity(row.id, Math.max(0, newQuantity))
+    })
+  }, [selectedRows, onUpdateQuantity])
+
+  return (
+    <Stack direction="row" spacing={2} alignItems="center">
+      <NumericFormat
+        decimalScale={0}
+        allowNegative={false}
+        customInput={TextField}
+        thousandSeparator
+        onValueChange={async (values) => {
+          setQuantity(values.floatValue || 0)
+        }}
+        inputProps={{
+          inputMode: "numeric",
+          pattern: "[0-9]*",
+          type: "numeric",
+          size: "small",
+        }}
+        sx={{
+          minWidth: 200,
+        }}
+        size="small"
+        label={"Update Amount"}
+        value={quantity}
+        color={"secondary"}
+      />
+
+      <ButtonGroup size={"small"}>
+        <Button
+          variant={"contained"}
+          onClick={() => updateSelectedRows((currentQty) => currentQty + quantity)}
+          color={"success"}
+          startIcon={<AddRounded />}
+        >
+          Add
+        </Button>
+
+        <Button
+          variant={"contained"}
+          onClick={() => updateSelectedRows(() => 0)}
+          color={"warning"}
+        >
+          0
+        </Button>
+        <Button
+          variant={"contained"}
+          onClick={() => updateSelectedRows((currentQty) => currentQty - quantity)}
+          color={"error"}
+          startIcon={<RemoveRounded />}
+        >
+          Sub
+        </Button>
+      </ButtonGroup>
+    </Stack>
+  )
 }
 
 declare module "@mui/x-data-grid" {
@@ -75,30 +147,12 @@ export function ItemStockRework() {
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {},
   )
-  const [rows, setRows] = React.useState<StockEntry[]>([
-    {
-      isNew: false,
-      id: "0",
-      listing_id: "123",
-      item_name: null,
-      item_category: "Other",
-      quantity_available: 15,
-      location: "Area-18",
-      status: "",
-      listed: true,
-      owner: profile || {
-        username: "...",
-        display_name: "...",
-        avatar: defaultAvatar,
-        rating: {
-          avg_rating: 0,
-          rating_count: 0,
-          streak: 0,
-          total_orders: 0,
-        },
-      },
-    },
-  ])
+  const [rows, setRows] = React.useState<StockEntry[]>([])
+
+  // Temporary state for editing - changes are only applied on save
+  const [editingRows, setEditingRows] = React.useState<
+    Record<string, Partial<StockEntry>>
+  >({})
 
   const handleRowEditStop: GridEventListener<"rowEditStop"> = (
     params,
@@ -110,10 +164,35 @@ export function ItemStockRework() {
   }
 
   const handleEditClick = (id: GridRowId) => () => {
+    // Initialize editing state with current row data
+    const currentRow = rows.find((row) => row.id === id)
+    if (currentRow) {
+      setEditingRows((prev) => ({
+        ...prev,
+        [id]: { ...currentRow },
+      }))
+    }
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } })
   }
 
   const handleSaveClick = (id: GridRowId) => () => {
+    // Apply the editing changes to the actual rows
+    const editingRow = editingRows[id]
+    console.log('Saving row:', id, 'Editing data:', editingRow)
+    
+    if (editingRow) {
+      setRows((prevRows) =>
+        prevRows.map((row) =>
+          row.id === id ? { ...row, ...editingRow, isNew: false } : row,
+        ),
+      )
+      // Clear the editing state for this row
+      setEditingRows((prev) => {
+        const newState = { ...prev }
+        delete newState[id]
+        return newState
+      })
+    }
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } })
   }
 
@@ -127,6 +206,12 @@ export function ItemStockRework() {
 
   const handleDeleteClick = (id: GridRowId) => () => {
     setRows(rows.filter((row) => row.id !== id))
+    // Clear editing state if this row was being edited
+    setEditingRows((prev) => {
+      const newState = { ...prev }
+      delete newState[id]
+      return newState
+    })
   }
 
   const handleCancelClick = (id: GridRowId) => () => {
@@ -139,6 +224,13 @@ export function ItemStockRework() {
     if (editedRow!.isNew) {
       setRows(rows.filter((row) => row.id !== id))
     }
+
+    // Clear the editing state for this row
+    setEditingRows((prev) => {
+      const newState = { ...prev }
+      delete newState[id]
+      return newState
+    })
   }
 
   const processRowUpdate = (newRow: StockEntry) => {
@@ -150,6 +242,29 @@ export function ItemStockRework() {
   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
     setRowModesModel(newRowModesModel)
   }
+
+  const handleUpdateQuantity = useCallback((rowId: string, newQuantity: number) => {
+    setRows((prevRows) =>
+      prevRows.map((row) =>
+        row.id === rowId ? { ...row, quantity_available: newQuantity } : row,
+      ),
+    )
+    
+    // Also update editing state if this row is being edited
+    setEditingRows((prev) => {
+      if (prev[rowId]) {
+        return {
+          ...prev,
+          [rowId]: { ...prev[rowId], quantity_available: newQuantity },
+        }
+      }
+      return prev
+    })
+  }, [])
+
+  const selectedRows = React.useMemo(() => {
+    return rows.filter((row) => rowSelectionModel.ids.has(row.id))
+  }, [rows, rowSelectionModel.ids])
 
   const columns: GridColDef[] = [
     {
@@ -164,16 +279,19 @@ export function ItemStockRework() {
     },
     {
       sortable: true,
-      field: "item_category",
-      width: 500,
+      field: "listing",
+      width: 450,
       display: "flex",
       headerName: "Item",
-      editable: true,
       renderCell: (params: GridRenderCellParams) => {
         const isInEditMode =
           rowModesModel[params.id]?.mode === GridRowModes.Edit
 
         if (isInEditMode) {
+          // Use editing state for the current value
+          const editingRow = editingRows[params.id]
+          const currentListing = editingRow?.listing || params.value?.listing
+
           return (
             <Stack
               direction={"row"}
@@ -187,22 +305,14 @@ export function ItemStockRework() {
                 },
               }}
             >
-              <SelectGameItem
-                item_type={params.row.item_category}
-                item_name={params.row.item_name}
-                onTypeChange={(item_category) =>
-                  processRowUpdate({
-                    ...params.row,
-                    item_category,
-                    item_name: null,
-                  })
-                }
-                onItemChange={(item_name) => {
-                  setRows((prev) =>
-                    prev.map((row) =>
-                      row.id === params.row.id ? { ...row, item_name } : row,
-                    ),
-                  )
+              <SelectMarketListing
+                listing_id={currentListing?.listing?.listing_id || null}
+                onListingChange={(newListing) => {
+                  // Update editing state instead of immediately updating rows
+                  setEditingRows((prev) => ({
+                    ...prev,
+                    [params.id]: { ...prev[params.id], listing: newListing },
+                  }))
                 }}
                 TextfieldProps={{
                   size: "small",
@@ -211,14 +321,61 @@ export function ItemStockRework() {
             </Stack>
           )
         } else {
-          return <StockEntryItemDisplay {...params.row} />
+          return <StockEntryItemDisplay listing={params.value} />
         }
       },
     },
     {
       field: "quantity_available",
       headerName: "Quantity",
+      display: "flex",
       valueFormatter: (value: number) => value.toLocaleString(undefined),
+      renderCell: (params: GridRenderCellParams) => {
+        const isInEditMode =
+          rowModesModel[params.id]?.mode === GridRowModes.Edit
+
+        if (isInEditMode) {
+          const editingRow = editingRows[params.id]
+          const currentQuantity = editingRow?.quantity_available ?? params.value
+          
+          return (
+            <NumericFormat
+              decimalScale={0}
+              allowNegative={false}
+              customInput={TextField}
+              thousandSeparator
+              onValueChange={async (values) => {
+                // Update editing state instead of immediately updating rows
+                setEditingRows((prev) => {
+                  const newState = {
+                    ...prev,
+                    [params.id]: {
+                      ...prev[params.id],
+                      quantity_available: +values.floatValue! || 1,
+                    },
+                  }
+                  console.log('Quantity editing state updated:', params.id, newState[params.id])
+                  return newState
+                })
+              }}
+              inputProps={{
+                inputMode: "numeric",
+                pattern: "[0-9]*",
+              }}
+              InputProps={{
+                inputMode: "numeric",
+              }}
+              size="small"
+              label={"Qty."}
+              value={currentQuantity}
+              color={"secondary"}
+            />
+          )
+        } else {
+          // Show formatted value when not editing
+          return params.value.toLocaleString(undefined)
+        }
+      },
     },
     {
       sortable: true,
@@ -231,14 +388,39 @@ export function ItemStockRework() {
           rowModesModel[params.id]?.mode === GridRowModes.Edit
 
         if (isInEditMode) {
+          const editingRow = editingRows[params.id]
+          const currentLocation = editingRow?.location ?? params.value
+
           return (
             <Autocomplete
               fullWidth
               size={"small"}
               freeSolo
               disableClearable
-              value={params.value}
+              value={currentLocation}
               options={rows.map((option) => option.location).filter((x) => x)}
+              onChange={(event, newValue) => {
+                // Update editing state instead of immediately updating rows
+                setEditingRows((prev) => {
+                  const newState = {
+                    ...prev,
+                    [params.id]: { ...prev[params.id], location: newValue || "" },
+                  }
+                  console.log('Location editing state updated:', params.id, newState[params.id])
+                  return newState
+                })
+              }}
+              onInputChange={(event, newInputValue) => {
+                // Also update on input change to capture typing immediately
+                setEditingRows((prev) => {
+                  const newState = {
+                    ...prev,
+                    [params.id]: { ...prev[params.id], location: newInputValue || "" },
+                  }
+                  console.log('Location input updated:', params.id, newState[params.id])
+                  return newState
+                })
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -269,13 +451,17 @@ export function ItemStockRework() {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit
 
         if (isInEditMode) {
+          // Check if the listing is null to disable save button
+          const editingRow = editingRows[id]
+          const hasValidListing = editingRow?.listing
+          
           return [
             <GridActionsCellItem
               icon={<SaveRounded style={{ color: "primary.main" }} />}
               label="Save"
               key={"save"}
-              // disabled={row.game_item === null}
               onClick={handleSaveClick(id)}
+              disabled={!hasValidListing}
             />,
             <GridActionsCellItem
               icon={<CancelRounded />}
@@ -333,6 +519,7 @@ export function ItemStockRework() {
       columns={columns}
       getRowId={(row) => row.id}
       disableRowSelectionOnClick
+      checkboxSelection
       onRowSelectionModelChange={setRowSelectionModel}
       rowSelectionModel={rowSelectionModel}
       processRowUpdate={
@@ -345,33 +532,42 @@ export function ItemStockRework() {
         toolbar: () => {
           return (
             <Toolbar>
-              <IconButton
-                onClick={() => {
-                  const id = rows.length.toString()
-                  setRows((prev) => [
-                    ...prev,
-                    {
+              <ManageStockArea 
+                selectedRows={selectedRows}
+                onUpdateQuantity={handleUpdateQuantity}
+              />
+              <Tooltip title={"Add Row"}>
+                <IconButton
+                  onClick={() => {
+                    const id = rows.length.toString()
+                    const newRow = {
                       id,
-                      listing_id: null,
-                      item_name: null,
-                      item_category: "Other",
+                      listing: null,
                       quantity_available: 0,
                       location: "",
                       status: "",
                       owner: profile!,
                       isNew: true,
                       listed: true,
-                    },
-                  ])
+                    }
 
-                  setRowModesModel((oldModel) => ({
-                    ...oldModel,
-                    [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
-                  }))
-                }}
-              >
-                <AddRounded />
-              </IconButton>
+                    setRows((prev) => [...prev, newRow])
+
+                    // Initialize editing state for the new row
+                    setEditingRows((prev) => ({
+                      ...prev,
+                      [id]: { ...newRow },
+                    }))
+
+                    setRowModesModel((oldModel) => ({
+                      ...oldModel,
+                      [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
+                    }))
+                  }}
+                >
+                  <AddRounded />
+                </IconButton>
+              </Tooltip>
             </Toolbar>
           )
         },

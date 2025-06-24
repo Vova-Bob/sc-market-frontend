@@ -76,7 +76,7 @@ export function OfferMessagesArea(props: { offer: OfferSession }) {
     <Grid item xs={12} lg={4} md={6}>
       <Paper
         sx={{
-          maxHeight: 600,
+          maxHeight: 650,
           display: "flex",
           alignItems: "space-between",
           flexDirection: "column",
