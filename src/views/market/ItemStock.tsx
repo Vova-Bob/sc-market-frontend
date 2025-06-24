@@ -37,6 +37,7 @@ import {
   RefreshOutlined,
   RemoveRounded,
   SaveRounded,
+  DeleteRounded,
 } from "@mui/icons-material"
 import { useMarketSearch } from "../../hooks/market/MarketSearch"
 import { filterListings } from "./ItemListings"
@@ -259,7 +260,7 @@ function ItemStockToolbar(props: {
               id,
               item_type: "Other",
               item_name: null,
-              price: 0,
+              price: 1,
               quantity_available: 1,
               status: "active",
               isNew: true,
@@ -537,7 +538,6 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
                 size="small"
                 label="Price"
                 value={currentPrice}
-                InputProps={{ endAdornment: "aUEC" }}
               />
             )
           } else {
@@ -720,21 +720,19 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
       field: "listing_id",
       renderHeader: () => null,
       headerName: "Edit",
-      width: 50,
+      width: 90,
       display: "flex",
       renderCell: (params: GridRenderCellParams) => {
         const isNewRow = newRows.find((row) => row.id === params.id)
-
+        const isInEditMode = rowModesModel[params.id]?.mode === GridRowModes.Edit
+        
         if (isNewRow) {
-          const isInEditMode =
-            rowModesModel[params.id]?.mode === GridRowModes.Edit
-
           if (isInEditMode) {
             const editingRow = editingRows[params.id]
             const hasValidItem = editingRow?.item_name
 
             return (
-              <Stack direction="row" spacing={1}>
+              <Stack direction="row" spacing={1} justifyContent="flex-end" sx={{ width: '100%' }}>
                 <Tooltip title="Save">
                   <IconButton
                     size="small"
@@ -745,32 +743,35 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
                     <SaveRounded />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Cancel">
+                <Tooltip title="Discard">
                   <IconButton
                     size="small"
                     onClick={handleCancelClick(params.id)}
-                    color="inherit"
+                    color="error"
                   >
-                    <CancelRounded />
+                    <DeleteRounded />
                   </IconButton>
                 </Tooltip>
               </Stack>
             )
           } else {
+            // For new rows that have been saved, just show edit
             return (
-              <Tooltip title="Edit">
-                <IconButton
-                  size="small"
-                  onClick={handleEditClick(params.id)}
-                  color="inherit"
-                >
-                  <CreateRounded />
-                </IconButton>
-              </Tooltip>
+              <Stack direction="row" justifyContent="flex-end" sx={{ width: '100%' }}>
+                <Tooltip title="Edit">
+                  <IconButton
+                    size="small"
+                    onClick={handleEditClick(params.id)}
+                    color="inherit"
+                  >
+                    <CreateRounded />
+                  </IconButton>
+                </Tooltip>
+              </Stack>
             )
           }
         }
-
+        
         return (
           <Tooltip title={"Edit Listing"}>
             <Link
