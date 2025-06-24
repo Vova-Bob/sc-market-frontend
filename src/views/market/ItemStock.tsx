@@ -366,7 +366,7 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
           description: gameItem?.description || "",
           sale_type: "sale" as const,
           item_type: editingRow.item_type || "Other",
-          price: editingRow.price || 0,
+          price: editingRow.price || 1,
           quantity_available: editingRow.quantity_available || 1,
           photos: gameItem?.image_url
             ? [gameItem.image_url]
@@ -531,7 +531,7 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
                     ...prev,
                     [params.id]: {
                       ...prev[params.id],
-                      price: values.floatValue || 0,
+                      price: values.floatValue || 1,
                     },
                   }))
                 }}
