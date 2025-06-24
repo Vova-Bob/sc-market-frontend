@@ -61,20 +61,23 @@ export function StockEntryItemDisplay(props: {
   return `${props.listing.details.item_type} / ${props.listing.details.title}`
 }
 
-export function ManageStockArea(props: { 
+export function ManageStockArea(props: {
   selectedRows: StockEntry[]
   onUpdateQuantity: (rowId: string, newQuantity: number) => void
 }) {
   const [quantity, setQuantity] = React.useState(1)
   const { selectedRows, onUpdateQuantity } = props
 
-  const updateSelectedRows = useCallback((operation: (currentQty: number) => number) => {
-    selectedRows.forEach((row) => {
-      const currentQuantity = row.quantity_available
-      const newQuantity = operation(currentQuantity)
-      onUpdateQuantity(row.id, Math.max(0, newQuantity))
-    })
-  }, [selectedRows, onUpdateQuantity])
+  const updateSelectedRows = useCallback(
+    (operation: (currentQty: number) => number) => {
+      selectedRows.forEach((row) => {
+        const currentQuantity = row.quantity_available
+        const newQuantity = operation(currentQuantity)
+        onUpdateQuantity(row.id, Math.max(0, newQuantity))
+      })
+    },
+    [selectedRows, onUpdateQuantity],
+  )
 
   return (
     <Stack direction="row" spacing={2} alignItems="center">
@@ -104,7 +107,9 @@ export function ManageStockArea(props: {
       <ButtonGroup size={"small"}>
         <Button
           variant={"contained"}
-          onClick={() => updateSelectedRows((currentQty) => currentQty + quantity)}
+          onClick={() =>
+            updateSelectedRows((currentQty) => currentQty + quantity)
+          }
           color={"success"}
           startIcon={<AddRounded />}
         >
@@ -120,7 +125,9 @@ export function ManageStockArea(props: {
         </Button>
         <Button
           variant={"contained"}
-          onClick={() => updateSelectedRows((currentQty) => currentQty - quantity)}
+          onClick={() =>
+            updateSelectedRows((currentQty) => currentQty - quantity)
+          }
           color={"error"}
           startIcon={<RemoveRounded />}
         >
@@ -178,8 +185,8 @@ export function ItemStockRework() {
   const handleSaveClick = (id: GridRowId) => () => {
     // Apply the editing changes to the actual rows
     const editingRow = editingRows[id]
-    console.log('Saving row:', id, 'Editing data:', editingRow)
-    
+    console.log("Saving row:", id, "Editing data:", editingRow)
+
     if (editingRow) {
       setRows((prevRows) =>
         prevRows.map((row) =>
@@ -243,24 +250,27 @@ export function ItemStockRework() {
     setRowModesModel(newRowModesModel)
   }
 
-  const handleUpdateQuantity = useCallback((rowId: string, newQuantity: number) => {
-    setRows((prevRows) =>
-      prevRows.map((row) =>
-        row.id === rowId ? { ...row, quantity_available: newQuantity } : row,
-      ),
-    )
-    
-    // Also update editing state if this row is being edited
-    setEditingRows((prev) => {
-      if (prev[rowId]) {
-        return {
-          ...prev,
-          [rowId]: { ...prev[rowId], quantity_available: newQuantity },
+  const handleUpdateQuantity = useCallback(
+    (rowId: string, newQuantity: number) => {
+      setRows((prevRows) =>
+        prevRows.map((row) =>
+          row.id === rowId ? { ...row, quantity_available: newQuantity } : row,
+        ),
+      )
+
+      // Also update editing state if this row is being edited
+      setEditingRows((prev) => {
+        if (prev[rowId]) {
+          return {
+            ...prev,
+            [rowId]: { ...prev[rowId], quantity_available: newQuantity },
+          }
         }
-      }
-      return prev
-    })
-  }, [])
+        return prev
+      })
+    },
+    [],
+  )
 
   const selectedRows = React.useMemo(() => {
     return rows.filter((row) => rowSelectionModel.ids.has(row.id))
@@ -337,7 +347,7 @@ export function ItemStockRework() {
         if (isInEditMode) {
           const editingRow = editingRows[params.id]
           const currentQuantity = editingRow?.quantity_available ?? params.value
-          
+
           return (
             <NumericFormat
               decimalScale={0}
@@ -354,7 +364,11 @@ export function ItemStockRework() {
                       quantity_available: +values.floatValue! || 1,
                     },
                   }
-                  console.log('Quantity editing state updated:', params.id, newState[params.id])
+                  console.log(
+                    "Quantity editing state updated:",
+                    params.id,
+                    newState[params.id],
+                  )
                   return newState
                 })
               }}
@@ -404,9 +418,16 @@ export function ItemStockRework() {
                 setEditingRows((prev) => {
                   const newState = {
                     ...prev,
-                    [params.id]: { ...prev[params.id], location: newValue || "" },
+                    [params.id]: {
+                      ...prev[params.id],
+                      location: newValue || "",
+                    },
                   }
-                  console.log('Location editing state updated:', params.id, newState[params.id])
+                  console.log(
+                    "Location editing state updated:",
+                    params.id,
+                    newState[params.id],
+                  )
                   return newState
                 })
               }}
@@ -415,9 +436,16 @@ export function ItemStockRework() {
                 setEditingRows((prev) => {
                   const newState = {
                     ...prev,
-                    [params.id]: { ...prev[params.id], location: newInputValue || "" },
+                    [params.id]: {
+                      ...prev[params.id],
+                      location: newInputValue || "",
+                    },
                   }
-                  console.log('Location input updated:', params.id, newState[params.id])
+                  console.log(
+                    "Location input updated:",
+                    params.id,
+                    newState[params.id],
+                  )
                   return newState
                 })
               }}
@@ -454,7 +482,7 @@ export function ItemStockRework() {
           // Check if the listing is null to disable save button
           const editingRow = editingRows[id]
           const hasValidListing = editingRow?.listing
-          
+
           return [
             <GridActionsCellItem
               icon={<SaveRounded style={{ color: "primary.main" }} />}
@@ -532,7 +560,7 @@ export function ItemStockRework() {
         toolbar: () => {
           return (
             <Toolbar>
-              <ManageStockArea 
+              <ManageStockArea
                 selectedRows={selectedRows}
                 onUpdateQuantity={handleUpdateQuantity}
               />

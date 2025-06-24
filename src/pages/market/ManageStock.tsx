@@ -11,6 +11,7 @@ import { HeaderTitle } from "../../components/typography/HeaderTitle"
 import { UnderlineLink } from "../../components/typography/UnderlineLink"
 import { Link } from "react-router-dom"
 import { ItemStockRework } from "../../views/market/ItemStockRework"
+import { useGetUserProfileQuery } from "../../store/profile.ts"
 
 export function ManageStock() {
   const [open, setOpen] = useState(true)
@@ -25,6 +26,7 @@ export function ManageStock() {
   }, [])
 
   const [selectedListings, setSelectedListings] = useState<UniqueListing[]>([])
+  const { data: profile } = useGetUserProfileQuery()
 
   return (
     <Page title={"My Market Listings"}>
@@ -46,9 +48,11 @@ export function ManageStock() {
                 <Grid item xs={12}>
                   <MyItemStock />
                 </Grid>
-                {/*<Grid item xs={12}>*/}
-                {/*  <ItemStockRework />*/}
-                {/*</Grid>*/}
+                {profile?.role === "admin" && (
+                  <Grid item xs={12}>
+                    <ItemStockRework />
+                  </Grid>
+                )}
               </Grid>
             </Grid>
 
