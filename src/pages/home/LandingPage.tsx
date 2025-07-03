@@ -580,6 +580,12 @@ function SupportersSection() {
       url: "https://joinunn.com/",
       name: "The Unnamed",
     },
+    {
+      avatar:
+        "https://cdn.robertsspaceindustries.com/static/images/organization/defaults/logo/corp.jpg",
+      url: "https://robertsspaceindustries.com/en/orgs/BIRDINC",
+      name: "BIRD Inc",
+    },
   ]
 
   return (
