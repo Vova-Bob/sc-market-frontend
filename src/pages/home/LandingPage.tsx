@@ -43,6 +43,7 @@ import AnimatedNumbers from "react-animated-numbers"
 import { Stack } from "@mui/system"
 import CharLogo from "../../assets/CharHoldings_Logo.png"
 import UNNLogo from "../../assets/UNN_Traders_Logo.jpg"
+import BirdIncLogo from "../../assets/birdinc.png"
 
 const bg = "https://media.tenor.com/4LKXThFQuHMAAAAd/perseus-star-citizen.gif"
 
@@ -581,8 +582,7 @@ function SupportersSection() {
       name: "The Unnamed",
     },
     {
-      avatar:
-        "https://cdn.robertsspaceindustries.com/static/images/organization/defaults/logo/corp.jpg",
+      avatar: BirdIncLogo,
       url: "https://robertsspaceindustries.com/en/orgs/BIRDINC",
       name: "BIRD Inc",
     },
