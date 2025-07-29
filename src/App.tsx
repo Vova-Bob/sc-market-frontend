@@ -11,6 +11,8 @@ import {
 import { PageFallback } from "./components/metadata/Page"
 import { FrontendErrorElement } from "./pages/errors/FrontendError"
 
+import "./util/i18n.ts"
+
 function App() {
   return <RouterProvider router={router} />
 }

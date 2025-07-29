@@ -45,6 +45,7 @@ import {
 import { MarketBid } from "../../datatypes/MarketListing"
 import { useMarketGetListingByIDQuery } from "../../store/market"
 import { OfferSession } from "../../store/offer"
+import { useTranslation } from "react-i18next"
 
 /*
 VALUES ('order_create', 'orders'),
@@ -488,6 +489,8 @@ export function NotificationsButton() {
     }
   }, [deleteNotifications, notifications])
 
+  const { t } = useTranslation()
+
   return (
     <>
       <IconButton sx={{ marginRight: 2 }} onClick={handleClick}>
@@ -531,7 +534,7 @@ export function NotificationsButton() {
           }}
         >
           <Typography variant={"h6"} fontWeight={600}>
-            Notifications
+            {t("notifications.notifications")}
           </Typography>
           <Box>
             <Tooltip title={"Clear all notifications"}>
