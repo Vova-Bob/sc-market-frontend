@@ -4,6 +4,11 @@ import LanguageDetector from "i18next-browser-languagedetector"
 
 import en from "../locales/en/english.json"
 import uk from "../locales/uk/ukrainian.json"
+// Language configuration with endonyms
+export const languages = [
+  { code: "en", endonym: "English" },
+  { code: "uk", endonym: "Українська" },
+]
 
 i18n
   .use(LanguageDetector)

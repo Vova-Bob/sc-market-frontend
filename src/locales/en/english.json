@@ -279,7 +279,16 @@
     "page_settings": "Page settings",
     "theme": "Theme",
     "light": "Light",
-    "dark": "Dark"
+    "dark": "Dark",
+    "language": "Language",
+    "select_language": "Select language"
+  },
+  "languages": {
+    "en": "English",
+    "uk": "Ukrainian",
+    "fr": "French",
+    "de": "German",
+    "ja": "Japanese"
   },
   "privacy_settings": {
     "title": "Privacy",
