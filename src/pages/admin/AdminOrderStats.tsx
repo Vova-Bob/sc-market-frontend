@@ -10,12 +10,14 @@ import {
   TopUsersThisWeek,
 } from "../../views/orders/OrderTrend"
 import { AdminRecentOrders } from "../../views/orders/RecentOrders"
+import { useTranslation } from "react-i18next"
 
 export function AdminOrderStats() {
+  const { t } = useTranslation()
   const { data: orders } = useGetAllOrdersQuery()
 
   return (
-    <Page title={"Admin Order Stats"}>
+    <Page title={t("admin.orderStats", "Admin Order Stats")}>
       <ContainerGrid maxWidth={"xl"} sidebarOpen={true}>
         <OrderTrend orders={orders || []} />
         <TopContractors orders={orders || []} />
