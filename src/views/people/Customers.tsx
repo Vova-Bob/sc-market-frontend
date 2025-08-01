@@ -16,7 +16,6 @@ import { HeadCell, PaginatedTable } from "../../components/table/PaginatedTable"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 import { useGetContractorCustomersQuery } from "../../store/contractor"
 import { UnderlineLink } from "../../components/typography/UnderlineLink"
-import { useProfileGetAllUsers } from "../../store/profile"
 
 function PeopleRow(props: {
   row: User

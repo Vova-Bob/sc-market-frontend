@@ -1387,8 +1387,7 @@ export function DisplayListings(props: {
               {t("displayed_rows", {
                 from: from.toLocaleString(undefined),
                 to: to.toLocaleString(undefined),
-                count:
-                  count,
+                count: count,
               })}
             </>
           )}
@@ -1698,8 +1697,7 @@ export function DisplayBuyOrderListings(props: {
               {t("displayed_rows", {
                 from: from.toLocaleString(undefined),
                 to: to.toLocaleString(undefined),
-                count:
-                  count,
+                count: count,
               })}
             </>
           )}
@@ -1806,8 +1804,7 @@ export function ItemListings(props: {
               {t("displayed_rows", {
                 from: from.toLocaleString(undefined),
                 to: to.toLocaleString(undefined),
-                count:
-                  count,
+                count: count,
               })}
             </>
           )}
@@ -1914,8 +1911,7 @@ export function BulkListingsRefactor(props: {
               {t("displayed_rows", {
                 from: from.toLocaleString(undefined),
                 to: to.toLocaleString(undefined),
-                count:
-                  count,
+                count: count,
               })}
             </>
           )}

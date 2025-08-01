@@ -300,8 +300,7 @@ export function ServiceListings(props: { user?: string; contractor?: string }) {
               {t("displayed_rows", {
                 from: from.toLocaleString(undefined),
                 to: to.toLocaleString(undefined),
-                count:
-                  count,
+                count: count,
               })}
             </>
           )}
