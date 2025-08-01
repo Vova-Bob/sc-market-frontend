@@ -25,6 +25,7 @@ import { RecruitingPost } from "../../store/recruiting"
 import { contractorKindIcons } from "../contractor/ContractorList"
 import { ListingSellerRating } from "../../components/rating/ListingRating"
 import { RecruitmentVotes } from "../../components/button/RecruitmentVotes"
+import { useTranslation } from "react-i18next"
 
 export function RecruitingPostItem(props: {
   post: RecruitingPost
@@ -33,6 +34,7 @@ export function RecruitingPostItem(props: {
   const { post, index } = props
   const { contractor } = post
   const theme = useTheme<ExtendedTheme>()
+  const { t } = useTranslation()
 
   return (
     <Grid item xs={12} lg={12}>
@@ -78,7 +80,9 @@ export function RecruitingPostItem(props: {
                   avatar={
                     <Avatar
                       src={contractor.avatar}
-                      aria-label="contractor"
+                      aria-label={t("recruiting_post.contractor", {
+                        defaultValue: "Contractor",
+                      })}
                       variant={"rounded"}
                       sx={{
                         maxHeight: theme.spacing(12),
@@ -158,7 +162,7 @@ export function RecruitingPostItem(props: {
                       <Chip
                         key={field}
                         color={"primary"}
-                        label={field}
+                        label={t(`contractor.fields.${field}`, field)}
                         sx={{
                           marginRight: 1,
                           marginBottom: 1,

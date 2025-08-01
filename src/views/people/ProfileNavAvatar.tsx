@@ -20,12 +20,14 @@ import {
 } from "@mui/icons-material"
 import { Link } from "react-router-dom"
 import { BACKEND_URL } from "../../util/constants"
+import { useTranslation } from "react-i18next"
 
 export function ProfileNavAvatar() {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
   const notifOpen = Boolean(anchorEl)
   const theme = useTheme<ExtendedTheme>()
   const { data: profile } = useGetUserProfileQuery()
+  const { t } = useTranslation()
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
@@ -91,7 +93,7 @@ export function ProfileNavAvatar() {
                 </ListItemIcon>
                 <ListItemText sx={{ maxWidth: 300 }}>
                   <Typography noWrap color={"text.secondary"}>
-                    Profile
+                    {t("profileNavAvatar.profile")}
                   </Typography>
                 </ListItemText>
               </ListItemButton>
@@ -112,7 +114,7 @@ export function ProfileNavAvatar() {
                 </ListItemIcon>
                 <ListItemText sx={{ maxWidth: 300 }}>
                   <Typography noWrap color={"text.secondary"}>
-                    Settings
+                    {t("profileNavAvatar.settings")}
                   </Typography>
                 </ListItemText>
               </ListItemButton>
@@ -133,7 +135,7 @@ export function ProfileNavAvatar() {
                 </ListItemIcon>
                 <ListItemText sx={{ maxWidth: 300 }}>
                   <Typography noWrap color={"text.secondary"}>
-                    Logout
+                    {t("profileNavAvatar.logout")}
                   </Typography>
                 </ListItemText>
               </ListItemButton>

@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { User } from "../../datatypes/User"
 import {
   Avatar,
@@ -190,6 +191,7 @@ function BannerEditArea(props: {
   submitUpdate: (arg: any) => void
 }) {
   const { profile, submitUpdate } = props
+  const { t } = useTranslation()
 
   const { data: myProfile } = useGetUserProfileQuery()
   const isMyProfile = useMemo(
@@ -217,14 +219,11 @@ function BannerEditArea(props: {
         >
           <TextField
             variant={"filled"}
-            label={"Image URL"}
+            label={t("viewProfile.image_url")}
             fullWidth
             focused
             multiline
-            helperText={
-              bannerEntryOpen &&
-              "Direct URL to the image, from Imgur, RSI, or starcitizen.tools"
-            }
+            helperText={bannerEntryOpen && t("viewProfile.image_url_helper")}
             onChange={(event: React.ChangeEvent<{ value: string }>) => {
               setNewBannerURL(event.target.value)
             }}
@@ -262,6 +261,7 @@ export function ProfileBannerArea(props: {
   submitUpdate: (arg: any) => void
 }) {
   const { profile, submitUpdate } = props
+  const { t } = useTranslation()
 
   const { data: myProfile } = useGetUserProfileQuery()
   const isMyProfile = useMemo(
@@ -289,6 +289,7 @@ export function ProfileBannerArea(props: {
 }
 
 export function ViewProfile(props: { profile: User }) {
+  const { t } = useTranslation()
   const { tab } = useParams<{ tab?: string }>()
   const page = useMemo(() => name_to_index.get(tab || "") || 0, [tab])
 
@@ -321,12 +322,12 @@ export function ViewProfile(props: { profile: User }) {
 
     if (res?.data && !res?.error) {
       issueAlert({
-        message: "Submitted!",
+        message: t("viewProfile.submitted"),
         severity: "success",
       })
     } else {
       issueAlert({
-        message: `Failed to submit! ${
+        message: `${t("viewProfile.failed")} ${
           res.error?.error || res.error?.data?.error || res.error
         }`,
         severity: "error",
@@ -438,13 +439,13 @@ export function ViewProfile(props: { profile: User }) {
                             >
                               <TextField
                                 variant={"filled"}
-                                label={"Image URL"}
+                                label={t("viewProfile.image_url")}
                                 fullWidth
                                 focused
                                 multiline
                                 helperText={
                                   avatarEntryOpen &&
-                                  "Direct URL to the image, from Imgur, RSI, or starcitizen.tools"
+                                  t("viewProfile.image_url_helper")
                                 }
                                 onChange={(
                                   event: React.ChangeEvent<{
@@ -584,7 +585,7 @@ export function ViewProfile(props: { profile: User }) {
                       <MarkdownRender
                         text={
                           props.profile.profile_description ||
-                          "No user description"
+                          t("viewProfile.no_user_description")
                         }
                       />
                     </Typography>
@@ -637,33 +638,33 @@ export function ViewProfile(props: { profile: User }) {
                 <Tab
                   component={Link}
                   to={`/user/${props.profile?.username}`}
-                  label="Profile"
+                  label={t("viewProfile.profile_tab")}
                   icon={<InfoRounded />}
                   {...a11yProps(0)}
                 />
                 <Tab
-                  label="Services"
+                  label={t("viewProfile.services_tab")}
                   component={Link}
                   to={`/user/${props.profile?.username}/services`}
                   icon={<DesignServicesRounded />}
                   {...a11yProps(1)}
                 />
                 <Tab
-                  label="Market"
+                  label={t("viewProfile.market_tab")}
                   component={Link}
                   to={`/user/${props.profile?.username}/market`}
                   icon={<GavelRounded />}
                   {...a11yProps(2)}
                 />
                 <Tab
-                  label="Order"
+                  label={t("viewProfile.order_tab")}
                   component={Link}
                   to={`/user/${props.profile?.username}/order`}
                   icon={<CreateRounded />}
                   {...a11yProps(3)}
                 />
                 <Tab
-                  label="Reviews"
+                  label={t("viewProfile.reviews_tab")}
                   component={Link}
                   to={`/user/${props.profile?.username}/reviews`}
                   icon={<StarRounded />}

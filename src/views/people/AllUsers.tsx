@@ -17,6 +17,7 @@ import { UnderlineLink } from "../../components/typography/UnderlineLink"
 import { useProfileGetAllUsers } from "../../store/profile"
 import Chart from "react-apexcharts"
 import { useGetActivityAdminQuery } from "../../store/admin"
+import { useTranslation } from "react-i18next"
 
 function PeopleRow(props: {
   row: User & { role: string }
@@ -114,19 +115,19 @@ const headCells: readonly HeadCell<User & { role: string }>[] = [
     id: "username",
     numeric: false,
     disablePadding: false,
-    label: "Username",
+    label: "adminUsers.username",
   },
   {
     id: "created_at",
     numeric: true,
     disablePadding: false,
-    label: "Date Joined",
+    label: "adminUsers.date_joined",
   },
   {
     id: "role",
     numeric: true,
     disablePadding: false,
-    label: "Role",
+    label: "adminUsers.role",
   },
 ]
 
@@ -136,6 +137,7 @@ export function AdminUserList(props: {
   customers?: boolean
 }): JSX.Element {
   const { data: users, isLoading } = useProfileGetAllUsers()
+  const { t } = useTranslation()
 
   const data = useMemo(() => {
     const sorted_users = [...(users || [])]
@@ -154,19 +156,22 @@ export function AdminUserList(props: {
 
   return (
     <>
-      <Section xs={12} title={"Users"} disablePadding>
+      <Section xs={12} title={t("adminUsers.users")} disablePadding>
         {isLoading ? null : (
           <PaginatedTable
             rows={users || []}
             initialSort={"username"}
             generateRow={PeopleRow}
             keyAttr={"username"}
-            headCells={headCells}
+            headCells={headCells.map((cell) => ({
+              ...cell,
+              label: t(cell.label),
+            }))}
             disableSelect
           />
         )}
       </Section>
-      <Section xs={12} title={"Membership Count"}>
+      <Section xs={12} title={t("adminUsers.membership_count")}>
         <Grid item xs={12}>
           {/* @ts-ignore */}
           <Chart
@@ -205,11 +210,11 @@ export function AdminUserList(props: {
             }}
             series={[
               {
-                name: "Users",
+                name: t("adminUsers.users"),
                 data: data.map((u, i) => [u, i + 1]),
               },
               {
-                name: "Verified Users",
+                name: t("adminUsers.verified_users"),
                 data: data2.map((u, i) => [u, i + 1]),
               },
             ]}
@@ -222,10 +227,11 @@ export function AdminUserList(props: {
 
 export function AdminDailyActivity() {
   const { data } = useGetActivityAdminQuery()
+  const { t } = useTranslation()
 
   return (
     <>
-      <Section xs={12} title={"Daily Activity"}>
+      <Section xs={12} title={t("adminUsers.daily_activity")}>
         <Grid item xs={12}>
           <Chart
             width={"100%"}
@@ -263,7 +269,7 @@ export function AdminDailyActivity() {
             }}
             series={[
               {
-                name: "Active Users",
+                name: t("adminUsers.active_users"),
                 data: (data?.daily || []).map((u, i) => [
                   +new Date(u.date),
                   u.count,
@@ -273,7 +279,7 @@ export function AdminDailyActivity() {
           />
         </Grid>
       </Section>
-      <Section xs={12} title={"Weekly Activity"}>
+      <Section xs={12} title={t("adminUsers.weekly_activity")}>
         <Grid item xs={12}>
           <Chart
             width={"100%"}
@@ -311,7 +317,7 @@ export function AdminDailyActivity() {
             }}
             series={[
               {
-                name: "Active Users",
+                name: t("adminUsers.active_users"),
                 data: (data?.weekly || []).map((u, i) => [
                   +new Date(u.date),
                   u.count,
@@ -321,7 +327,7 @@ export function AdminDailyActivity() {
           />
         </Grid>
       </Section>
-      <Section xs={12} title={"Monthly Activity"}>
+      <Section xs={12} title={t("adminUsers.monthly_activity")}>
         <Grid item xs={12}>
           <Chart
             width={"100%"}
@@ -359,7 +365,7 @@ export function AdminDailyActivity() {
             }}
             series={[
               {
-                name: "Active Users",
+                name: t("adminUsers.active_users"),
                 data: (data?.monthly || []).map((u, i) => [
                   +new Date(u.date),
                   u.count,

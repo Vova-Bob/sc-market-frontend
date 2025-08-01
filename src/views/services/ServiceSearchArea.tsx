@@ -98,7 +98,9 @@ export function ServiceSearchArea() {
           >
             {["Any", ...Object.keys(orderIcons)].map((k) => (
               <MenuItem value={k} key={k}>
-                {t(`service_search.contract_types.${k}`, k)}
+                {t(`service_search.contract_types.${k}`, {
+                  defaultValue: t("service_search.contract_types.Any"),
+                })}
               </MenuItem>
             ))}
           </TextField>

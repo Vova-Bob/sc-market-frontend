@@ -12,6 +12,7 @@ import throttle from "lodash/throttle"
 import { RecruitingPostView } from "./RecruitingPostView"
 import { UnderlineLink } from "../../components/typography/UnderlineLink"
 import { MarkdownEditor } from "../../components/markdown/Markdown"
+import { useTranslation } from "react-i18next"
 
 export interface RecruitingPostState {
   title: string
@@ -20,6 +21,7 @@ export interface RecruitingPostState {
 
 export function CreateRecruitingPost(props: { post?: RecruitingPost }) {
   const { post } = props
+  const { t } = useTranslation()
   const [state, setState] = React.useState<RecruitingPostState>({
     title: "",
     body: "",
@@ -68,14 +70,14 @@ export function CreateRecruitingPost(props: { post?: RecruitingPost }) {
         })
 
         issueAlert({
-          message: "Submitted!",
+          message: t("recruiting_post.alert.submitted"),
           severity: "success",
         })
 
         window.location.href = `/recruiting/post/${res.data.post_id}`
       } else {
         issueAlert({
-          message: `Failed to submit! ${
+          message: `${t("recruiting_post.alert.failed")} ${
             res.error?.error || res.error?.data?.error || res.error
           }`,
           severity: "error",
@@ -83,7 +85,7 @@ export function CreateRecruitingPost(props: { post?: RecruitingPost }) {
       }
       return false
     },
-    [contractor, createPost, post, issueAlert, state, updatePost],
+    [contractor, createPost, post, issueAlert, state, updatePost, t],
   )
 
   const [stateBuffer, setStateBuffer] = useState(state)
@@ -125,28 +127,26 @@ export function CreateRecruitingPost(props: { post?: RecruitingPost }) {
             color={"text.secondary"}
             sx={{ fontWeight: "bold" }}
           >
-            About
+            {t("recruiting_post.about")}
           </Typography>
         </Grid>
         <Grid item xs={12} lg={8} container spacing={2}>
           <Grid item xs={12} lg={12}>
             <TextField
-              label="Title*"
+              label={t("recruiting_post.title_required")}
               fullWidth
               id="order-title"
               value={state.title}
-              onChange={(event: React.ChangeEvent<{ value: string }>) => {
+              onChange={(event: React.ChangeEvent<{ value: string }>) =>
                 setState({ ...state, title: event.target.value })
-              }}
+              }
               color={"secondary"}
             />
           </Grid>
 
           <Grid item xs={12}>
             <Typography variant={"body2"}>
-              Github flavored markdown is enabled, YouTube URLs will
-              automatically embed, and images can be embedded as long as they
-              are hosted from Imgur or RSI. See{" "}
+              {t("recruiting_post.markdown_info") + " "}
               <Link
                 rel="noopener noreferrer"
                 target="_blank"
@@ -154,15 +154,17 @@ export function CreateRecruitingPost(props: { post?: RecruitingPost }) {
                   "https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax"
                 }
               >
-                <UnderlineLink color={"text.secondary"}>here</UnderlineLink>
+                <UnderlineLink color={"text.secondary"}>
+                  {t("recruiting_post.markdown_link")}
+                </UnderlineLink>
               </Link>{" "}
-              for details
+              {t("recruiting_post.markdown_info_end")}
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <MarkdownEditor
               TextFieldProps={{
-                label: "Description*",
+                label: t("recruiting_post.description_required"),
               }}
               value={state.body}
               onChange={(value: string) => {
@@ -182,7 +184,7 @@ export function CreateRecruitingPost(props: { post?: RecruitingPost }) {
           type="submit"
           onClick={submitPost}
         >
-          Submit
+          {t("recruiting_post.submit")}
         </Button>
       </Grid>
     </>

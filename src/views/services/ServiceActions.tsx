@@ -19,7 +19,9 @@ export function ServiceActions() {
           variant={"contained"}
           size={"large"}
         >
-          {t("service_actions.create_service")}
+          {t("service_actions.create_service", {
+            defaultValue: "Create Service",
+          })}
         </Button>
       </Link>
     </Grid>

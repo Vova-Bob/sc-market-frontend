@@ -29,11 +29,13 @@ import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 import { contractorKindIcons } from "../contractor/ContractorList"
 import { has_permission } from "../contractor/OrgRoles"
 import { ListingSellerRating } from "../../components/rating/ListingRating"
+import { useTranslation } from "react-i18next"
 
 export function RecruitingPostView(props: { post: RecruitingPost }) {
   const { post } = props
   const { contractor } = post
   const theme = useTheme<ExtendedTheme>()
+  const { t } = useTranslation()
 
   const { data: profile } = useGetUserProfileQuery()
   const [currentOrg] = useCurrentOrg()
@@ -63,7 +65,9 @@ export function RecruitingPostView(props: { post: RecruitingPost }) {
               >
                 <Avatar
                   src={contractor.avatar}
-                  aria-label="contractor"
+                  aria-label={t("recruiting_post.contractor", {
+                    defaultValue: "Contractor",
+                  })}
                   variant={"rounded"}
                   sx={{
                     maxHeight: theme.spacing(12),
@@ -148,7 +152,7 @@ export function RecruitingPostView(props: { post: RecruitingPost }) {
                 <Chip
                   key={field}
                   color={"primary"}
-                  label={field}
+                  label={t(`contractor.fields.${field}`, field)}
                   sx={{
                     marginRight: 1,
                     marginBottom: 1,

@@ -17,25 +17,28 @@ statusColors.set("Pending", "warning")
 statusColors.set("Cancelled", "error")
 
 // const fulldays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-const months = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-]
+function getLocalizedMonths(t: any) {
+  return [
+    t("transactions.months.jan"),
+    t("transactions.months.feb"),
+    t("transactions.months.mar"),
+    t("transactions.months.apr"),
+    t("transactions.months.may"),
+    t("transactions.months.jun"),
+    t("transactions.months.jul"),
+    t("transactions.months.aug"),
+    t("transactions.months.sep"),
+    t("transactions.months.oct"),
+    t("transactions.months.nov"),
+    t("transactions.months.dec"),
+  ]
+}
 
-function formatAMPM(date: Date) {
+function formatAMPM(date: Date, t: any) {
   let hours = date.getHours()
   let minutes: number | string = date.getMinutes()
-  const ampm = hours >= 12 ? "pm" : "am"
+  const ampm =
+    hours >= 12 ? t("transactions.time.pm") : t("transactions.time.am")
   hours = hours % 12
   hours = hours ? hours : 12 // the hour '0' should be '12'
   minutes = minutes < 10 ? "0" + minutes : minutes
@@ -43,6 +46,7 @@ function formatAMPM(date: Date) {
 }
 
 function formatDate(someDateTimeStamp: number, t: any) {
+  const months = getLocalizedMonths(t)
   const dt = new Date(someDateTimeStamp),
     date = dt.getDate(),
     month = months[dt.getMonth()],
@@ -52,7 +56,7 @@ function formatDate(someDateTimeStamp: number, t: any) {
     diffYears = new Date().getFullYear() - dt.getFullYear()
 
   if (diffYears === 0 && diffDays === 0 && diffMonths === 0) {
-    return formatAMPM(dt)
+    return formatAMPM(dt, t)
   } else if (diffYears === 0 && diffDays === 1) {
     return t("transactions.yesterday")
   } else if (diffYears >= 1) {

@@ -267,7 +267,6 @@
   "toggle_market_sidebar": "Перемкнути панель маркету",
   "update_post": "Оновити публікацію",
   "create_post": "Створити публікацію",
-
   "discord_bot": {
     "integrating_with_discord": "Інтеграція з Discord",
     "how_to_get_notified": "Як отримувати сповіщення, коли створено замовлення",
@@ -317,6 +316,24 @@
       "Refund": "Повернення",
       "Withdrawal": "Виведення",
       "Deposit": "Депозит"
+    },
+    "months": {
+      "jan": "січ.",
+      "feb": "лют.",
+      "mar": "бер.",
+      "apr": "квіт.",
+      "may": "трав.",
+      "jun": "черв.",
+      "jul": "лип.",
+      "aug": "серп.",
+      "sep": "вер.",
+      "oct": "жовт.",
+      "nov": "лист.",
+      "dec": "груд."
+    },
+    "time": {
+      "am": "дп",
+      "pm": "пп"
     }
   },
   "service_actions": {
@@ -342,5 +359,62 @@
       "hourly": "Погодинна",
       "daily": "Денна"
     }
+  },
+  "recruiting_post": {
+    "contractor": "Підрядник",
+    "about": "Про",
+    "title_required": "Заголовок*",
+    "description_required": "Опис*",
+    "submit": "Надіслати",
+    "alert": {
+      "submitted": "Надіслано!",
+      "failed": "Не вдалося надіслати!"
+    },
+    "markdown_info": "Підтримується розширений синтаксис Markdown (Github flavored), посилання на YouTube автоматично вбудовуються, а зображення можна додавати, якщо вони розміщені на Imgur або RSI.",
+    "markdown_link": "тут",
+    "markdown_info_end": "для деталей"
+  },
+  "contractor": {
+    "fields": {
+      "mining": "Видобуток",
+      "trading": "Торгівля",
+      "security": "Охорона"
+    }
+  },
+  "adminUsers": {
+    "users": "Користувачі",
+    "membership_count": "Кількість учасників",
+    "daily_activity": "Щоденна активність",
+    "weekly_activity": "Щотижнева активність",
+    "monthly_activity": "Щомісячна активність",
+    "username": "Ім'я користувача",
+    "date_joined": "Дата приєднання",
+    "role": "Роль",
+    "active_users": "Активні користувачі",
+    "verified_users": "Верифіковані користувачі"
+  },
+  "customerList": {
+    "customers": "Клієнти",
+    "username": "Ім'я користувача",
+    "orders": "Замовлення",
+    "total_value": "Загальна вартість"
+  },
+  "profileNavAvatar": {
+    "profile": "Профіль",
+    "settings": "Налаштування",
+    "logout": "Вихід"
+  },
+  "viewProfile": {
+    "submitted": "Надіслано!",
+    "failed": "Не вдалося надіслати!",
+    "image_url": "URL зображення",
+    "image_url_helper": "Пряме посилання на зображення з Imgur, RSI або starcitizen.tools",
+    "save": "Зберегти",
+    "no_user_description": "Опис користувача відсутній",
+    "profile_tab": "Профіль",
+    "services_tab": "Послуги",
+    "market_tab": "Маркет",
+    "order_tab": "Замовлення",
+    "reviews_tab": "Відгуки"
   }
 }

@@ -267,7 +267,6 @@
   "toggle_market_sidebar": "Toggle market sidebar",
   "update_post": "Update Post",
   "create_post": "Create Post",
-
   "discord_bot": {
     "integrating_with_discord": "Integrating with Discord",
     "how_to_get_notified": "How to get notified when an order is placed",
@@ -317,6 +316,24 @@
       "Refund": "Refund",
       "Withdrawal": "Withdrawal",
       "Deposit": "Deposit"
+    },
+    "months": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Aug",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dec"
+    },
+    "time": {
+      "am": "am",
+      "pm": "pm"
     }
   },
   "service_actions": {
@@ -342,5 +359,62 @@
       "hourly": "Hourly",
       "daily": "Daily"
     }
+  },
+  "recruiting_post": {
+    "about": "About",
+    "title_required": "Title*",
+    "description_required": "Description*",
+    "submit": "Submit",
+    "alert": {
+      "submitted": "Submitted!",
+      "failed": "Failed to submit!"
+    },
+    "markdown_info": "Github flavored markdown is enabled, YouTube URLs will automatically embed, and images can be embedded as long as they are hosted from Imgur or RSI.",
+    "markdown_link": "here",
+    "markdown_info_end": "for details",
+    "contractor": "Contractor"
+  },
+  "contractor": {
+    "fields": {
+      "mining": "Mining",
+      "trading": "Trading",
+      "security": "Security"
+    }
+  },
+  "adminUsers": {
+    "users": "Users",
+    "membership_count": "Membership Count",
+    "daily_activity": "Daily Activity",
+    "weekly_activity": "Weekly Activity",
+    "monthly_activity": "Monthly Activity",
+    "username": "Username",
+    "date_joined": "Date Joined",
+    "role": "Role",
+    "active_users": "Active Users",
+    "verified_users": "Verified Users"
+  },
+  "customerList": {
+    "customers": "Customers",
+    "username": "Username",
+    "orders": "Orders",
+    "total_value": "Total Value"
+  },
+  "profileNavAvatar": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "viewProfile": {
+    "submitted": "Submitted!",
+    "failed": "Failed to submit!",
+    "image_url": "Image URL",
+    "image_url_helper": "Direct URL to the image, from Imgur, RSI, or starcitizen.tools",
+    "save": "Save",
+    "no_user_description": "No user description",
+    "profile_tab": "Profile",
+    "services_tab": "Services",
+    "market_tab": "Market",
+    "order_tab": "Order",
+    "reviews_tab": "Reviews"
   }
 }

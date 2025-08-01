@@ -16,6 +16,7 @@ import { HeadCell, PaginatedTable } from "../../components/table/PaginatedTable"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 import { useGetContractorCustomersQuery } from "../../store/contractor"
 import { UnderlineLink } from "../../components/typography/UnderlineLink"
+import { useTranslation } from "react-i18next"
 
 function PeopleRow(props: {
   row: User
@@ -102,19 +103,19 @@ const headCells: readonly HeadCell<User>[] = [
     id: "username",
     numeric: false,
     disablePadding: false,
-    label: "Username",
+    label: "customerList.username",
   },
   {
     id: "orders",
     numeric: true,
     disablePadding: false,
-    label: "Orders",
+    label: "customerList.orders",
   },
   {
     id: "spent",
     numeric: true,
     disablePadding: false,
-    label: "Total Value",
+    label: "customerList.total_value",
   },
 ]
 
@@ -124,6 +125,7 @@ export function CustomerList(props: {
   customers?: boolean
 }) {
   const [currentOrg] = useCurrentOrg()
+  const { t } = useTranslation()
 
   const { isLoading, data } = useGetContractorCustomersQuery(
     currentOrg?.spectrum_id!,
@@ -131,14 +133,17 @@ export function CustomerList(props: {
   )
 
   return (
-    <Section xs={12} title={"Customers"} disablePadding>
+    <Section xs={12} title={t("customerList.customers")} disablePadding>
       {isLoading ? null : (
         <PaginatedTable<User>
           rows={data!}
           initialSort={"username"}
           generateRow={PeopleRow}
           keyAttr={"username"}
-          headCells={headCells}
+          headCells={headCells.map((cell) => ({
+            ...cell,
+            label: t(cell.label),
+          }))}
           disableSelect
         />
       )}
