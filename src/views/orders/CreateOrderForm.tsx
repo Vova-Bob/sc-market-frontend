@@ -24,6 +24,7 @@ import {
   useGetServicesQuery,
 } from "../../store/services"
 import { PublicContract } from "../../store/public_contracts"
+import { useTranslation } from "react-i18next" // i18n import
 
 interface WorkRequestState {
   title: string
@@ -44,6 +45,7 @@ export function CreateOrderForm(
     service?: Service
   },
 ) {
+  const { t } = useTranslation() // i18n hook
   const [state, setState] = React.useState<WorkRequestState>({
     title: "",
     rush: false,
@@ -143,7 +145,7 @@ export function CreateOrderForm(
           })
 
           issueAlert({
-            message: "Submitted!",
+            message: t("CreateOrderForm.alert.submitted"),
             severity: "success",
           })
 
@@ -178,6 +180,7 @@ export function CreateOrderForm(
       props.assigned_to,
       issueAlert,
       navigate,
+      t, // add t
     ],
   )
 
@@ -193,7 +196,7 @@ export function CreateOrderForm(
               color={"text.secondary"}
               sx={{ fontWeight: "bold" }}
             >
-              Services
+              {t("CreateOrderForm.services")}
             </Typography>
           </Grid>
           <Grid item xs={12} lg={8} container spacing={1}>
@@ -201,7 +204,7 @@ export function CreateOrderForm(
               <TextField
                 fullWidth
                 select
-                label="Select Service (Optional)"
+                label={t("CreateOrderForm.selectServiceOptional")}
                 id="order-service"
                 value={service?.service_name}
                 onChange={(event: React.ChangeEvent<{ value: string }>) => {
@@ -220,7 +223,7 @@ export function CreateOrderForm(
                   IconComponent: KeyboardArrowDownRoundedIcon,
                 }}
               >
-                <MenuItem value={""}>No Service</MenuItem>
+                <MenuItem value={""}>{t("CreateOrderForm.noService")}</MenuItem>
                 {(services || []).map((t) => (
                   <MenuItem value={t.service_name} key={t.service_name}>
                     {t.service_name}
@@ -239,14 +242,14 @@ export function CreateOrderForm(
             color={"text.secondary"}
             sx={{ fontWeight: "bold" }}
           >
-            About
+            {t("CreateOrderForm.about")}
           </Typography>
         </Grid>
         <Grid item xs={12} lg={8} container spacing={2}>
           <Grid item xs={12} lg={12}>
             <TextField
               fullWidth
-              label="Title*"
+              label={t("CreateOrderForm.title") + "*"}
               id="order-title"
               value={state.title}
               onChange={(event: React.ChangeEvent<{ value: string }>) => {
@@ -260,7 +263,7 @@ export function CreateOrderForm(
             <TextField
               fullWidth
               select
-              label="Type*"
+              label={t("CreateOrderForm.type") + "*"}
               id="order-type"
               value={state.type}
               onChange={(event: React.ChangeEvent<{ value: string }>) => {
@@ -293,7 +296,7 @@ export function CreateOrderForm(
                   name="Rush"
                 />
               }
-              label="Rush"
+              label={t("CreateOrderForm.rush")}
             />
           </Grid>
 
@@ -301,9 +304,9 @@ export function CreateOrderForm(
             <TextField
               multiline
               fullWidth={true}
-              label={"Description*"}
+              label={t("CreateOrderForm.description") + "*"}
               id="description"
-              helperText={"E.g. Transport Lithium from New Babbage to Hurston"}
+              helperText={t("CreateOrderForm.descriptionHelper")}
               onChange={(event: React.ChangeEvent<{ value: string }>) => {
                 setState({ ...state, description: event.target.value })
               }}
@@ -324,7 +327,7 @@ export function CreateOrderForm(
             color={"text.secondary"}
             sx={{ fontWeight: "bold" }}
           >
-            Costs
+            {t("CreateOrderForm.costs")}
           </Typography>
         </Grid>
         <Grid item xs={12} lg={8} container spacing={2}>
@@ -341,16 +344,12 @@ export function CreateOrderForm(
                 })
               }}
               fullWidth={true}
-              label={"Collateral (Optional)"}
+              label={t("CreateOrderForm.collateralOptional")}
               id="collateral"
               color={"secondary"}
               value={state.collateral}
               type={"tel"}
-              helperText={
-                "If the contractor offers insurance, " +
-                "what is the lost value in the event the contractor fails to deliver? " +
-                "E.g. the value of the cargo being transported"
-              }
+              helperText={t("CreateOrderForm.collateralHelper")}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="start">{`aUEC`}</InputAdornment>
@@ -386,14 +385,12 @@ export function CreateOrderForm(
                 })
               }}
               fullWidth={true}
-              label={"aUEC Offer"}
+              label={t("CreateOrderForm.aUECOffer")}
               id="offer"
               color={"secondary"}
               value={state.offer}
               type={"tel"}
-              helperText={
-                "How much will you offer the contractor to fulfill this order?"
-              }
+              helperText={t("CreateOrderForm.aUECOfferHelper")}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="start">{`aUEC`}</InputAdornment>
@@ -406,7 +403,7 @@ export function CreateOrderForm(
           <Grid item xs={12}>
             <TextField
               select
-              label={"Payment Type"}
+              label={t("CreateOrderForm.paymentType")}
               value={state.payment_type}
               onChange={(event: any) => {
                 setState({ ...state, payment_type: event.target.value })
@@ -416,14 +413,18 @@ export function CreateOrderForm(
                 IconComponent: KeyboardArrowDownRoundedIcon,
               }}
             >
-              <MenuItem value={"one-time"}>One time</MenuItem>
-              <MenuItem value={"hourly"}>Hourly</MenuItem>
-              <MenuItem value={"daily"}>Daily</MenuItem>
-              <MenuItem value={"unit"}>Unit</MenuItem>
-              <MenuItem value={"box"}>Box</MenuItem>
-              <MenuItem value={"scu"}>SCU</MenuItem>
-              <MenuItem value={"cscu"}>cSCU</MenuItem>
-              <MenuItem value={"mscu"}>mSCU</MenuItem>
+              <MenuItem value={"one-time"}>
+                {t("CreateOrderForm.oneTime")}
+              </MenuItem>
+              <MenuItem value={"hourly"}>
+                {t("CreateOrderForm.hourly")}
+              </MenuItem>
+              <MenuItem value={"daily"}>{t("CreateOrderForm.daily")}</MenuItem>
+              <MenuItem value={"unit"}>{t("CreateOrderForm.unit")}</MenuItem>
+              <MenuItem value={"box"}>{t("CreateOrderForm.box")}</MenuItem>
+              <MenuItem value={"scu"}>{t("CreateOrderForm.scu")}</MenuItem>
+              <MenuItem value={"cscu"}>{t("CreateOrderForm.cscu")}</MenuItem>
+              <MenuItem value={"mscu"}>{t("CreateOrderForm.mscu")}</MenuItem>
             </TextField>
           </Grid>
         </Grid>
@@ -437,7 +438,7 @@ export function CreateOrderForm(
           type="submit"
           onClick={submitOrder}
         >
-          Submit
+          {t("CreateOrderForm.submit")}
         </LoadingButton>
       </Grid>
     </>

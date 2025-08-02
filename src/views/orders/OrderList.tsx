@@ -28,6 +28,7 @@ import { a11yProps } from "../../components/tabs/Tabs"
 import SCMarketLogo from "../../assets/scmarket-logo.png"
 import { useSearchOrdersQuery } from "../../store/orders"
 import { useGetUserProfileQuery } from "../../store/profile"
+import { useTranslation } from "react-i18next"
 
 export const statusColors = new Map<
   | "active"
@@ -54,12 +55,14 @@ export const statusNames = new Map<
   | "cancelled",
   string
 >()
-statusNames.set("fulfilled", "Fulfilled")
-statusNames.set("in-progress", "In Progress")
-statusNames.set("cancelled", "Cancelled")
-statusNames.set("not-started", "Not Started")
-statusNames.set("active", "Active")
-statusNames.set("inactive", "Inactive")
+
+
+statusNames.set("fulfilled", "orders.status.fulfilled")
+statusNames.set("in-progress", "orders.status.inProgress")
+statusNames.set("cancelled", "orders.status.cancelled")
+statusNames.set("not-started", "orders.status.notStarted")
+statusNames.set("active", "orders.status.active")
+statusNames.set("inactive", "orders.status.inactive")
 
 export const OrderHeadCells: readonly HeadCell<
   OrderStub & { other_name: string | null }
@@ -68,19 +71,19 @@ export const OrderHeadCells: readonly HeadCell<
     id: "timestamp",
     numeric: false,
     disablePadding: false,
-    label: "Order",
+    label: "orders.table.order",
   },
   {
     id: "other_name",
     numeric: true,
     disablePadding: false,
-    label: "Customer",
+    label: "orders.table.customer",
   },
   {
     id: "status",
     numeric: true,
     disablePadding: false,
-    label: "Status",
+    label: "orders.table.status",
   },
 ]
 
@@ -91,19 +94,19 @@ export const MyOrderHeadCells: readonly HeadCell<
     id: "timestamp",
     numeric: false,
     disablePadding: false,
-    label: "Order",
+    label: "orders.table.order",
   },
   {
     id: "other_name",
     numeric: true,
     disablePadding: false,
-    label: "Contractor",
+    label: "orders.table.contractor",
   },
   {
     id: "status",
     numeric: true,
     disablePadding: false,
-    label: "Status",
+    label: "orders.table.status",
   },
 ]
 
@@ -117,8 +120,13 @@ export function OrderRow(props: {
   const { row, index, isItemSelected } = props // TODO: Add `assigned_to` column
   const date = useMemo(() => new Date(row.timestamp), [row.timestamp])
   const theme = useTheme()
+  const { t } = useTranslation()
+
   const statusColor = useMemo(() => statusColors.get(row.status), [row.status])
-  const status = useMemo(() => statusNames.get(row.status), [row.status])
+  const status = useMemo(
+    () => t(statusNames.get(row.status) || ""),
+    [row.status, t],
+  )
 
   return (
     <TableRow
@@ -162,11 +170,12 @@ export function OrderRow(props: {
           </Paper>
           <Stack direction={"column"}>
             <Typography color={"text.secondary"} fontWeight={"bold"}>
-              Order {row.order_id.substring(0, 8).toUpperCase()}
+              {t("orders.orderLabel")}{" "}
+              {row.order_id.substring(0, 8).toUpperCase()}
             </Typography>
             <Typography variant={"body2"}>
               {row.count
-                ? `${row.count.toLocaleString(undefined)} items • `
+                ? `${row.count.toLocaleString(undefined)} ${t("orders.items")} • `
                 : row.service_name
                   ? `${row.service_name} • `
                   : ""}
@@ -215,7 +224,7 @@ export function OrderRow(props: {
                 {row.mine
                   ? row.contractor?.spectrum_id ||
                     row.assigned_to?.username ||
-                    "Public"
+                    t("orders.public")
                   : row.customer.username}
               </UnderlineLink>
             </MaterialLink>
@@ -260,6 +269,7 @@ export function OrdersViewPaginated(props: {
   const [page, setPage] = useState(0)
   const [orderBy, setOrderBy] = useState("timestamp")
   const [order, setOrder] = useState<"asc" | "desc">("desc")
+  const { t } = useTranslation()
 
   const { data: orders } = useSearchOrdersQuery({
     status: statusFilter === "all" ? undefined : statusFilter,
@@ -273,13 +283,13 @@ export function OrdersViewPaginated(props: {
   })
 
   const tabs = [
-    ["all", "All"],
-    ["active", "Active"],
-    ["past", "Past"],
-    ["fulfilled", "Fulfilled"],
-    ["in-progress", "In Progress"],
-    ["not-started", "Not Started"],
-    ["cancelled", "Cancelled"],
+    ["all", t("orders.tabs.all")],
+    ["active", t("orders.tabs.active")],
+    ["past", t("orders.tabs.past")],
+    ["fulfilled", t("orders.tabs.fulfilled")],
+    ["in-progress", t("orders.tabs.inProgress")],
+    ["not-started", t("orders.tabs.notStarted")],
+    ["cancelled", t("orders.tabs.cancelled")],
   ] as const
 
   const tab = useMemo(
@@ -376,7 +386,10 @@ export function OrdersViewPaginated(props: {
           orderBy={orderBy}
           generateRow={OrderRow}
           keyAttr={"order_id"}
-          headCells={mine ? MyOrderHeadCells : OrderHeadCells}
+          headCells={(mine ? MyOrderHeadCells : OrderHeadCells).map((cell) => ({
+            ...cell,
+            label: t(cell.label),
+          }))}
           disableSelect
         />
       </Paper>

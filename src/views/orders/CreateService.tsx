@@ -27,6 +27,7 @@ import {
   useUpdateServiceMutation,
 } from "../../store/services"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next" // i18n import
 
 function romanize(num: number) {
   if (isNaN(num)) return NaN
@@ -111,6 +112,7 @@ export interface ServiceState {
 }
 
 export function CreateServiceForm(props: GridProps & { service?: Service }) {
+  const { t } = useTranslation() // i18n hook
   const [currentOrg] = useCurrentOrg()
   const [state, setState] = React.useState<ServiceState>({
     service_name: "",
@@ -295,7 +297,7 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
         })
 
         issueAlert({
-          message: "Submitted!",
+          message: t("CreateServiceForm.alert.submitted"),
           severity: "success",
         })
 
@@ -304,7 +306,7 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
         }
       } else {
         issueAlert({
-          message: `Failed to submit! ${
+          message: `${t("CreateServiceForm.alert.failed")} ${
             res.error?.error || res.error?.data?.error || res.error
           }`,
           severity: "error",
@@ -330,6 +332,7 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
       state.title,
       state.type,
       updateService,
+      t, // add t to dependencies
     ],
   )
 
@@ -344,14 +347,14 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
             color={"text.secondary"}
             sx={{ fontWeight: "bold" }}
           >
-            Service Details
+            {t("CreateServiceForm.serviceDetails")}
           </Typography>
         </Grid>
         <Grid item xs={12} lg={8} container spacing={2}>
           <Grid item xs={12} lg={12}>
             <TextField
               fullWidth
-              label="Service Name*"
+              label={t("CreateServiceForm.serviceName") + "*"}
               id="order-title"
               value={state.service_name}
               onChange={(event: React.ChangeEvent<{ value: string }>) => {
@@ -377,8 +380,8 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
                 }
                 label={
                   state.status === "active"
-                    ? `Service is Active`
-                    : `Service is Inactive`
+                    ? t("CreateServiceForm.serviceActive")
+                    : t("CreateServiceForm.serviceInactive")
                 }
               />
             </FormGroup>
@@ -389,9 +392,8 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
               value={state.service_description}
               variant={"vertical"}
               TextFieldProps={{
-                label: "Service Description",
-                helperText:
-                  "E.g. We offer transport of goods between locations!",
+                label: t("CreateServiceForm.serviceDescription"),
+                helperText: t("CreateServiceForm.serviceDescriptionHelper"),
               }}
               onChange={(value) =>
                 setState({ ...state, service_description: value })
@@ -417,14 +419,14 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
             color={"text.secondary"}
             sx={{ fontWeight: "bold" }}
           >
-            Order Service Details
+            {t("CreateServiceForm.orderServiceDetails")}
           </Typography>
         </Grid>
         <Grid item xs={12} lg={8} container spacing={2}>
           <Grid item xs={12} lg={12}>
             <TextField
               fullWidth
-              label="Title*"
+              label={t("CreateServiceForm.title") + "*"}
               id="order-title"
               value={state.title}
               onChange={(event: React.ChangeEvent<{ value: string }>) => {
@@ -438,7 +440,7 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
             <TextField
               fullWidth
               select
-              label="Type (Optional)"
+              label={t("CreateServiceForm.typeOptional")}
               id="order-type"
               value={state.type}
               onChange={(event: React.ChangeEvent<{ value: string }>) => {
@@ -471,7 +473,7 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
                   name="Rush"
                 />
               }
-              label="Rush"
+              label={t("CreateServiceForm.rush")}
             />
           </Grid>
 
@@ -479,9 +481,9 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
             <TextField
               multiline
               fullWidth={true}
-              label={"Description"}
+              label={t("CreateServiceForm.description")}
               id="description"
-              helperText={"E.g. Transport Lithium from New Babbage to Hurston"}
+              helperText={t("CreateServiceForm.descriptionHelper")}
               onChange={(event: React.ChangeEvent<{ value: string }>) => {
                 setState({ ...state, description: event.target.value })
               }}
@@ -607,7 +609,7 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
             color={"text.secondary"}
             sx={{ fontWeight: "bold" }}
           >
-            Costs
+            {t("CreateServiceForm.costs")}
           </Typography>
         </Grid>
         <Grid item xs={12} lg={8} container spacing={2}>
@@ -624,16 +626,12 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
                 })
               }}
               fullWidth={true}
-              label={"Collateral (Optional)"}
+              label={t("CreateServiceForm.collateralOptional")}
               id="collateral"
               color={"secondary"}
               value={state.collateral}
               type={"tel"}
-              helperText={
-                "If the contractor offers insurance, " +
-                "what is the lost value in the event the contractor fails to deliver? " +
-                "E.g. the value of the cargo being transported"
-              }
+              helperText={t("CreateServiceForm.collateralHelper")}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="start">{`aUEC`}</InputAdornment>
@@ -668,12 +666,12 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
                 })
               }}
               fullWidth={true}
-              label={"Cost"}
+              label={t("CreateServiceForm.cost")}
               id="offer"
               color={"secondary"}
               value={state.offer}
               type={"tel"}
-              helperText={"How much should the customer pay for this service?"}
+              helperText={t("CreateServiceForm.costHelper")}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="start">{`aUEC`}</InputAdornment>
@@ -685,7 +683,7 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
           <Grid item xs={12}>
             <TextField
               select
-              label={"Payment Type"}
+              label={t("CreateServiceForm.paymentType")}
               value={state.payment_type}
               onChange={(event: any) => {
                 setState({ ...state, payment_type: event.target.value })
@@ -695,9 +693,18 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
                 IconComponent: KeyboardArrowDownRoundedIcon,
               }}
             >
-              <MenuItem value={"one-time"}>One time</MenuItem>
-              <MenuItem value={"hourly"}>Hourly</MenuItem>
-              <MenuItem value={"daily"}>Daily</MenuItem>
+              <MenuItem value={"one-time"}>
+                {t("paymentTypes.one_time")}
+              </MenuItem>
+              <MenuItem value={"hourly"}>
+                {t("paymentTypes.hourly")}
+              </MenuItem>
+              <MenuItem value={"daily"}>{t("paymentTypes.daily")}</MenuItem>
+              <MenuItem value={"unit"}>{t("paymentTypes.unit")}</MenuItem>
+              <MenuItem value={"box"}>{t("paymentTypes.box")}</MenuItem>
+              <MenuItem value={"scu"}>{t("paymentTypes.scu")}</MenuItem>
+              <MenuItem value={"cscu"}>{t("paymentTypes.cscu")}</MenuItem>
+              <MenuItem value={"mscu"}>{t("paymentTypes.mscu")}</MenuItem>
             </TextField>
           </Grid>
         </Grid>
@@ -712,7 +719,9 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
           // to={'/p/myoffers'}
           onClick={submitService}
         >
-          {props.service ? "Update" : "Submit"}
+          {props.service
+            ? t("CreateServiceForm.update")
+            : t("CreateServiceForm.submit")}
         </Button>
       </Grid>
     </>

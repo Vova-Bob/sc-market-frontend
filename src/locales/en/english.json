@@ -498,5 +498,170 @@
     "scu": "SCU",
     "cscu": "cSCU",
     "mscu": "mSCU"
+  },
+  "orderReviewView": {
+    "review": "Review",
+    "ratingLabel": "Rating:"
+  },
+  "orderReviewArea": {
+    "review": "Review",
+    "leaveFor": "Leave a review for",
+    "commentLabel": "Comment",
+    "ratingLabel": "Rating:",
+    "leaveReviewButton": "Leave Review",
+    "alert": {
+      "success": "Left review!",
+      "error": "Failed to leave review!"
+    }
+  },
+  "orderMetrics": {
+    "activeOrders": "Active Orders",
+    "allOrders": "All Orders",
+    "activeOrderValue": "Active Order Value",
+    "completedOrderValue": "Completed Order Value"
+  },
+  "marketListings": {
+    "associatedListings": "Associated Market Listings",
+    "noListings": "No associated listings",
+    "product": "Product",
+    "qty": "Qty",
+    "unitPrice": "Unit Price",
+    "total": "Total"
+  },
+  "orders": {
+    "status": {
+      "fulfilled": "Fulfilled",
+      "inProgress": "In Progress",
+      "cancelled": "Cancelled",
+      "notStarted": "Not Started",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "table": {
+      "order": "Order",
+      "customer": "Customer",
+      "contractor": "Contractor",
+      "status": "Status"
+    },
+    "tabs": {
+      "all": "All",
+      "active": "Active",
+      "past": "Past",
+      "fulfilled": "Fulfilled",
+      "inProgress": "In Progress",
+      "notStarted": "Not Started",
+      "cancelled": "Cancelled"
+    },
+    "orderLabel": "Order",
+    "items": "items",
+    "public": "Public"
+  },
+  "orderDetailsArea": {
+    "updated_status": "Updated status!",
+    "details_table": "details table",
+    "customer": "Customer",
+    "seller": "Seller",
+    "assigned": "Assigned",
+    "date": "Date",
+    "status": "Status",
+    "title": "Title",
+    "kind": "Kind",
+    "details": "Details",
+    "order": "Order",
+    "discord_thread": "Discord Thread",
+    "thread_link": "Thread Link",
+    "created_thread": "Created thread",
+    "create_thread": "Create Thread",
+    "update_status": "Update Status",
+    "cancel": "Cancel",
+    "complete_order": "Complete Order",
+    "begin_work": "Begin Work",
+    "not_started": "Not Started"
+  },
+  "orderAvailabilityArea": {
+    "customer_name": "{{name}} (Customer)",
+    "assigned_name": "{{name}} (Assigned)"
+  },
+  "orderApplicantsArea": {
+    "applicants": "Applicants",
+    "accepted": "Accepted!",
+    "failed_accept": "Failed to accept!",
+    "expand": "Expand",
+    "accept": "Accept",
+    "applied": "Applied!",
+    "failed_apply": "Failed to apply!",
+    "apply": "Apply",
+    "message": "Message"
+  },
+  "myOrders": {
+    "title": "My Orders"
+  },
+  "memberAssignArea": {
+    "assigned": "Assigned!",
+    "failed_assign": "Failed to assign!",
+    "unassigned": "Unassigned!",
+    "failed_unassign": "Failed to unassign!",
+    "assign": "Assign",
+    "reassign": "Reassign",
+    "unassign": "Unassign",
+    "handle": "Handle"
+  },
+  "CreateServiceForm": {
+    "serviceDetails": "Service Details",
+    "serviceName": "Service Name",
+    "serviceActive": "Service is Active",
+    "serviceInactive": "Service is Inactive",
+    "serviceDescription": "Service Description",
+    "serviceDescriptionHelper": "E.g. We offer transport of goods between locations!",
+    "orderServiceDetails": "Order Service Details",
+    "title": "Title",
+    "typeOptional": "Type (Optional)",
+    "rush": "Rush",
+    "description": "Description",
+    "descriptionHelper": "E.g. Transport Lithium from New Babbage to Hurston",
+    "costs": "Costs",
+    "collateralOptional": "Collateral (Optional)",
+    "collateralHelper": "If the contractor offers insurance, what is the lost value in the event the contractor fails to deliver? E.g. the value of the cargo being transported",
+    "cost": "Cost",
+    "costHelper": "How much should the customer pay for this service?",
+    "paymentType": "Payment Type",
+    "oneTime": "One time",
+    "hourly": "Hourly",
+    "daily": "Daily",
+    "submit": "Submit",
+    "update": "Update",
+    "alert": {
+      "submitted": "Submitted!",
+      "failed": "Failed to submit!"
+    }
+  },
+  "CreateOrderForm": {
+    "services": "Services",
+    "selectServiceOptional": "Select Service (Optional)",
+    "noService": "No Service",
+    "about": "About",
+    "title": "Title",
+    "type": "Type",
+    "rush": "Rush",
+    "description": "Description",
+    "descriptionHelper": "E.g. Transport Lithium from New Babbage to Hurston",
+    "costs": "Costs",
+    "collateralOptional": "Collateral (Optional)",
+    "collateralHelper": "If the contractor offers insurance, what is the lost value in the event the contractor fails to deliver? E.g. the value of the cargo being transported",
+    "aUECOffer": "aUEC Offer",
+    "aUECOfferHelper": "How much will you offer the contractor to fulfill this order?",
+    "paymentType": "Payment Type",
+    "oneTime": "One time",
+    "hourly": "Hourly",
+    "daily": "Daily",
+    "unit": "Unit",
+    "box": "Box",
+    "scu": "SCU",
+    "cscu": "cSCU",
+    "mscu": "mSCU",
+    "submit": "Submit",
+    "alert": {
+      "submitted": "Submitted!"
+    }
   }
 }

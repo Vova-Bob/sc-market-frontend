@@ -44,9 +44,12 @@ import {
 } from "@mui/icons-material"
 import { has_permission } from "../contractor/OrgRoles"
 import { paymentTypeMessages } from "./Services"
+import { useTranslation } from "react-i18next"
 
 export function OrderMessagesArea(props: { order: Order }) {
   const { order } = props
+  const { t } = useTranslation()
+
   const [currentChat, setCurrentChat] = useCurrentChat()
   const { data: chatObj } = useGetChatByOrderIDQuery(order.order_id!, {
     skip: !order,
@@ -93,6 +96,7 @@ export function OrderMessagesArea(props: { order: Order }) {
 
 export function OrderDetailsArea(props: { order: Order }) {
   const { order } = props
+  const { t } = useTranslation()
 
   const [org] = useCurrentOrg()
   const { data: profile } = useGetUserProfileQuery()
@@ -114,7 +118,7 @@ export function OrderDetailsArea(props: { order: Order }) {
         .unwrap()
         .then(() => {
           issueAlert({
-            message: "Updated status!",
+            message: t("orderDetailsArea.updated_status"),
             severity: "success",
           })
         })
@@ -122,7 +126,7 @@ export function OrderDetailsArea(props: { order: Order }) {
           issueAlert(error)
         })
     },
-    [order.order_id, issueAlert, setOrderStatus],
+    [order.order_id, issueAlert, setOrderStatus, t],
   )
 
   const [currentOrg] = useCurrentOrg()
@@ -194,7 +198,7 @@ export function OrderDetailsArea(props: { order: Order }) {
   return (
     <Grid item xs={12} lg={8} md={6}>
       <TableContainer component={Paper}>
-        <Table aria-label="details table">
+        <Table aria-label={t("orderDetailsArea.details_table")}>
           <TableBody>
             <TableRow
               sx={{
@@ -202,7 +206,7 @@ export function OrderDetailsArea(props: { order: Order }) {
               }}
             >
               <TableCell component="th" scope="row">
-                Customer
+                {t("orderDetailsArea.customer")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
@@ -215,7 +219,7 @@ export function OrderDetailsArea(props: { order: Order }) {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  Seller
+                  {t("orderDetailsArea.seller")}
                 </TableCell>
                 <TableCell align="right">
                   <Stack direction="row" justifyContent={"right"}>
@@ -229,7 +233,7 @@ export function OrderDetailsArea(props: { order: Order }) {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  Assigned
+                  {t("orderDetailsArea.assigned")}
                 </TableCell>
                 <TableCell align="right">
                   <Stack direction="row" justifyContent={"right"}>
@@ -242,7 +246,7 @@ export function OrderDetailsArea(props: { order: Order }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                Date
+                {t("orderDetailsArea.date")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
@@ -254,7 +258,7 @@ export function OrderDetailsArea(props: { order: Order }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                Status
+                {t("orderDetailsArea.status")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
@@ -266,7 +270,7 @@ export function OrderDetailsArea(props: { order: Order }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                Title
+                {t("orderDetailsArea.title")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
@@ -280,7 +284,7 @@ export function OrderDetailsArea(props: { order: Order }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                Kind
+                {t("orderDetailsArea.kind")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
@@ -298,7 +302,7 @@ export function OrderDetailsArea(props: { order: Order }) {
               {/*</TableCell>*/}
               <TableCell colSpan={2}>
                 <Stack direction="column" spacing={1}>
-                  Details
+                  {t("orderDetailsArea.details")}
                   <Typography color={"text.secondary"} variant={"subtitle2"}>
                     <MarkdownRender text={order.description} />
                   </Typography>
@@ -310,7 +314,7 @@ export function OrderDetailsArea(props: { order: Order }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                Order
+                {t("orderDetailsArea.order")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
@@ -332,7 +336,7 @@ export function OrderDetailsArea(props: { order: Order }) {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  Discord Thread
+                  {t("orderDetailsArea.discord_thread")}
                 </TableCell>
                 <TableCell align="right">
                   <Stack direction="row" justifyContent={"right"}>
@@ -344,7 +348,7 @@ export function OrderDetailsArea(props: { order: Order }) {
                           underline={"hover"}
                           color={"text.secondary"}
                         >
-                          Thread Link
+                          {t("orderDetailsArea.thread_link")}
                         </MaterialLink>
                       ) : (
                         <LoadingButton
@@ -354,7 +358,7 @@ export function OrderDetailsArea(props: { order: Order }) {
                               .unwrap()
                               .then((result) => {
                                 issueAlert({
-                                  message: "Created thread",
+                                  message: t("orderDetailsArea.created_thread"),
                                   severity: "success",
                                 })
                               })
@@ -363,7 +367,7 @@ export function OrderDetailsArea(props: { order: Order }) {
                               })
                           }}
                         >
-                          Create Thread
+                          {t("orderDetailsArea.create_thread")}
                         </LoadingButton>
                       )}
                     </Typography>
@@ -375,7 +379,7 @@ export function OrderDetailsArea(props: { order: Order }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                Update Status
+                {t("orderDetailsArea.update_status")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"} spacing={1}>
@@ -386,7 +390,7 @@ export function OrderDetailsArea(props: { order: Order }) {
                       startIcon={<CancelRounded />}
                       onClick={() => updateOrderStatus("cancelled")}
                     >
-                      Cancel
+                      {t("orderDetailsArea.cancel")}
                     </LoadingButton>
                   )}
                   {publicContractCustomer && !isComplete && (
@@ -396,7 +400,7 @@ export function OrderDetailsArea(props: { order: Order }) {
                       startIcon={<CancelRounded />}
                       onClick={() => updateOrderStatus("cancelled")}
                     >
-                      Cancel
+                      {t("orderDetailsArea.cancel")}
                     </LoadingButton>
                   )}
                   {(profile?.role === "admin" ||
@@ -415,7 +419,7 @@ export function OrderDetailsArea(props: { order: Order }) {
                           startIcon={<DoneRounded />}
                           onClick={() => updateOrderStatus("fulfilled")}
                         >
-                          Complete Order
+                          {t("orderDetailsArea.complete_order")}
                         </LoadingButton>
                       )}
                       {(profile?.role === "admin" ||
@@ -426,7 +430,7 @@ export function OrderDetailsArea(props: { order: Order }) {
                           startIcon={<PlayArrowRounded />}
                           onClick={() => updateOrderStatus("in-progress")}
                         >
-                          Begin Work
+                          {t("orderDetailsArea.begin_work")}
                         </LoadingButton>
                       )}
                       {profile?.role === "admin" && (
@@ -436,7 +440,7 @@ export function OrderDetailsArea(props: { order: Order }) {
                           startIcon={<PlayArrowRounded />}
                           onClick={() => updateOrderStatus("not-started")}
                         >
-                          Not Started
+                          {t("orderDetailsArea.not_started")}
                         </LoadingButton>
                       )}
 
@@ -447,7 +451,7 @@ export function OrderDetailsArea(props: { order: Order }) {
                           startIcon={<CancelRounded />}
                           onClick={() => updateOrderStatus("cancelled")}
                         >
-                          Cancel
+                          {t("orderDetailsArea.cancel")}
                         </LoadingButton>
                       )}
                     </ButtonGroup>

@@ -17,6 +17,7 @@ import { getRelativeTime } from "../../util/time"
 import { ExtendedTheme } from "../../hooks/styles/Theme"
 import { useTheme } from "@mui/material/styles"
 import { Order } from "../../datatypes/Order"
+import { useTranslation } from "react-i18next"
 
 export function OrderReviewView(props: {
   customer?: boolean
@@ -24,6 +25,7 @@ export function OrderReviewView(props: {
   order: Order
 }) {
   const { order } = props
+  const { t } = useTranslation()
   const theme = useTheme<ExtendedTheme>()
   const review = useMemo(
     () => (props.customer ? order.customer_review! : order.contractor_review!),
@@ -32,7 +34,7 @@ export function OrderReviewView(props: {
 
   return (
     <>
-      <Section xs={12} lg={6} title={"Review"}>
+      <Section xs={12} lg={6} title={t("orderReviewView.review")}>
         <Grid item xs={8}>
           <Box sx={{ display: "flex", flexDirection: "column", flexGrow: "1" }}>
             <MaterialLink
@@ -98,7 +100,7 @@ export function OrderReviewView(props: {
             sx={{ textAlign: "left", verticalAlign: "middle" }}
             color={"text.secondary"}
           >
-            Rating:{" "}
+            {t("orderReviewView.ratingLabel")}
           </Typography>
           <Rating
             name="half-rating"

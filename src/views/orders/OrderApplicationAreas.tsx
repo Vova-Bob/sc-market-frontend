@@ -26,12 +26,14 @@ import {
   PublishRounded,
 } from "@mui/icons-material"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
+import { useTranslation } from "react-i18next"
 
 export function OrderApplicantsArea(props: { order: Order }) {
   const { order } = props
+  const { t } = useTranslation()
 
   return (
-    <Section xs={12} title={"Applicants"}>
+    <Section xs={12} title={t("orderApplicantsArea.applicants")}>
       <List sx={{ width: "100%" }}>
         {order.applicants.map((applicant, index) => (
           <ApplicantListItem order={order} key={index} applicant={applicant} />
@@ -48,6 +50,7 @@ export function ApplicantListItem(props: {
   const { applicant } = props
 
   const { order } = props
+  const { t } = useTranslation()
 
   const [open, setOpen] = useState(false)
 
@@ -67,12 +70,12 @@ export function ApplicantListItem(props: {
 
     if (res?.data && !res?.error) {
       issueAlert({
-        message: "Accepted!",
+        message: t("orderApplicantsArea.accepted"),
         severity: "success",
       })
     } else {
       issueAlert({
-        message: `Failed to accept! ${
+        message: `${t("orderApplicantsArea.failed_accept")} ${
           res.error?.error || res.error?.data?.error || res.error
         }`,
         severity: "error",
@@ -84,6 +87,7 @@ export function ApplicantListItem(props: {
     applicant.org_applicant?.spectrum_id,
     applicant.user_applicant?.username,
     issueAlert,
+    t,
   ])
 
   return (
@@ -92,7 +96,7 @@ export function ApplicantListItem(props: {
         secondaryAction={
           <IconButton
             edge="end"
-            aria-label="expand"
+            aria-label={t("orderApplicantsArea.expand")}
             onClick={() => setOpen((o) => !o)}
             color={"inherit"}
           >
@@ -121,7 +125,7 @@ export function ApplicantListItem(props: {
           </Grid>
           <Grid item xs={12}>
             <Button color={"primary"} variant={"outlined"} onClick={acceptApp}>
-              Accept
+              {t("orderApplicantsArea.accept")}
             </Button>
           </Grid>
         </Grid>
@@ -132,6 +136,7 @@ export function ApplicantListItem(props: {
 
 export function OrderApplyArea(props: { order: Order }) {
   const { order } = props
+  const { t } = useTranslation()
   const [currentOrg] = useCurrentOrg()
 
   const [
@@ -154,12 +159,12 @@ export function OrderApplyArea(props: { order: Order }) {
 
     if (res?.data && !res?.error) {
       issueAlert({
-        message: "Applied!",
+        message: t("orderApplicantsArea.applied"),
         severity: "success",
       })
     } else {
       issueAlert({
-        message: `Failed to apply! ${
+        message: `${t("orderApplicantsArea.failed_apply")} ${
           res.error?.error || res.error?.data?.error || res.error
         }`,
         severity: "error",
@@ -168,14 +173,14 @@ export function OrderApplyArea(props: { order: Order }) {
   }
 
   return (
-    <Section xs={12} title={"Apply"}>
+    <Section xs={12} title={t("orderApplicantsArea.apply")}>
       <Grid item xs={12}>
         <TextField
           value={appMessage}
           onChange={(e) => setAppMessage(e.target.value)}
           maxRows={5}
           minRows={5}
-          label={"Message"}
+          label={t("orderApplicantsArea.message")}
           multiline
           sx={{ width: "100%" }}
         />
@@ -194,7 +199,7 @@ export function OrderApplyArea(props: { order: Order }) {
             onClick={processApp}
             startIcon={<PublishRounded />}
           >
-            Apply
+            {t("orderApplicantsArea.apply")}
           </Button>
         </Box>
       </Grid>

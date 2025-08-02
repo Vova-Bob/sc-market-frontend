@@ -463,7 +463,7 @@
   },
   "serviceListings": {
     "new": "Нове",
-    "rush": "Терміново"
+    "rush": "швидко"
   },
   "contractListings": {
     "new": "Нове",
@@ -498,5 +498,170 @@
     "scu": "За SCU",
     "cscu": "За cSCU",
     "mscu": "За mSCU"
+  },
+  "orderReviewView": {
+    "review": "Відгук",
+    "ratingLabel": "Оцінка:"
+  },
+  "orderReviewArea": {
+    "review": "Відгук",
+    "leaveFor": "Залишити відгук для",
+    "commentLabel": "Коментар",
+    "ratingLabel": "Оцінка:",
+    "leaveReviewButton": "Залишити відгук",
+    "alert": {
+      "success": "Відгук залишено!",
+      "error": "Не вдалося залишити відгук!"
+    }
+  },
+  "orderMetrics": {
+    "activeOrders": "Активні замовлення",
+    "allOrders": "Усі замовлення",
+    "activeOrderValue": "Вартість активних замовлень",
+    "completedOrderValue": "Вартість виконаних замовлень"
+  },
+  "marketListings": {
+    "associatedListings": "Пов’язані товарні пропозиції",
+    "noListings": "Немає пов’язаних пропозицій",
+    "product": "Товар",
+    "qty": "Кількість",
+    "unitPrice": "Ціна за одиницю",
+    "total": "Разом"
+  },
+  "orders": {
+    "status": {
+      "fulfilled": "Виконано",
+      "inProgress": "У процесі",
+      "cancelled": "Скасовано",
+      "notStarted": "Не розпочато",
+      "active": "Активне",
+      "inactive": "Неактивне"
+    },
+    "table": {
+      "order": "Замовлення",
+      "customer": "Замовник",
+      "contractor": "Виконавець",
+      "status": "Статус"
+    },
+    "tabs": {
+      "all": "Усі",
+      "active": "Активні",
+      "past": "Минулі",
+      "fulfilled": "Виконані",
+      "inProgress": "У процесі",
+      "notStarted": "Не розпочаті",
+      "cancelled": "Скасовані"
+    },
+    "orderLabel": "Замовлення",
+    "items": "одиниць",
+    "public": "Публічне"
+  },
+  "orderDetailsArea": {
+    "updated_status": "Статус оновлено!",
+    "details_table": "деталі таблиці",
+    "customer": "Клієнт",
+    "seller": "Продавець",
+    "assigned": "Призначено",
+    "date": "Дата",
+    "status": "Статус",
+    "title": "Заголовок",
+    "kind": "Тип",
+    "details": "Деталі",
+    "order": "Замовлення",
+    "discord_thread": "Тема Discord",
+    "thread_link": "Посилання на тему",
+    "created_thread": "Тему створено",
+    "create_thread": "Створити тему",
+    "update_status": "Оновити статус",
+    "cancel": "Скасувати",
+    "complete_order": "Завершити замовлення",
+    "begin_work": "Розпочати роботу",
+    "not_started": "Не розпочато"
+  },
+  "orderAvailabilityArea": {
+    "customer_name": "{{name}} (Клієнт)",
+    "assigned_name": "{{name}} (Призначено)"
+  },
+  "orderApplicantsArea": {
+    "applicants": "Заявники",
+    "accepted": "Прийнято!",
+    "failed_accept": "Не вдалося прийняти!",
+    "expand": "Розгорнути",
+    "accept": "Прийняти",
+    "applied": "Подано!",
+    "failed_apply": "Не вдалося подати!",
+    "apply": "Подати",
+    "message": "Повідомлення"
+  },
+  "myOrders": {
+    "title": "Мої замовлення"
+  },
+  "memberAssignArea": {
+    "assigned": "Призначено!",
+    "failed_assign": "Не вдалося призначити!",
+    "unassigned": "Відкріплено!",
+    "failed_unassign": "Не вдалося відкріпити!",
+    "assign": "Призначити",
+    "reassign": "Перепризначити",
+    "unassign": "Відкріпити",
+    "handle": "Позивний (Handle)"
+  },
+  "CreateServiceForm": {
+    "serviceDetails": "Деталі послуги",
+    "serviceName": "Назва послуги",
+    "serviceActive": "Послуга активна",
+    "serviceInactive": "Послуга неактивна",
+    "serviceDescription": "Опис послуги",
+    "serviceDescriptionHelper": "Наприклад: Пропонуємо транспортування вантажів між локаціями!",
+    "orderServiceDetails": "Деталі замовлення послуги",
+    "title": "Заголовок",
+    "typeOptional": "Тип (необов'язково)",
+    "rush": "швидко",
+    "description": "Опис",
+    "descriptionHelper": "Наприклад: Доставити Літій з Нью-Беббідж на Хурстон",
+    "costs": "Вартість",
+    "collateralOptional": "Застава (необов'язково)",
+    "collateralHelper": "Якщо підрядник надає страховку — яка сума втрати у разі невиконання? Наприклад, вартість вантажу.",
+    "cost": "Ціна",
+    "costHelper": "Скільки має сплатити клієнт за цю послугу?",
+    "paymentType": "Тип оплати",
+    "oneTime": "Одноразово",
+    "hourly": "Погодинно",
+    "daily": "Щоденно",
+    "submit": "Створити",
+    "update": "Оновити",
+    "alert": {
+      "submitted": "Успішно надіслано!",
+      "failed": "Не вдалося надіслати!"
+    }
+  },
+  "CreateOrderForm": {
+    "services": "Послуги",
+    "selectServiceOptional": "Оберіть послугу (необов'язково)",
+    "noService": "Без послуги",
+    "about": "Про замовлення",
+    "title": "Заголовок",
+    "type": "Тип",
+    "rush": "шивдко",
+    "description": "Опис",
+    "descriptionHelper": "Наприклад: Доставити Літій з Нью-Беббідж на Хурстон",
+    "costs": "Вартість",
+    "collateralOptional": "Застава (необов'язково)",
+    "collateralHelper": "Якщо підрядник надає страховку — яка сума втрати у разі невиконання? Наприклад, вартість вантажу.",
+    "aUECOffer": "Пропозиція aUEC",
+    "aUECOfferHelper": "Яку суму ви пропонуєте виконавцю за це замовлення?",
+    "paymentType": "Тип оплати",
+    "oneTime": "Одноразово",
+    "hourly": "Погодинно",
+    "daily": "Щоденно",
+    "unit": "Одиниця",
+    "box": "Коробка",
+    "scu": "SCU",
+    "cscu": "cSCU",
+    "mscu": "mSCU",
+    "submit": "Створити",
+    "alert": {
+      "submitted": "Успішно надіслано!"
+    }
   }
 }

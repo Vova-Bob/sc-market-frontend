@@ -6,6 +6,7 @@ import {
   useGetAllAssignedOrdersQuery,
   useGetAssignedOrdersByContractorQuery,
 } from "../../store/orders"
+import { useTranslation } from "react-i18next"
 
 export function MetricSection(props: {
   title: string
@@ -49,6 +50,8 @@ export function OrderMetrics(props: {}) {
     skip: !!contractor,
   })
 
+  const { t } = useTranslation()
+
   const filteredOrders = useCallback(
     (state?: string) => {
       return (orders || allOrders || []).filter((o) => {
@@ -74,7 +77,7 @@ export function OrderMetrics(props: {}) {
             color={"text.primary"}
             fontWeight={"bold"}
           >
-            Active Orders
+            {t("orderMetrics.activeOrders")}
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -93,7 +96,7 @@ export function OrderMetrics(props: {}) {
             color={"text.primary"}
             fontWeight={"bold"}
           >
-            All Orders
+            {t("orderMetrics.allOrders")}
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -112,7 +115,7 @@ export function OrderMetrics(props: {}) {
             color={"text.primary"}
             fontWeight={"bold"}
           >
-            Active Order Value
+            {t("orderMetrics.activeOrderValue")}
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -135,7 +138,7 @@ export function OrderMetrics(props: {}) {
             color={"text.primary"}
             fontWeight={"bold"}
           >
-            Completed Order Value
+            {t("orderMetrics.completedOrderValue")}
           </Typography>
         </Grid>
         <Grid item xs={12}>

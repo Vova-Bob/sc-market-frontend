@@ -14,6 +14,7 @@ import { MarketListingDetails } from "../../components/list/UserDetails"
 import { MarketListingType } from "../../datatypes/MarketListing"
 import { Order } from "../../datatypes/Order"
 import { ListingRowItem } from "../offers/OfferMarketListings"
+import { useTranslation } from "react-i18next"
 
 export function OrderListingRowItem(props: {
   row: ListingRowItem
@@ -51,30 +52,32 @@ export const marketListingHeadCells: readonly HeadCell<ListingRowItem>[] = [
     id: "title",
     numeric: false,
     disablePadding: false,
-    label: "Product",
+    label: "marketListings.product",
   },
   {
     id: "quantity",
     numeric: true,
     disablePadding: false,
-    label: "Qty",
+    label: "marketListings.qty",
   },
   {
     id: "unit_price",
     numeric: true,
     disablePadding: false,
-    label: "Unit Price",
+    label: "marketListings.unitPrice",
   },
   {
     id: "total",
     numeric: true,
     disablePadding: false,
-    label: "Total",
+    label: "marketListings.total",
   },
 ]
 
 export function OrderMarketListings(props: { order: Order }) {
   const { order } = props
+  const { t } = useTranslation()
+
   const extendedListings = useMemo(() => {
     return order.market_listings!.map((l) => ({
       ...l,
@@ -95,14 +98,17 @@ export function OrderMarketListings(props: { order: Order }) {
                 sx={{ fontWeight: "bold" }}
                 color={"text.secondary"}
               >
-                Associated Market Listings
+                {t("marketListings.associatedListings")}
               </Typography>
               <Paper>
                 <PaginatedTable
                   rows={extendedListings}
                   initialSort={"quantity"}
                   keyAttr={"listing_id"}
-                  headCells={marketListingHeadCells}
+                  headCells={marketListingHeadCells.map((cell) => ({
+                    ...cell,
+                    label: t(cell.label),
+                  }))}
                   generateRow={OrderListingRowItem}
                   disableSelect
                 />
@@ -114,7 +120,7 @@ export function OrderMarketListings(props: { order: Order }) {
               >
                 <Table sx={{ maxWidth: 350 }}>
                   <TableRow>
-                    <TableCell>Total</TableCell>
+                    <TableCell>{t("marketListings.total")}</TableCell>
                     <TableCell align={"right"}>
                       {extendedListings
                         .reduce((a, b) => a + b.total, 0)
@@ -139,10 +145,10 @@ export function OrderMarketListings(props: { order: Order }) {
               sx={{ fontWeight: "bold" }}
               color={"text.secondary"}
             >
-              Associated Market Listings
+              {t("marketListings.associatedListings")}
             </Typography>
             <Typography variant={"subtitle2"}>
-              No associated listings
+              {t("marketListings.noListings")}
             </Typography>
           </Stack>
         </Paper>

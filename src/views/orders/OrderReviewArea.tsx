@@ -8,6 +8,7 @@ import { ExtendedTheme } from "../../hooks/styles/Theme"
 import { useTheme } from "@mui/material/styles"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { Order } from "../../datatypes/Order"
+import { useTranslation } from "react-i18next"
 
 export function OrderReviewArea(props: {
   asCustomer?: boolean
@@ -18,6 +19,7 @@ export function OrderReviewArea(props: {
   const [rating, setRating] = useState(0)
   const { order } = props
   const theme = useTheme<ExtendedTheme>()
+  const { t } = useTranslation()
 
   const issueAlert = useAlertHook()
 
@@ -38,14 +40,14 @@ export function OrderReviewArea(props: {
 
       if (res?.data && !res?.error) {
         issueAlert({
-          message: "Left review!",
+          message: t("orderReviewArea.alert.success"),
           severity: "success",
         })
 
         setContent("")
       } else {
         issueAlert({
-          message: `Failed to leave review! ${
+          message: `${t("orderReviewArea.alert.error")} ${
             res.error?.error || res.error?.data?.error || res.error
           }`,
           severity: "error",
@@ -53,14 +55,22 @@ export function OrderReviewArea(props: {
       }
       return false
     },
-    [addReview, content, order.order_id, props.asCustomer, rating, issueAlert],
+    [
+      addReview,
+      content,
+      order.order_id,
+      props.asCustomer,
+      rating,
+      issueAlert,
+      t,
+    ],
   )
 
   return (
     <>
-      <Section xs={12} lg={6} title={"Review"}>
+      <Section xs={12} lg={6} title={t("orderReviewArea.review")}>
         <Grid item xs={12}>
-          Leave a review for{" "}
+          {t("orderReviewArea.leaveFor")}{" "}
           {props.asContractor
             ? order.customer
             : order.contractor || order.assigned_to}
@@ -76,7 +86,7 @@ export function OrderReviewArea(props: {
               setContent(event.target.value)
             }}
             color={"secondary"}
-            label={"Comment"}
+            label={t("orderReviewArea.commentLabel")}
           />
         </Grid>
 
@@ -85,7 +95,7 @@ export function OrderReviewArea(props: {
             sx={{ textAlign: "left", verticalAlign: "middle" }}
             color={"text.secondary"}
           >
-            Rating:{" "}
+            {t("orderReviewArea.ratingLabel")}
           </Typography>
           <Rating
             name="half-rating"
@@ -115,7 +125,7 @@ export function OrderReviewArea(props: {
               onClick={submitReview}
               variant={"contained"}
             >
-              Leave Review
+              {t("orderReviewArea.leaveReviewButton")}
             </Button>
           </Grid>
         </Grid>

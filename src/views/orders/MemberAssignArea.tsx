@@ -14,6 +14,7 @@ import {
 } from "../../store/orders"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { Order } from "../../datatypes/Order"
+import { useTranslation } from "react-i18next"
 
 export function MemberAssignArea(props: { order: Order }) {
   const [target, setTarget] = useState("")
@@ -25,6 +26,7 @@ export function MemberAssignArea(props: { order: Order }) {
   const { order } = props
   const [options, setOptions] = useState<MinimalUser[]>([])
 
+  const { t } = useTranslation()
   const issueAlert = useAlertHook()
 
   const fetchOptions = useCallback(
@@ -73,18 +75,18 @@ export function MemberAssignArea(props: { order: Order }) {
 
     if (res?.data && !res?.error) {
       issueAlert({
-        message: "Assigned!",
+        message: t("memberAssignArea.assigned"),
         severity: "success",
       })
     } else {
       issueAlert({
-        message: `Failed to assign! ${
+        message: `${t("memberAssignArea.failed_assign")} ${
           res.error?.error || res.error?.data?.error || res.error
         }`,
         severity: "error",
       })
     }
-  }, [assignUser, order.order_id, issueAlert, targetObject])
+  }, [assignUser, order.order_id, issueAlert, targetObject, t])
 
   const removeAssignment = useCallback(async () => {
     const res: { data?: any; error?: any } = await unassignUser({
@@ -93,25 +95,29 @@ export function MemberAssignArea(props: { order: Order }) {
 
     if (res?.data && !res?.error) {
       issueAlert({
-        message: "Unassigned!",
+        message: t("memberAssignArea.unassigned"),
         severity: "success",
       })
     } else {
       issueAlert({
-        message: `Failed to unassign! ${
+        message: `${t("memberAssignArea.failed_unassign")} ${
           res.error?.error || res.error?.data?.error || res.error
         }`,
         severity: "error",
       })
     }
-  }, [unassignUser, order.order_id, issueAlert])
+  }, [unassignUser, order.order_id, issueAlert, t])
 
   return (
     <Section
       xs={12}
       md={6}
       lg={4}
-      title={order.assigned_to ? "Reassign" : "Assign"}
+      title={
+        order.assigned_to
+          ? t("memberAssignArea.reassign")
+          : t("memberAssignArea.assign")
+      }
     >
       <Grid item xs={12}>
         <Autocomplete
@@ -135,7 +141,7 @@ export function MemberAssignArea(props: { order: Order }) {
           renderInput={(params) => (
             <TextField
               {...params}
-              label={"Handle"}
+              label={t("memberAssignArea.handle")}
               SelectProps={{
                 IconComponent: KeyboardArrowDownRoundedIcon,
               }}
@@ -167,7 +173,7 @@ export function MemberAssignArea(props: { order: Order }) {
             onClick={removeAssignment}
             startIcon={<PersonRemoveRounded />}
           >
-            Unassign
+            {t("memberAssignArea.unassign")}
           </Button>
         </Box>
       </Grid>
@@ -184,7 +190,7 @@ export function MemberAssignArea(props: { order: Order }) {
             onClick={updateAssignment}
             startIcon={<PersonRounded />}
           >
-            Assign
+            {t("memberAssignArea.assign")}
           </Button>
         </Box>
       </Grid>
