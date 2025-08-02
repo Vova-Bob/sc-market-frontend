@@ -11,11 +11,11 @@ import {
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { Section } from "../../components/paper/Section"
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded"
-import { BACKEND_URL } from "../../util/constants"
+import { BACKEND_URL, PAYMENT_TYPES } from "../../util/constants"
 import throttle from "lodash/throttle"
 import { useCreateOrderMutation } from "../../store/orders"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
-import { orderIcons, Service } from "../../datatypes/Order"
+import { orderIcons, Service, PaymentType } from "../../datatypes/Order"
 import { useNavigate } from "react-router-dom"
 import LoadingButton from "@mui/lab/LoadingButton"
 import { NumericFormat } from "react-number-format"
@@ -35,7 +35,7 @@ interface WorkRequestState {
   estimate: number
   offer: number
   service_id?: string | null
-  payment_type: "one-time" | "hourly" | "daily"
+  payment_type: PaymentType
 }
 
 export function CreateOrderForm(
@@ -413,18 +413,11 @@ export function CreateOrderForm(
                 IconComponent: KeyboardArrowDownRoundedIcon,
               }}
             >
-              <MenuItem value={"one-time"}>
-                {t("CreateOrderForm.oneTime")}
-              </MenuItem>
-              <MenuItem value={"hourly"}>
-                {t("CreateOrderForm.hourly")}
-              </MenuItem>
-              <MenuItem value={"daily"}>{t("CreateOrderForm.daily")}</MenuItem>
-              <MenuItem value={"unit"}>{t("CreateOrderForm.unit")}</MenuItem>
-              <MenuItem value={"box"}>{t("CreateOrderForm.box")}</MenuItem>
-              <MenuItem value={"scu"}>{t("CreateOrderForm.scu")}</MenuItem>
-              <MenuItem value={"cscu"}>{t("CreateOrderForm.cscu")}</MenuItem>
-              <MenuItem value={"mscu"}>{t("CreateOrderForm.mscu")}</MenuItem>
+              {PAYMENT_TYPES.map((paymentType) => (
+                <MenuItem key={paymentType.value} value={paymentType.value}>
+                  {t(paymentType.translationKey)}
+                </MenuItem>
+              ))}
             </TextField>
           </Grid>
         </Grid>

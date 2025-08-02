@@ -18,12 +18,15 @@ import { Stack } from "@mui/system"
 import moment from "moment/moment"
 import { MarkdownEditor } from "../../components/markdown/Markdown"
 import { orderIcons } from "../../datatypes/Order"
+import { PAYMENT_TYPES } from "../../util/constants"
+import { useTranslation } from "react-i18next"
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded"
 import { NumericFormat } from "react-number-format"
 import { useCounterOffer } from "../../hooks/offer/CounterOfferDetails"
 
 export function OfferDetailsEditArea(props: { session: OfferSession }) {
   const { session } = props
+  const { t } = useTranslation()
   const [body, setBody] = useCounterOffer()
 
   return (
@@ -195,14 +198,14 @@ export function OfferDetailsEditArea(props: { session: OfferSession }) {
                         IconComponent: KeyboardArrowDownRoundedIcon,
                       }}
                     >
-                      <MenuItem value={"one-time"}>One time</MenuItem>
-                      <MenuItem value={"hourly"}>Hourly</MenuItem>
-                      <MenuItem value={"daily"}>Daily</MenuItem>
-                      <MenuItem value={"unit"}>Unit</MenuItem>
-                      <MenuItem value={"box"}>Box</MenuItem>
-                      <MenuItem value={"scu"}>SCU</MenuItem>
-                      <MenuItem value={"cscu"}>cSCU</MenuItem>
-                      <MenuItem value={"mscu"}>mSCU</MenuItem>
+                      {PAYMENT_TYPES.map((paymentType) => (
+                        <MenuItem
+                          key={paymentType.value}
+                          value={paymentType.value}
+                        >
+                          {t(paymentType.translationKey)}
+                        </MenuItem>
+                      ))}
                     </TextField>
                   </Stack>
                 </Stack>

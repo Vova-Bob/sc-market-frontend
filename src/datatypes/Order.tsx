@@ -57,7 +57,7 @@ export interface Order {
   customer_review?: OrderReview
   contractor_review?: OrderReview
   service_id?: string | null
-  payment_type: "one-time" | "daily" | "hourly"
+  payment_type: PaymentType
   availability?: OrderAvailability
   offer_session_id: string | null
   discord_thread_id: string | null
@@ -89,7 +89,7 @@ export interface OrderBody {
   contractor?: string | null
   assigned_to?: string | null
   service_id?: string | null
-  payment_type: "one-time" | "daily" | "hourly"
+  payment_type: PaymentType
 }
 
 export interface ServiceBody {
@@ -103,7 +103,7 @@ export interface ServiceBody {
   departure: string | null
   destination: string | null
   cost: number
-  payment_type: "one-time" | "daily" | "hourly"
+  payment_type: PaymentType
   contractor?: string | null
   status: string
   photos: string[]
@@ -130,7 +130,7 @@ export interface Service {
   kind: ContractKindIconKey
   collateral: number
   offer: number
-  payment_type: "one-time" | "hourly" | "daily"
+  payment_type: PaymentType
   departure: string | null
   destination: string | null
   cost: number

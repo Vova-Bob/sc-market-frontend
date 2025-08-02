@@ -357,7 +357,12 @@
       "any": "Будь-який",
       "one_time": "Одноразова",
       "hourly": "Погодинна",
-      "daily": "Денна"
+      "daily": "Денна",
+      "unit": "Одиниця",
+      "box": "Коробка",
+      "scu": "SCU",
+      "cscu": "cSCU",
+      "mscu": "mSCU"
     }
   },
   "recruiting_post": {
@@ -625,9 +630,7 @@
     "cost": "Ціна",
     "costHelper": "Скільки має сплатити клієнт за цю послугу?",
     "paymentType": "Тип оплати",
-    "oneTime": "Одноразово",
-    "hourly": "Погодинно",
-    "daily": "Щоденно",
+
     "submit": "Створити",
     "update": "Оновити",
     "alert": {
@@ -651,14 +654,7 @@
     "aUECOffer": "Пропозиція aUEC",
     "aUECOfferHelper": "Яку суму ви пропонуєте виконавцю за це замовлення?",
     "paymentType": "Тип оплати",
-    "oneTime": "Одноразово",
-    "hourly": "Погодинно",
-    "daily": "Щоденно",
-    "unit": "Одиниця",
-    "box": "Коробка",
-    "scu": "SCU",
-    "cscu": "cSCU",
-    "mscu": "mSCU",
+
     "submit": "Створити",
     "alert": {
       "submitted": "Успішно надіслано!"

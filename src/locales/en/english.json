@@ -357,7 +357,12 @@
       "any": "Any",
       "one_time": "One time",
       "hourly": "Hourly",
-      "daily": "Daily"
+      "daily": "Daily",
+      "unit": "Unit",
+      "box": "Box",
+      "scu": "SCU",
+      "cscu": "cSCU",
+      "mscu": "mSCU"
     }
   },
   "recruiting_post": {
@@ -625,9 +630,7 @@
     "cost": "Cost",
     "costHelper": "How much should the customer pay for this service?",
     "paymentType": "Payment Type",
-    "oneTime": "One time",
-    "hourly": "Hourly",
-    "daily": "Daily",
+
     "submit": "Submit",
     "update": "Update",
     "alert": {
@@ -651,14 +654,7 @@
     "aUECOffer": "aUEC Offer",
     "aUECOfferHelper": "How much will you offer the contractor to fulfill this order?",
     "paymentType": "Payment Type",
-    "oneTime": "One time",
-    "hourly": "Hourly",
-    "daily": "Daily",
-    "unit": "Unit",
-    "box": "Box",
-    "scu": "SCU",
-    "cscu": "cSCU",
-    "mscu": "mSCU",
+
     "submit": "Submit",
     "alert": {
       "submitted": "Submitted!"

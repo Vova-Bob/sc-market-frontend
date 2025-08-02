@@ -26,9 +26,12 @@ import {
   useGetUserProfileQuery,
 } from "../../store/profile"
 import { MinimalUser } from "../../datatypes/User"
+import { PAYMENT_TYPES } from "../../util/constants"
+import { useTranslation } from "react-i18next"
 
 export function ContractOfferForm(props: { contract: PublicContract }) {
   const { contract } = props
+  const { t } = useTranslation()
   const [currentOrg] = useCurrentOrg()
   const [title, setTitle] = useState(contract.title)
   const [description, setDescription] = useState(contract.description)
@@ -261,14 +264,11 @@ export function ContractOfferForm(props: { contract: PublicContract }) {
                 IconComponent: KeyboardArrowDownRoundedIcon,
               }}
             >
-              <MenuItem value={"one-time"}>One time</MenuItem>
-              <MenuItem value={"hourly"}>Hourly</MenuItem>
-              <MenuItem value={"daily"}>Daily</MenuItem>
-              <MenuItem value={"unit"}>Unit</MenuItem>
-              <MenuItem value={"box"}>Box</MenuItem>
-              <MenuItem value={"scu"}>SCU</MenuItem>
-              <MenuItem value={"cscu"}>cSCU</MenuItem>
-              <MenuItem value={"mscu"}>mSCU</MenuItem>
+              {PAYMENT_TYPES.map((paymentType) => (
+                <MenuItem key={paymentType.value} value={paymentType.value}>
+                  {t(paymentType.translationKey)}
+                </MenuItem>
+              ))}
             </TextField>
           </Grid>
         </Grid>

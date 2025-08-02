@@ -56,7 +56,6 @@ export const statusNames = new Map<
   string
 >()
 
-
 statusNames.set("fulfilled", "orders.status.fulfilled")
 statusNames.set("in-progress", "orders.status.inProgress")
 statusNames.set("cancelled", "orders.status.cancelled")

@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material"
 import { orderIcons, OrderKind, PaymentType } from "../../datatypes/Order"
+import { PAYMENT_TYPES } from "../../util/constants"
 import React, { useCallback, useState } from "react"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { useNavigate } from "react-router-dom"
@@ -220,18 +221,11 @@ export function CreatePublicContract() {
                     IconComponent: KeyboardArrowDownRoundedIcon,
                   }}
                 >
-                  <MenuItem value={"one-time"}>
-                    {t("paymentTypes.one_time")}
-                  </MenuItem>
-                  <MenuItem value={"hourly"}>
-                    {t("paymentTypes.hourly")}
-                  </MenuItem>
-                  <MenuItem value={"daily"}>{t("paymentTypes.daily")}</MenuItem>
-                  <MenuItem value={"unit"}>{t("paymentTypes.unit")}</MenuItem>
-                  <MenuItem value={"box"}>{t("paymentTypes.box")}</MenuItem>
-                  <MenuItem value={"scu"}>{t("paymentTypes.scu")}</MenuItem>
-                  <MenuItem value={"cscu"}>{t("paymentTypes.cscu")}</MenuItem>
-                  <MenuItem value={"mscu"}>{t("paymentTypes.mscu")}</MenuItem>
+                  {PAYMENT_TYPES.map((paymentType) => (
+                    <MenuItem key={paymentType.value} value={paymentType.value}>
+                      {t(paymentType.translationKey)}
+                    </MenuItem>
+                  ))}
                 </TextField>
               </Grid>
             </Grid>

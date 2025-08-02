@@ -14,11 +14,11 @@ import {
 import React, { useCallback, useEffect, useState } from "react"
 import { Section } from "../../components/paper/Section"
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded"
-import { BACKEND_URL } from "../../util/constants"
+import { BACKEND_URL, PAYMENT_TYPES } from "../../util/constants"
 import throttle from "lodash/throttle"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
-import { orderIcons, Service } from "../../datatypes/Order"
+import { orderIcons, Service, PaymentType } from "../../datatypes/Order"
 import { MarkdownEditor } from "../../components/markdown/Markdown"
 import { NumericFormat } from "react-number-format"
 import { SelectPhotosArea } from "../../components/modal/SelectPhotosArea"
@@ -100,7 +100,7 @@ export interface ServiceState {
   collateral: number
   estimate: number
   offer: number
-  payment_type: "one-time" | "hourly" | "daily"
+  payment_type: PaymentType
   departure: StarmapObject | null
   departureInput: string
   departChangeTimer: number
@@ -693,18 +693,11 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
                 IconComponent: KeyboardArrowDownRoundedIcon,
               }}
             >
-              <MenuItem value={"one-time"}>
-                {t("paymentTypes.one_time")}
-              </MenuItem>
-              <MenuItem value={"hourly"}>
-                {t("paymentTypes.hourly")}
-              </MenuItem>
-              <MenuItem value={"daily"}>{t("paymentTypes.daily")}</MenuItem>
-              <MenuItem value={"unit"}>{t("paymentTypes.unit")}</MenuItem>
-              <MenuItem value={"box"}>{t("paymentTypes.box")}</MenuItem>
-              <MenuItem value={"scu"}>{t("paymentTypes.scu")}</MenuItem>
-              <MenuItem value={"cscu"}>{t("paymentTypes.cscu")}</MenuItem>
-              <MenuItem value={"mscu"}>{t("paymentTypes.mscu")}</MenuItem>
+              {PAYMENT_TYPES.map((paymentType) => (
+                <MenuItem key={paymentType.value} value={paymentType.value}>
+                  {t(paymentType.translationKey)}
+                </MenuItem>
+              ))}
             </TextField>
           </Grid>
         </Grid>

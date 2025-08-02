@@ -21,9 +21,12 @@ import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownR
 import { useContractSidebar } from "../../hooks/contract/ContractSidebar"
 import { useContractSearch } from "../../hooks/contract/ContractSearch"
 import { orderIcons } from "../../datatypes/Order"
+import { PAYMENT_TYPES } from "../../util/constants"
+import { useTranslation } from "react-i18next"
 
 export function ContractSidebar() {
   const theme: ExtendedTheme = useTheme()
+  const { t } = useTranslation()
 
   // Search fields
   const [kind, setKind] = useState<string>("Any")
@@ -259,9 +262,11 @@ export function ContractSidebar() {
               }}
             >
               <MenuItem value={"any"}>Any</MenuItem>
-              <MenuItem value={"one-time"}>One time</MenuItem>
-              <MenuItem value={"hourly"}>Hourly</MenuItem>
-              <MenuItem value={"daily"}>Daily</MenuItem>
+              {PAYMENT_TYPES.slice(0, 3).map((paymentType) => (
+                <MenuItem key={paymentType.value} value={paymentType.value}>
+                  {t(paymentType.translationKey)}
+                </MenuItem>
+              ))}
             </TextField>
           </Grid>
         </Grid>

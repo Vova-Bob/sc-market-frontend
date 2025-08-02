@@ -8,6 +8,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search"
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded"
 import { orderIcons } from "../../datatypes/Order"
+import { PAYMENT_TYPES } from "../../util/constants"
 import React, { useEffect, useState } from "react"
 import { useServiceSearch } from "../../hooks/contract/ServiceSearch"
 import { ExtendedTheme } from "../../hooks/styles/Theme"
@@ -164,15 +165,11 @@ export function ServiceSearchArea() {
             <MenuItem value={"any"}>
               {t("service_search.payment_types.any")}
             </MenuItem>
-            <MenuItem value={"one-time"}>
-              {t("service_search.payment_types.one_time")}
-            </MenuItem>
-            <MenuItem value={"hourly"}>
-              {t("service_search.payment_types.hourly")}
-            </MenuItem>
-            <MenuItem value={"daily"}>
-              {t("service_search.payment_types.daily")}
-            </MenuItem>
+            {PAYMENT_TYPES.map((paymentType) => (
+              <MenuItem key={paymentType.value} value={paymentType.value}>
+                {t(paymentType.translationKey)}
+              </MenuItem>
+            ))}
           </TextField>
         </Grid>
       </Grid>
