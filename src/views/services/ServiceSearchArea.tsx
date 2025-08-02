@@ -39,7 +39,6 @@ export function ServiceSearchArea() {
   const handleQueryChange = (event: { target: { value: string } }) => {
     setQuery(event.target.value)
   }
-
   const handlePaymentTypeChange = (event: { target: { value: string } }) => {
     setPaymentType(event.target.value)
   }
@@ -99,7 +98,7 @@ export function ServiceSearchArea() {
             {["Any", ...Object.keys(orderIcons)].map((k) => (
               <MenuItem value={k} key={k}>
                 {t(`service_search.contract_types.${k}`, {
-                  defaultValue: t("service_search.contract_types.Any"),
+                  defaultValue: k,
                 })}
               </MenuItem>
             ))}
@@ -110,7 +109,6 @@ export function ServiceSearchArea() {
             {t("service_search.cost")}
           </Typography>
         </Grid>
-
         <Grid item xs={12}>
           <TextField
             fullWidth

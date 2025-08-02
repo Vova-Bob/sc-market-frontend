@@ -12,7 +12,7 @@ import { ServiceListings } from "../../views/contracts/ServiceListings"
 import { Link } from "react-router-dom"
 import { CreateRounded } from "@mui/icons-material"
 
-export function Services(props: {}) {
+export function Services() {
   const [open, setOpen] = useState(true)
 
   const [drawerOpen] = useDrawerOpen()

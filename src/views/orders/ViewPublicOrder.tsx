@@ -19,10 +19,12 @@ import { useCurrentOrder } from "../../hooks/order/CurrentOrder"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { MarkdownRender } from "../../components/markdown/Markdown"
 import { orderIcons } from "../../datatypes/Order"
+import { useTranslation } from "react-i18next"
 
 export function ViewPublicOrder() {
   const [order, refresh] = useCurrentOrder()
   const issueAlert = useAlertHook()
+  const { t } = useTranslation()
 
   return (
     <Grid item xs={12} lg={8}>
@@ -53,7 +55,7 @@ export function ViewPublicOrder() {
               >
                 <Chip
                   color={"secondary"}
-                  label={"New"}
+                  label={t("viewPublicOrder.new")}
                   sx={{
                     marginRight: 1,
                     textTransform: "uppercase",
@@ -115,12 +117,12 @@ export function ViewPublicOrder() {
                 color={"primary"}
                 onClick={() => {
                   issueAlert({
-                    message: "Applied!",
+                    message: t("viewPublicOrder.applied"),
                     severity: "success",
                   })
                 }}
               >
-                Apply
+                {t("viewPublicOrder.apply")}
               </Button>
             </Grid>
           </CardActions>

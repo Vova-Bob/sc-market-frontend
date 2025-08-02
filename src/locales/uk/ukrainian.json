@@ -416,5 +416,41 @@
     "market_tab": "Маркет",
     "order_tab": "Замовлення",
     "reviews_tab": "Відгуки"
+  },
+  "viewPublicOrder": {
+    "new": "Новий",
+    "apply": "Подати заявку",
+    "applied": "Заявку подано!"
+  },
+  "myServices": {
+    "title": "Назва",
+    "no_title": "Назву не вказано",
+    "no_type": "Тип не вказано",
+    "no_description": "Опис не вказано",
+    "per_hour": "за годину",
+    "per_day": "за день",
+    "per_unit": "за одиницю",
+    "per_box": "за коробку",
+    "per_scu": "за SCU",
+    "per_cscu": "за cSCU",
+    "per_mscu": "за mSCU",
+    "active": "Активні",
+    "inactive": "Неактивні",
+    "services": "Послуги"
+  },
+  "recentOrders": {
+    "title": "Останні замовлення"
+  },
+  "orderTrend": {
+    "order_count_daily": "Кількість замовлень (щодня)",
+    "order_count_weekly": "Кількість замовлень (щотижня)",
+    "order_count_monthly": "Кількість замовлень (щомісяця)",
+    "orders_daily": "Замовлення щодня",
+    "orders_weekly": "Замовлення щотижня",
+    "orders_monthly": "Замовлення щомісяця",
+    "in_progress": "В процесі",
+    "fulfilled": "Виконано",
+    "cancelled": "Скасовано",
+    "not_started": "Не розпочато"
   }
 }

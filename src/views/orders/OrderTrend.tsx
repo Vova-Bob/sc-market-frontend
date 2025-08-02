@@ -3,6 +3,7 @@ import { OrderStub } from "../../datatypes/Order"
 import React, { useMemo } from "react"
 import { Grid, List, ListItem } from "@mui/material"
 import Chart from "react-apexcharts"
+import { useTranslation } from "react-i18next"
 import {
   useGetAllAssignedOrdersQuery,
   useGetAssignedOrdersByContractorQuery,
@@ -41,6 +42,8 @@ function getTotalInInterval(
 
 export function OrderTrend(props: { orders: OrderStub[] }) {
   const { orders } = props
+  const { t } = useTranslation()
+
   const first = useMemo(
     () =>
       orders.reduce(
@@ -91,7 +94,7 @@ export function OrderTrend(props: { orders: OrderStub[] }) {
 
   return (
     <>
-      <Section xs={12} title={"Order Count Daily"}>
+      <Section xs={12} title={t("orderTrend.order_count_daily")}>
         <Grid item xs={12}>
           {/* @ts-ignore */}
           <Chart
@@ -133,68 +136,16 @@ export function OrderTrend(props: { orders: OrderStub[] }) {
             }}
             series={[
               {
-                name: "Orders Daily",
+                name: t("orderTrend.orders_daily"),
                 data: dataDailyTotal,
               },
               ...dataDailyStatus.map((data, i) => ({
-                name: ["in-progress", "fulfilled", "cancelled", "not-started"][
-                  i
-                ],
-                data,
-              })),
-            ]}
-          />
-        </Grid>
-      </Section>
-      <Section xs={12} title={"Order Count Weekly"}>
-        <Grid item xs={12}>
-          {/* @ts-ignore */}
-          <Chart
-            width={"100%"}
-            height={400}
-            type={"area"}
-            options={{
-              xaxis: {
-                type: "datetime",
-                labels: {
-                  format: "yy/MM/dd",
-                },
-              },
-              yaxis: {
-                forceNiceScale: true,
-                min: 0,
-              },
-              dataLabels: {
-                enabled: false,
-              },
-              stroke: {
-                curve: "smooth",
-              },
-              fill: {
-                type: "gradient",
-                gradient: {
-                  shadeIntensity: 1,
-                  inverseColors: false,
-                  opacityFrom: 0.45,
-                  opacityTo: 0.05,
-                  stops: [20, 100, 100, 100],
-                },
-              },
-              tooltip: {
-                x: {
-                  format: "yy/MM/dd",
-                },
-              },
-            }}
-            series={[
-              {
-                name: "Orders Weekly",
-                data: dataWeeklyTotal,
-              },
-              ...dataWeeklyStatus.map((data, i) => ({
-                name: ["in-progress", "fulfilled", "cancelled", "not-started"][
-                  i
-                ],
+                name: [
+                  t("orderTrend.in_progress"),
+                  t("orderTrend.fulfilled"),
+                  t("orderTrend.cancelled"),
+                  t("orderTrend.not_started"),
+                ][i],
                 data,
               })),
             ]}
@@ -202,7 +153,66 @@ export function OrderTrend(props: { orders: OrderStub[] }) {
         </Grid>
       </Section>
 
-      <Section xs={12} title={"Order Count Monthly"}>
+      <Section xs={12} title={t("orderTrend.order_count_weekly")}>
+        <Grid item xs={12}>
+          {/* @ts-ignore */}
+          <Chart
+            width={"100%"}
+            height={400}
+            type={"area"}
+            options={{
+              xaxis: {
+                type: "datetime",
+                labels: {
+                  format: "yy/MM/dd",
+                },
+              },
+              yaxis: {
+                forceNiceScale: true,
+                min: 0,
+              },
+              dataLabels: {
+                enabled: false,
+              },
+              stroke: {
+                curve: "smooth",
+              },
+              fill: {
+                type: "gradient",
+                gradient: {
+                  shadeIntensity: 1,
+                  inverseColors: false,
+                  opacityFrom: 0.45,
+                  opacityTo: 0.05,
+                  stops: [20, 100, 100, 100],
+                },
+              },
+              tooltip: {
+                x: {
+                  format: "yy/MM/dd",
+                },
+              },
+            }}
+            series={[
+              {
+                name: t("orderTrend.orders_weekly"),
+                data: dataWeeklyTotal,
+              },
+              ...dataWeeklyStatus.map((data, i) => ({
+                name: [
+                  t("orderTrend.in_progress"),
+                  t("orderTrend.fulfilled"),
+                  t("orderTrend.cancelled"),
+                  t("orderTrend.not_started"),
+                ][i],
+                data,
+              })),
+            ]}
+          />
+        </Grid>
+      </Section>
+
+      <Section xs={12} title={t("orderTrend.order_count_monthly")}>
         <Grid item xs={12}>
           {/* @ts-ignore */}
           <Chart
@@ -244,13 +254,16 @@ export function OrderTrend(props: { orders: OrderStub[] }) {
             }}
             series={[
               {
-                name: "Orders Monthly",
+                name: t("orderTrend.orders_monthly"),
                 data: dataMonthlyTotal,
               },
               ...dataMonthlyStatus.map((data, i) => ({
-                name: ["in-progress", "fulfilled", "cancelled", "not-started"][
-                  i
-                ],
+                name: [
+                  t("orderTrend.in_progress"),
+                  t("orderTrend.fulfilled"),
+                  t("orderTrend.cancelled"),
+                  t("orderTrend.not_started"),
+                ][i],
                 data,
               })),
             ]}

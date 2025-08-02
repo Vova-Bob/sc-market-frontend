@@ -28,6 +28,7 @@ import {
   useGetServicesContractorQuery,
   useGetServicesQuery,
 } from "../../store/services"
+import { useTranslation } from "react-i18next"
 
 export interface ServiceRowProps {
   row: Service
@@ -42,16 +43,8 @@ export const mobileHeadCells: readonly HeadCell<Service>[] = [
     id: "title",
     numeric: false,
     disablePadding: false,
-    label: "Title",
-    // maxWidth: '75%'
+    label: "myServices.title",
   },
-  // {
-  //     id: 'cost',
-  //     numeric: true,
-  //     disablePadding: false,
-  //     label: 'Cost',
-  //     // maxWidth: '15%'
-  // },
   {
     id: "service_id",
     numeric: false,
@@ -68,6 +61,7 @@ export const BorderlessCell = styled(TableCell)({
 export function ServiceDetailsRow(props: { open: boolean; service: Service }) {
   const theme = useTheme<ExtendedTheme>()
   const { open, service } = props
+  const { t } = useTranslation()
 
   return (
     <TableRow
@@ -109,8 +103,9 @@ export function ServiceDetailsRow(props: { open: boolean; service: Service }) {
                       variant={"subtitle1"}
                       color={"text.secondary"}
                     >
-                      {service.title || <i>Title not defined</i>} (
-                      {service.kind || <i>Type not defined</i>})
+                      {/* Added translation keys for no_title and no_type */}
+                      {service.title || <i>{t("myServices.no_title")}</i>} (
+                      {service.kind || <i>{t("myServices.no_type")}</i>})
                     </Typography>
                   }
                 />
@@ -118,11 +113,9 @@ export function ServiceDetailsRow(props: { open: boolean; service: Service }) {
                   <Typography
                     sx={{
                       marginRight: 1,
-                      // maxHeight: 350,
                       maxWidth: "100%",
                       lineClamp: "10",
                       textOverflow: "ellipsis",
-                      // whiteSpace: "pre-line",
                       overflow: "hidden",
                       "-webkit-box-orient": "vertical",
                       display: "-webkit-box",
@@ -130,8 +123,12 @@ export function ServiceDetailsRow(props: { open: boolean; service: Service }) {
                     }}
                     variant={"body2"}
                   >
+                    {/* Added translation key for no_description */}
                     <MarkdownRender
-                      text={service.description || "_Description not defined_"}
+                      text={
+                        service.description ||
+                        `_${t("myServices.no_description")}_`
+                      }
                     />
                   </Typography>
                 </CardContent>
@@ -146,33 +143,35 @@ export function ServiceDetailsRow(props: { open: boolean; service: Service }) {
 
 export const paymentTypeMessages = new Map<PaymentType, string>()
 paymentTypeMessages.set("one-time", "")
-paymentTypeMessages.set("hourly", "per hour")
-paymentTypeMessages.set("daily", "per day")
-paymentTypeMessages.set("unit", "per unit")
-paymentTypeMessages.set("box", "per box")
-paymentTypeMessages.set("scu", "per SCU")
-paymentTypeMessages.set("cscu", "per cSCU")
-paymentTypeMessages.set("mscu", "per mSCU")
+paymentTypeMessages.set("hourly", "myServices.per_hour")
+paymentTypeMessages.set("daily", "myServices.per_day")
+paymentTypeMessages.set("unit", "myServices.per_unit")
+paymentTypeMessages.set("box", "myServices.per_box")
+paymentTypeMessages.set("scu", "myServices.per_scu")
+paymentTypeMessages.set("cscu", "myServices.per_cscu")
+paymentTypeMessages.set("mscu", "myServices.per_mscu")
 
 export function MobileServiceRow(props: ServiceRowProps) {
-  const { row, index, isItemSelected } = props // TODO: Add `assigned_to` column
+  const { row, index, isItemSelected } = props
   const [open, setOpen] = useState(false)
+  const { t } = useTranslation()
+
+  const key = paymentTypeMessages.get(row.payment_type)
+  const paymentType = key ? t(key) : ""
 
   useEffect(() => {
-    setOpen(false) // row changed, so close
+    setOpen(false)
   }, [row])
 
   return (
     <>
       <TableRow
         hover
-        // onClick={onClick}
         role="checkbox"
         aria-checked={isItemSelected}
         tabIndex={-1}
         key={index}
         selected={isItemSelected}
-        // component={Link} to={`/contract/${row.order_id}`}
         sx={{
           textDecoration: "none",
           color: "inherit",
@@ -198,8 +197,7 @@ export function MobileServiceRow(props: ServiceRowProps) {
             </span>
           </Box>
           <Typography variant={"subtitle2"} color={"primary"}>
-            {row.cost.toLocaleString("en-US")} aUEC{" "}
-            {paymentTypeMessages.get(row.payment_type)}
+            {row.cost.toLocaleString("en-US")} aUEC {paymentType}
           </Typography>
         </BorderlessCell>
 
@@ -233,6 +231,7 @@ export function MyServices(props: { status: string }) {
   const { status } = props
   const { data: profile } = useGetUserProfileQuery()
   const [currentOrg] = useCurrentOrg()
+  const { t } = useTranslation()
 
   const { data: listings } = useGetServicesQuery(profile?.username!, {
     skip: !profile || !!currentOrg,
@@ -242,8 +241,6 @@ export function MyServices(props: { status: string }) {
     currentOrg?.spectrum_id!,
     { skip: !currentOrg },
   )
-
-  // const [status, setStatus] = useState('active')
 
   const filteredServices = useMemo(
     () =>
@@ -260,19 +257,23 @@ export function MyServices(props: { status: string }) {
       lg={12}
       xl={12}
       disablePadding
+
       // subtitle={<FormGroup>
       //     <FormControlLabel control={<Switch onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
       //         setStatus(event.target.checked ? 'active' : 'inactive');
       //     }} checked={status === 'active'}/>} label="Active Services"/>
       // </FormGroup>}
-      title={`${status === "active" ? "Active" : "Inactive"} Services`}
+      title={`${status === "active" ? t("myServices.active") : t("myServices.inactive")} ${t("myServices.services")}`}
     >
       <PaginatedTable
         rows={filteredServices}
         initialSort={"service_name"}
         generateRow={MobileServiceRow}
         keyAttr={"service_id"}
-        headCells={mobileHeadCells}
+        headCells={mobileHeadCells.map((cell) => ({
+          ...cell,
+          label: cell.label ? t(cell.label) : "",
+        }))}
         disableSelect
       />
     </Section>

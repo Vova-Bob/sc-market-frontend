@@ -416,5 +416,41 @@
     "market_tab": "Market",
     "order_tab": "Order",
     "reviews_tab": "Reviews"
+  },
+  "viewPublicOrder": {
+    "new": "New",
+    "apply": "Apply",
+    "applied": "Applied!"
+  },
+  "myServices": {
+    "title": "Title",
+    "no_title": "Title not defined",
+    "no_type": "Type not defined",
+    "no_description": "Description not defined",
+    "per_hour": "per hour",
+    "per_day": "per day",
+    "per_unit": "per unit",
+    "per_box": "per box",
+    "per_scu": "per SCU",
+    "per_cscu": "per cSCU",
+    "per_mscu": "per mSCU",
+    "active": "Active",
+    "inactive": "Inactive",
+    "services": "Services"
+  },
+  "recentOrders": {
+    "title": "Recent Orders"
+  },
+  "orderTrend": {
+    "order_count_daily": "Order Count Daily",
+    "order_count_weekly": "Order Count Weekly",
+    "order_count_monthly": "Order Count Monthly",
+    "orders_daily": "Orders Daily",
+    "orders_weekly": "Orders Weekly",
+    "orders_monthly": "Orders Monthly",
+    "in_progress": "In Progress",
+    "fulfilled": "Fulfilled",
+    "cancelled": "Cancelled",
+    "not_started": "Not Started"
   }
 }
