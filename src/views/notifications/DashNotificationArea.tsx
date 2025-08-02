@@ -5,13 +5,19 @@ import { NotificationEntry } from "../../components/navbar/NotificationsButton"
 import { useTheme } from "@mui/material/styles"
 import { ExtendedTheme } from "../../hooks/styles/Theme"
 import { useGetNotificationsQuery } from "../../store/notification"
+import { useTranslation } from "react-i18next"
 
 export function DashNotificationArea() {
   const theme = useTheme<ExtendedTheme>()
   const { data: notifications } = useGetNotificationsQuery()
+  const { t } = useTranslation()
 
   return (
-    <Section title={"Notifications"} disablePadding xs={12}>
+    <Section
+      title={t("DashNotificationArea.notifications")}
+      disablePadding
+      xs={12}
+    >
       {/*<Box sx={{width: '100%', padding: 2}}>*/}
       <Grid item xs={12}>
         <List

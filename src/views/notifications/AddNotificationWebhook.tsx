@@ -14,7 +14,9 @@ import { useCreateContractorWebhookMutation } from "../../store/contractor"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 import { URL_REGEX } from "../../util/parsing"
+import { useTranslation } from "react-i18next"
 
+// Checkbox item for webhook notification action selection
 function NotificationActionCheck(props: {
   label: string
   action_name: string
@@ -62,6 +64,7 @@ export function AddNotificationWebhook(props: { org?: boolean }) {
   ] = useCreateContractorWebhookMutation()
 
   const issueAlert = useAlertHook()
+  const { t } = useTranslation()
 
   const submitCreateForm = useCallback(
     async (event: any) => {
@@ -88,7 +91,7 @@ export function AddNotificationWebhook(props: { org?: boolean }) {
         .unwrap()
         .then((res) => {
           issueAlert({
-            message: "Submitted!",
+            message: t("AddNotificationWebhook.submitted"),
             severity: "success",
           })
         })
@@ -107,6 +110,7 @@ export function AddNotificationWebhook(props: { org?: boolean }) {
       issueAlert,
       actions,
       url,
+      t,
     ],
   )
 
@@ -119,7 +123,7 @@ export function AddNotificationWebhook(props: { org?: boolean }) {
           color={"text.secondary"}
           sx={{ fontWeight: "bold" }}
         >
-          Add Discord Notification Webhook
+          {t("AddNotificationWebhook.addWebhook")}
         </Typography>
       </Grid>
       <Grid item xs={12}>
@@ -130,7 +134,7 @@ export function AddNotificationWebhook(props: { org?: boolean }) {
           fullWidth
           id="name"
           color={"secondary"}
-          label={"Webhook Name"}
+          label={t("AddNotificationWebhook.webhookName")}
           value={name}
           onChange={(event: any) => {
             setName(event.target.value)
@@ -143,14 +147,16 @@ export function AddNotificationWebhook(props: { org?: boolean }) {
           fullWidth
           id="url"
           color={"secondary"}
-          label={"Webhook URL"}
+          label={t("AddNotificationWebhook.webhookUrl")}
           value={url}
           onChange={(event: any) => {
             setURL(event.target.value)
           }}
           error={!!url && !url.match(URL_REGEX)}
           helperText={
-            !!url && !url.match(URL_REGEX) ? "Invalid URL" : undefined
+            !!url && !url.match(URL_REGEX)
+              ? t("AddNotificationWebhook.invalidUrl")
+              : undefined
           }
         />
       </Grid>
@@ -160,43 +166,43 @@ export function AddNotificationWebhook(props: { org?: boolean }) {
           <NotificationActionCheck
             actions={actions}
             setActions={setActions}
-            label={"Order Created"}
+            label={t("AddNotificationWebhook.orderCreated")}
             action_name={"order_create"}
           />
           <NotificationActionCheck
             actions={actions}
             setActions={setActions}
-            label={"Order Assigned to Me"}
+            label={t("AddNotificationWebhook.orderAssigned")}
             action_name={"order_assigned"}
           />
           <NotificationActionCheck
             actions={actions}
             setActions={setActions}
-            label={"Public Contract Created"}
+            label={t("AddNotificationWebhook.publicOrderCreated")}
             action_name={"public_order_create"}
           />
           <NotificationActionCheck
             actions={actions}
             setActions={setActions}
-            label={"Order Status Change"}
+            label={t("AddNotificationWebhook.orderStatusChange")}
             action_name={"order_status_change"}
           />
           <NotificationActionCheck
             actions={actions}
             setActions={setActions}
-            label={"Order Review Recieved"}
+            label={t("AddNotificationWebhook.orderReview")}
             action_name={"order_review"}
           />
           <NotificationActionCheck
             actions={actions}
             setActions={setActions}
-            label={"Order Comment Recieved"}
+            label={t("AddNotificationWebhook.orderComment")}
             action_name={"order_comment"}
           />
           <NotificationActionCheck
             actions={actions}
             setActions={setActions}
-            label={"Market Bid Received"}
+            label={t("AddNotificationWebhook.marketBid")}
             action_name={"market_item_bid"}
           />
           {/*<NotificationActionCheck actions={actions} setActions={setActions} label={"Market Offer Received"}*/}
@@ -210,7 +216,7 @@ export function AddNotificationWebhook(props: { org?: boolean }) {
           color={"primary"}
           onClick={submitCreateForm}
         >
-          Submit
+          {t("AddNotificationWebhook.submit")}
         </Button>
       </Grid>
     </Section>

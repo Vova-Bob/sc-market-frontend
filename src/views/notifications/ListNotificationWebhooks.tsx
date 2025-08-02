@@ -16,14 +16,14 @@ import { DeleteRounded } from "@mui/icons-material"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { useTheme } from "@mui/material/styles"
 import { ExtendedTheme } from "../../hooks/styles/Theme"
+import { useTranslation } from "react-i18next"
 
 export const headCells: readonly HeadCell<OrderWebhook>[] = [
   {
     id: "name",
     numeric: false,
     disablePadding: false,
-    label: "Name",
-    // maxWidth: '75%'
+    label: "Webhooks.name",
   },
   {
     id: "webhook_id",
@@ -54,6 +54,7 @@ export function WebhookRow(props: {
 
   const theme = useTheme<ExtendedTheme>()
   const issueAlert = useAlertHook()
+  const { t } = useTranslation()
 
   const submitDelete = useCallback(async () => {
     // event.preventDefault();
@@ -71,14 +72,14 @@ export function WebhookRow(props: {
 
     if (res?.data && !res?.error) {
       issueAlert({
-        message: "Submitted!",
+        message: t("Webhooks.submitted"),
         severity: "success",
       })
     } else {
       issueAlert({
-        message: `Failed to submit! ${
-          res.error?.error || res.error?.data?.error || res.error
-        }`,
+        message:
+          t("Webhooks.failedToSubmit") +
+          (res?.error?.error || res?.error?.data?.error || res?.error || ""),
         severity: "error",
       })
     }
@@ -90,6 +91,7 @@ export function WebhookRow(props: {
     props.org,
     row.webhook_id,
     issueAlert,
+    t,
   ])
 
   return (
@@ -163,15 +165,26 @@ export function MyWebhooks(props: { org?: boolean }) {
   const { data: webhooks } = useGetUserWebhooks(undefined, {
     skip: !!props.org,
   })
+  const { t } = useTranslation()
 
   return (
-    <Section xs={12} md={12} lg={12} xl={12} disablePadding title={"Webhooks"}>
+    <Section
+      xs={12}
+      md={12}
+      lg={12}
+      xl={12}
+      disablePadding
+      title={t("Webhooks.title")}
+    >
       <PaginatedTable
         rows={webhooks || contractorWebhooks || []}
         initialSort={"name"}
         generateRow={(iprops) => <WebhookRow {...iprops} org={props.org} />}
         keyAttr={"webhook_id"}
-        headCells={headCells}
+        headCells={headCells.map((cell) => ({
+          ...cell,
+          label: cell.label ? t(cell.label) : cell.label,
+        }))}
         disableSelect
       />
     </Section>

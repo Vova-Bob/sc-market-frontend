@@ -738,5 +738,38 @@
   },
   "CounterOfferSubmitArea": {
     "submitCounterOffer": "Submit Counter Offer"
+  },
+  "Webhooks": {
+    "title": "Webhooks",
+    "name": "Name",
+    "submitted": "Submitted!",
+    "failedToSubmit": "Failed to submit! "
+  },
+  "DashNotificationArea": {
+    "notifications": "Notifications"
+  },
+  "ConfigureDiscord": {
+    "orderManagement": "Order Management",
+    "integratedChannel": "Integrated Channel",
+    "notConfigured": "Not configured",
+    "useOfficial1": "Use The Official",
+    "serverName": "SC Market Server",
+    "useOfficial2": "for Orders. This will replace your existing integration settings.",
+    "useOfficialServer": "Use Official Server"
+  },
+  "AddNotificationWebhook": {
+    "addWebhook": "Add Discord Notification Webhook",
+    "webhookName": "Webhook Name",
+    "webhookUrl": "Webhook URL",
+    "invalidUrl": "Invalid URL",
+    "orderCreated": "Order Created",
+    "orderAssigned": "Order Assigned to Me",
+    "publicOrderCreated": "Public Contract Created",
+    "orderStatusChange": "Order Status Change",
+    "orderReview": "Order Review Recieved",
+    "orderComment": "Order Comment Recieved",
+    "marketBid": "Market Bid Received",
+    "submit": "Submit",
+    "submitted": "Submitted!"
   }
 }

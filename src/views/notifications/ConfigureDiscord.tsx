@@ -13,6 +13,7 @@ import {
 import { Stack } from "@mui/system"
 import { UnderlineLink } from "../../components/typography/UnderlineLink"
 import { DISCORD_INVITE } from "../../util/constants"
+import { useTranslation } from "react-i18next"
 
 export function ConfigureDiscord(props: { org?: boolean }) {
   const [currentOrg] = useCurrentOrg()
@@ -28,6 +29,7 @@ export function ConfigureDiscord(props: { org?: boolean }) {
   const [setUseContractorOfficial] = useUseOfficialDiscordSettingsMutation()
 
   const settings = props.org ? orgSettings : userSettings
+  const { t } = useTranslation()
 
   const callback = useCallback(async () => {
     if (props.org) {
@@ -35,7 +37,6 @@ export function ConfigureDiscord(props: { org?: boolean }) {
     } else {
       setUseUserOfficial()
     }
-
     window.open(DISCORD_INVITE, "_blank")
   }, [
     currentOrg?.spectrum_id,
@@ -45,10 +46,9 @@ export function ConfigureDiscord(props: { org?: boolean }) {
   ])
 
   return (
-    <Section title={"Order Management"} xs={12}>
+    <Section title={t("ConfigureDiscord.orderManagement")} xs={12}>
       <Grid item xs={12}>
-        <Typography>Integrated Channel</Typography>
-
+        <Typography>{t("ConfigureDiscord.integratedChannel")}</Typography>
         <Stack direction={"row"} alignItems={"center"} spacing={1}>
           <Avatar src={settings?.guild_avatar} />
           <a
@@ -64,7 +64,7 @@ export function ConfigureDiscord(props: { org?: boolean }) {
                   {settings?.guild_name}: #{settings?.channel_name}
                 </>
               ) : (
-                "Not configured"
+                t("ConfigureDiscord.notConfigured")
               )}
             </UnderlineLink>
           </a>
@@ -75,14 +75,16 @@ export function ConfigureDiscord(props: { org?: boolean }) {
           alignItems={"center"}
         >
           <Typography>
-            Use The Official{" "}
+            {t("ConfigureDiscord.useOfficial1")}{" "}
             <a href={DISCORD_INVITE} target={"_blank"} rel="noreferrer">
-              <UnderlineLink color={"primary"}>SC Market Server</UnderlineLink>
+              <UnderlineLink color={"primary"}>
+                {t("ConfigureDiscord.serverName")}
+              </UnderlineLink>
             </a>{" "}
-            for Orders. This will replace your existing integration settings.
+            {t("ConfigureDiscord.useOfficial2")}
           </Typography>
           <Button color={"warning"} variant={"contained"} onClick={callback}>
-            Use Official Server
+            {t("ConfigureDiscord.useOfficialServer")}
           </Button>
         </Box>
       </Grid>

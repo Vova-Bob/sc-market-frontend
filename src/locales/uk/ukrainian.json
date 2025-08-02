@@ -738,5 +738,38 @@
   },
   "CounterOfferSubmitArea": {
     "submitCounterOffer": "Відправити зустрічну пропозицію"
+  },
+  "Webhooks": {
+    "title": "Вебхуки",
+    "name": "Назва",
+    "submitted": "Відправлено!",
+    "failedToSubmit": "Не вдалося відправити! "
+  },
+  "DashNotificationArea": {
+    "notifications": "Сповіщення"
+  },
+  "ConfigureDiscord": {
+    "orderManagement": "Управління замовленнями",
+    "integratedChannel": "Інтегрований канал",
+    "notConfigured": "Не налаштовано",
+    "useOfficial1": "Використовуйте офіційний",
+    "serverName": "SC Market сервер",
+    "useOfficial2": "для замовлень. Це замінить ваші поточні налаштування інтеграції.",
+    "useOfficialServer": "Використати офіційний сервер"
+  },
+  "AddNotificationWebhook": {
+    "addWebhook": "Додати Discord вебхук для сповіщень",
+    "webhookName": "Назва вебхука",
+    "webhookUrl": "URL вебхука",
+    "invalidUrl": "Недійсний URL",
+    "orderCreated": "Замовлення створено",
+    "orderAssigned": "Замовлення призначене мені",
+    "publicOrderCreated": "Публічний контракт створено",
+    "orderStatusChange": "Зміна статусу замовлення",
+    "orderReview": "Отримано відгук по замовленню",
+    "orderComment": "Отримано коментар до замовлення",
+    "marketBid": "Отримано ставку на лот",
+    "submit": "Відправити",
+    "submitted": "Відправлено!"
   }
 }
