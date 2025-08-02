@@ -14,6 +14,7 @@ import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownR
 import { useMessageGroupCreate } from "../../hooks/messaging/MessageGroupCreate"
 import throttle from "lodash/throttle"
 import { useCreateChatMutation } from "../../store/chats"
+import { useTranslation } from "react-i18next"
 
 function MessageHeader() {
   const [messageSidebarOpen, setMessageSidebar] = useMessagingSidebar()
@@ -23,6 +24,7 @@ function MessageHeader() {
 
   const [target, setTarget] = useState("")
   const [targetObject, setTargetObject] = useState<User[]>([])
+  const { t } = useTranslation()
 
   const { data: options, refetch } = useSearchUsersQuery(target, {
     skip: target.length < 3,
@@ -80,7 +82,7 @@ function MessageHeader() {
       >
         <IconButton
           color="secondary"
-          aria-label="toggle market sidebar"
+          aria-label={t("CreateMessageGroupBody.toggleSidebar")}
           onClick={() => {
             setMessageSidebar((v) => !v)
           }}
@@ -105,7 +107,7 @@ function MessageHeader() {
           renderInput={(params) => (
             <TextField
               {...params}
-              label={"Usernames"}
+              label={t("CreateMessageGroupBody.usernames")}
               SelectProps={{
                 IconComponent: KeyboardArrowDownRoundedIcon,
               }}
@@ -129,12 +131,12 @@ function MessageHeader() {
           sx={{ marginRight: 3 }}
           disabled={targetObject.length === 0}
         >
-          Create
+          {t("CreateMessageGroupBody.create")}
         </Button>
 
         <IconButton
           color="secondary"
-          aria-label="toggle market sidebar"
+          aria-label={t("CreateMessageGroupBody.close")}
           onClick={() => {
             setGroupCreate((v) => !v)
           }}
@@ -146,7 +148,7 @@ function MessageHeader() {
   )
 }
 
-function CreateChatBody(props: {}) {
+function CreateChatBody() {
   const profile = useGetUserProfileQuery()
   const theme = useTheme<ExtendedTheme>()
 

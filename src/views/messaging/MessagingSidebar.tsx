@@ -25,15 +25,18 @@ import CreateIcon from "@mui/icons-material/Create"
 import { useMessageGroupCreate } from "../../hooks/messaging/MessageGroupCreate"
 import { Chat } from "../../datatypes/Chat"
 import { useGetMyChatsQuery } from "../../store/chats"
+import { useTranslation } from "react-i18next" // Added
 
 export const messagingDrawerWidth = 360
 
+// Single chat entry in the chat list
 function ChatEntry(props: { chat: Chat }) {
   const theme: ExtendedTheme = useTheme<ExtendedTheme>()
   const [currentChatID, setCurrentChatID] = useCurrentChatID()
   const profile = useGetUserProfileQuery()
 
   const [, setCreatingMessageGroup] = useMessageGroupCreate()
+  const { t } = useTranslation() // Added
 
   return (
     <ListItemButton
@@ -112,7 +115,7 @@ function ChatEntry(props: { chat: Chat }) {
               ? props.chat.messages[props.chat.messages.length - 1].author +
                 ": " +
                 props.chat.messages[props.chat.messages.length - 1].content
-              : "No messages"}
+              : t("MessagingSidebar.noMessages")}
           </Typography>
         </Box>
       </Box>
@@ -120,6 +123,7 @@ function ChatEntry(props: { chat: Chat }) {
   )
 }
 
+// Sidebar with chat list and search/group creation controls
 export function MessagingSidebar() {
   const theme = useTheme<ExtendedTheme>()
   const [drawerOpen] = useDrawerOpen()
@@ -130,6 +134,7 @@ export function MessagingSidebar() {
   const [searchQuery, setSearchQuery] = useState("")
 
   const { data: chats } = useGetMyChatsQuery()
+  const { t } = useTranslation() // Added
 
   return (
     <Drawer
@@ -199,7 +204,7 @@ export function MessagingSidebar() {
           sx={{ width: "100%", padding: 2 }}
           justifyContent={"space-between"}
         >
-          <HeaderTitle>Messages</HeaderTitle>
+          <HeaderTitle>{t("MessagingSidebar.messages")}</HeaderTitle>
           <Button
             variant={"contained"}
             color={"secondary"}
@@ -207,13 +212,13 @@ export function MessagingSidebar() {
             size={"large"}
             onClick={() => setCreatingMessageGroup(true)}
           >
-            Group
+            {t("MessagingSidebar.group")}
           </Button>
         </Box>
         <Box sx={{ padding: 2 }}>
           <TextField
             fullWidth
-            label={"Search"}
+            label={t("MessagingSidebar.search")}
             value={searchQuery}
             onChange={(event: React.ChangeEvent<{ value: string }>) => {
               setSearchQuery(event.target.value)

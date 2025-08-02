@@ -771,5 +771,25 @@
     "marketBid": "Отримано ставку на лот",
     "submit": "Відправити",
     "submitted": "Відправлено!"
+  },
+  "MessagingSidebar": {
+    "messages": "Повідомлення",
+    "group": "Група",
+    "search": "Пошук",
+    "noMessages": "Немає повідомлень"
+  },
+  "MessagesBody": {
+    "toggleSidebar": "Показати/сховати панель",
+    "copyDate": "Копіювати дату",
+    "copyTime": "Копіювати час",
+    "send": "Надіслати",
+    "system": "Система",
+    "scMarket": "SC Маркет"
+  },
+  "CreateMessageGroupBody": {
+    "toggleSidebar": "Показати/сховати панель",
+    "usernames": "Імена користувачів",
+    "create": "Створити",
+    "close": "Закрити"
   }
 }

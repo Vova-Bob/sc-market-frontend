@@ -771,5 +771,25 @@
     "marketBid": "Market Bid Received",
     "submit": "Submit",
     "submitted": "Submitted!"
+  },
+  "MessagingSidebar": {
+    "messages": "Messages",
+    "group": "Group",
+    "search": "Search",
+    "noMessages": "No messages"
+  },
+  "MessagesBody": {
+    "toggleSidebar": "Toggle sidebar",
+    "copyDate": "Copy Date",
+    "copyTime": "Copy Time",
+    "send": "Send",
+    "system": "System",
+    "scMarket": "SC Market"
+  },
+  "CreateMessageGroupBody": {
+    "toggleSidebar": "Toggle sidebar",
+    "usernames": "Usernames",
+    "create": "Create",
+    "close": "Close"
   }
 }

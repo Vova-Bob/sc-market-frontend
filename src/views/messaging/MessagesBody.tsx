@@ -41,6 +41,7 @@ import { Stack } from "@mui/system"
 import SCMarketLogo from "../../assets/scmarket-logo.png"
 import { DateTimePicker } from "@mui/x-date-pickers"
 import moment from "moment"
+import { useTranslation } from "react-i18next"
 
 function MessageHeader() {
   const profile = useGetUserProfileQuery()
@@ -50,6 +51,7 @@ function MessageHeader() {
 
   const theme = useTheme<ExtendedTheme>()
   const [dateTime, setDateTime] = useState(moment())
+  const { t } = useTranslation()
 
   return (
     <Box
@@ -79,7 +81,7 @@ function MessageHeader() {
           {messageSidebarOpen !== undefined && (
             <IconButton
               color="secondary"
-              aria-label="toggle market sidebar"
+              aria-label={t("MessagesBody.toggleSidebar")}
               onClick={() => {
                 setMessageSidebar((v) => !v)
               }}
@@ -153,7 +155,7 @@ function MessageHeader() {
             )
           }}
         >
-          Copy Date
+          {t("MessagesBody.copyDate")}
         </Button>
         <Button
           onClick={() => {
@@ -162,7 +164,7 @@ function MessageHeader() {
             )
           }}
         >
-          Copy Time
+          {t("MessagesBody.copyTime")}
         </Button>
       </Stack>
     </Box>
@@ -188,7 +190,7 @@ export function MsgPaper(
   },
 ) {
   const theme: Theme = useTheme()
-
+  const { t } = useTranslation()
   const { author, other, ...paperProps } = props
 
   if (author) {
@@ -241,13 +243,16 @@ export function MsgPaper(
           borderRadius: 1.5,
         }}
       >
-        <Typography variant={"subtitle2"}>System</Typography>
+        <Typography variant={"subtitle2"}>
+          {t("MessagesBody.system")}
+        </Typography>
         {props.children}
       </Paper>
     )
   }
 }
 
+// Replace Discord-like timestamp tags in messages with human-readable strings
 function replaceDiscordTimestamps(input: string) {
   return input.replace(
     /<t:(\d+):([dDtTfFR])>/g,
@@ -297,7 +302,7 @@ function replaceDiscordTimestamps(input: string) {
           } as const
           break
         case "R": {
-          // relative time
+          // Relative time
           const now = new Date()
           const diff = (+date - +now) / 1000
           const rtf = new Intl.RelativeTimeFormat(undefined, {
@@ -338,6 +343,7 @@ function MessageEntry2(props: { message: Message }) {
     skip: !message.author,
   })
   const theme = useTheme<ExtendedTheme>()
+  const { t } = useTranslation()
   const convertedContent = useMemo(
     () => replaceDiscordTimestamps(message.content),
     [message.content],
@@ -372,7 +378,9 @@ function MessageEntry2(props: { message: Message }) {
               <Typography variant={"subtitle2"}>{author?.username}</Typography>
             </MaterialLink>
           ) : (
-            <Typography variant={"subtitle2"}>SC Market</Typography>
+            <Typography variant={"subtitle2"}>
+              {t("MessagesBody.scMarket")}
+            </Typography>
           )}
           <Typography
             align={"right"}
@@ -406,6 +414,7 @@ function MessageEntry(props: { message: Message }) {
     [message.content],
   ) // todo add a popover for the original date content
 
+  // Message from the current user
   if (message.author === profile?.username) {
     return (
       <Stack
@@ -453,7 +462,9 @@ function MessageEntry(props: { message: Message }) {
         </Link>
       </Stack>
     )
-  } else if (!message.author) {
+  }
+  // System message
+  else if (!message.author) {
     return (
       <Stack
         direction={"row"}
@@ -497,7 +508,9 @@ function MessageEntry(props: { message: Message }) {
         </Box>
       </Stack>
     )
-  } else {
+  }
+  // Message from another user
+  else {
     return (
       <Stack
         direction={"row"}
@@ -524,7 +537,7 @@ function MessageEntry(props: { message: Message }) {
                 fontSize: ".9em",
               }}
             >
-              {message.content}
+              {convertedContent}
             </Typography>
           </MsgPaper>
           <Typography
@@ -553,7 +566,6 @@ function MessagesArea(props: {
 }) {
   const theme = useTheme<ExtendedTheme>()
   const { messageBoxRef } = props
-
   const [chat] = useCurrentChat()
 
   useEffect(() => {
@@ -594,6 +606,7 @@ function MessagesArea(props: {
 function MessageSendArea(props: { onSend: (content: string) => void }) {
   const theme = useTheme<ExtendedTheme>()
   const [textEntry, setTextEntry] = useState("")
+  const { t } = useTranslation()
 
   return (
     <Box
@@ -627,7 +640,7 @@ function MessageSendArea(props: { onSend: (content: string) => void }) {
           setTextEntry("")
         }}
       >
-        Send
+        {t("MessagesBody.send")}
       </Button>
     </Box>
   )
@@ -648,7 +661,6 @@ export const socket = io(WS_URL, {
 export function MessagesBody(props: { maxHeight?: number }) {
   const [currentChat, setCurrentChat] = useCurrentChat()
   const messageBoxRef = useRef<HTMLDivElement>(null)
-
   const [sendChatMessage] = useSendChatMessageMutation()
   const { isSuccess } = useGetUserProfileQuery()
 
@@ -675,9 +687,7 @@ export function MessagesBody(props: { maxHeight?: number }) {
         }
       })
     }
-
     socket.on("serverMessage", onServerMessage)
-
     return () => {
       socket.off("serverMessage", onServerMessage)
     }
@@ -687,7 +697,6 @@ export function MessagesBody(props: { maxHeight?: number }) {
     if (currentChat) {
       socket.emit("clientJoinRoom", { chat_id: currentChat.chat_id })
     }
-
     return () => {
       if (currentChat) {
         socket.emit("clientLeaveRoom", { chat_id: currentChat.chat_id })
