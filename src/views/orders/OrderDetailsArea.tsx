@@ -97,15 +97,13 @@ export function OrderMessagesArea(props: { order: Order }) {
 export function OrderDetailsArea(props: { order: Order }) {
   const { order } = props
   const { t } = useTranslation()
-
-  const [org] = useCurrentOrg()
   const { data: profile } = useGetUserProfileQuery()
 
   const statusColor = useMemo(
     () => statusColors.get(order.status),
     [order.status],
   )
-  const status = useMemo(() => statusNames.get(order.status), [order.status])
+  const status = useMemo(() => statusNames.get(order.status) || statusNames.get("not-started")!, [order.status])
   const issueAlert = useAlertHook()
 
   const [setOrderStatus] = useSetOrderStatusMutation()
@@ -262,7 +260,7 @@ export function OrderDetailsArea(props: { order: Order }) {
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
-                  <Chip label={status} color={statusColor} />
+                  <Chip label={t(status)} color={statusColor} />
                 </Stack>
               </TableCell>
             </TableRow>
