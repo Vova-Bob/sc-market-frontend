@@ -6,6 +6,7 @@ import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { useNavigate } from "react-router-dom"
 import { useCounterOffer } from "../../hooks/offer/CounterOfferDetails"
 import Grid from "@mui/material/Grid"
+import { useTranslation } from "react-i18next"
 
 export function CounterOfferSubmitArea(props: { session: OfferSession }) {
   const { session } = props
@@ -14,6 +15,7 @@ export function CounterOfferSubmitArea(props: { session: OfferSession }) {
   const issueAlert = useAlertHook()
   const navigate = useNavigate()
   const [body, setBody] = useCounterOffer()
+  const { t } = useTranslation()
 
   const counterOfferCallback = useCallback(() => {
     counterOffer(body)
@@ -36,7 +38,7 @@ export function CounterOfferSubmitArea(props: { session: OfferSession }) {
           loading={counterOfferLoading}
           onClick={counterOfferCallback}
         >
-          Submit Counter Offer
+          {t("CounterOfferSubmitArea.submitCounterOffer")}
         </LoadingButton>
       </Stack>
     </Grid>

@@ -42,6 +42,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { paymentTypeMessages } from "../orders/Services"
 import { useGetPublicContractQuery } from "../../store/public_contracts"
 import { ListingSellerRating } from "../../components/rating/ListingRating"
+import { useTranslation } from "react-i18next"
 
 export function OfferMessagesArea(props: { offer: OfferSession }) {
   const { offer } = props
@@ -90,6 +91,7 @@ export function OfferMessagesArea(props: { offer: OfferSession }) {
 }
 
 export function OfferDetailsArea(props: { session: OfferSession }) {
+  const { t } = useTranslation()
   const { session } = props
   const [org] = useCurrentOrg()
   const { data: profile } = useGetUserProfileQuery()
@@ -99,43 +101,50 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
   )
 
   const [statusColor, icon] = useMemo(() => {
-    if (session.status === "Waiting for Seller") {
+    if (session.status === t("OfferDetailsArea.waitingSeller")) {
       return ["warning" as const, <Announcement key={"warning"} />] as const
-    } else if (session.status === "Waiting for Customer") {
+    } else if (session.status === t("OfferDetailsArea.waitingCustomer")) {
       return ["info" as const, <HourglassTop key={"info"} />] as const
-    } else if (session.status === "Rejected") {
+    } else if (session.status === t("OfferDetailsArea.rejected")) {
       return ["error" as const, <Cancel key={"error"} />] as const
     } else {
       return ["success" as const, <CheckCircle key={"success"} />] as const
     }
-  }, [session.status])
+  }, [session.status, t])
 
   const showAccept = useMemo(() => {
-    if (["Rejected", "Accepted"].includes(session.status)) {
+    if (
+      [t("OfferDetailsArea.rejected"), t("OfferDetailsArea.accepted")].includes(
+        session.status,
+      )
+    ) {
       return false
     }
 
     if (session.contractor) {
       if (org?.spectrum_id === session.contractor.spectrum_id) {
-        return session.status === "Waiting for Seller"
+        return session.status === t("OfferDetailsArea.waitingSeller")
       }
     }
 
     if (session.assigned_to) {
       if (profile?.username === session.assigned_to.username) {
-        return session.status === "Waiting for Seller"
+        return session.status === t("OfferDetailsArea.waitingSeller")
       }
     }
 
     if (profile?.username === session.customer.username) {
-      return session.status === "Waiting for Customer"
+      return session.status === t("OfferDetailsArea.waitingCustomer")
     }
 
     return false
-  }, [profile, org, session])
+  }, [profile, org, session, t])
 
   const showCancel =
-    !showAccept && !["Rejected", "Accepted"].includes(session.status)
+    !showAccept &&
+    ![t("OfferDetailsArea.rejected"), t("OfferDetailsArea.accepted")].includes(
+      session.status,
+    )
 
   const [updateStatus, { isLoading: isUpdatingStatus }] =
     useUpdateOfferStatusMutation()
@@ -170,7 +179,7 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
               }}
             >
               <TableCell component="th" scope="row">
-                Customer
+                {t("OfferDetailsArea.customer")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
@@ -186,7 +195,7 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  Associated Contract
+                  {t("OfferDetailsArea.associatedContract")}
                 </TableCell>
                 <TableCell align="right">
                   <Stack direction="row" justifyContent={"right"}>
@@ -206,7 +215,7 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                Seller
+                {t("OfferDetailsArea.seller")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
@@ -229,7 +238,7 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                Date
+                {t("OfferDetailsArea.date")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
@@ -243,12 +252,15 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                Status
+                {t("OfferDetailsArea.status")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
                   <Chip
-                    label={session.status}
+                    label={t(
+                      `OfferDetailsArea.${session.status.replace(/\s/g, "").toLowerCase()}`,
+                      session.status,
+                    )}
                     color={statusColor}
                     icon={icon}
                   />
@@ -259,7 +271,7 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                Title
+                {t("OfferDetailsArea.title")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
@@ -273,7 +285,7 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                Kind
+                {t("OfferDetailsArea.kind")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
@@ -291,7 +303,7 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
               {/*</TableCell>*/}
               <TableCell colSpan={2}>
                 <Stack direction="column" spacing={1}>
-                  Details
+                  {t("OfferDetailsArea.details")}
                   <Typography color={"text.secondary"} variant={"subtitle2"}>
                     <MarkdownRender text={session.offers[0].description} />
                   </Typography>
@@ -302,7 +314,7 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                Offer
+                {t("OfferDetailsArea.offer")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
@@ -325,7 +337,7 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  Discord Thread
+                  {t("OfferDetailsArea.discordThread")}
                 </TableCell>
                 <TableCell align="right">
                   <Stack direction="row" justifyContent={"right"}>
@@ -337,7 +349,7 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
                           underline={"hover"}
                           color={"text.secondary"}
                         >
-                          Thread Link
+                          {t("OfferDetailsArea.threadLink")}
                         </MaterialLink>
                       ) : (
                         <LoadingButton
@@ -347,7 +359,7 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
                               .unwrap()
                               .then((result) => {
                                 issueAlert({
-                                  message: "Created thread",
+                                  message: t("OfferDetailsArea.createdThread"),
                                   severity: "success",
                                 })
                               })
@@ -356,7 +368,7 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
                               })
                           }}
                         >
-                          Create Thread
+                          {t("OfferDetailsArea.createThread")}
                         </LoadingButton>
                       )}
                     </Typography>
@@ -369,7 +381,7 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  Accept or Decline
+                  {t("OfferDetailsArea.acceptOrDecline")}
                 </TableCell>
                 <TableCell align="right">
                   <Stack direction="row" justifyContent={"right"} spacing={1}>
@@ -379,11 +391,11 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
                       loading={isUpdatingStatus}
                       onClick={() => updateStatusCallback("accepted")}
                     >
-                      Accept
+                      {t("OfferDetailsArea.accept")}
                     </LoadingButton>
                     <Link to={`/offer/${session.id}/counteroffer`}>
                       <LoadingButton color={"warning"} variant={"contained"}>
-                        Counter Offer
+                        {t("OfferDetailsArea.counterOffer")}
                       </LoadingButton>
                     </Link>
                     <LoadingButton
@@ -392,7 +404,7 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
                       loading={isUpdatingStatus}
                       onClick={() => updateStatusCallback("rejected")}
                     >
-                      Reject
+                      {t("OfferDetailsArea.reject")}
                     </LoadingButton>
                   </Stack>
                 </TableCell>
@@ -403,7 +415,7 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  Cancel Order
+                  {t("OfferDetailsArea.cancelOrder")}
                 </TableCell>
                 <TableCell align="right">
                   <Stack direction="row" justifyContent={"right"} spacing={1}>
@@ -413,7 +425,7 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
                       loading={isUpdatingStatus}
                       onClick={() => updateStatusCallback("cancelled")}
                     >
-                      Cancel
+                      {t("OfferDetailsArea.cancel")}
                     </LoadingButton>
                   </Stack>
                 </TableCell>

@@ -103,7 +103,10 @@ export function OrderDetailsArea(props: { order: Order }) {
     () => statusColors.get(order.status),
     [order.status],
   )
-  const status = useMemo(() => statusNames.get(order.status) || statusNames.get("not-started")!, [order.status])
+  const status = useMemo(
+    () => statusNames.get(order.status) || statusNames.get("not-started")!,
+    [order.status],
+  )
   const issueAlert = useAlertHook()
 
   const [setOrderStatus] = useSetOrderStatusMutation()

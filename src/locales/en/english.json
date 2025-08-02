@@ -659,5 +659,84 @@
     "alert": {
       "submitted": "Submitted!"
     }
+  },
+  "OffersViewPaginated": {
+    "offers": "Offers",
+    "all": "All",
+    "offer": "Offer",
+    "user": "User",
+    "status": "Status",
+    "waitingSeller": "Waiting for Seller",
+    "waitingCustomer": "Waiting for Customer",
+    "accepted": "Accepted",
+    "rejected": "Rejected",
+    "items": "items"
+  },
+  "OfferServiceEditArea": {
+    "associatedServices": "Associated Services",
+    "selectServiceOptional": "Select Service (Optional)",
+    "noService": "No Service"
+  },
+  "OfferServiceArea": {
+    "associatedServices": "Associated Services",
+    "noAssociatedServices": "No associated services"
+  },
+  "OfferMarketListingsEditArea": {
+    "associatedMarketListings": "Associated Market Listings",
+    "addMarketListing": "Add Market Listing",
+    "selectListing": "Select Listing...",
+    "of": "of {{count}}",
+    "ofAvailable": "of {{count}} available",
+    "quantity": "Quantity",
+    "qty": "Qty.",
+    "add": "Add",
+    "total": "Total"
+  },
+  "OfferMarketListings": {
+    "associatedMarketListings": "Associated Market Listings",
+    "noAssociatedListings": "No associated listings",
+    "product": "Product",
+    "qty": "Qty",
+    "unitPrice": "Unit Price",
+    "total": "Total"
+  },
+  "OfferDetailsEditArea": {
+    "customer": "Customer",
+    "seller": "Seller",
+    "date": "Date",
+    "title": "Title",
+    "kind": "Kind",
+    "details": "Details",
+    "offer": "Offer",
+    "offerAmount": "Offer Amount",
+    "paymentType": "Payment Type"
+  },
+  "OfferDetailsArea": {
+    "customer": "Customer",
+    "associatedContract": "Associated Contract",
+    "seller": "Seller",
+    "date": "Date",
+    "status": "Status",
+    "title": "Title",
+    "kind": "Kind",
+    "details": "Details",
+    "offer": "Offer",
+    "discordThread": "Discord Thread",
+    "threadLink": "Thread Link",
+    "createdThread": "Created thread",
+    "createThread": "Create Thread",
+    "acceptOrDecline": "Accept or Decline",
+    "accept": "Accept",
+    "counterOffer": "Counter Offer",
+    "reject": "Reject",
+    "cancelOrder": "Cancel Order",
+    "cancel": "Cancel",
+    "waitingSeller": "Waiting for Seller",
+    "waitingCustomer": "Waiting for Customer",
+    "rejected": "Rejected",
+    "accepted": "Accepted"
+  },
+  "CounterOfferSubmitArea": {
+    "submitCounterOffer": "Submit Counter Offer"
   }
 }

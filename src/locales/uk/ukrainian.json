@@ -659,5 +659,84 @@
     "alert": {
       "submitted": "Успішно надіслано!"
     }
+  },
+  "OffersViewPaginated": {
+    "offers": "Пропозиції",
+    "all": "Усі",
+    "offer": "Пропозиція",
+    "user": "Користувач",
+    "status": "Статус",
+    "waitingSeller": "Очікує продавця",
+    "waitingCustomer": "Очікує покупця",
+    "accepted": "Прийнято",
+    "rejected": "Відхилено",
+    "items": "предметів"
+  },
+  "OfferServiceEditArea": {
+    "associatedServices": "Пов'язані послуги",
+    "selectServiceOptional": "Оберіть послугу (необов'язково)",
+    "noService": "Без послуги"
+  },
+  "OfferServiceArea": {
+    "associatedServices": "Пов'язані послуги",
+    "noAssociatedServices": "Немає пов'язаних послуг"
+  },
+  "OfferMarketListingsEditArea": {
+    "associatedMarketListings": "Пов'язані маркет-лістинги",
+    "addMarketListing": "Додати маркет-лістинг",
+    "selectListing": "Оберіть лістинг...",
+    "of": "з {{count}}",
+    "ofAvailable": "з {{count}} доступно",
+    "quantity": "Кількість",
+    "qty": "К-сть",
+    "add": "Додати",
+    "total": "Разом"
+  },
+  "OfferMarketListings": {
+    "associatedMarketListings": "Пов'язані маркет-лістинги",
+    "noAssociatedListings": "Немає пов'язаних лістингів",
+    "product": "Продукт",
+    "qty": "К-сть",
+    "unitPrice": "Ціна за одиницю",
+    "total": "Разом"
+  },
+  "OfferDetailsEditArea": {
+    "customer": "Замовник",
+    "seller": "Продавець",
+    "date": "Дата",
+    "title": "Заголовок",
+    "kind": "Тип",
+    "details": "Деталі",
+    "offer": "Пропозиція",
+    "offerAmount": "Сума пропозиції",
+    "paymentType": "Тип оплати"
+  },
+  "OfferDetailsArea": {
+    "customer": "Замовник",
+    "associatedContract": "Пов'язаний контракт",
+    "seller": "Продавець",
+    "date": "Дата",
+    "status": "Статус",
+    "title": "Заголовок",
+    "kind": "Тип",
+    "details": "Деталі",
+    "offer": "Пропозиція",
+    "discordThread": "Дискорд-тред",
+    "threadLink": "Посилання на тред",
+    "createdThread": "Тред створено",
+    "createThread": "Створити тред",
+    "acceptOrDecline": "Прийняти або відхилити",
+    "accept": "Прийняти",
+    "counterOffer": "Зустрічна пропозиція",
+    "reject": "Відхилити",
+    "cancelOrder": "Скасувати замовлення",
+    "cancel": "Скасувати",
+    "waitingSeller": "Очікує продавця",
+    "waitingCustomer": "Очікує покупця",
+    "rejected": "Відхилено",
+    "accepted": "Прийнято"
+  },
+  "CounterOfferSubmitArea": {
+    "submitCounterOffer": "Відправити зустрічну пропозицію"
   }
 }

@@ -12,6 +12,7 @@ import { Stack } from "@mui/system"
 import { HeadCell, PaginatedTable } from "../../components/table/PaginatedTable"
 import React, { useMemo } from "react"
 import { MarketListingDetails } from "../../components/list/UserDetails"
+import { useTranslation } from "react-i18next"
 
 export function OfferListingRowItem(props: {
   row: ListingRowItem
@@ -49,25 +50,25 @@ export const marketListingHeadCells: readonly HeadCell<ListingRowItem>[] = [
     id: "title",
     numeric: false,
     disablePadding: false,
-    label: "Product",
+    label: "OfferMarketListings.product",
   },
   {
     id: "quantity",
     numeric: true,
     disablePadding: false,
-    label: "Qty",
+    label: "OfferMarketListings.qty",
   },
   {
     id: "unit_price",
     numeric: true,
     disablePadding: false,
-    label: "Unit Price",
+    label: "OfferMarketListings.unitPrice",
   },
   {
     id: "total",
     numeric: true,
     disablePadding: false,
-    label: "Total",
+    label: "OfferMarketListings.total",
   },
 ]
 
@@ -78,6 +79,7 @@ export interface ListingRowItem extends OfferMarketListing {
 }
 
 export function OfferMarketListings(props: { offer: OfferSession }) {
+  const { t } = useTranslation()
   const { offer: session } = props
   const extendedListings = useMemo(() => {
     return session.offers[0].market_listings.map((l) => ({
@@ -99,14 +101,17 @@ export function OfferMarketListings(props: { offer: OfferSession }) {
                 sx={{ fontWeight: "bold" }}
                 color={"text.secondary"}
               >
-                Associated Market Listings
+                {t("OfferMarketListings.associatedMarketListings")}
               </Typography>
               <Paper>
                 <PaginatedTable
                   rows={extendedListings}
                   initialSort={"quantity"}
                   keyAttr={"listing_id"}
-                  headCells={marketListingHeadCells}
+                  headCells={marketListingHeadCells.map((cell) => ({
+                    ...cell,
+                    label: t(cell.label),
+                  }))}
                   generateRow={OfferListingRowItem}
                   disableSelect
                 />
@@ -118,7 +123,7 @@ export function OfferMarketListings(props: { offer: OfferSession }) {
               >
                 <Table sx={{ maxWidth: 350 }}>
                   <TableRow>
-                    <TableCell>Total</TableCell>
+                    <TableCell>{t("OfferMarketListings.total")}</TableCell>
                     <TableCell align={"right"}>
                       {extendedListings
                         .reduce((a, b) => a + b.total, 0)
@@ -143,10 +148,10 @@ export function OfferMarketListings(props: { offer: OfferSession }) {
               sx={{ fontWeight: "bold" }}
               color={"text.secondary"}
             >
-              Associated Market Listings
+              {t("OfferMarketListings.associatedMarketListings")}
             </Typography>
             <Typography variant={"subtitle2"}>
-              No associated listings
+              {t("OfferMarketListings.noAssociatedListings")}
             </Typography>
           </Stack>
         </Paper>

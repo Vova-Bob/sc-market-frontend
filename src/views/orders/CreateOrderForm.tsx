@@ -24,7 +24,7 @@ import {
   useGetServicesQuery,
 } from "../../store/services"
 import { PublicContract } from "../../store/public_contracts"
-import { useTranslation } from "react-i18next" // i18n import
+import { useTranslation } from "react-i18next"
 
 interface WorkRequestState {
   title: string
@@ -45,7 +45,7 @@ export function CreateOrderForm(
     service?: Service
   },
 ) {
-  const { t } = useTranslation() // i18n hook
+  const { t } = useTranslation()
   const [state, setState] = React.useState<WorkRequestState>({
     title: "",
     rush: false,

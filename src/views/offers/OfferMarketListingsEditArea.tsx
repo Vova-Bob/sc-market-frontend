@@ -27,11 +27,13 @@ import { marketListingHeadCells } from "./OfferMarketListings"
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded"
 import { NumericFormat } from "react-number-format"
 import { TrashCan } from "mdi-material-ui"
+import { useTranslation } from "react-i18next"
 
 export function OfferListingRowItemEditable(props: {
   row: ListingRowItem
   index: number
 }) {
+  const { t } = useTranslation()
   const { row, index } = props
   const [body, setBody] = useCounterOffer()
   return (
@@ -87,15 +89,15 @@ export function OfferListingRowItemEditable(props: {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="start">
-                    {`of ${(
-                      row?.listing?.listing.quantity_available || 0
-                    ).toLocaleString(undefined)}`}
+                    {t("OfferMarketListingsEditArea.of", {
+                      count: row?.listing?.listing.quantity_available || 0,
+                    })}
                   </InputAdornment>
                 ),
                 inputMode: "numeric",
               }}
               size="small"
-              label={"Qty."}
+              label={t("OfferMarketListingsEditArea.qty")}
               value={Math.min(
                 row.quantity || 1,
                 row.listing.listing.quantity_available,
@@ -132,6 +134,7 @@ export interface ListingRowItem extends OfferMarketListing {
 }
 
 export function OfferMarketListingsEditArea(props: { offer: OfferSession }) {
+  const { t } = useTranslation()
   const { offer: session } = props
   const [body, setBody] = useCounterOffer()
 
@@ -187,14 +190,20 @@ export function OfferMarketListingsEditArea(props: { offer: OfferSession }) {
               sx={{ fontWeight: "bold" }}
               color={"text.secondary"}
             >
-              Associated Market Listings
+              {t("OfferMarketListingsEditArea.associatedMarketListings")}
             </Typography>
             <Paper>
               <PaginatedTable
                 rows={extendedListings}
                 initialSort={"title"}
                 keyAttr={"listing_id"}
-                headCells={marketListingHeadCells}
+                headCells={marketListingHeadCells.map((cell) => ({
+                  ...cell,
+                  label: t(
+                    `OfferMarketListingsEditArea.${cell.label.toLowerCase()}`,
+                    cell.label,
+                  ),
+                }))}
                 generateRow={OfferListingRowItemEditable}
                 disableSelect
               />
@@ -212,14 +221,14 @@ export function OfferMarketListingsEditArea(props: { offer: OfferSession }) {
                 sx={{ flexGrow: 1 }}
               >
                 <Typography variant={"body2"} color={"text.secondary"}>
-                  Add Market Listing
+                  {t("OfferMarketListingsEditArea.addMarketListing")}
                 </Typography>
                 <Autocomplete
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       variant="outlined"
-                      label="Select Listing..."
+                      label={t("OfferMarketListingsEditArea.selectListing")}
                       fullWidth
                       SelectProps={{
                         IconComponent: KeyboardArrowDownRoundedIcon,
@@ -265,15 +274,15 @@ export function OfferMarketListingsEditArea(props: { offer: OfferSession }) {
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="start">
-                        {`of ${(
-                          selected?.listing?.quantity_available || 0
-                        ).toLocaleString(undefined)} available`}
+                        {t("OfferMarketListingsEditArea.ofAvailable", {
+                          count: selected?.listing?.quantity_available || 0,
+                        })}
                       </InputAdornment>
                     ),
                     inputMode: "numeric",
                   }}
                   size="small"
-                  label={"Quantity"}
+                  label={t("OfferMarketListingsEditArea.quantity")}
                   color={"secondary"}
                 />
                 <Button
@@ -296,12 +305,14 @@ export function OfferMarketListingsEditArea(props: { offer: OfferSession }) {
                     setSelected(null)
                   }}
                 >
-                  Add
+                  {t("OfferMarketListingsEditArea.add")}
                 </Button>
               </Stack>
               <Table sx={{ maxWidth: 350 }}>
                 <TableRow>
-                  <TableCell>Total</TableCell>
+                  <TableCell>
+                    {t("OfferMarketListingsEditArea.total")}
+                  </TableCell>
                   <TableCell align={"right"}>
                     {extendedListings
                       .reduce((a, b) => a + b.total, 0)

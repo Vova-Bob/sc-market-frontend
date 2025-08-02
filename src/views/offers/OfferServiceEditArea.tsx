@@ -9,8 +9,10 @@ import {
   useGetServicesContractorQuery,
   useGetServicesQuery,
 } from "../../store/services"
+import { useTranslation } from "react-i18next"
 
 export function OfferServiceEditArea(props: { offer: OfferSession }) {
+  const { t } = useTranslation()
   const { offer: session } = props
   const [body, setBody] = useCounterOffer()
 
@@ -42,12 +44,12 @@ export function OfferServiceEditArea(props: { offer: OfferSession }) {
             sx={{ fontWeight: "bold" }}
             color={"text.secondary"}
           >
-            Associated Services
+            {t("OfferServiceEditArea.associatedServices")}
           </Typography>
           <TextField
             fullWidth
             select
-            label="Select Service (Optional)"
+            label={t("OfferServiceEditArea.selectServiceOptional")}
             id="order-service"
             value={service?.service_name || ""}
             onChange={(event: React.ChangeEvent<{ value: string }>) => {
@@ -67,7 +69,9 @@ export function OfferServiceEditArea(props: { offer: OfferSession }) {
               IconComponent: KeyboardArrowDownRoundedIcon,
             }}
           >
-            <MenuItem value={""}>No Service</MenuItem>
+            <MenuItem value={""}>
+              {t("OfferServiceEditArea.noService")}
+            </MenuItem>
             {(services || []).map((t) => (
               <MenuItem value={t.service_name} key={t.service_name}>
                 {t.service_name}

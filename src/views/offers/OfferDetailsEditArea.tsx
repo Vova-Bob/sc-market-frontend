@@ -25,8 +25,8 @@ import { NumericFormat } from "react-number-format"
 import { useCounterOffer } from "../../hooks/offer/CounterOfferDetails"
 
 export function OfferDetailsEditArea(props: { session: OfferSession }) {
-  const { session } = props
   const { t } = useTranslation()
+  const { session } = props
   const [body, setBody] = useCounterOffer()
 
   return (
@@ -40,7 +40,7 @@ export function OfferDetailsEditArea(props: { session: OfferSession }) {
               }}
             >
               <TableCell component="th" scope="row">
-                Customer
+                {t("OfferDetailsEditArea.customer")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
@@ -52,7 +52,7 @@ export function OfferDetailsEditArea(props: { session: OfferSession }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                Seller
+                {t("OfferDetailsEditArea.seller")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
@@ -68,7 +68,7 @@ export function OfferDetailsEditArea(props: { session: OfferSession }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                Date
+                {t("OfferDetailsEditArea.date")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
@@ -82,7 +82,7 @@ export function OfferDetailsEditArea(props: { session: OfferSession }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                Title
+                {t("OfferDetailsEditArea.title")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
@@ -101,13 +101,13 @@ export function OfferDetailsEditArea(props: { session: OfferSession }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                Kind
+                {t("OfferDetailsEditArea.kind")}
               </TableCell>
               <TableCell align="right">
                 <TextField
                   size="small"
                   select
-                  label="Kind*"
+                  label={t("OfferDetailsEditArea.kind") + "*"}
                   id="order-type"
                   value={body.kind}
                   onChange={(event) => {
@@ -134,7 +134,7 @@ export function OfferDetailsEditArea(props: { session: OfferSession }) {
               {/*</TableCell>*/}
               <TableCell colSpan={2}>
                 <Stack direction="column" spacing={1}>
-                  Details
+                  {t("OfferDetailsEditArea.details")}
                   <Typography color={"text.secondary"} variant={"subtitle2"}>
                     <MarkdownEditor
                       value={body.description}
@@ -151,7 +151,7 @@ export function OfferDetailsEditArea(props: { session: OfferSession }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                Offer
+                {t("OfferDetailsEditArea.offer")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction={"row"} justifyContent={"right"}>
@@ -182,14 +182,14 @@ export function OfferDetailsEditArea(props: { session: OfferSession }) {
                         inputMode: "numeric",
                       }}
                       size="small"
-                      label={"Offer Amount"}
+                      label={t("OfferDetailsEditArea.offerAmount")}
                       value={body.cost}
                       color={"secondary"}
                     />
                     <TextField
                       select
                       size="small"
-                      label={"Payment Type"}
+                      label={t("OfferDetailsEditArea.paymentType")}
                       value={body.payment_type}
                       onChange={(event: any) => {
                         setBody({ ...body, payment_type: event.target.value })

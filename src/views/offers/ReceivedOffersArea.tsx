@@ -32,6 +32,7 @@ import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 import { useGetUserProfileQuery } from "../../store/profile"
 import { OrderSearchSortMethod } from "../../datatypes/Order"
 import { UserAvatar } from "../../components/avatar/UserAvatar"
+import { useTranslation } from "react-i18next"
 
 export const OffersHeadCells: readonly HeadCell<
   OfferSessionStub & { customer_name: string }
@@ -63,20 +64,21 @@ export function OfferRow(props: {
   isItemSelected: boolean
   labelId: string
 }) {
+  const { t } = useTranslation()
   const { row, index, isItemSelected } = props // TODO: Add `assigned_to` column
   const date = useMemo(() => new Date(row.timestamp), [row.timestamp])
   const theme = useTheme()
   const [statusColor, icon] = useMemo(() => {
-    if (row.status === "Waiting for Seller") {
+    if (row.status === t("OffersViewPaginated.waitingSeller")) {
       return ["warning" as const, <Announcement key={"warning"} />] as const
-    } else if (row.status === "Waiting for Customer") {
+    } else if (row.status === t("OffersViewPaginated.waitingCustomer")) {
       return ["info" as const, <HourglassTop key={"info"} />] as const
-    } else if (row.status === "Rejected") {
+    } else if (row.status === t("OffersViewPaginated.rejected")) {
       return ["error" as const, <Cancel key={"error"} />] as const
     } else {
       return ["success" as const, <CheckCircle key={"success"} />] as const
     }
-  }, [row.status])
+  }, [row.status, t])
 
   return (
     <TableRow
@@ -120,13 +122,14 @@ export function OfferRow(props: {
           </Paper>
           <Stack direction={"column"}>
             <Typography color={"text.secondary"} fontWeight={"bold"}>
-              Offer {row.id.substring(0, 8).toUpperCase()}
+              {t("OffersViewPaginated.offer")}{" "}
+              {row.id.substring(0, 8).toUpperCase()}
             </Typography>
             <Typography variant={"body2"}>
               {row.most_recent_offer.count
                 ? `${row.most_recent_offer.count.toLocaleString(
                     undefined,
-                  )} items • `
+                  )} ${t("OffersViewPaginated.items")} • `
                 : row.most_recent_offer.service_name
                   ? `${row.most_recent_offer.service_name} • `
                   : ""}
@@ -139,7 +142,14 @@ export function OfferRow(props: {
         <UserAvatar user={row.customer} />
       </TableCell>
       <TableCell align={"right"}>
-        <Chip label={row.status} color={statusColor} icon={icon} />
+        <Chip
+          label={t(
+            `OffersViewPaginated.${row.status.replace(/\s/g, "").toLowerCase()}`,
+            row.status,
+          )}
+          color={statusColor}
+          icon={icon}
+        />
       </TableCell>
       {/*<TableCell align="right">*/}
       {/*  <Typography variant={"subtitle1"} color={"text.primary"}>*/}
@@ -176,6 +186,7 @@ export function OffersViewPaginated(props: {
   assigned?: boolean
   contractor?: string
 }) {
+  const { t } = useTranslation()
   const { mine, assigned, contractor } = props
   const { data: profile } = useGetUserProfileQuery()
   const [statusFilter, setStatusFilter] = useState<null | OfferSearchStatus>(
@@ -198,10 +209,10 @@ export function OffersViewPaginated(props: {
   })
 
   const tabs = [
-    ["to-seller", "Waiting for Seller"],
-    ["to-customer", "Waiting for Customer"],
-    ["accepted", "Accepted"],
-    ["rejected", "Rejected"],
+    ["to-seller", t("OffersViewPaginated.waitingSeller")],
+    ["to-customer", t("OffersViewPaginated.waitingCustomer")],
+    ["accepted", t("OffersViewPaginated.accepted")],
+    ["rejected", t("OffersViewPaginated.rejected")],
   ] as const
 
   const tab = useMemo(
@@ -234,7 +245,7 @@ export function OffersViewPaginated(props: {
             color={"text.secondary"}
             fontWeight={"bold"}
           >
-            Offers
+            {t("OffersViewPaginated.offers")}
           </Typography>
           <Tabs
             value={tab}
@@ -243,7 +254,7 @@ export function OffersViewPaginated(props: {
             variant="scrollable"
           >
             <Tab
-              label="All"
+              label={t("OffersViewPaginated.all")}
               icon={<Chip label={totalCount} size={"small"} />}
               {...a11yProps(0)}
               onClick={() => setStatusFilter(null)}
@@ -267,7 +278,13 @@ export function OffersViewPaginated(props: {
           initialSort={"timestamp"}
           generateRow={OfferRow}
           keyAttr={"id"}
-          headCells={OffersHeadCells}
+          headCells={OffersHeadCells.map((cell) => ({
+            ...cell,
+            label: t(
+              `OffersViewPaginated.${cell.label.toLowerCase()}`,
+              cell.label,
+            ),
+          }))}
           disableSelect
           onPageChange={setPage}
           page={page}

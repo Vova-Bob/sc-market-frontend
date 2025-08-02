@@ -27,7 +27,7 @@ import {
   useUpdateServiceMutation,
 } from "../../store/services"
 import { useNavigate } from "react-router-dom"
-import { useTranslation } from "react-i18next" // i18n import
+import { useTranslation } from "react-i18next"
 
 function romanize(num: number) {
   if (isNaN(num)) return NaN
@@ -112,7 +112,7 @@ export interface ServiceState {
 }
 
 export function CreateServiceForm(props: GridProps & { service?: Service }) {
-  const { t } = useTranslation() // i18n hook
+  const { t } = useTranslation()
   const [currentOrg] = useCurrentOrg()
   const [state, setState] = React.useState<ServiceState>({
     service_name: "",
