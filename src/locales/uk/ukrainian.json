@@ -382,64 +382,64 @@
     }
   },
   "adminUsers": {
-    "users": "Користувачі",
-    "membership_count": "Кількість учасників",
-    "daily_activity": "Щоденна активність",
-    "weekly_activity": "Щотижнева активність",
-    "monthly_activity": "Щомісячна активність",
-    "username": "Ім'я користувача",
-    "date_joined": "Дата приєднання",
-    "role": "Роль",
-    "active_users": "Активні користувачі",
-    "verified_users": "Верифіковані користувачі"
+  "users": "Користувачі",
+  "membership_count": "Кількість учасників",
+  "daily_activity": "Щоденна активність",
+  "weekly_activity": "Щотижнева активність",
+  "monthly_activity": "Щомісячна активність",
+  "username": "Ім'я користувача",
+  "date_joined": "Дата приєднання",
+  "role": "Роль",
+  "active_users": "Активні користувачі",
+  "verified_users": "Верифіковані користувачі"
   },
   "customerList": {
-    "customers": "Клієнти",
-    "username": "Ім'я користувача",
-    "orders": "Замовлення",
-    "total_value": "Загальна вартість"
+  "customers": "Клієнти",
+  "username": "Ім'я користувача",
+  "orders": "Замовлення",
+  "total_value": "Загальна вартість"
   },
   "profileNavAvatar": {
-    "profile": "Профіль",
-    "settings": "Налаштування",
-    "logout": "Вихід"
+  "profile": "Профіль",
+  "settings": "Налаштування",
+  "logout": "Вихід"
   },
   "viewProfile": {
-    "submitted": "Надіслано!",
-    "failed": "Не вдалося надіслати!",
-    "image_url": "URL зображення",
-    "image_url_helper": "Пряме посилання на зображення з Imgur, RSI або starcitizen.tools",
-    "save": "Зберегти",
-    "no_user_description": "Опис користувача відсутній",
-    "profile_tab": "Профіль",
-    "services_tab": "Послуги",
-    "market_tab": "Маркет",
-    "order_tab": "Замовлення",
-    "reviews_tab": "Відгуки"
+  "submitted": "Надіслано!",
+  "failed": "Не вдалося надіслати!",
+  "image_url": "URL зображення",
+  "image_url_helper": "Пряме посилання на зображення з Imgur, RSI або starcitizen.tools",
+  "save": "Зберегти",
+  "no_user_description": "Опис користувача відсутній",
+  "profile_tab": "Профіль",
+  "services_tab": "Послуги",
+  "market_tab": "Маркет",
+  "order_tab": "Замовлення",
+  "reviews_tab": "Відгуки"
   },
   "viewPublicOrder": {
-    "new": "Новий",
-    "apply": "Подати заявку",
-    "applied": "Заявку подано!"
+  "new": "Новий",
+  "apply": "Подати заявку",
+  "applied": "Заявку подано!"
   },
   "myServices": {
-    "title": "Назва",
-    "no_title": "Назву не вказано",
-    "no_type": "Тип не вказано",
-    "no_description": "Опис не вказано",
-    "per_hour": "за годину",
-    "per_day": "за день",
-    "per_unit": "за одиницю",
-    "per_box": "за коробку",
-    "per_scu": "за SCU",
-    "per_cscu": "за cSCU",
-    "per_mscu": "за mSCU",
-    "active": "Активні",
-    "inactive": "Неактивні",
-    "services": "Послуги"
+  "title": "Назва",
+  "no_title": "Назву не вказано",
+  "no_type": "Тип не вказано",
+  "no_description": "Опис не вказано",
+  "per_hour": "за годину",
+  "per_day": "за день",
+  "per_unit": "за одиницю",
+  "per_box": "за коробку",
+  "per_scu": "за SCU",
+  "per_cscu": "за cSCU",
+  "per_mscu": "за mSCU",
+  "active": "Активні",
+  "inactive": "Неактивні",
+  "services": "Послуги"
   },
   "recentOrders": {
-    "title": "Останні замовлення"
+  "title": "Останні замовлення"
   },
   "orderTrend": {
     "order_count_daily": "Кількість замовлень (щодня)",
@@ -452,5 +452,51 @@
     "fulfilled": "Виконано",
     "cancelled": "Скасовано",
     "not_started": "Не розпочато"
+  },
+  "orderServiceArea": {
+    "associated_services": "Пов'язані послуги",
+    "no_associated_services": "Немає пов'язаних послуг"
+  },
+  "contracts": {
+    "new": "Нове",
+    "see_more": "Детальніше"
+  },
+  "serviceListings": {
+    "new": "Нове",
+    "rush": "Терміново"
+  },
+  "contractListings": {
+    "new": "Нове",
+    "see_more": "Детальніше"
+  },
+  "table": {
+    "rows_per_page": "Рядків на сторінці",
+    "displayed_rows": "{from}-{to} з {count}"
+  },
+  "select_rows_per_page": "Виберіть кількість рядків на сторінці",
+  "createPublicContract": {
+    "submitted": "Надіслано!",
+    "about": "Про замовлення",
+    "title_required": "Назва*",
+    "type_required": "Тип*",
+    "description_required": "Опис*",
+    "description_helper": "Наприклад: перевезти Літій з Нью-Беббідж до Хурстона",
+    "costs": "Витрати",
+    "collateral_optional": "Застава (необов'язково)",
+    "collateral_helper": "Якщо підрядник пропонує страхування, яка вартість втрат у разі невиконання? Наприклад, вартість вантажу, що перевозиться",
+    "offer": "Пропозиція в aUEC",
+    "offer_helper": "Скільки ви запропонуєте підряднику за виконання цього замовлення?",
+    "payment_type": "Тип оплати",
+    "submit": "Надіслати"
+  },
+  "paymentTypes": {
+    "one_time": "Одноразово",
+    "hourly": "Погодинно",
+    "daily": "Щоденно",
+    "unit": "За одиницю",
+    "box": "За коробку",
+    "scu": "За SCU",
+    "cscu": "За cSCU",
+    "mscu": "За mSCU"
   }
 }

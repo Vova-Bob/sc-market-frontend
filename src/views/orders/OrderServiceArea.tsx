@@ -4,9 +4,11 @@ import { ServiceListingBase } from "../contracts/ServiceListings"
 import { Stack } from "@mui/system"
 import { Order } from "../../datatypes/Order"
 import { useGetServiceByIdQuery } from "../../store/services"
+import { useTranslation } from "react-i18next"
 
 export function OrderServiceArea(props: { order: Order }) {
   const { order } = props
+  const { t } = useTranslation()
   const { data: service } = useGetServiceByIdQuery(order.service_id!, {
     skip: !order.service_id,
   })
@@ -21,7 +23,7 @@ export function OrderServiceArea(props: { order: Order }) {
               sx={{ fontWeight: "bold" }}
               color={"text.secondary"}
             >
-              Associated Services
+              {t("orderServiceArea.associated_services")}
             </Typography>
             {service && <ServiceListingBase service={service} index={0} />}
           </Stack>
@@ -38,10 +40,10 @@ export function OrderServiceArea(props: { order: Order }) {
               sx={{ fontWeight: "bold" }}
               color={"text.secondary"}
             >
-              Associated Services
+              {t("orderServiceArea.associated_services")}
             </Typography>
             <Typography variant={"subtitle2"}>
-              No associated services
+              {t("orderServiceArea.no_associated_services")}
             </Typography>
           </Stack>
         </Paper>

@@ -452,5 +452,51 @@
     "fulfilled": "Fulfilled",
     "cancelled": "Cancelled",
     "not_started": "Not Started"
+  },
+  "orderServiceArea": {
+    "associated_services": "Associated Services",
+    "no_associated_services": "No associated services"
+  },
+  "contracts": {
+    "new": "New",
+    "see_more": "See More"
+  },
+  "serviceListings": {
+    "new": "New",
+    "rush": "Rush"
+  },
+  "contractListings": {
+    "new": "New",
+    "see_more": "See More"
+  },
+  "table": {
+    "rows_per_page": "Rows per page",
+    "displayed_rows": "{from}-{to} of {count}"
+  },
+  "select_rows_per_page": "Select rows per page",
+  "createPublicContract": {
+    "submitted": "Submitted!",
+    "about": "About",
+    "title_required": "Title*",
+    "type_required": "Type*",
+    "description_required": "Description*",
+    "description_helper": "E.g. Transport Lithium from New Babbage to Hurston",
+    "costs": "Costs",
+    "collateral_optional": "Collateral (Optional)",
+    "collateral_helper": "If the contractor offers insurance, what is the lost value in the event the contractor fails to deliver? E.g. the value of the cargo being transported",
+    "offer": "aUEC Offer",
+    "offer_helper": "How much will you offer the contractor to fulfill this order?",
+    "payment_type": "Payment Type",
+    "submit": "Submit"
+  },
+  "paymentTypes": {
+    "one_time": "One time",
+    "hourly": "Hourly",
+    "daily": "Daily",
+    "unit": "Unit",
+    "box": "Box",
+    "scu": "SCU",
+    "cscu": "cSCU",
+    "mscu": "mSCU"
   }
 }

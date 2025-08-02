@@ -37,6 +37,8 @@ export type ContractKindIconKey = keyof typeof orderIcons
 
 export function ServiceListingBase(props: { service: Service; index: number }) {
   const { service, index } = props
+  const { t } = useTranslation()
+  const key = paymentTypeMessages.get(service.payment_type)
 
   return (
     <Link
@@ -84,7 +86,7 @@ export function ServiceListingBase(props: { service: Service; index: number }) {
                     1 && (
                     <Chip
                       color={"secondary"}
-                      label={"New"}
+                      label={t("serviceListings.new")}
                       sx={{
                         marginRight: 1,
                         textTransform: "uppercase",
@@ -118,7 +120,7 @@ export function ServiceListingBase(props: { service: Service; index: number }) {
                   {/*</Typography>*/}
                   <Typography color={"primary"} variant={"subtitle2"}>
                     {service.cost.toLocaleString(undefined)} aUEC{" "}
-                    {paymentTypeMessages.get(service.payment_type)}
+                    {key ? t(key) : ""}
                   </Typography>
                 </Box>
               }
@@ -137,7 +139,7 @@ export function ServiceListingBase(props: { service: Service; index: number }) {
                   {service.rush && (
                     <Chip
                       color={"warning"}
-                      label={"Rush"}
+                      label={t("serviceListings.rush")}
                       sx={{ marginRight: 1, marginBottom: 1, padding: 1 }}
                       variant={"outlined"}
                       icon={<ElectricBoltRounded />}
@@ -305,7 +307,7 @@ export function ServiceListings(props: { user?: string; contractor?: string }) {
             </>
           )}
           SelectProps={{
-            "aria-label": t("select_rows_per_page"),
+            "aria-label": t("rows_per_page"),
             color: "primary",
           }}
           rowsPerPageOptions={[6, 10, 16]}

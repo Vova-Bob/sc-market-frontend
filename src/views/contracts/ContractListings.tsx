@@ -34,6 +34,8 @@ export function ContractListing(props: {
   index: number
 }) {
   const { contract, index } = props
+  const { t } = useTranslation()
+  const key = paymentTypeMessages.get(contract.payment_type)
 
   return (
     <Grid item xs={12} lg={6}>
@@ -85,7 +87,7 @@ export function ContractListing(props: {
                       1 && (
                       <Chip
                         color={"secondary"}
-                        label={"New"}
+                        label={t("contractListings.new")}
                         sx={{
                           marginRight: 1,
                           textTransform: "uppercase",
@@ -139,7 +141,7 @@ export function ContractListing(props: {
                       variant={"subtitle2"}
                     >
                       {(+contract.cost).toLocaleString(undefined)} aUEC{" "}
-                      {paymentTypeMessages.get(contract.payment_type)}
+                      {key ? t(key) : ""}
                     </Typography>
                   </Box>
                 }
@@ -181,7 +183,7 @@ export function ContractListing(props: {
                   />
 
                   <Button color={"secondary"} variant={"contained"}>
-                    See More
+                    {t("contractListings.see_more")}
                   </Button>
                 </Grid>
               </CardActions>
