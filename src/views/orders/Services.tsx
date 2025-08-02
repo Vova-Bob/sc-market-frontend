@@ -257,7 +257,6 @@ export function MyServices(props: { status: string }) {
       lg={12}
       xl={12}
       disablePadding
-
       // subtitle={<FormGroup>
       //     <FormControlLabel control={<Switch onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
       //         setStatus(event.target.checked ? 'active' : 'inactive');

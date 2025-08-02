@@ -18,7 +18,5 @@ export function RecentOrders() {
 export function AdminRecentOrders() {
   const { t } = useTranslation()
 
-  return (
-    <OrdersViewPaginated title={t("recentOrders.title")} />
-  )
+  return <OrdersViewPaginated title={t("recentOrders.title")} />
 }

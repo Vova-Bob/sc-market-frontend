@@ -220,8 +220,12 @@ export function CreatePublicContract() {
                     IconComponent: KeyboardArrowDownRoundedIcon,
                   }}
                 >
-                  <MenuItem value={"one-time"}>{t("paymentTypes.one_time")}</MenuItem>
-                  <MenuItem value={"hourly"}>{t("paymentTypes.hourly")}</MenuItem>
+                  <MenuItem value={"one-time"}>
+                    {t("paymentTypes.one_time")}
+                  </MenuItem>
+                  <MenuItem value={"hourly"}>
+                    {t("paymentTypes.hourly")}
+                  </MenuItem>
                   <MenuItem value={"daily"}>{t("paymentTypes.daily")}</MenuItem>
                   <MenuItem value={"unit"}>{t("paymentTypes.unit")}</MenuItem>
                   <MenuItem value={"box"}>{t("paymentTypes.box")}</MenuItem>
