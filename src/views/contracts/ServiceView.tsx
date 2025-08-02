@@ -24,11 +24,14 @@ import { dateDiffInDays } from "../market/MarketListingView"
 import { statusColors } from "../orders/OrderList"
 import { ImagePreviewPaper } from "../../components/paper/ImagePreviewPaper"
 import { paymentTypeMessages } from "../orders/Services"
+import { useTranslation } from "react-i18next"
 
 export function ServiceView(props: { service: Service }) {
   const { service } = props
   const { data: profile } = useGetUserProfileQuery()
   const [currentOrg] = useCurrentOrg()
+  const { t } = useTranslation()
+  const paymentType = paymentTypeMessages.get(service.payment_type)
 
   const amAssigned = useMemo(
     () => profile && service.user?.username === profile?.username,
@@ -139,7 +142,7 @@ export function ServiceView(props: { service: Service }) {
                     variant={"subtitle2"}
                   >
                     {service.cost.toLocaleString(undefined)} aUEC{" "}
-                    {paymentTypeMessages.get(service.payment_type)}
+                    {paymentType ? t(paymentType) : ""}
                   </Typography>
                 </Box>
               }

@@ -15,9 +15,12 @@ import { MarkdownRender } from "../../components/markdown/Markdown"
 import { paymentTypeMessages } from "../orders/Services"
 import React from "react"
 import { PublicContract } from "../../store/public_contracts"
+import { useTranslation } from "react-i18next"
 
 export function ContractDetailsArea(props: { contract: PublicContract }) {
   const { contract } = props
+  const { t } = useTranslation()
+  const paymentType = paymentTypeMessages.get(contract.payment_type)
 
   return (
     <Grid item xs={12}>
@@ -106,7 +109,7 @@ export function ContractDetailsArea(props: { contract: PublicContract }) {
                       variant={"subtitle2"}
                       display={"inline"}
                     >
-                      aUEC {paymentTypeMessages.get(contract.payment_type)}
+                      aUEC {paymentType ? t(paymentType) : ""}
                     </Typography>
                   </Typography>
                 </Stack>
