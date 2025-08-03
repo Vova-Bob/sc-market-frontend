@@ -7,8 +7,11 @@ import { Grid, Typography } from "@mui/material"
 import LoadingButton from "@mui/lab/LoadingButton"
 import { useUpdateContractorMutation } from "../../store/contractor"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
+import { useTranslation } from "react-i18next" // Localization
 
 export function MarketEditTemplate(props: { org?: boolean }) {
+  const { t } = useTranslation() // Localization hook
+
   const [contractor] = useCurrentOrg()
   const { data: profile } = useGetUserProfileQuery()
 
@@ -20,7 +23,7 @@ export function MarketEditTemplate(props: { org?: boolean }) {
         ? contractor?.market_order_template
         : profile?.market_order_template) || "",
     )
-  }, [contractor, props.org])
+  }, [contractor, props.org, profile])
 
   const [updateProfile, { isLoading: profileUpdateLoading }] =
     useUpdateProfile()
@@ -49,19 +52,16 @@ export function MarketEditTemplate(props: { org?: boolean }) {
       .then((res) => {
         issueAlert({
           severity: "success",
-          message: "Submitted!",
+          message: t("MarketEditTemplate.submitted"),
         })
       })
       .catch((err) => issueAlert(err))
-  }, [template, contractor])
+  }, [template, contractor, t, props.org, updateOrg, updateProfile, issueAlert])
 
   return (
-    <Section xs={12} title={"Edit Market Message Template"}>
+    <Section xs={12} title={t("MarketEditTemplate.title")}>
       <Grid item xs={12}>
-        <Typography>
-          Configure the comment template that will be added to new market orders
-          that users can fill out to provide you additional details.
-        </Typography>
+        <Typography>{t("MarketEditTemplate.configure")}</Typography>
       </Grid>
       <Grid item xs={12}>
         <MarkdownEditor value={template} onChange={setTemplate} />
@@ -73,7 +73,7 @@ export function MarketEditTemplate(props: { org?: boolean }) {
           variant={"contained"}
           disabled={props.org && !contractor}
         >
-          Submit
+          {t("MarketEditTemplate.submit")}
         </LoadingButton>
       </Grid>
     </Section>

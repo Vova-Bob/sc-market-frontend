@@ -46,8 +46,11 @@ import {
 } from "../../components/select/SelectGameItem"
 import LoadingButton from "@mui/lab/LoadingButton"
 import { SelectPhotosArea } from "../../components/modal/SelectPhotosArea"
+import { useTranslation } from "react-i18next" // Localization
 
 export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
+  const { t } = useTranslation()
+
   const [state, setState] = React.useState<MarketListingBody>({
     title: "",
     description: "",
@@ -118,7 +121,7 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
           })
 
           issueAlert({
-            message: "Submitted!",
+            message: t("MarketListingForm.submitted"),
             severity: "success",
           })
 
@@ -137,6 +140,7 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
       props.sale_type,
       issueAlert,
       state,
+      t,
     ],
   )
 
@@ -150,11 +154,11 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
   return (
     // <FormControl component={Grid} item xs={12} container spacing={2}>
     <>
-      <FormPaper title={"About"}>
+      <FormPaper title={t("MarketListingForm.about")}>
         <Grid item xs={12} lg={12}>
           <TextField
             fullWidth
-            label="Title"
+            label={t("MarketListingForm.title")}
             id="order-title"
             value={state.title}
             onChange={(event: React.ChangeEvent<{ value: string }>) => {
@@ -192,7 +196,7 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
               }))
             }}
             inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-            label="Quantity Available"
+            label={t("MarketListingForm.quantityAvailable")}
             id="quantity-available"
             value={state.quantity_available}
             defaultValue={1}
@@ -207,8 +211,8 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
             }}
             value={state.description}
             TextFieldProps={{
-              label: "Description",
-              helperText: "E.g. Exclusive subscriber flare for August 2020",
+              label: t("MarketListingForm.description"),
+              helperText: t("MarketListingForm.descriptionHelp"),
             }}
             variant={"vertical"}
           />
@@ -216,7 +220,7 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
 
         <Grid item xs={12}>
           <Typography color={"text.secondary"} variant={"body2"}>
-            Search for images or upload your own
+            {t("MarketListingForm.imageHint")}
           </Typography>
           <SelectPhotosArea
             setPhotos={(photos) => setState((state) => ({ ...state, photos }))}
@@ -232,7 +236,7 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
           color={"text.secondary"}
           sx={{ fontWeight: "bold" }}
         >
-          Related Listings{" "}
+          {t("MarketListingForm.relatedListings")}{" "}
           <IconButton onClick={() => setRelatedOpen((o) => !o)}>
             {relatedOpen ? (
               <KeyboardArrowUpRounded />
@@ -250,7 +254,7 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
         </Collapse>
       </Grid>
 
-      <FormPaper title={"Availability"}>
+      <FormPaper title={t("MarketListingForm.availability")}>
         <Grid item xs={12} lg={12} display={"flex"} justifyContent={"right"}>
           <FormGroup>
             <FormControlLabel
@@ -265,7 +269,7 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
                   }
                 />
               }
-              label="Listing Active"
+              label={t("MarketListingForm.active")}
             />
             {currentOrg && (
               <FormControlLabel
@@ -280,14 +284,14 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
                     }
                   />
                 }
-                label="Org Internal Listing"
+                label={t("MarketListingForm.orgInternal")}
               />
             )}
           </FormGroup>
         </Grid>
       </FormPaper>
 
-      <FormPaper title={"Costs"}>
+      <FormPaper title={t("MarketListingForm.costs")}>
         <Grid item xs={12}>
           <NumericFormat
             decimalScale={0}
@@ -301,7 +305,11 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
               }))
             }}
             fullWidth={true}
-            label={state.sale_type === "sale" ? "Price" : "Starting Bid"}
+            label={
+              state.sale_type === "sale"
+                ? t("MarketListingForm.price")
+                : t("MarketListingForm.startingBid")
+            }
             id="collateral"
             color={"secondary"}
             value={state.price}
@@ -329,7 +337,7 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
                   }))
                 }}
                 fullWidth={true}
-                label={"Minimum bid increment"}
+                label={t("MarketListingForm.minBidIncrement")}
                 id="collateral"
                 color={"secondary"}
                 value={state.minimum_bid_increment}
@@ -344,9 +352,9 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
             </Grid>
             <Grid item>
               <DateTimePicker
-                label={`End Time (${
-                  Intl.DateTimeFormat().resolvedOptions().timeZone
-                })`}
+                label={t("MarketListingForm.endTime", {
+                  tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                })}
                 value={state.end_time}
                 onChange={(newValue) =>
                   setState((state) => ({ ...state, end_time: newValue }))
@@ -367,7 +375,7 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
           onClick={submitMarketListing}
           loading={isLoading}
         >
-          Submit
+          {t("MarketListingForm.submit")}
         </LoadingButton>
       </Grid>
     </>
@@ -376,6 +384,8 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
 }
 
 export function AggregateMarketListingForm() {
+  const { t } = useTranslation()
+
   const [state, setState] = React.useState<AggregateMarketListingBody>({
     price: 0,
     quantity_available: 1,
@@ -432,29 +442,36 @@ export function AggregateMarketListingForm() {
         })
 
         issueAlert({
-          message: "Submitted!",
+          message: t("AggregateMarketListingForm.submitted"),
           severity: "success",
         })
 
         navigate(`/market/aggregate/${res.data.aggregate_id}`)
       } else {
         issueAlert({
-          message: `Failed to submit! ${
-            res.error?.error || res.error?.data?.error || res.error
-          }`,
+          message:
+            t("AggregateMarketListingForm.failedSubmit") +
+            ` ${res.error?.error || res.error?.data?.error || res.error}`,
           severity: "error",
         })
       }
 
       return false
     },
-    [createAggregateListing, currentOrg?.spectrum_id, issueAlert, state],
+    [
+      createAggregateListing,
+      currentOrg?.spectrum_id,
+      issueAlert,
+      state,
+      t,
+      navigate,
+    ],
   )
 
   return (
     // <FormControl component={Grid} item xs={12} container spacing={2}>
     <>
-      <FormPaper title={"About"}>
+      <FormPaper title={t("AggregateMarketListingForm.about")}>
         {aggregate && (
           <>
             <Grid item xs={12} lg={12}>
@@ -493,7 +510,7 @@ export function AggregateMarketListingForm() {
               })
             }}
             inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-            label="Quantity Available"
+            label={t("AggregateMarketListingForm.quantityAvailable")}
             id="quantity-available"
             value={state.quantity_available}
             defaultValue={1}
@@ -521,7 +538,7 @@ export function AggregateMarketListingForm() {
                 startIcon={<AddCircleOutlineRounded />}
                 onClick={() => setImageOpen(true)}
               >
-                Choose New Item
+                {t("AggregateMarketListingForm.chooseNewItem")}
               </Button>
             </Grid>
           </Grid>
@@ -542,7 +559,7 @@ export function AggregateMarketListingForm() {
         </Grid>
       </FormPaper>
 
-      <FormPaper title={"Availability"}>
+      <FormPaper title={t("AggregateMarketListingForm.availability")}>
         <Grid item xs={12} lg={12} display={"flex"} justifyContent={"right"}>
           <FormGroup>
             <FormControlLabel
@@ -557,7 +574,7 @@ export function AggregateMarketListingForm() {
                   }}
                 />
               }
-              label="Listing Active"
+              label={t("AggregateMarketListingForm.active")}
             />
             {currentOrg && (
               <FormControlLabel
@@ -572,14 +589,14 @@ export function AggregateMarketListingForm() {
                     }
                   />
                 }
-                label="Org Internal Listing"
+                label={t("AggregateMarketListingForm.orgInternal")}
               />
             )}
           </FormGroup>
         </Grid>
       </FormPaper>
 
-      <FormPaper title={"Costs"}>
+      <FormPaper title={t("AggregateMarketListingForm.costs")}>
         <Grid item xs={12}>
           <NumericFormat
             decimalScale={0}
@@ -594,7 +611,7 @@ export function AggregateMarketListingForm() {
             }}
             value={state.price}
             fullWidth={true}
-            label={"Price"}
+            label={t("AggregateMarketListingForm.price")}
             id="price"
             color={"secondary"}
             InputProps={{
@@ -616,7 +633,7 @@ export function AggregateMarketListingForm() {
           onClick={submitMarketListing}
           loading={isLoading}
         >
-          Submit
+          {t("AggregateMarketListingForm.submit")}
         </LoadingButton>
       </Grid>
     </>
@@ -625,6 +642,8 @@ export function AggregateMarketListingForm() {
 }
 
 export function MarketMultipleForm() {
+  const { t } = useTranslation()
+
   const [state, setState] = React.useState<MarketMultipleBody>({
     title: "",
     description: "",
@@ -661,23 +680,23 @@ export function MarketMultipleForm() {
         })
 
         issueAlert({
-          message: "Submitted!",
+          message: t("MarketMultipleForm.submitted"),
           severity: "success",
         })
 
         navigate(`/market/multiple/${res.data.multiple_id}`)
       } else {
         issueAlert({
-          message: `Failed to submit! ${
-            res.error?.error || res.error?.data?.error || res.error
-          }`,
+          message:
+            t("MarketMultipleForm.failedSubmit") +
+            ` ${res.error?.error || res.error?.data?.error || res.error}`,
           severity: "error",
         })
       }
 
       return false
     },
-    [createListing, currentOrg?.spectrum_id, issueAlert, state],
+    [createListing, currentOrg?.spectrum_id, issueAlert, state, t, navigate],
   )
 
   const { data: currentListings } = useMarketGetMyListingsQuery(
@@ -694,11 +713,11 @@ export function MarketMultipleForm() {
   return (
     // <FormControl component={Grid} item xs={12} container spacing={2}>
     <>
-      <FormPaper title={"About"}>
+      <FormPaper title={t("MarketMultipleForm.about")}>
         <Grid item xs={12} lg={12}>
           <TextField
             fullWidth
-            label="Title"
+            label={t("MarketMultipleForm.title")}
             id="order-title"
             value={state.title}
             onChange={(event: React.ChangeEvent<{ value: string }>) => {
@@ -727,15 +746,15 @@ export function MarketMultipleForm() {
             }}
             value={state.description}
             TextFieldProps={{
-              label: "Description",
-              helperText: "E.g. Exclusive subscriber flare for August 2020",
+              label: t("MarketMultipleForm.description"),
+              helperText: t("MarketMultipleForm.helperText"),
             }}
             variant={"vertical"}
           />
         </Grid>
       </FormPaper>
 
-      <FormPaper title={"Listings"}>
+      <FormPaper title={t("MarketMultipleForm.listings")}>
         <Grid item xs={12}>
           <Autocomplete
             // multiple
@@ -743,7 +762,10 @@ export function MarketMultipleForm() {
             options={uniqueListings}
             getOptionLabel={(option) => option.details.title}
             renderInput={(params) => (
-              <TextField {...params} label="Default Listing" />
+              <TextField
+                {...params}
+                label={t("MarketMultipleForm.defaultListing")}
+              />
             )}
             onChange={(event, value) =>
               setState((s) => {
@@ -781,7 +803,10 @@ export function MarketMultipleForm() {
             options={uniqueListings}
             getOptionLabel={(option) => option.details.title}
             renderInput={(params) => (
-              <TextField {...params} label="Listings to Include" />
+              <TextField
+                {...params}
+                label={t("MarketMultipleForm.listingsToInclude")}
+              />
             )}
             onChange={(event, value) =>
               setState((s) => ({
@@ -807,7 +832,7 @@ export function MarketMultipleForm() {
           onClick={submitMarketListing}
           loading={isLoading}
         >
-          Submit
+          {t("MarketMultipleForm.submit")}
         </LoadingButton>
       </Grid>
     </>

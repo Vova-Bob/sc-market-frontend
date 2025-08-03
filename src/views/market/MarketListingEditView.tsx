@@ -41,8 +41,10 @@ import { NumericFormat } from "react-number-format"
 import { SelectGameItemStack } from "../../components/select/SelectGameItem"
 import { Stack } from "@mui/system"
 import { SelectPhotosArea } from "../../components/modal/SelectPhotosArea"
+import { useTranslation } from "react-i18next" // Localization
 
 export function MarketListingEditView() {
+  const { t } = useTranslation() // Localization hook
   // TODO: Update listing details
   const [listing] = useCurrentMarketListing<UniqueListing>()
   const { data: profile } = useGetUserProfileQuery()
@@ -104,19 +106,19 @@ export function MarketListingEditView() {
 
       if (res?.data && !res?.error) {
         issueAlert({
-          message: "Updated!",
+          message: t("MarketListingEditView.updated"),
           severity: "success",
         })
       } else {
         issueAlert({
-          message: `Error while updating! ${
+          message: `${t("MarketListingEditView.updateError")} ${
             res.error?.error || res.error?.data?.error || res.error
           }`,
           severity: "error",
         })
       }
     },
-    [listing, issueAlert, updateListing],
+    [listing, issueAlert, updateListing, t],
   )
 
   return (
@@ -160,7 +162,7 @@ export function MarketListingEditView() {
                             }
                             startIcon={<RadioButtonUncheckedRounded />}
                           >
-                            Deactivate Listing
+                            {t("MarketListingEditView.deactivate")}
                           </Button>
                         ) : (
                           <Button
@@ -176,7 +178,7 @@ export function MarketListingEditView() {
                             }
                             startIcon={<RadioButtonCheckedRounded />}
                           >
-                            Activate Listing
+                            {t("MarketListingEditView.activate")}
                           </Button>
                         )}
                         <Button
@@ -188,7 +190,7 @@ export function MarketListingEditView() {
                           startIcon={<ArchiveRounded />}
                           sx={{ marginLeft: 1 }}
                         >
-                          Archive Listing
+                          {t("MarketListingEditView.archive")}
                         </Button>
                       </>
                     )}
@@ -211,7 +213,7 @@ export function MarketListingEditView() {
                           width: "75%",
                         }}
                         size="small"
-                        label={"Title"}
+                        label={t("MarketListingEditView.title")}
                         value={title}
                         onChange={(
                           event: React.ChangeEvent<{ value: string }>,
@@ -224,7 +226,7 @@ export function MarketListingEditView() {
                         onClick={() => updateListingCallback({ title })}
                         variant={"contained"}
                       >
-                        Update
+                        {t("MarketListingEditView.updateBtn")}
                       </Button>
                     </Box>
                   )}
@@ -254,7 +256,7 @@ export function MarketListingEditView() {
                         }
                         variant={"contained"}
                       >
-                        Update
+                        {t("MarketListingEditView.updateBtn")}
                       </Button>
                     </Box>
                   )}
@@ -289,7 +291,7 @@ export function MarketListingEditView() {
                         width: "75%",
                       }}
                       size="small"
-                      label={"Quantity Available"}
+                      label={t("MarketListingEditView.quantityAvailable")}
                       value={quantity}
                       color={"secondary"}
                     />
@@ -301,7 +303,7 @@ export function MarketListingEditView() {
                       }
                       variant={"contained"}
                     >
-                      Update
+                      {t("MarketListingEditView.updateBtn")}
                     </Button>
                   </Box>
                   <Box
@@ -328,7 +330,7 @@ export function MarketListingEditView() {
                         width: "75%",
                       }}
                       size="small"
-                      label={"Price"}
+                      label={t("MarketListingEditView.price")}
                       value={price}
                       InputProps={{
                         readOnly: listing.listing.sale_type === "auction",
@@ -343,7 +345,7 @@ export function MarketListingEditView() {
                       variant={"contained"}
                       disabled={listing.listing.sale_type === "auction"}
                     >
-                      Update
+                      {t("MarketListingEditView.updateBtn")}
                     </Button>
                   </Box>
                   {listing.listing.sale_type === "auction" ? (
@@ -371,7 +373,7 @@ export function MarketListingEditView() {
                           width: "75%",
                         }}
                         size="small"
-                        label={"Minimum Bid Increment"}
+                        label={t("MarketListingEditView.minBidIncrement")}
                         value={increment || 0}
                         InputProps={{
                           readOnly: listing.listing.sale_type === "auction",
@@ -390,7 +392,7 @@ export function MarketListingEditView() {
                         variant={"contained"}
                         disabled={listing.listing.sale_type !== "auction"}
                       >
-                        Update
+                        {t("MarketListingEditView.updateBtn")}
                       </Button>
                     </Box>
                   ) : null}
@@ -404,7 +406,9 @@ export function MarketListingEditView() {
                             setDescription(value)
                           }}
                           value={description}
-                          TextFieldProps={{ label: "Description" }}
+                          TextFieldProps={{
+                            label: t("MarketListingEditView.description"),
+                          }}
                           BarItems={
                             <Button
                               onClick={() =>
@@ -412,7 +416,7 @@ export function MarketListingEditView() {
                               }
                               variant={"contained"}
                             >
-                              Update
+                              {t("MarketListingEditView.updateBtn")}
                             </Button>
                           }
                           variant={"vertical"}
@@ -426,7 +430,7 @@ export function MarketListingEditView() {
                       onClick={() => updateListingCallback({ photos })}
                       variant={"contained"}
                     >
-                      Update
+                      {t("MarketListingEditView.updateBtn")}
                     </Button>
                   </Grid>
                 </CardContent>

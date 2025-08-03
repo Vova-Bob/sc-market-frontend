@@ -24,6 +24,7 @@ import { wikiActionApi, WikiPage } from "../../store/wiki"
 import { useTheme } from "@mui/material/styles"
 import { UnderlineLink } from "../../components/typography/UnderlineLink"
 import { MarkdownRender } from "../../components/markdown/Markdown"
+import { useTranslation } from "react-i18next"
 
 const valid_categories = [
   "Category:Armor_set",
@@ -43,6 +44,7 @@ const valid_categories = [
   "Category:Components",
 ]
 
+// Component for selecting a page option
 function PageChoice(props: {
   page: WikiPage
   i: string | number
@@ -90,6 +92,7 @@ export function PageSearch(props: {
   const [query, setQuery] = useState<string | null>(null)
   const [options, setOptions] = useState<WikiPage[]>([])
   const theme = useTheme<ExtendedTheme>()
+  const { t } = useTranslation()
 
   const filteredOptions = useMemo(
     () =>
@@ -99,6 +102,7 @@ export function PageSearch(props: {
     [options],
   )
 
+  // Throttled wiki search
   const fetchOptions = useCallback(
     async (query: string) => {
       if (query.length < 3) {
@@ -133,7 +137,7 @@ export function PageSearch(props: {
     <Modal open={open} onClose={() => callback(page)}>
       <ContainerGrid sidebarOpen={false} maxWidth={"md"} noFooter>
         <Section
-          title={"Select Item"}
+          title={t("PageSearch.selectItem")}
           xs={12}
           onClick={(event) => {
             event.preventDefault()
@@ -160,13 +164,13 @@ export function PageSearch(props: {
           <Grid item xs={12} md={9}>
             <Box sx={{ marginBottom: 2 }}>
               <Typography>
-                Selected Item: {page?.title} (
+                {t("PageSearch.selectedItem")}: {page?.title} (
                 <MaterialLink
                   href={page?.canonicalurl}
                   target="_blank"
                   color={"secondary"}
                 >
-                  <UnderlineLink>Wiki Page</UnderlineLink>
+                  <UnderlineLink>{t("PageSearch.wikiPage")}</UnderlineLink>
                 </MaterialLink>
                 )
               </Typography>
@@ -188,13 +192,11 @@ export function PageSearch(props: {
             <Box>
               <TextField
                 variant={"outlined"}
-                label={"Item Search"}
+                label={t("PageSearch.itemSearch")}
                 fullWidth
                 focused
                 multiline
-                helperText={
-                  "Search query to search for items from starcitizen.tools"
-                }
+                helperText={t("PageSearch.searchHelper")}
                 onChange={(event: React.ChangeEvent<{ value: string }>) => {
                   setQuery(event.target.value)
                 }}
@@ -248,7 +250,7 @@ export function PageSearch(props: {
                 }}
                 sx={{ marginRight: 1 }}
               >
-                Cancel
+                {t("PageSearch.cancel")}
               </Button>
               <Button
                 color={"primary"}
@@ -258,7 +260,7 @@ export function PageSearch(props: {
                   callback(page)
                 }}
               >
-                Save and Close
+                {t("PageSearch.saveAndClose")}
               </Button>
             </Box>
           </Grid>

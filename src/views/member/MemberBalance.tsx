@@ -3,9 +3,11 @@ import { Button, Divider, Grid, Typography } from "@mui/material"
 import React from "react"
 import { Link } from "react-router-dom"
 import { useGetUserProfileQuery } from "../../store/profile"
+import { useTranslation } from "react-i18next"
 
 export function MemberBalance() {
   const profile = useGetUserProfileQuery()
+  const { t } = useTranslation()
 
   return (
     <Section xs={12} lg={12}>
@@ -16,7 +18,7 @@ export function MemberBalance() {
           color={"text.secondary"}
           sx={{ fontWeight: "bold" }}
         >
-          My Balance
+          {t("MemberBalance.myBalance")}
         </Typography>
       </Grid>
       <Grid item xs={12}>
@@ -45,11 +47,11 @@ export function MemberBalance() {
           }}
         >
           <Button color={"primary"} variant={"outlined"}>
-            Send aUEC
+            {t("MemberBalance.sendAUEC")}
           </Button>
         </Link>
         <Button color={"secondary"} variant={"outlined"}>
-          Withdraw
+          {t("MemberBalance.withdraw")}
         </Button>
       </Grid>
     </Section>

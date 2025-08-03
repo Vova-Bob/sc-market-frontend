@@ -14,6 +14,7 @@ import {
 import { useTheme } from "@mui/material/styles"
 import { HeadCell, PaginatedTable } from "../../components/table/PaginatedTable"
 import { Commodity } from "../../datatypes/Commodity"
+import { useTranslation } from "react-i18next" // i18
 
 import AgricultureIcon from "@mui/icons-material/Agriculture"
 import DeleteIcon from "@mui/icons-material/Delete"
@@ -69,6 +70,7 @@ function SellItemRow(props: {
   isItemSelected: boolean
   labelId: string
 }): JSX.Element {
+  const { t } = useTranslation()
   const { row, onClick, isItemSelected, labelId } = props
   const bgColor = useMemo(
     () => (kindIcons[row.kind] ? kindIcons[row.kind][1] : "#FFF"),
@@ -104,7 +106,7 @@ function SellItemRow(props: {
       </TableCell>
       <TableCell>
         <Typography variant={"subtitle1"} noWrap>
-          {row.kind}
+          {t(`SellMaterialsList.kind.${row.kind}`, row.kind)}
         </Typography>
       </TableCell>
 
@@ -122,7 +124,7 @@ function SellItemRow(props: {
             (event) => event.stopPropagation() // Don't highlight cell if button clicked
           }
         >
-          Sell
+          {t("SellMaterialsList.sell")}
         </Button>
       </TableCell>
     </TableRow>
@@ -141,27 +143,27 @@ const headCells: readonly HeadCell<Commodity>[] = [
     id: "name",
     numeric: false,
     disablePadding: false,
-    label: "Commodity",
+    label: "SellMaterialsList.commodity",
     minWidth: 240,
   },
   {
     id: "code",
     numeric: false,
     disablePadding: false,
-    label: "Code",
+    label: "SellMaterialsList.code",
   },
   {
     id: "kind",
     numeric: false,
     disablePadding: false,
-    label: "Kind",
+    label: "SellMaterialsList.kindHeader",
     minWidth: 140,
   },
   {
     id: "trade_price_sell",
     numeric: true,
     disablePadding: false,
-    label: "Sell Price",
+    label: "SellMaterialsList.sellPrice",
     minWidth: 125,
   },
   {
@@ -177,6 +179,7 @@ function onlyUnique<T>(value: T, index: number, self: T[]) {
 }
 
 export function SellMaterialsList(props: {}): JSX.Element {
+  const { t } = useTranslation()
   const theme: ExtendedTheme = useTheme()
   const [kind, setKind] = useState<string>("Any")
   const [query, setQuery] = useState<string>("")
@@ -186,7 +189,7 @@ export function SellMaterialsList(props: {}): JSX.Element {
   return (
     <Section
       xs={12}
-      title={"Sell Materials"}
+      title={t("SellMaterialsList.title")}
       disablePadding
       subtitle={
         <Grid
@@ -205,7 +208,7 @@ export function SellMaterialsList(props: {}): JSX.Element {
               }}
               size={"small"}
               type="search"
-              label="Search"
+              label={t("SellMaterialsList.search")}
               value={query}
               onChange={(event: React.ChangeEvent<{ value: string }>) => {
                 setQuery(event.target.value)
@@ -234,7 +237,7 @@ export function SellMaterialsList(props: {}): JSX.Element {
                 },
               }}
               type="search"
-              label={"Kind"}
+              label={t("SellMaterialsList.kindHeader")}
               value={kind}
               onChange={(event: React.ChangeEvent<{ value: string }>) => {
                 setKind(event.target.value)
@@ -243,7 +246,7 @@ export function SellMaterialsList(props: {}): JSX.Element {
                 IconComponent: KeyboardArrowDownRoundedIcon,
               }}
             >
-              {["Any"]
+              {[t("SellMaterialsList.any") /* "Any" */]
                 .concat(
                   (commoditiesData?.data || [])
                     .map((c) => c.kind)
@@ -251,7 +254,7 @@ export function SellMaterialsList(props: {}): JSX.Element {
                 )
                 .map((choice, idx) => (
                   <MenuItem value={choice} key={choice}>
-                    {choice}
+                    {t(`SellMaterialsList.kind.${choice}`, choice)}
                   </MenuItem>
                 ))}
             </TextField>
@@ -261,7 +264,7 @@ export function SellMaterialsList(props: {}): JSX.Element {
     >
       <PaginatedTable
         rows={(commoditiesData?.data || []).filter((item) => {
-          if (kind !== "Any") {
+          if (kind !== t("SellMaterialsList.any")) {
             if (item.kind !== kind) {
               return false
             }
@@ -278,7 +281,10 @@ export function SellMaterialsList(props: {}): JSX.Element {
         initialSort={"name"}
         generateRow={SellItemRow}
         keyAttr={"name"}
-        headCells={headCells}
+        headCells={headCells.map((c) => ({
+          ...c,
+          label: c.label ? t(c.label) : "",
+        }))}
         disableSelect
       />
     </Section>

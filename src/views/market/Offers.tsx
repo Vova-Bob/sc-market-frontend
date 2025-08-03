@@ -17,7 +17,7 @@ export const OffersHeadCells: readonly HeadCell<
     id: "user",
     numeric: false,
     disablePadding: false,
-    label: "User",
+    label: "MarketOffers.user",
     minWidth: 135,
   },
   {
@@ -30,21 +30,21 @@ export const OffersHeadCells: readonly HeadCell<
     id: "offer",
     numeric: true,
     disablePadding: false,
-    label: "Offer",
+    label: "MarketOffers.offer",
     minWidth: 135,
   },
   {
     id: "quantity",
     numeric: true,
     disablePadding: false,
-    label: "Quantity",
+    label: "MarketOffers.quantity",
     minWidth: 135,
   },
   {
     id: "total",
     numeric: true,
     disablePadding: false,
-    label: "Total",
+    label: "MarketOffers.total",
   },
   {
     id: "offer_id",

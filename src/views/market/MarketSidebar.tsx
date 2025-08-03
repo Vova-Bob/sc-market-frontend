@@ -12,7 +12,7 @@ import {
 import { useTheme } from "@mui/material/styles"
 import SearchIcon from "@mui/icons-material/Search"
 import React, { useCallback, useEffect, useState } from "react"
-
+import { useTranslation } from "react-i18next"
 import { ExtendedTheme } from "../../hooks/styles/Theme"
 import { sidebarDrawerWidth, useDrawerOpen } from "../../hooks/layout/Drawer"
 import {
@@ -29,7 +29,7 @@ import MenuIcon from "@mui/icons-material/MenuRounded"
 
 export function MarketSearchArea(props: { status?: boolean }) {
   const theme: ExtendedTheme = useTheme()
-
+  const { t } = useTranslation()
   const [searchParams, setSearchParams] = useSearchParams()
 
   const [searchState, setMarketSearch] = useMarketSearch()
@@ -120,13 +120,13 @@ export function MarketSearchArea(props: { status?: boolean }) {
             startIcon={<SearchRounded />}
             variant={"contained"}
           >
-            Search
+            {t("MarketSearchArea.searchBtn")}
           </Button>
         </Grid>
         <Grid item xs={12}>
           <TextField
             fullWidth
-            label={"Search"}
+            label={t("MarketSearchArea.search")}
             size={"small"}
             InputProps={{
               startAdornment: (
@@ -144,7 +144,7 @@ export function MarketSearchArea(props: { status?: boolean }) {
         </Grid>
         <Grid item xs={12}>
           <Typography variant={"subtitle2"} fontWeight={"bold"}>
-            Sorting
+            {t("MarketSearchArea.sorting")}
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -152,7 +152,7 @@ export function MarketSearchArea(props: { status?: boolean }) {
             select
             fullWidth
             size={"small"}
-            label="Sort Attribute"
+            label={t("MarketSearchArea.sortAttribute")}
             value={sort || ""}
             onChange={handleSortChange}
             color={"secondary"}
@@ -160,31 +160,41 @@ export function MarketSearchArea(props: { status?: boolean }) {
               IconComponent: KeyboardArrowDownRoundedIcon,
             }}
           >
-            <MenuItem value={""}>None</MenuItem>
-            <MenuItem value={"title"}>Title</MenuItem>
-            <MenuItem value={"price-low"}>Price (Low to High)</MenuItem>
-            <MenuItem value={"price-high"}>Price (High to Low)</MenuItem>
+            <MenuItem value={""}>{t("MarketSearchArea.none")}</MenuItem>
+            <MenuItem value={"title"}>{t("MarketSearchArea.title")}</MenuItem>
+            <MenuItem value={"price-low"}>
+              {t("MarketSearchArea.priceLowHigh")}
+            </MenuItem>
+            <MenuItem value={"price-high"}>
+              {t("MarketSearchArea.priceHighLow")}
+            </MenuItem>
             <MenuItem value={"quantity-low"}>
-              Quantity Available (Low to High)
+              {t("MarketSearchArea.quantityLowHigh")}
             </MenuItem>
             <MenuItem value={"quantity-high"}>
-              Quantity Available (High to Low)
+              {t("MarketSearchArea.quantityHighLow")}
             </MenuItem>
-            <MenuItem value={"date-new"}>Date Listed (Old to New)</MenuItem>
-            <MenuItem value={"date-old"}>Date Listed (New to Old)</MenuItem>
-            <MenuItem value={"activity"}>Recent Activity</MenuItem>
-            <MenuItem value={"rating"}>Rating (High to Low)</MenuItem>
+            <MenuItem value={"date-new"}>
+              {t("MarketSearchArea.dateOldNew")}
+            </MenuItem>
+            <MenuItem value={"date-old"}>
+              {t("MarketSearchArea.dateNewOld")}
+            </MenuItem>
+            <MenuItem value={"activity"}>
+              {t("MarketSearchArea.activity")}
+            </MenuItem>
+            <MenuItem value={"rating"}>{t("MarketSearchArea.rating")}</MenuItem>
           </TextField>
         </Grid>
         <Grid item xs={12}>
           <Typography variant={"subtitle2"} fontWeight={"bold"}>
-            Filtering
+            {t("MarketSearchArea.filtering")}
           </Typography>
         </Grid>
         <Grid item xs={12}>
           <TextField
             fullWidth
-            label="Quantity Available"
+            label={t("MarketSearchArea.quantityAvailable")}
             color={"secondary"}
             size={"small"}
             inputProps={{
@@ -201,23 +211,27 @@ export function MarketSearchArea(props: { status?: boolean }) {
             onChange={handleQuantityChange}
           />
         </Grid>
-        {status && (
+        {props.status && (
           <Grid item xs={12}>
             <TextField
               select
               fullWidth
               value={activity || ""}
               onChange={handleActivityChange}
-              label="Listing Status"
+              label={t("MarketSearchArea.listingStatus")}
               size={"small"}
               color={"secondary"}
               SelectProps={{
                 IconComponent: KeyboardArrowDownRoundedIcon,
               }}
             >
-              <MenuItem value={""}>Either</MenuItem>
-              <MenuItem value={"active"}>Active</MenuItem>
-              <MenuItem value={"inactive"}>Inactive</MenuItem>
+              <MenuItem value={""}>{t("MarketSearchArea.either")}</MenuItem>
+              <MenuItem value={"active"}>
+                {t("MarketSearchArea.active")}
+              </MenuItem>
+              <MenuItem value={"inactive"}>
+                {t("MarketSearchArea.inactive")}
+              </MenuItem>
             </TextField>
           </Grid>
         )}
@@ -227,17 +241,21 @@ export function MarketSearchArea(props: { status?: boolean }) {
             fullWidth
             value={kind}
             onChange={handleKindChange}
-            label="Sale Type"
+            label={t("MarketSearchArea.saleType")}
             color={"secondary"}
             size={"small"}
             SelectProps={{
               IconComponent: KeyboardArrowDownRoundedIcon,
             }}
           >
-            <MenuItem value={"any"}>Any</MenuItem>
-            <MenuItem value={"sale"}>Sale</MenuItem>
-            <MenuItem value={"aggregate"}>Commodity</MenuItem>
-            <MenuItem value={"auction"}>Auction</MenuItem>
+            <MenuItem value={"any"}>{t("MarketSearchArea.any")}</MenuItem>
+            <MenuItem value={"sale"}>{t("MarketSearchArea.sale")}</MenuItem>
+            <MenuItem value={"aggregate"}>
+              {t("MarketSearchArea.commodity")}
+            </MenuItem>
+            <MenuItem value={"auction"}>
+              {t("MarketSearchArea.auction")}
+            </MenuItem>
           </TextField>
         </Grid>
         <Grid item xs={12}>
@@ -252,14 +270,14 @@ export function MarketSearchArea(props: { status?: boolean }) {
 
         <Grid item xs={12}>
           <Typography variant={"subtitle2"} fontWeight={"bold"}>
-            Cost
+            {t("MarketSearchArea.cost")}
           </Typography>
         </Grid>
 
         <Grid item xs={12}>
           <TextField
             fullWidth
-            label="Minimum Cost"
+            label={t("MarketSearchArea.minCost")}
             onChange={handleMinCostChange}
             value={minCost}
             size={"small"}
@@ -281,7 +299,7 @@ export function MarketSearchArea(props: { status?: boolean }) {
             fullWidth
             value={maxCost == null ? "" : maxCost}
             onChange={handleMaxCostChange}
-            label="Maximum Cost"
+            label={t("MarketSearchArea.maxCost")}
             size={"small"}
             color={"secondary"}
             inputProps={{

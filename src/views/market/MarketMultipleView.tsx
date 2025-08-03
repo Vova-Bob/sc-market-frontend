@@ -46,9 +46,10 @@ import { Stack } from "@mui/system"
 import { useTheme } from "@mui/material/styles"
 import moment from "moment/moment"
 import { ClockAlert } from "mdi-material-ui"
+import { useTranslation } from "react-i18next"
 
 export function MarketMultipleView() {
-  // TODO: Update listing details
+  const { t } = useTranslation()
   const [complete] = useCurrentMarketListing<MarketMultiple>()
   const { default_listing, listings } = complete
 
@@ -174,7 +175,7 @@ export function MarketMultipleView() {
                     <Section
                       disablePadding
                       xs={12}
-                      title={"People"}
+                      title={t("MarketMultipleView.people")}
                       innerJustify={"flex-start"}
                     >
                       <Grid
@@ -190,7 +191,7 @@ export function MarketMultipleView() {
                           users={[
                             listing.user_seller || listing.contractor_seller,
                           ]}
-                          title={"Seller"}
+                          title={t("MarketMultipleView.seller")}
                         />
                         {/*{*/}
                         {/*    amRelated &&*/}
@@ -240,7 +241,7 @@ export function MarketMultipleView() {
                               color="inherit"
                               to="/market"
                             >
-                              Market
+                              {t("MarketMultipleView.market")}
                             </MaterialLink>
                             <MaterialLink
                               component={Link}
@@ -286,7 +287,7 @@ export function MarketMultipleView() {
                               ) <= 1 && (
                                 <Chip
                                   color={"secondary"}
-                                  label={"New"}
+                                  label={t("MarketMultipleView.new")}
                                   sx={{
                                     marginRight: 1,
                                     textTransform: "uppercase",
@@ -309,29 +310,26 @@ export function MarketMultipleView() {
                               contractor={listing.contractor_seller}
                             />
                           </ListingDetailItem>
-
                           <ListingDetailItem
                             icon={<CreateRounded fontSize={"inherit"} />}
                           >
-                            Listed{" "}
+                            {t("MarketMultipleView.listed")}{" "}
                             {getRelativeTime(new Date(listing.timestamp))}
                           </ListingDetailItem>
-
                           <ListingDetailItem
                             icon={<RefreshRounded fontSize={"inherit"} />}
                           >
-                            Updated{" "}
+                            {t("MarketMultipleView.updated")}{" "}
                             {getRelativeTime(
                               moment(listing.expiration)
                                 .subtract(30, "days")
                                 .toDate(),
                             )}
                           </ListingDetailItem>
-
                           <ListingDetailItem
                             icon={<ClockAlert fontSize={"inherit"} />}
                           >
-                            Expires{" "}
+                            {t("MarketMultipleView.expires")}{" "}
                             {getRelativeTime(new Date(listing.expiration))}
                           </ListingDetailItem>
                         </Stack>
@@ -371,7 +369,7 @@ export function MarketMultipleView() {
                           fontWeight={"bold"}
                           color={"text.secondary"}
                         >
-                          Select Item
+                          {t("MarketMultipleView.selectItem")}
                         </Typography>
                         <Select
                           sx={{ marginBottom: 1 }}
@@ -404,7 +402,7 @@ export function MarketMultipleView() {
                           fontWeight={"bold"}
                           color={"text.secondary"}
                         >
-                          Description
+                          {t("MarketMultipleView.description")}
                         </Typography>
                         <Typography variant={"body2"}>
                           <MarkdownRender text={details.description} />
@@ -421,7 +419,7 @@ export function MarketMultipleView() {
                 <Section
                   disablePadding
                   xs={12}
-                  title={"Active Orders"}
+                  title={t("MarketMultipleView.activeOrders")}
                   innerJustify={"flex-start"}
                 >
                   <Grid
@@ -446,7 +444,7 @@ export function MarketMultipleView() {
                 <Section
                   disablePadding
                   xs={12}
-                  title={"Previous Orders"}
+                  title={t("MarketMultipleView.previousOrders")}
                   innerJustify={"flex-start"}
                 >
                   <Grid

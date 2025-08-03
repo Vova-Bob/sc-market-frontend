@@ -22,8 +22,10 @@ import {
 import { Section } from "../../components/paper/Section"
 import { useCurrentMarketListing } from "../../hooks/market/CurrentMarketItem"
 import { SelectGameCategory } from "../../components/select/SelectGameItem"
+import { useTranslation } from "react-i18next"
 
 export function MarketMultipleEditView() {
+  const { t } = useTranslation()
   const [current_listing] = useCurrentMarketListing<MarketMultiple>()
 
   const [state, setState] = React.useState<
@@ -63,14 +65,15 @@ export function MarketMultipleEditView() {
 
       if (res?.data && !res?.error) {
         issueAlert({
-          message: "Submitted!",
+          message: t("MarketMultipleEditView.submitted"),
           severity: "success",
         })
       } else {
         issueAlert({
-          message: `Failed to submit! ${
-            res.error?.error || res.error?.data?.error || res.error
-          }`,
+          message: t("MarketMultipleEditView.failedSubmit", {
+            error:
+              res.error?.error || res.error?.data?.error || res.error || "",
+          }),
           severity: "error",
         })
       }
@@ -83,6 +86,7 @@ export function MarketMultipleEditView() {
       issueAlert,
       state,
       current_listing,
+      t,
     ],
   )
 
@@ -113,14 +117,14 @@ export function MarketMultipleEditView() {
             color={"text.secondary"}
             sx={{ fontWeight: "bold" }}
           >
-            About
+            {t("MarketMultipleEditView.about")}
           </Typography>
         </Grid>
         <Grid item xs={12} lg={8} container spacing={2}>
           <Grid item xs={12} lg={12}>
             <TextField
               fullWidth
-              label="Title"
+              label={t("MarketMultipleEditView.title")}
               id="order-title"
               value={state.title}
               onChange={(event: React.ChangeEvent<{ value: string }>) => {
@@ -149,8 +153,8 @@ export function MarketMultipleEditView() {
               }}
               value={state.description}
               TextFieldProps={{
-                label: "Description",
-                helperText: "E.g. Exclusive subscriber flare for August 2020",
+                label: t("MarketMultipleEditView.description"),
+                helperText: t("MarketMultipleEditView.helperText"),
               }}
               variant={"vertical"}
             />
@@ -166,7 +170,7 @@ export function MarketMultipleEditView() {
             color={"text.secondary"}
             sx={{ fontWeight: "bold" }}
           >
-            Listings
+            {t("MarketMultipleEditView.listings")}
           </Typography>
         </Grid>
         <Grid item xs={12} lg={8} container spacing={2}>
@@ -177,7 +181,10 @@ export function MarketMultipleEditView() {
               options={listingOptions}
               getOptionLabel={(option) => option.details.title}
               renderInput={(params) => (
-                <TextField {...params} label="Default Listing" />
+                <TextField
+                  {...params}
+                  label={t("MarketMultipleEditView.defaultListing")}
+                />
               )}
               filterSelectedOptions
               onChange={(event, value) =>
@@ -216,7 +223,10 @@ export function MarketMultipleEditView() {
               options={listingOptions}
               getOptionLabel={(option) => option.details.title}
               renderInput={(params) => (
-                <TextField {...params} label="Listings to Include" />
+                <TextField
+                  {...params}
+                  label={t("MarketMultipleEditView.includeListings")}
+                />
               )}
               onChange={(event, value) =>
                 setState((s) => ({
@@ -244,7 +254,7 @@ export function MarketMultipleEditView() {
           onClick={updateMarketListing}
           disabled={isLoading}
         >
-          Update
+          {t("MarketMultipleEditView.update")}
         </Button>
       </Grid>
     </>

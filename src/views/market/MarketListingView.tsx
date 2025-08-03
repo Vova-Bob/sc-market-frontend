@@ -52,6 +52,7 @@ import { Stack } from "@mui/system"
 import { ImagePreviewPaper } from "../../components/paper/ImagePreviewPaper"
 import moment from "moment"
 import { ClockAlert } from "mdi-material-ui"
+import { useTranslation } from "react-i18next"
 
 export function ListingDetailItem(props: {
   icon: React.ReactNode
@@ -77,6 +78,7 @@ export function dateDiffInDays(a: Date, b: Date) {
 }
 
 export function PurchaseArea(props: { listing: BaseListingType }) {
+  const { t } = useTranslation()
   const { listing } = props
   const [quantity, setQuantity] = useState(1)
   const [offer, setOffer] = useState(1)
@@ -164,7 +166,7 @@ export function PurchaseArea(props: { listing: BaseListingType }) {
 
     setCookie("market_cart", cart, { path: "/", sameSite: "strict" })
     issueAlert({
-      message: `Added to cart!`,
+      message: t("MarketListingView.addedToCart"),
       severity: "success",
     })
     setCartRedirect(true)
@@ -180,6 +182,7 @@ export function PurchaseArea(props: { listing: BaseListingType }) {
     quantity,
     issueAlert,
     setCookie,
+    t,
   ])
 
   return (
@@ -202,7 +205,7 @@ export function PurchaseArea(props: { listing: BaseListingType }) {
               fontWeight={"bold"}
               color={"text.secondary"}
             >
-              Price
+              {t("MarketListingView.price")}
             </Typography>
             <Typography
               variant={"h5"}
@@ -229,15 +232,15 @@ export function PurchaseArea(props: { listing: BaseListingType }) {
             InputProps={{
               endAdornment: (
                 <InputAdornment position="start">
-                  {`of ${listing.listing.quantity_available.toLocaleString(
-                    undefined,
-                  )} available`}
+                  {t("MarketListingView.ofAvailable", {
+                    count: listing.listing.quantity_available,
+                  })}
                 </InputAdornment>
               ),
               inputMode: "numeric",
             }}
             size="small"
-            label={"Quantity"}
+            label={t("MarketListingView.quantity")}
             value={quantity}
             color={"secondary"}
           />
@@ -259,7 +262,7 @@ export function PurchaseArea(props: { listing: BaseListingType }) {
               marginBottom: 1,
             }}
           >
-            Add to Cart
+            {t("MarketListingView.addToCart")}
           </Button>
         </Stack>
       </Stack>
@@ -268,6 +271,7 @@ export function PurchaseArea(props: { listing: BaseListingType }) {
 }
 
 function BidArea(props: { listing: UniqueListing }) {
+  const { t } = useTranslation()
   const { listing } = props
   const [bid, setBid] = useState(
     listing.listing.price + listing.auction_details!.minimum_bid_increment,
@@ -284,16 +288,16 @@ function BidArea(props: { listing: UniqueListing }) {
 
     if (res?.data && !res?.error) {
       issueAlert({
-        message: "Bid successful!",
+        message: t("MarketListingView.bidSuccess"),
         severity: "success",
       })
       setBid(bid + listing.auction_details!.minimum_bid_increment)
     } else {
       // console.log(res.error)
       issueAlert({
-        message: `Error while bidding! ${
-          res.error?.error || res.error?.data?.error || res.error
-        }`,
+        message: t("MarketListingView.bidError", {
+          error: res.error?.error || res.error?.data?.error || res.error || "",
+        }),
         severity: "error",
       })
     }
@@ -303,6 +307,7 @@ function BidArea(props: { listing: UniqueListing }) {
     listing.listing.listing_id,
     purchaseListing,
     issueAlert,
+    t,
   ])
 
   return (
@@ -324,7 +329,9 @@ function BidArea(props: { listing: UniqueListing }) {
             fontWeight: "bold",
           }}
         >
-          Current Bid: {listing.listing.price.toLocaleString(undefined)} aUEC
+          {t("MarketListingView.currentBid", {
+            price: listing.listing.price.toLocaleString(undefined),
+          })}
         </Typography>
         <NumericFormat
           decimalScale={0}
@@ -340,12 +347,12 @@ function BidArea(props: { listing: UniqueListing }) {
           }}
           InputProps={{
             endAdornment: (
-              <InputAdornment position="start">{`aUEC`}</InputAdornment>
+              <InputAdornment position="start">aUEC</InputAdornment>
             ),
             inputMode: "numeric",
           }}
           size="small"
-          label={"Bid"}
+          label={t("MarketListingView.bid")}
           value={bid}
           color={"secondary"}
           disabled={listing.listing.status === "archived"}
@@ -366,7 +373,7 @@ function BidArea(props: { listing: UniqueListing }) {
           onClick={handleBid}
           loading={isLoading}
         >
-          Place Bid
+          {t("MarketListingView.placeBid")}
         </LoadingButton>
       </Box>
     </Box>
@@ -374,7 +381,7 @@ function BidArea(props: { listing: UniqueListing }) {
 }
 
 export function MarketListingView() {
-  // TODO: Update listing details
+  const { t } = useTranslation()
   const [complete] = useCurrentMarketListing<UniqueListing>()
   const { listing, details, photos, auction_details } = complete
   const { data: profile } = useGetUserProfileQuery()
@@ -492,7 +499,7 @@ export function MarketListingView() {
                     <Section
                       disablePadding
                       xs={12}
-                      title={"People"}
+                      title={t("MarketListingView.people")}
                       innerJustify={"flex-start"}
                     >
                       <Grid
@@ -508,7 +515,7 @@ export function MarketListingView() {
                           users={[
                             listing.user_seller || listing.contractor_seller,
                           ]}
-                          title={"Seller"}
+                          title={t("MarketListingView.seller")}
                         />
                         {/*{*/}
                         {/*    amRelated &&*/}
@@ -558,7 +565,7 @@ export function MarketListingView() {
                               color="inherit"
                               to="/market"
                             >
-                              Market
+                              {t("MarketListingView.market")}
                             </MaterialLink>
                             <MaterialLink
                               component={Link}
@@ -604,7 +611,7 @@ export function MarketListingView() {
                               ) <= 1 && (
                                 <Chip
                                   color={"secondary"}
-                                  label={"New"}
+                                  label={t("MarketListingView.new")}
                                   sx={{
                                     marginRight: 1,
                                     textTransform: "uppercase",
@@ -621,8 +628,8 @@ export function MarketListingView() {
                               color={ending ? "error.light" : "inherit"}
                             >
                               {timeDisplay.endsWith("ago")
-                                ? "Ended"
-                                : "Ending in"}{" "}
+                                ? t("MarketListingView.ended")
+                                : t("MarketListingView.endingIn")}{" "}
                               {timeDisplay}
                             </Typography>
                           )}
@@ -642,14 +649,14 @@ export function MarketListingView() {
                           <ListingDetailItem
                             icon={<CreateRounded fontSize={"inherit"} />}
                           >
-                            Listed{" "}
+                            {t("MarketListingView.listed")}{" "}
                             {getRelativeTime(new Date(listing.timestamp))}
                           </ListingDetailItem>
 
                           <ListingDetailItem
                             icon={<RefreshRounded fontSize={"inherit"} />}
                           >
-                            Updated{" "}
+                            {t("MarketListingView.updated")}{" "}
                             {getRelativeTime(
                               moment(listing.expiration)
                                 .subtract(30, "days")
@@ -660,7 +667,7 @@ export function MarketListingView() {
                           <ListingDetailItem
                             icon={<ClockAlert fontSize={"inherit"} />}
                           >
-                            Expires{" "}
+                            {t("MarketListingView.expires")}{" "}
                             {getRelativeTime(new Date(listing.expiration))}
                           </ListingDetailItem>
                         </Stack>
@@ -709,7 +716,7 @@ export function MarketListingView() {
                           fontWeight={"bold"}
                           color={"text.secondary"}
                         >
-                          Description
+                          {t("MarketListingView.description")}
                         </Typography>
                         <Typography variant={"body2"}>
                           <MarkdownRender text={details.description} />
@@ -733,7 +740,7 @@ export function MarketListingView() {
                 <Section
                   disablePadding
                   xs={12}
-                  title={"Active Orders"}
+                  title={t("MarketListingView.activeOrders")}
                   innerJustify={"flex-start"}
                 >
                   <Grid
@@ -758,7 +765,7 @@ export function MarketListingView() {
                 <Section
                   disablePadding
                   xs={12}
-                  title={"Previous Orders"}
+                  title={t("MarketListingView.previousOrders")}
                   innerJustify={"flex-start"}
                 >
                   <Grid
