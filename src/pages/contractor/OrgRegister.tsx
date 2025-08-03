@@ -12,14 +12,16 @@ import {
 } from "@mui/icons-material"
 import { a11yProps, TabPanel } from "../../components/tabs/Tabs"
 import { CreateNewContractor } from "../../views/authentication/CreateNewContractor"
+import { useTranslation } from "react-i18next"
 
 export function OrgRegister() {
+  const { t } = useTranslation()
   const [page, setPage] = useState(0)
 
   return (
-    <Page title={"Register an Org"}>
+    <Page title={t("org.registerOrgTitle")}>
       <ContainerGrid maxWidth={"md"} sidebarOpen={true}>
-        <HeaderTitle>Register an Org</HeaderTitle>
+        <HeaderTitle>{t("org.registerOrgTitle")}</HeaderTitle>
 
         <Grid item xs={12}>
           <Tabs
@@ -29,13 +31,13 @@ export function OrgRegister() {
             variant="scrollable"
           >
             <Tab
-              label="Existing RSI Org"
+              label={t("org.existingRsiOrg")}
               icon={<HowToRegRounded />}
               {...a11yProps(0)}
             />
 
             <Tab
-              label="New Contractor"
+              label={t("org.newContractor")}
               icon={<CreateRounded />}
               {...a11yProps(1)}
             />

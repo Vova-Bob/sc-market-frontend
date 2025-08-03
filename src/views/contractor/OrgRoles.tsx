@@ -37,6 +37,7 @@ import {
   useDeleteContractorRoleMutation,
   useUpdateContractorRoleMutation,
 } from "../../store/contractor"
+import { useTranslation } from "react-i18next"
 
 export function has_permission(
   contractor: Contractor | undefined | null,
@@ -118,7 +119,7 @@ function RolePermissionCheck(props: {
   setRole: (a: ContractorRole) => void
 }) {
   const { permission_name, setRole, label, role } = props
-
+  const { t } = useTranslation()
   return (
     <Grid item xs={6}>
       <FormControlLabel
@@ -132,7 +133,7 @@ function RolePermissionCheck(props: {
             name={label}
           />
         }
-        label={label}
+        label={t(`manageRoles.permissions.${permission_name}`)}
       />
     </Grid>
   )
@@ -141,6 +142,7 @@ function RolePermissionCheck(props: {
 function RoleDetailsRow(props: { role: ContractorRole; open: boolean }) {
   const { role, open } = props
   const [newRole, setNewRole] = useState(role)
+  const { t } = useTranslation()
 
   useEffect(() => {
     setNewRole(role)
@@ -165,12 +167,12 @@ function RoleDetailsRow(props: { role: ContractorRole; open: boolean }) {
       .unwrap()
       .then(() => {
         issueAlert({
-          message: "Updated!",
+          message: t("manageRoles.updated"),
           severity: "success",
         })
       })
       .catch((err) => issueAlert(err))
-  }, [currentOrg, role, issueAlert, newRole])
+  }, [currentOrg, role, issueAlert, newRole, t])
 
   const deleteRoleCallback = useCallback(async () => {
     deleteRole({
@@ -180,12 +182,12 @@ function RoleDetailsRow(props: { role: ContractorRole; open: boolean }) {
       .unwrap()
       .then(() => {
         issueAlert({
-          message: "Deleted!",
+          message: t("manageRoles.deleted"),
           severity: "success",
         })
       })
       .catch((err) => issueAlert(err))
-  }, [currentOrg, role, issueAlert, role])
+  }, [currentOrg, role, issueAlert, role, t])
 
   return (
     <>
@@ -211,7 +213,7 @@ function RoleDetailsRow(props: { role: ContractorRole; open: boolean }) {
                   <Grid item>
                     <TextField
                       fullWidth
-                      label={"Role Name"}
+                      label={t("manageRoles.role_name")}
                       value={newRole.name}
                       onChange={(event) =>
                         setNewRole({ ...newRole, name: event.target.value })
@@ -221,14 +223,12 @@ function RoleDetailsRow(props: { role: ContractorRole; open: boolean }) {
 
                   <Grid item>
                     <TextField
-                      label="Role Position"
+                      label={t("manageRoles.role_position")}
                       type="number"
                       InputLabelProps={{
                         shrink: true,
                       }}
-                      helperText={
-                        "Lower numbers have higher priority over other roles."
-                      }
+                      helperText={t("manageRoles.position_helper")}
                       value={newRole.position}
                       onChange={(event) =>
                         setNewRole({
@@ -300,14 +300,14 @@ function RoleDetailsRow(props: { role: ContractorRole; open: boolean }) {
                       variant={"contained"}
                       sx={{ marginRight: 1 }}
                     >
-                      Save
+                      {t("manageRoles.save")}
                     </Button>
                     <Button
                       color={"error"}
                       variant={"contained"}
                       onClick={deleteRoleCallback}
                     >
-                      Delete
+                      {t("manageRoles.delete")}
                     </Button>
                   </Box>
                 </Grid>
@@ -419,15 +419,21 @@ const headCells: readonly HeadCell<ContractorRole>[] = [
 
 export function ManageRoles(): JSX.Element {
   const [contractor] = useCurrentOrg()
+  const { t } = useTranslation()
 
   return (
-    <Section xs={12} title={"Roles"} disablePadding>
+    <Section xs={12} title={t("manageRoles.title")} disablePadding>
       <PaginatedTable<ContractorRole>
         rows={contractor?.roles || []}
         initialSort={"position"}
         generateRow={(props) => <RoleRow {...props} />}
         keyAttr={"role_id"}
-        headCells={headCells}
+        headCells={headCells.map((cell) => ({
+          ...cell,
+          label: cell.label
+            ? t(`manageRoles.headCells.${cell.id}`, cell.label)
+            : "",
+        }))}
         disableSelect
       />
     </Section>
@@ -452,6 +458,7 @@ const defaultRole = {
 
 export function AddRole() {
   const [newRole, setNewRole] = useState<ContractorRole>(defaultRole)
+  const { t } = useTranslation()
 
   const [createRole] = useCreateContractorRoleMutation()
   const [currentOrg] = useCurrentOrg()
@@ -468,7 +475,7 @@ export function AddRole() {
       .unwrap()
       .then(() => {
         issueAlert({
-          message: "Updated!",
+          message: t("manageRoles.updated"),
           severity: "success",
         })
         setNewRole(defaultRole)
@@ -476,15 +483,15 @@ export function AddRole() {
       .catch((err) => {
         issueAlert(err)
       })
-  }, [currentOrg, issueAlert, newRole])
+  }, [currentOrg, issueAlert, newRole, t])
 
   return (
     <>
-      <Section xs={12} title={"Add Role"}>
+      <Section xs={12} title={t("manageRoles.add_role")}>
         <Grid item xs={12}>
           <TextField
             fullWidth
-            label={"Role Name"}
+            label={t("manageRoles.role_name")}
             value={newRole.name}
             onChange={(event) =>
               setNewRole({ ...newRole, name: event.target.value })
@@ -554,7 +561,7 @@ export function AddRole() {
             variant={"contained"}
             sx={{ marginRight: 1 }}
           >
-            Create
+            {t("manageRoles.create")}
           </Button>
         </Grid>
       </Section>

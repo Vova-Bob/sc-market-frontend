@@ -29,8 +29,10 @@ import { DiscordBotDetails } from "../../views/settings/DiscordBotDetails"
 import { Discord } from "../../components/icon/DiscordIcon"
 import { ConfigureDiscord } from "../../views/notifications/ConfigureDiscord"
 import { MarketEditTemplate } from "../../views/market/MarketEditTemplate"
+import { useTranslation } from "react-i18next"
 
 export function OrgManage() {
+  const { t } = useTranslation()
   const [contractor] = useCurrentOrg()
   const { data: profile } = useGetUserProfileQuery()
 
@@ -58,9 +60,9 @@ export function OrgManage() {
   }
 
   return (
-    <Page title={"Manage Org"}>
+    <Page title={t("org.manageOrgTitle")}>
       <ContainerGrid maxWidth={"xl"} sidebarOpen={true}>
-        <HeaderTitle>Dashboard</HeaderTitle>
+        <HeaderTitle>{t("org.dashboard")}</HeaderTitle>
 
         <Grid item xs={12}>
           <Box sx={{ borderBottom: 1, borderColor: "divider.light" }}>
@@ -71,32 +73,40 @@ export function OrgManage() {
               variant="scrollable"
             >
               {canManageOrgDetails && (
-                <Tab label="About" icon={<InfoRounded />} {...a11yProps(0)} />
+                <Tab
+                  label={t("org.aboutTab")}
+                  icon={<InfoRounded />}
+                  {...a11yProps(0)}
+                />
               )}
 
               {canManageInvites && (
                 <Tab
-                  label="Invites"
+                  label={t("org.invitesTab")}
                   icon={<PersonAddRounded />}
                   {...a11yProps(1)}
                 />
               )}
               {canManageRoles && (
                 <Tab
-                  label="Roles and Members"
+                  label={t("org.rolesTab")}
                   icon={<AccountBoxRounded />}
                   {...a11yProps(2)}
                 />
               )}
               {canManageWebhooks && (
                 <Tab
-                  label="Discord Integration"
+                  label={t("org.discordTab")}
                   icon={<Discord />}
                   {...a11yProps(3)}
                 />
               )}
               {canManageOrgDetails && (
-                <Tab label="Market" icon={<StoreRounded />} {...a11yProps(4)} />
+                <Tab
+                  label={t("org.marketTab")}
+                  icon={<StoreRounded />}
+                  {...a11yProps(4)}
+                />
               )}
               {/*<Tab*/}
               {/*    label="Customers"*/}

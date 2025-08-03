@@ -27,10 +27,14 @@
   "availability": {
     "select_availability": "Select Availability",
     "save": "Save",
-    "availability_for": "Availability for"
+    "availability_for": "Availability for",
+    "title": "My Availability",
+    "updated": "Updated availability!",
+    "failed": "Failed to update!"
   },
   "buyOrderActions": {
     "createBuyOrder": "Create Buy Order",
+    "selectMarketItem": "Select Item",
     "createBuyOrderTooltip": "Create a new buy order"
   },
   "commentVotes": {
@@ -108,7 +112,20 @@
     "activeListings": "Active Listings",
     "inactiveListings": "Inactive Listings",
     "archivedListings": "Archived Listings",
-
+    "viewMarketListing": "View Market Listing",
+    "editMarketListing": "Edit Market Listing",
+    "editMultipleListing": "Edit Multiple Listing",
+    "createMarketListing": "Create Market Listing",
+    "bulkListingTab": "Bulk Listing",
+    "uniqueListingTab": "Unique Listing",
+    "auctionTab": "Auction",
+    "combinedListingTab": "Combined Listing",
+    "market": "Market",
+    "itemsTab": "Items",
+    "servicesTab": "Services",
+    "bulkItems": "Bulk Items",
+    "bulkListings": "Bulk Listings",
+    "buyOrders": "Buy Orders",
     "total_requested": "{{count}} total requested",
     "total_available": "{{count}} total available",
     "starting_at": "Starting at {{price}} aUEC",
@@ -386,7 +403,15 @@
     "markdown_info": "Github flavored markdown is enabled, YouTube URLs will automatically embed, and images can be embedded as long as they are hosted from Imgur or RSI.",
     "markdown_link": "here",
     "markdown_info_end": "for details",
-    "contractor": "Contractor"
+    "contractor": "Contractor",
+    "commentArea": {
+      "replyToPost": "Reply to Post",
+      "post": "Post"
+    },
+    "page": {
+      "createPost": "Create Post",
+      "updatePost": "Update Post"
+    }
   },
   "contractor": {
     "fields": {
@@ -425,6 +450,7 @@
     "image_url_helper": "Direct URL to the image, from Imgur, RSI, or starcitizen.tools",
     "save": "Save",
     "no_user_description": "No user description",
+    "myProfile": "My Profile",
     "profile_tab": "Profile",
     "services_tab": "Services",
     "market_tab": "Market",
@@ -473,7 +499,27 @@
   },
   "contracts": {
     "new": "New",
-    "see_more": "See More"
+    "see_more": "See More",
+    "apply": "Apply",
+    "publicOrderTitle": "Public Order",
+    "publicContracts": "Public Contracts",
+    "createPublicContract": "Create Public Contract",
+    "contractsTitle": "Contracts",
+    "toggleSidebar": "toggle market sidebar",
+    "activeContracts": "Active Contracts",
+    "createOpenContract": "Create Open Contract",
+    "contractShort": "Contract {{id}}",
+    "viewContract": "View Contract",
+    "contractTitle": "Contract",
+    "kind": {
+      "Escort": "Escort",
+      "Transport": "Transport",
+      "Bounty": "Bounty",
+      "Delivery": "Delivery",
+      "Mining": "Mining",
+      "Salvage": "Salvage",
+      "Other": "Other"
+    }
   },
   "serviceListings": {
     "new": "New",
@@ -568,7 +614,14 @@
     },
     "orderLabel": "Order",
     "items": "items",
-    "public": "Public"
+    "public": "Public",
+    "orgOrdersTitle": "Org Orders",
+    "ordersTitle": "Orders",
+    "orderTitle": "Order",
+    "orderShort": "Order {{id}}",
+    "offerShort": "Offer {{id}}",
+    "createOrderTitle": "Create Order",
+    "viewOrder": "View Order"
   },
   "orderDetailsArea": {
     "updated_status": "Updated status!",
@@ -1159,5 +1212,343 @@
       "Under Attack": "Under Attack",
       "Offline": "Offline"
     }
+  },
+  "contractDetailsArea": {
+    "details_table": "details table",
+    "customer": "Customer",
+    "date": "Date",
+    "title": "Title",
+    "kind": "Kind",
+    "details": "Details",
+    "offer": "Offer"
+  },
+  "contractApp": {
+    "apply": "Apply",
+    "applying_as": "Applying as",
+    "note": "Note",
+    "submit": "Submit"
+  },
+  "settingsManageContractors": {
+    "name": "Name",
+    "actions": "Actions",
+    "leave_org": "Leave Organization"
+  },
+  "manageRoles": {
+    "title": "Roles",
+    "add_role": "Add Role",
+    "create": "Create",
+    "save": "Save",
+    "delete": "Delete",
+    "updated": "Updated!",
+    "deleted": "Deleted!",
+    "role_name": "Role Name",
+    "role_position": "Role Position",
+    "position_helper": "Lower numbers have higher priority over other roles.",
+    "permissions": {
+      "manage_org_details": "Manage Org Details",
+      "manage_roles": "Manage Roles",
+      "manage_orders": "Manage Orders",
+      "manage_invites": "Manage Invites",
+      "manage_stock": "Manage Stock",
+      "manage_market": "Manage Market",
+      "manage_recruiting": "Manage Recruiting",
+      "manage_webhooks": "Manage Webhooks",
+      "kick_members": "Kick Members"
+    },
+    "headCells": {
+      "name": "Name",
+      "position": "Position"
+    }
+  },
+  "manageMemberList": {
+    "members": "Members",
+    "export": "Export",
+    "search": "Search",
+    "role": "Role",
+    "roles": "Roles",
+    "any": "Any",
+    "kick": "Kick",
+    "username": "Username",
+    "updated": "Updated!",
+    "update_failed": "Failed to update! {{reason}}",
+    "member_kicked": "Member kicked!",
+    "kick_failed": "Failed to kick! {{reason}}"
+  },
+  "orgDetailEdit": {
+    "submitted": "Submitted!",
+    "failed_submit": "Failed to submit! {{reason}}",
+    "save": "Save",
+    "image_url": "Image URL",
+    "image_url_helper": "Direct URL to the image, from Imgur, RSI, or starcitizen.tools",
+    "org_tags": "Org Tags",
+    "mining": "mining",
+    "no_tags": "No tags",
+    "set_banner": "Set new banner"
+  },
+  "orgInvite": {
+    "invite_members": "Invite Members",
+    "already_member": "already member",
+    "username": "Username",
+    "note": "Note",
+    "submit": "Submit",
+    "submitted": "Submitted!"
+  },
+  "orgInfo": {
+    "about": "About",
+    "services": "Services",
+    "market": "Market",
+    "order": "Order",
+    "members": "Members",
+    "recruiting": "Recruiting"
+  },
+  "orgBalance": {
+    "balance": "Org Balance",
+    "send": "Send aUEC",
+    "withdraw": "Withdraw"
+  },
+  "inviteCodes": {
+    "invites": "Invites",
+    "create_new": "Create New Invite Code",
+    "invite_code": "Invite Code",
+    "max_uses": "Max Invite Uses",
+    "used_times": "Used {{used}}/{{max}} times",
+    "max_uses_helper": "The maximum number of uses of this invite. Set to 0 to make unlimited.",
+    "copied": "Copied!",
+    "submit": "Submit",
+    "submitted": "Submitted!",
+    "failed_submit": "Failed to submit! {{reason}}"
+  },
+  "contractorSidebar": {
+    "search": "Search",
+    "sorting": "Sorting",
+    "sort_attribute": "Sort Attribute",
+    "rating_high_low": "Rating (High to Low)",
+    "rating_low_high": "Rating (Low to High)",
+    "name_a_z": "Name (A to Z)",
+    "name_z_a": "Name (Z to A)",
+    "members_high_low": "Member Count (High to Low)",
+    "members_low_high": "Member Count (Low to High)",
+    "date_old_new": "Date Listed (Old to New)",
+    "date_new_old": "Date Listed (New to Old)",
+    "filtering": "Filtering",
+    "org_tags": "Org Tags",
+    "mining": "mining",
+    "min_rating": "Minimum Rating"
+  },
+  "contractorList": {
+    "fields": {
+      "freight": "Freight",
+      "refuel": "Refuel",
+      "repair": "Repair",
+      "escort": "Escort",
+      "transport": "Transport",
+      "mining": "Mining",
+      "exploration": "Exploration",
+      "combat": "Combat",
+      "salvage": "Salvage",
+      "refining": "Refining",
+      "construction": "Construction",
+      "social": "Social",
+      "roleplay": "Roleplay",
+      "medical": "Medical",
+      "intelligence": "Intelligence"
+    }
+  },
+  "commentTree": {
+    "reply": "Reply to Comment",
+    "post": "Post",
+    "deleted": "[deleted]",
+    "avatar_alt": "Avatar of {{username}}"
+  },
+  "contractorCreate": {
+    "name": "Contractor Name",
+    "identifier": "Contractor Identifier",
+    "description": "Description",
+    "logo": "Logo",
+    "banner": "Banner",
+    "submit": "Submit",
+    "error_name": "Please set your contractor name",
+    "error_identifier": "Please set your identifier name",
+    "error_logo": "Please set your contractor logo",
+    "error_banner": "Please set your contractor banner",
+    "failed_auth": "Failed to authenticate! {{reason}}"
+  },
+  "authenticateRSI": {
+    "handle": "RSI Handle",
+    "invalid_handle": "Invalid handle",
+    "enter_username": "Please enter your username",
+    "authenticated": "Authenticated!",
+    "here": "here",
+    "submit": "Submit",
+    "copy_and_open": "Copy Code and Open Profile",
+    "instructions": {
+      "1": "In order to verify you own the above RSI profile, please click the button below to copy your code and add it to your user profile short bio, then enter your RSI handle (not monniker) above. You can remove this code once verification is complete. See ",
+      "2": " for a screenshot guide.",
+      "3": " Click submit once the code is visible on your profile."
+    },
+    "tos": {
+      "1": "I have read and accepted SC Market's",
+      "2": "Terms of Service"
+    }
+  },
+  "authenticateContractor": {
+    "org_spectrum_id": "Org Spectrum ID",
+    "error_org_name": "Please set your org name",
+    "copy_and_open": "Copy Code and Open Org Page",
+    "submit": "Submit",
+    "failed_auth": "Failed to authenticate! {{reason}}",
+    "instructions": {
+      "1": "In order to verify you own the above organization, please click the button below to open your org page and add the following code to your org introduction, history, manifesto, or charter sections. You can remove this code once verification is complete.",
+      "2": " Click submit once the code is visible on the org page."
+    }
+  },
+  "people": {
+    "title": "People"
+  },
+  "offers": {
+    "viewOffer": "View Offer",
+    "dashboard": "Dashboard",
+    "offer": "Offer",
+    "receivedOffers": "Received Offers",
+    "counterOffer": "Counter Offer"
+  },
+  "sendMoney": {
+    "title": "Send Money",
+    "recipient": "Recipient",
+    "username": "Username",
+    "contractor": "Contractor",
+    "targetKind": "Target Kind",
+    "user": "User",
+    "next": "Next",
+    "back": "Back",
+    "send": "Send",
+    "amount": "Amount",
+    "note": "Note",
+    "errors": {
+      "enterUser": "Please enter a user to send to!",
+      "invalidUser": "Invalid User!",
+      "enterAmount": "Please enter an amount!"
+    }
+  },
+  "sellMaterials": {
+    "commodities": "Commodities",
+    "title": "We Buy Resources!",
+    "subtitle": "Sell your resources in bulk with us! Skip the refining process and sell to us at a premium!"
+  },
+  "cart": {
+    "ofAvailable": "of {{available}} available",
+    "quantity": "Quantity",
+    "price": "Price:",
+    "subtotal": "Subtotal:",
+    "remove": "Remove",
+    "seller": "Seller - ",
+    "total": "Total",
+    "note": "Note",
+    "submitOfferDesc": "Submit Offer to send your offer and negotiate and coordinate with the seller.",
+    "payTotal": "Pay Total: {{total}} aUEC",
+    "offerOptional": "Offer (Optional)",
+    "submitOffer": "Submit Offer",
+    "submitOrder": "Submit Order",
+    "purchaseSuccess": "Purchase successful!",
+    "yourCart": "Your Cart",
+    "empty": "Your cart is empty"
+  },
+  "landing": {
+    "subtitle": "Buy and sell goods. Buy and sell services.",
+    "totalOrders": "Total Orders",
+    "totalOrderValue": "Total Order Value",
+    "ordersThisWeek": "Orders This Week",
+    "valueOfOrdersThisWeek": "Value of Orders This Week",
+    "buySellItemsTitle": "Buy and Sell Items",
+    "buySellItemsText": "List your items to be sold in whatever quantity you support. Get alerts in Discord when someone places an order, and work with buyers to fulfill their orders. We don't take a cut.",
+    "tradeInBulkTitle": "Trade in Bulk",
+    "tradeInBulkText": "Whether you have 5 FS-9s to sell or 50, we want to support you. List your items in bulk or individually and manage your stock with the click of a button.",
+    "orderServicesTitle": "Order Services",
+    "orderServicesText": "Do you or your org have provide a service? Whether its medical rescue, hauler escort, sourcing items or otherwise, find a home on SC Market where you can discover the many services being provided throughout the 'verse.",
+    "forOrgs": "For Orgs",
+    "orgRecruitment": "Org Recruitment",
+    "serviceListings": "Service Listings",
+    "stockManagement": "Stock Management",
+    "orgsHelpText": "We enable orgs to coordinate their members to fulfill orders and render services. Become a trusted group customers come to when they need work done.",
+    "learnMore": "Learn More",
+    "supportersTitle": "Our Supporters",
+    "supportersThanks": "Thank you to all of our ",
+    "supporters": "supporters",
+    "faqTitle": "Your questions, answered",
+    "faqSellItemsQ": "How do I sell items?",
+    "faqSellItemsA": "Create market listings for the items you want to sell. Buyers can add the items they want to their cart, then place an order with you for those items. From there it is up to you and the buyer to arrange a time and place to exchange the aUEC and goods.",
+    "faqSafeQ": "Is SC Market safe to use?",
+    "faqSafeA": "Because we don't handle any of the goods or aUEC ourselves, we cannot make any guarantees. However, we do provide ways for buyers and sellers to review each other, so you can be sure that others have had positive experiences with a seller if you are wary of being scammed.",
+    "faqListThingsQ": "What kinds of things can I list on SC Market?",
+    "faqListThingsA": "You can list any item or service as long as you accept aUEC in exchange for it. Items and services should generally be related to Star Citizen and services may be conducted in our out of the game itself.",
+    "faqFeeQ": "Does SC Market take a fee?",
+    "faqFeeA": "No we do not. All services are provided here free of charge and no aUEC passes through us.",
+    "faqRealMoneyQ": "Can I list items for real money?",
+    " faqRealMoneyA": "No. All transactions on SC Market should be completed in aUEC."
+  },
+  "fleet": {
+    "fleetTitle": "Fleet",
+    "importFleet": "Import Fleet",
+    "myFleetTitle": "My Fleet",
+    "addShips": "Add Ships",
+    "createDelivery": "Create Delivery"
+  },
+  "error404": {
+    "title": "404: Page Not Found",
+    "subtitle": "I wonder how you got here...",
+    "returnToDashboard": "Return to Dashboard"
+  },
+  "frontendError": {
+    "title": "An Error Occurred Loading the Page",
+    "subtitle": "Please let us know in",
+    "afterRefresh": "if you see this error after refreshing the page.",
+    "page": "Error page",
+    "message": "Message",
+    "returnToDashboard": "Return to Dashboard",
+    "pageTitle": "An Error Occurred"
+  },
+  "org": {
+    "orgTitle": "Org",
+    "myOrgTitle": "My Org",
+    "registerOrgTitle": "Register an Org",
+    "existingRsiOrg": "Existing RSI Org",
+    "newContractor": "New Contractor",
+    "moneyTitle": "Money",
+    "manageOrgTitle": "Manage Org",
+    "dashboard": "Dashboard",
+    "aboutTab": "About",
+    "invitesTab": "Invites",
+    "rolesTab": "Roles and Members",
+    "discordTab": "Discord Integration",
+    "marketTab": "Market",
+    "invite": {
+      "acceptInviteTitle": "Accept Invite",
+      "acceptContractorInvite": "Accept Contractor Invite",
+      "invitedMessage": "You've been invited to",
+      "accept": "Accept",
+      "accepted": "Accepted invite!"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard"
+  },
+  "contractorsPage": {
+    "title": "Contractors"
+  },
+  "services": {
+    "contractsTitle": "Contracts",
+    "toggleSidebar": "toggle service sidebar",
+    "contractorServices": "Contractor Services",
+    "createService": "Create Service",
+    "myServices": "My Services",
+    "updateService": "Update Service"
+  },
+  "loginInfoPanel": {
+    "dashboardScreenshot": "Contractor Dashboard Screenshot"
+  },
+  "login": {
+    "title": "Login",
+    "accountLink": "Account Link",
+    "authenticateWithRSI": "Authenticate with RSI"
   }
 }

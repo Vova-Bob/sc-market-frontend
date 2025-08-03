@@ -9,8 +9,10 @@ import { Grid } from "@mui/material"
 import { RegisterShip } from "../../views/fleet/RegisterShip"
 import { DashNotificationArea } from "../../views/notifications/DashNotificationArea"
 import { AuthenticateRSI } from "../../views/authentication/AuthenticateRSI"
+import { useTranslation } from "react-i18next"
 
 export function Login() {
+  const { t } = useTranslation()
   const profile = useGetUserProfileQuery()
 
   return (
@@ -23,7 +25,7 @@ export function Login() {
 
       <Grid item xs={12} lg={4}>
         <Grid container spacing={4} alignItems={"flex-start"}>
-          <HeaderTitle>Login</HeaderTitle>
+          <HeaderTitle>{t("login.title")}</HeaderTitle>
           <AuthenticateRSI />
         </Grid>
       </Grid>

@@ -3,9 +3,11 @@ import { Button, Divider, Grid, Typography } from "@mui/material"
 import React from "react"
 import { Link } from "react-router-dom"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
+import { useTranslation } from "react-i18next"
 
 export function OrgBalance() {
   const [contractor] = useCurrentOrg()
+  const { t } = useTranslation()
 
   return (
     <Section>
@@ -16,7 +18,7 @@ export function OrgBalance() {
           color={"text.secondary"}
           sx={{ fontWeight: "bold" }}
         >
-          Org Balance
+          {t("orgBalance.balance")}
         </Typography>
       </Grid>
       <Grid item xs={12}>
@@ -41,11 +43,11 @@ export function OrgBalance() {
           style={{ textDecoration: "none", color: "inherit" }}
         >
           <Button color={"primary"} variant={"outlined"}>
-            Send aUEC
+            {t("orgBalance.send")}
           </Button>
         </Link>
         <Button color={"secondary"} variant={"outlined"}>
-          Withdraw
+          {t("orgBalance.withdraw")}
         </Button>
       </Grid>
     </Section>

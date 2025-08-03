@@ -9,18 +9,20 @@ import { DashNotificationArea } from "../../views/notifications/DashNotification
 import { UserOrderTrend } from "../../views/orders/OrderTrend"
 import { ReceivedOffersArea } from "../../views/offers/ReceivedOffersArea"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
+import { useTranslation } from "react-i18next"
 
 export function MemberDashboard() {
   // TODO: Add a notifications section here, and maybe some other content
 
+  const { t } = useTranslation()
   const lg = useMediaQuery((theme: Theme) => theme.breakpoints.up("lg"))
   const xxl = useMediaQuery((theme: Theme) => theme.breakpoints.up("xxl"))
   const [currentOrg] = useCurrentOrg()
 
   return (
-    <Page title={"Dashboard"}>
+    <Page title={t("dashboard.title")}>
       <ContainerGrid maxWidth={"xxl"} sidebarOpen={true}>
-        <HeaderTitle>Dashboard</HeaderTitle>
+        <HeaderTitle>{t("dashboard.title")}</HeaderTitle>
         {xxl && (
           <>
             <Grid item xs={12} lg={2.5}>

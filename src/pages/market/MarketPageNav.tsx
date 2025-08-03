@@ -39,7 +39,7 @@ export function MarketPageNav(props: {
 
   return (
     <TablePagination
-      labelRowsPerPage={t("rows_per_page")} // localised
+      labelRowsPerPage={t("rows_per_page")}
       labelDisplayedRows={({ from, to, count }) =>
         t("displayed_rows", { from, to, count })
       }

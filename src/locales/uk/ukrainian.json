@@ -1,6 +1,6 @@
 {
   "admin": {
-    "orderStats": "Статистика замовлень адміністратора"
+    "orderStats": "Адмін-статистика замовлень"
   },
   "adminExpressVerify": {
     "title": "Експрес-верифікація користувача",
@@ -27,10 +27,14 @@
   "availability": {
     "select_availability": "Оберіть доступність",
     "save": "Зберегти",
-    "availability_for": "Доступність для"
+    "availability_for": "Доступність для",
+    "title": "Моя доступність",
+    "updated": "Доступність оновлено!",
+    "failed": "Не вдалося оновити!"
   },
   "buyOrderActions": {
     "createBuyOrder": "Створити замовлення на купівлю",
+    "selectMarketItem": "Оберіть предмет",
     "createBuyOrderTooltip": "Створити нове замовлення на купівлю"
   },
   "commentVotes": {
@@ -108,7 +112,20 @@
     "activeListings": "Активні оголошення",
     "inactiveListings": "Неактивні оголошення",
     "archivedListings": "Архівні оголошення",
-
+    "viewMarketListing": "Перегляд оголошення на маркеті",
+    "editMarketListing": "Редагування оголошення на маркеті",
+    "editMultipleListing": "Редагування групового оголошення",
+    "createMarketListing": "Створити оголошення на маркеті",
+    "bulkListingTab": "Оптова пропозиція",
+    "uniqueListingTab": "Унікальна пропозиція",
+    "auctionTab": "Аукціон",
+    "combinedListingTab": "Комбінована пропозиція",
+    "market": "Маркет",
+    "itemsTab": "Предмети",
+    "servicesTab": "Послуги",
+    "bulkItems": "Оптові товари",
+    "bulkListings": "Оптові пропозиції",
+    "buyOrders": "Заявка на купівлю",
     "total_requested": "{{count}} запитано",
     "total_available": "{{count}} у наявності",
     "starting_at": "Від {{price}} aUEC",
@@ -216,7 +233,7 @@
     "manage": "Керування",
     "settings": "Налаштування",
     "my_market_listings": "Мої оголошення на ринку",
-    "manage_listings": "Керування оголошеннями",
+    "manage_listings": "Керування товарами",
     "archived_listings": "Архівні оголошення",
     "money": "Фінанси",
     "invoices": "Рахунки",
@@ -235,9 +252,9 @@
     "armor": "Броня",
     "components": "Компоненти",
     "bulk_items": "Оптові товари",
-    "buy_orders": "Замовлення на купівлю",
+    "buy_orders": "Заявка на купівлю",
     "contractor_services": "Послуги підрядників",
-    "my_org_listings": "Оголошення моєї організації",
+    "my_org_listings": "Пропозиції Організації",
     "sell_materials": "Продаж матеріалів",
     "contracting": {
       "title": "Контракти"
@@ -375,7 +392,6 @@
     }
   },
   "recruiting_post": {
-    "contractor": "Підрядник",
     "about": "Про",
     "title_required": "Заголовок*",
     "description_required": "Опис*",
@@ -386,13 +402,22 @@
     },
     "markdown_info": "Підтримується розширений синтаксис Markdown (Github flavored), посилання на YouTube автоматично вбудовуються, а зображення можна додавати, якщо вони розміщені на Imgur або RSI.",
     "markdown_link": "тут",
-    "markdown_info_end": "для деталей"
+    "markdown_info_end": "для деталей",
+    "contractor": "Підрядник",
+    "commentArea": {
+      "replyToPost": "Відповісти на публікацію",
+      "post": "Опублікувати"
+    },
+    "page": {
+      "createPost": "Створити публікацію",
+      "updatePost": "Оновити пост"
+    }
   },
   "contractor": {
     "fields": {
       "mining": "Видобуток",
       "trading": "Торгівля",
-      "security": "Охорона"
+      "security": "Безпека"
     }
   },
   "adminUsers": {
@@ -425,6 +450,7 @@
     "image_url_helper": "Пряме посилання на зображення з Imgur, RSI або starcitizen.tools",
     "save": "Зберегти",
     "no_user_description": "Опис користувача відсутній",
+    "myProfile": "Мій профіль",
     "profile_tab": "Профіль",
     "services_tab": "Послуги",
     "market_tab": "Маркет",
@@ -473,7 +499,27 @@
   },
   "contracts": {
     "new": "Нове",
-    "see_more": "Детальніше"
+    "see_more": "Детальніше",
+    "apply": "Подати заявку",
+    "publicOrderTitle": "Публічне замовлення",
+    "publicContracts": "Публічні контракти",
+    "createPublicContract": "Створити публічний контракт",
+    "contractShort": "Контракт {{id}}",
+    "viewContract": "Перегляд контракту",
+    "contractTitle": "Контракт",
+    "contractsTitle": "Контракти",
+    "toggleSidebar": "перемкнути бічну панель контрактів",
+    "activeContracts": "Активні контракти",
+    "createOpenContract": "Створити відкритий контракт",
+    "kind": {
+      "Escort": "Ескорт",
+      "Transport": "Транспорт",
+      "Bounty": "Хедхантери",
+      "Delivery": "Доставка",
+      "Mining": "Видобуток",
+      "Salvage": "Утилізація",
+      "Other": "Інше"
+    }
   },
   "serviceListings": {
     "new": "Нове",
@@ -568,7 +614,14 @@
     },
     "orderLabel": "Замовлення",
     "items": "одиниць",
-    "public": "Публічне"
+    "public": "Публічне",
+    "orgOrdersTitle": "Замовлення організації",
+    "ordersTitle": "Замовлення",
+    "orderTitle": "Замовлення",
+    "orderShort": "Замовлення {{id}}",
+    "offerShort": "Пропозиція {{id}}",
+    "createOrderTitle": "Створити замовлення",
+    "viewOrder": "Перегляд замовлення"
   },
   "orderDetailsArea": {
     "updated_status": "Статус оновлено!",
@@ -691,9 +744,9 @@
     "noAssociatedServices": "Немає пов'язаних послуг"
   },
   "OfferMarketListingsEditArea": {
-    "associatedMarketListings": "Пов'язані маркет-лістинги",
-    "addMarketListing": "Додати маркет-лістинг",
-    "selectListing": "Оберіть лістинг...",
+    "associatedMarketListings": "Пов'язані маркет-пропозиції",
+    "addMarketListing": "Додати маркет-пропозиції",
+    "selectListing": "Оберіть оголошення...",
     "of": "з {{count}}",
     "ofAvailable": "з {{count}} доступно",
     "quantity": "Кількість",
@@ -702,8 +755,8 @@
     "total": "Разом"
   },
   "OfferMarketListings": {
-    "associatedMarketListings": "Пов'язані маркет-лістинги",
-    "noAssociatedListings": "Немає пов'язаних лістингів",
+    "associatedMarketListings": "Пов'язані маркет-пропозиції",
+    "noAssociatedListings": "Немає маркет-пропозицій",
     "product": "Продукт",
     "qty": "К-сть",
     "unitPrice": "Ціна за одиницю",
@@ -1159,5 +1212,343 @@
       "Under Attack": "Атакують",
       "Offline": "Відключено"
     }
+  },
+  "contractDetailsArea": {
+    "details_table": "деталі таблиці",
+    "customer": "Клієнт",
+    "date": "Дата",
+    "title": "Назва",
+    "kind": "Тип",
+    "details": "Деталі",
+    "offer": "Пропозиція"
+  },
+  "contractApp": {
+    "apply": "Подати заявку",
+    "applying_as": "Подати заявку як",
+    "note": "Примітка",
+    "submit": "Надіслати"
+  },
+  "settingsManageContractors": {
+    "name": "Назва",
+    "actions": "Дії",
+    "leave_org": "Вийти з організації"
+  },
+  "manageRoles": {
+    "title": "Ролі",
+    "add_role": "Додати роль",
+    "create": "Створити",
+    "save": "Зберегти",
+    "delete": "Видалити",
+    "updated": "Оновлено!",
+    "deleted": "Видалено!",
+    "role_name": "Назва ролі",
+    "role_position": "Позиція ролі",
+    "position_helper": "Менше число — вищий пріоритет серед інших ролей.",
+    "permissions": {
+      "manage_org_details": "Керування даними організації",
+      "manage_roles": "Керування ролями",
+      "manage_orders": "Керування замовленнями",
+      "manage_invites": "Керування запрошеннями",
+      "manage_stock": "Керування складом",
+      "manage_market": "Керування маркетом",
+      "manage_recruiting": "Керування набором",
+      "manage_webhooks": "Керування вебхуками",
+      "kick_members": "Видаляти учасників"
+    },
+    "headCells": {
+      "name": "Назва",
+      "position": "Позиція"
+    }
+  },
+  "manageMemberList": {
+    "members": "Учасники",
+    "export": "Експорт",
+    "search": "Пошук",
+    "role": "Роль",
+    "roles": "Ролі",
+    "any": "Будь-яка",
+    "kick": "Вигнати",
+    "username": "Ім'я користувача",
+    "updated": "Оновлено!",
+    "update_failed": "Не вдалося оновити! {{reason}}",
+    "member_kicked": "Учасника вигнано!",
+    "kick_failed": "Не вдалося вигнати! {{reason}}"
+  },
+  "orgDetailEdit": {
+    "submitted": "Успішно надіслано!",
+    "failed_submit": "Не вдалося надіслати! {{reason}}",
+    "save": "Зберегти",
+    "image_url": "URL зображення",
+    "image_url_helper": "Пряма URL-адреса на зображення (Imgur, RSI, starcitizen.tools)",
+    "org_tags": "Теги організації",
+    "mining": "видобуток",
+    "no_tags": "Немає тегів",
+    "set_banner": "Встановити новий банер"
+  },
+  "orgInvite": {
+    "invite_members": "Запросити учасників",
+    "already_member": "вже учасник",
+    "username": "Ім'я користувача",
+    "note": "Примітка",
+    "submit": "Надіслати",
+    "submitted": "Успішно надіслано!"
+  },
+  "orgInfo": {
+    "about": "Про організацію",
+    "services": "Послуги",
+    "market": "Маркет",
+    "order": "Замовлення",
+    "members": "Учасники",
+    "recruiting": "Набір"
+  },
+  "orgBalance": {
+    "balance": "Баланс організації",
+    "send": "Відправити aUEC",
+    "withdraw": "Вивести"
+  },
+  "inviteCodes": {
+    "invites": "Запрошення",
+    "create_new": "Створити новий код запрошення",
+    "invite_code": "Код запрошення",
+    "max_uses": "Максимальна кількість використань",
+    "used_times": "Використано {{used}}/{{max}} раз(ів)",
+    "max_uses_helper": "Максимальна кількість використань цього запрошення. Встановіть 0 для необмеженої кількості.",
+    "copied": "Скопійовано!",
+    "submit": "Створити",
+    "submitted": "Успішно створено!",
+    "failed_submit": "Не вдалося створити! {{reason}}"
+  },
+  "contractorSidebar": {
+    "search": "Пошук",
+    "sorting": "Сортування",
+    "sort_attribute": "Атрибут сортування",
+    "rating_high_low": "Рейтинг (від вищого до нижчого)",
+    "rating_low_high": "Рейтинг (від нижчого до вищого)",
+    "name_a_z": "Ім'я (А-Я)",
+    "name_z_a": "Ім'я (Я-А)",
+    "members_high_low": "Кількість учасників (від більшої до меншої)",
+    "members_low_high": "Кількість учасників (від меншої до більшої)",
+    "date_old_new": "Дата додавання (від старих до нових)",
+    "date_new_old": "Дата додавання (від нових до старих)",
+    "filtering": "Фільтрація",
+    "org_tags": "Теги організації",
+    "mining": "видобуток",
+    "min_rating": "Мінімальний рейтинг"
+  },
+  "contractorList": {
+    "fields": {
+      "freight": "Вантажоперевезення",
+      "refuel": "Дозаправка",
+      "repair": "Ремонт",
+      "escort": "Ескорт",
+      "transport": "Транспорт",
+      "mining": "Видобуток",
+      "exploration": "Дослідження",
+      "combat": "Бойові дії",
+      "salvage": "Салваж",
+      "refining": "Переробка",
+      "construction": "Будівництво",
+      "social": "Соціальна",
+      "roleplay": "Рольова гра",
+      "medical": "Медична",
+      "intelligence": "Розвідка"
+    }
+  },
+  "commentTree": {
+    "reply": "Відповісти на коментар",
+    "post": "Відправити",
+    "deleted": "[видалено]",
+    "avatar_alt": "Аватар користувача {{username}}"
+  },
+  "contractorCreate": {
+    "name": "Назва організації",
+    "identifier": "Ідентифікатор організації",
+    "description": "Опис",
+    "logo": "Логотип",
+    "banner": "Банер",
+    "submit": "Створити",
+    "error_name": "Вкажіть назву організації",
+    "error_identifier": "Вкажіть ідентифікатор організації",
+    "error_logo": "Вкажіть логотип організації",
+    "error_banner": "Вкажіть банер організації",
+    "failed_auth": "Не вдалося створити! {{reason}}"
+  },
+  "authenticateRSI": {
+    "handle": "RSI-нікнейм",
+    "invalid_handle": "Некоректний нікнейм",
+    "enter_username": "Введіть ваш нікнейм",
+    "authenticated": "Профіль підтверджено!",
+    "here": "тут",
+    "submit": "Відправити",
+    "copy_and_open": "Скопіювати код і відкрити профіль",
+    "instructions": {
+      "1": "Щоб підтвердити володіння цим RSI-профілем, натисніть кнопку нижче, щоб скопіювати код, і додайте його у коротку біографію вашого профілю користувача. Потім введіть ваш RSI-нікнейм (не монікер) вище. Ви можете видалити цей код після завершення перевірки. Дивіться ",
+      "2": " для перегляду інструкції зі скріншотами.",
+      "3": " Натисніть «Відправити», коли код буде видно у вашому профілі."
+    },
+    "tos": {
+      "1": "Я ознайомлений і приймаю умови",
+      "2": "Правил користування SC Market"
+    }
+  },
+  "authenticateContractor": {
+    "org_spectrum_id": "Spectrum ID організації",
+    "error_org_name": "Вкажіть назву організації",
+    "copy_and_open": "Скопіювати код і відкрити сторінку організації",
+    "submit": "Відправити",
+    "failed_auth": "Не вдалося підтвердити! {{reason}}",
+    "instructions": {
+      "1": "Щоб підтвердити право власності на організацію, натисніть кнопку нижче, щоб відкрити сторінку організації та вставте цей код у розділ «Вступ», «Історія», «Маніфест» або «Статут». Після завершення перевірки код можна видалити.",
+      "2": " Натисніть «Відправити», коли код буде видно на сторінці організації."
+    }
+  },
+  "people": {
+    "title": "Учасники"
+  },
+  "offers": {
+    "viewOffer": "Перегляд пропозиції",
+    "dashboard": "Панель",
+    "offer": "Пропозиція",
+    "receivedOffers": "Отримані пропозиції",
+    "counterOffer": "Зустрічна пропозиція"
+  },
+  "sendMoney": {
+    "title": "Надіслати кошти",
+    "recipient": "Одержувач",
+    "username": "Ім'я користувача",
+    "contractor": "Підрядник",
+    "targetKind": "Тип одержувача",
+    "user": "Користувач",
+    "next": "Далі",
+    "back": "Назад",
+    "send": "Відправити",
+    "amount": "Сума",
+    "note": "Примітка",
+    "errors": {
+      "enterUser": "Введіть користувача для переказу!",
+      "invalidUser": "Неправильний користувач!",
+      "enterAmount": "Введіть суму!"
+    }
+  },
+  "sellMaterials": {
+    "commodities": "Сировина",
+    "title": "Ми купуємо ресурси!",
+    "subtitle": "Продавайте свої ресурси оптом з нами! Пропустіть процес переробки і продавайте нам з націнкою!"
+  },
+  "cart": {
+    "ofAvailable": "з {{available}} доступних",
+    "quantity": "Кількість",
+    "price": "Ціна:",
+    "subtotal": "Підсумок:",
+    "remove": "Видалити",
+    "seller": "Продавець - ",
+    "total": "Разом",
+    "note": "Примітка",
+    "submitOfferDesc": "Надішліть пропозицію, щоб узгодити та координувати деталі з продавцем.",
+    "payTotal": "Сплатити суму: {{total}} aUEC",
+    "offerOptional": "Пропозиція (необов'язково)",
+    "submitOffer": "Надіслати пропозицію",
+    "submitOrder": "Підтвердити замовлення",
+    "purchaseSuccess": "Покупку здійснено успішно!",
+    "yourCart": "Ваш кошик",
+    "empty": "Ваш кошик порожній"
+  },
+  "landing": {
+    "subtitle": "Купуйте та продавайте товари. Купуйте та продавайте послуги.",
+    "totalOrders": "Всього замовлень",
+    "totalOrderValue": "Загальна сума замовлень",
+    "ordersThisWeek": "Замовлень за тиждень",
+    "valueOfOrdersThisWeek": "Сума замовлень за тиждень",
+    "buySellItemsTitle": "Купуйте й продавайте товари",
+    "buySellItemsText": "Розміщуйте свої товари для продажу у будь-якій кількості. Отримуйте сповіщення у Discord, коли хтось оформлює замовлення, та співпрацюйте з покупцями для виконання замовлень. Ми не беремо комісію.",
+    "tradeInBulkTitle": "Оптовий обіг",
+    "tradeInBulkText": "Чи маєте ви 5 FS-9 на продаж, чи 50 — ми вас підтримаємо. Додавайте товари оптом або поштучно й керуйте запасами одним кліком.",
+    "orderServicesTitle": "Замовляйте послуги",
+    "orderServicesText": "Ваша організація надає послуги? Медична евакуація, ескорт вантажів, пошук товарів чи щось інше — знайдіть свою нішу на SC Market, де можна відкрити для себе різноманіття сервісів всесвіту.",
+    "forOrgs": "Для організацій",
+    "orgRecruitment": "Рекрутинг організацій",
+    "serviceListings": "Оголошення про послуги",
+    "stockManagement": "Управління запасами",
+    "orgsHelpText": "Ми допомагаємо організаціям координувати своїх членів для виконання замовлень і надання послуг. Станьте надійною групою, до якої звертаються за допомогою.",
+    "learnMore": "Дізнатись більше",
+    "supportersTitle": "Наші підтримувачі",
+    "supportersThanks": "Дякуємо всім нашим ",
+    "supporters": "підтримувачам",
+    "faqTitle": "Ваші запитання — наші відповіді",
+    "faqSellItemsQ": "Як продавати товари?",
+    "faqSellItemsA": "Створіть оголошення для товарів, які хочете продати. Покупці додають потрібне до кошика, а потім оформлюють замовлення. Далі ви узгоджуєте зустріч для передачі товару та aUEC.",
+    "faqSafeQ": "Чи безпечно використовувати SC Market?",
+    "faqSafeA": "Ми не передаємо товари чи aUEC — гарантій не даємо. Однак користувачі можуть залишати відгуки, тому ви можете впевнитися у надійності продавця.",
+    "faqListThingsQ": "Що можна розміщувати на SC Market?",
+    "faqListThingsA": "Можна розміщувати будь-які товари або послуги за aUEC. Товари й послуги повинні бути пов'язані зі Star Citizen, а сервіси можуть бути і в грі, і поза нею.",
+    "faqFeeQ": "Чи стягує SC Market комісію?",
+    "faqFeeA": "Ні, всі сервіси безкоштовні і через нас не проходить жодна aUEC.",
+    "faqRealMoneyQ": "Чи можна продавати за реальні гроші?",
+    "faqRealMoneyA": "Ні. Усі транзакції на SC Market мають здійснюватися тільки у aUEC."
+  },
+  "fleet": {
+    "fleetTitle": "Флот",
+    "importFleet": "Імпорт флоту",
+    "myFleetTitle": "Мій флот",
+    "addShips": "Додати кораблі",
+    "createDelivery": "Створити доставку"
+  },
+  "error404": {
+    "title": "404: Сторінку не знайдено",
+    "subtitle": "Цікаво, як ви сюди потрапили...",
+    "returnToDashboard": "Повернутись на головну"
+  },
+  "frontendError": {
+    "title": "Виникла помилка під час завантаження сторінки",
+    "subtitle": "Повідомте нас у",
+    "afterRefresh": "якщо бачите цю помилку після оновлення сторінки.",
+    "page": "Сторінка помилки",
+    "message": "Повідомлення",
+    "returnToDashboard": "Повернутись на головну",
+    "pageTitle": "Виникла помилка"
+  },
+  "org": {
+    "orgTitle": "Орга",
+    "myOrgTitle": "Моя організація",
+    "registerOrgTitle": "Реєстрація організації",
+    "existingRsiOrg": "Існуюча RSI-організація",
+    "newContractor": "Новий підрядник",
+    "moneyTitle": "Кошти",
+    "manageOrgTitle": "Управління організацією",
+    "dashboard": "Панель",
+    "aboutTab": "Про організацію",
+    "invitesTab": "Запрошення",
+    "rolesTab": "Ролі та учасники",
+    "discordTab": "Інтеграція Discord",
+    "marketTab": "Маркет",
+    "invite": {
+      "acceptInviteTitle": "Прийняти запрошення",
+      "acceptContractorInvite": "Прийняти запрошення до організації",
+      "invitedMessage": "Вас запросили до",
+      "accept": "Прийняти",
+      "accepted": "Запрошення прийнято!"
+    }
+  },
+  "dashboard": {
+    "title": "Панель управління"
+  },
+  "contractorsPage": {
+    "title": "Підрядники"
+  },
+  "services": {
+    "contractsTitle": "Контракти",
+    "toggleSidebar": "перемкнути бічну панель сервісів",
+    "contractorServices": "Послуги підрядників",
+    "createService": "Створити послугу",
+    "myServices": "Мої послуги",
+    "updateService": "Оновити послугу"
+  },
+  "loginInfoPanel": {
+    "dashboardScreenshot": "Скріншот панелі підрядника"
+  },
+  "login": {
+    "title": "Вхід",
+    "accountLink": "Прив'язка акаунта",
+    "authenticateWithRSI": "Авторизація через RSI"
   }
 }

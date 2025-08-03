@@ -29,9 +29,11 @@ import {
 } from "./ContractorList"
 import { StarRounded } from "@mui/icons-material"
 import { useContractorSidebar } from "../../hooks/contractor/ContractorSidebar"
+import { useTranslation } from "react-i18next"
 
 export function ContractorSidebar() {
   const theme: ExtendedTheme = useTheme()
+  const { t } = useTranslation()
 
   // Search fields
   const [fields, setFields] = useState<ContractorKindIconKey[]>([])
@@ -138,7 +140,7 @@ export function ContractorSidebar() {
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label={"Search"}
+              label={t("contractorSidebar.search")}
               InputProps={{
                 startAdornment: <SearchIcon />,
               }}
@@ -149,7 +151,7 @@ export function ContractorSidebar() {
           </Grid>
           <Grid item xs={12}>
             <Typography variant={"subtitle2"} fontWeight={"bold"}>
-              Sorting
+              {t("contractorSidebar.sorting")}
             </Typography>
           </Grid>
           <Grid item xs={12}>
@@ -157,30 +159,42 @@ export function ContractorSidebar() {
               select
               fullWidth
               value={sorting}
-              label="Sort Attribute"
+              label={t("contractorSidebar.sort_attribute")}
               onChange={handleSortChange}
               color={"secondary"}
               SelectProps={{
                 IconComponent: KeyboardArrowDownRoundedIcon,
               }}
             >
-              <MenuItem value={"rating"}>Rating (High to Low)</MenuItem>
-              <MenuItem value={"rating-reverse"}>Rating (Low to High)</MenuItem>
-              <MenuItem value={"name-reverse"}>Name (A to Z)</MenuItem>
-              <MenuItem value={"name"}>Name (Z to A)</MenuItem>
-              <MenuItem value={"members"}>Member Count (High to Low)</MenuItem>
+              <MenuItem value={"rating"}>
+                {t("contractorSidebar.rating_high_low")}
+              </MenuItem>
+              <MenuItem value={"rating-reverse"}>
+                {t("contractorSidebar.rating_low_high")}
+              </MenuItem>
+              <MenuItem value={"name-reverse"}>
+                {t("contractorSidebar.name_a_z")}
+              </MenuItem>
+              <MenuItem value={"name"}>
+                {t("contractorSidebar.name_z_a")}
+              </MenuItem>
+              <MenuItem value={"members"}>
+                {t("contractorSidebar.members_high_low")}
+              </MenuItem>
               <MenuItem value={"members-reverse"}>
-                Member Count (Low to High)
+                {t("contractorSidebar.members_low_high")}
               </MenuItem>
               <MenuItem value={"date-reverse"}>
-                Date Listed (Old to New)
+                {t("contractorSidebar.date_old_new")}
               </MenuItem>
-              <MenuItem value={"date"}>Date Listed (New to Old)</MenuItem>
+              <MenuItem value={"date"}>
+                {t("contractorSidebar.date_new_old")}
+              </MenuItem>
             </TextField>
           </Grid>
           <Grid item xs={12}>
             <Typography variant={"subtitle2"} fontWeight={"bold"}>
-              Filtering
+              {t("contractorSidebar.filtering")}
             </Typography>
           </Grid>
           <Grid item xs={12}>
@@ -193,17 +207,13 @@ export function ContractorSidebar() {
                 setFields(newValue || [])
               }}
               options={contractorKindIconsKeys}
-              defaultValue={
-                [
-                  ...([] as ContractorKindIconKey[]),
-                ] /* I don't know why it needs this dumb thing, but the types error without */
-              }
+              defaultValue={[] as ContractorKindIconKey[]}
               renderInput={(params: AutocompleteRenderInputParams) => (
                 <TextField
                   {...params}
                   variant="outlined"
-                  label="Org Tags"
-                  placeholder="mining"
+                  label={t("contractorSidebar.org_tags")}
+                  placeholder={t("contractorSidebar.mining")}
                   fullWidth
                   SelectProps={{
                     IconComponent: KeyboardArrowDownRoundedIcon,
@@ -226,7 +236,7 @@ export function ContractorSidebar() {
           </Grid>
           <Grid item xs={12}>
             <Typography variant={"subtitle2"} fontWeight={"bold"}>
-              Minimum Rating
+              {t("contractorSidebar.min_rating")}
             </Typography>
           </Grid>
 

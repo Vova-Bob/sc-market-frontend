@@ -14,6 +14,7 @@ import {
 import { Grid, Skeleton } from "@mui/material"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { AvailabilitySelection } from "../../hooks/login/UserProfile"
+import { useTranslation } from "react-i18next"
 
 interface Span {
   start: number
@@ -33,6 +34,7 @@ export function convertAvailability(availability: AvailabilitySelection[]) {
 }
 
 export function Availability() {
+  const { t } = useTranslation()
   const [savedSelections, setSavedSelections] = useState<boolean[][] | null>(
     null,
   )
@@ -80,20 +82,20 @@ export function Availability() {
         .unwrap()
         .then((data) => {
           issueAlert({
-            message: "Updated availability!",
+            message: t("availability.updated"),
             severity: "success",
           })
         })
         .catch((error) =>
           issueAlert({
-            message: `Failed to update! ${
+            message: `${t("availability.failed")} ${
               error?.error || error?.data?.error || error
             }`,
             severity: "error",
           }),
         )
     },
-    [currentOrg?.spectrum_id, issueAlert, updateAvailability],
+    [currentOrg?.spectrum_id, issueAlert, updateAvailability, t],
   )
 
   const initial = useMemo(
@@ -102,9 +104,9 @@ export function Availability() {
   )
 
   return (
-    <Page title={"My Availability"}>
+    <Page title={t("availability.title")}>
       <ContainerGrid maxWidth={"lg"} sidebarOpen={true}>
-        <HeaderTitle xs={12}>My Availability</HeaderTitle>
+        <HeaderTitle xs={12}>{t("availability.title")}</HeaderTitle>
 
         {availability ? (
           <AvailabilitySelector

@@ -9,15 +9,21 @@ import { useGetContractorBySpectrumIDQuery } from "../../store/contractor"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 import { Page } from "../../components/metadata/Page"
 import { BackArrow } from "../../components/button/BackArrow"
+import { useTranslation } from "react-i18next"
 
 export function ViewOrg() {
   const { id } = useParams<{ id: string }>()
+  const { t } = useTranslation()
 
   const contractor = useGetContractorBySpectrumIDQuery(id!)
 
   return (
     <Page
-      title={contractor.data?.name ? `${contractor.data?.name} - Org` : null}
+      title={
+        contractor.data?.name
+          ? `${contractor.data?.name} - ${t("org.orgTitle")}`
+          : null
+      }
     >
       {contractor.isLoading ? (
         <ContainerGrid maxWidth={"lg"} sidebarOpen={true}>
@@ -34,9 +40,10 @@ export function ViewOrg() {
 
 export function MyOrg() {
   const [contractor] = useCurrentOrg()
+  const { t } = useTranslation()
 
   return (
-    <Page title={"My Org"}>
+    <Page title={t("org.myOrgTitle")}>
       {!contractor ? (
         <Navigate to={"/404"} />
       ) : (

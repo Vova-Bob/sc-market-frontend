@@ -12,6 +12,7 @@ import { Link } from "react-router-dom"
 import { a11yProps, TabPanel } from "../../components/tabs/Tabs"
 import { useParams } from "react-router-dom"
 import { BackArrow } from "../../components/button/BackArrow"
+import { useTranslation } from "react-i18next"
 
 const name_to_index = new Map([
   // ["aggregate", 0],
@@ -21,14 +22,15 @@ const name_to_index = new Map([
 ])
 
 export function MarketCreate(props: {}) {
+  const { t } = useTranslation()
   const { tab } = useParams<{ tab?: string }>()
   const page = useMemo(() => name_to_index.get(tab || "aggregate") || 0, [tab])
 
   return (
-    <Page title={"Create Market Listing"}>
+    <Page title={t("market.createMarketListing")}>
       <ContainerGrid maxWidth={"lg"} sidebarOpen={true}>
         <HeaderTitle lg={12} xl={12}>
-          <BackArrow /> Create Market Listing
+          <BackArrow /> {t("market.createMarketListing")}
         </HeaderTitle>
 
         <Grid item xs={12}>
@@ -40,19 +42,19 @@ export function MarketCreate(props: {}) {
             textColor="secondary"
             indicatorColor="secondary"
           >
-            {/*<Tab*/}
-            {/*  label="Bulk Listing"*/}
-            {/*  component={Link}*/}
-            {/*  to={`/market/create/aggregate`}*/}
-            {/*  // icon={*/}
-            {/*  //     <DesignServicesRounded/>*/}
-            {/*  // }*/}
-            {/*  {...a11yProps(0)}*/}
-            {/*/>*/}
+            {/*<Tab
+              label={t("market.bulkListingTab")}
+              component={Link}
+              to={`/market/create/aggregate`}
+              // icon={
+              //     <DesignServicesRounded/>
+              // }
+              {...a11yProps(0)}
+            />*/}
             <Tab
               component={Link}
               to={`/market/create/unique`}
-              label="Unique Listing"
+              label={t("market.uniqueListingTab")}
               // icon={
               //     <InfoRounded/>
               // }
@@ -61,7 +63,7 @@ export function MarketCreate(props: {}) {
             <Tab
               component={Link}
               to={`/market/create/auction`}
-              label="Auction"
+              label={t("market.auctionTab")}
               // icon={
               //     <InfoRounded/>
               // }
@@ -70,7 +72,7 @@ export function MarketCreate(props: {}) {
             <Tab
               component={Link}
               to={`/market/create/combined`}
-              label="Combined Listing"
+              label={t("market.combinedListingTab")}
               // icon={
               //     <InfoRounded/>
               // }
@@ -79,11 +81,11 @@ export function MarketCreate(props: {}) {
           </Tabs>
         </Grid>
         <Grid item xs={12}>
-          {/*<TabPanel value={page} index={0}>*/}
-          {/*  <Grid container spacing={4}>*/}
-          {/*    <AggregateMarketListingForm />*/}
-          {/*  </Grid>*/}
-          {/*</TabPanel>*/}
+          {/*<TabPanel value={page} index={0}>
+            <Grid container spacing={4}>
+              <AggregateMarketListingForm />
+            </Grid>
+          </TabPanel>*/}
           <TabPanel value={page} index={0}>
             <Grid container spacing={4}>
               <MarketListingForm sale_type={"sale"} key={"sale"} />

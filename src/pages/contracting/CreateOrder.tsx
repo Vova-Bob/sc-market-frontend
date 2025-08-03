@@ -9,19 +9,21 @@ import { Navigate, useParams } from "react-router-dom"
 import { ServiceView } from "../../views/contracts/ServiceView"
 import { SentOffersArea } from "../../views/offers/ReceivedOffersArea"
 import { CreatePublicContract } from "../../views/contracts/CreatePublicContract"
+import { useTranslation } from "react-i18next"
 
 export function CreateOrder(props: {}) {
+  const { t } = useTranslation()
   return (
-    <Page title={"Orders"}>
+    <Page title={t("orders.ordersTitle")}>
       <ContainerGrid maxWidth={"md"} sidebarOpen={true}>
         <HeaderTitle lg={12} xl={12}>
-          Orders
+          {t("orders.ordersTitle")}
         </HeaderTitle>
 
         <SentOffersArea />
         <MyOrders />
 
-        <HeaderTitle>Create Public Contract</HeaderTitle>
+        <HeaderTitle>{t("contracts.createPublicContract")}</HeaderTitle>
         <CreatePublicContract />
       </ContainerGrid>
     </Page>
@@ -29,11 +31,12 @@ export function CreateOrder(props: {}) {
 }
 
 export function ServiceCreateOrder() {
+  const { t } = useTranslation()
   const { service_id } = useParams<{ service_id: string }>()
   const { data: service, isError } = useGetServiceByIdQuery(service_id!)
 
   return (
-    <Page title={"Create Order"}>
+    <Page title={t("orders.createOrderTitle")}>
       <ContainerGrid maxWidth={"lg"} sidebarOpen={true}>
         {/*<HeaderTitle lg={12} xl={12}>*/}
         {/*    Orders*/}

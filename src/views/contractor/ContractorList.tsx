@@ -36,6 +36,7 @@ import { InfoRounded, LocalHospitalRounded } from "@mui/icons-material"
 import { MarkdownRender } from "../../components/markdown/Markdown"
 import { ListingSellerRating } from "../../components/rating/ListingRating"
 import { DiceD20 } from "mdi-material-ui"
+import { useTranslation } from "react-i18next"
 
 export const contractorKindIcons = {
   freight: <LocalShippingRoundedIcon />,
@@ -66,6 +67,7 @@ export function ContractorListItem(props: {
 }) {
   const { contractor, index } = props
   const theme = useTheme<ExtendedTheme>()
+  const { t } = useTranslation()
 
   return (
     <Grid item xs={12} lg={12}>
@@ -205,7 +207,7 @@ export function ContractorListItem(props: {
                       <Chip
                         key={field}
                         color={"primary"}
-                        label={field}
+                        label={t(`contractorList.fields.${field}`, field)}
                         sx={{
                           marginRight: 1,
                           marginBottom: 1,

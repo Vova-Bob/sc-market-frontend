@@ -39,8 +39,10 @@ import { ItemMarketView } from "../../views/market/ItemMarketView"
 import { ServiceMarketView } from "../../views/services/ServiceMarketView"
 import { ServiceActions } from "../../views/services/ServiceActions"
 import { Stack } from "@mui/system"
+import { useTranslation } from "react-i18next"
 
 export function MarketPage() {
+  const { t } = useTranslation()
   const location = useLocation()
   const pages = ["/market/services", "/market"]
   const tabPage = useMemo(
@@ -52,7 +54,7 @@ export function MarketPage() {
   )
 
   return (
-    <Page title={"Market"} dontUseDefaultCanonUrl={true}>
+    <Page title={t("market.market")} dontUseDefaultCanonUrl={true}>
       <OpenLayout sidebarOpen={true}>
         <Container maxWidth={"lg"} sx={{ paddingTop: 8 }}>
           <Grid
@@ -68,7 +70,7 @@ export function MarketPage() {
                   sx={{ fontWeight: "bold" }}
                   color={"text.secondary"}
                 >
-                  Market
+                  {t("market.market")}
                 </Typography>
                 <Tabs
                   value={tabPage}
@@ -78,14 +80,14 @@ export function MarketPage() {
                   indicatorColor="secondary"
                 >
                   <Tab
-                    label="Items"
+                    label={t("market.itemsTab")}
                     value={1}
                     component={Link}
                     {...a11yProps(0)}
                     to={"/market"}
                   />
                   <Tab
-                    label="Services"
+                    label={t("market.servicesTab")}
                     value={0}
                     component={Link}
                     {...a11yProps(1)}
@@ -110,6 +112,7 @@ export function MarketPage() {
 }
 
 export function BulkItems() {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [drawerOpen] = useDrawerOpen()
   const theme = useTheme<ExtendedTheme>()
@@ -124,10 +127,10 @@ export function BulkItems() {
   }, [])
 
   return (
-    <Page title={"Bulk Items"}>
+    <Page title={t("market.bulkItems")}>
       <IconButton
         color="secondary"
-        aria-label="toggle market sidebar"
+        aria-label={t("toggle_market_sidebar")}
         sx={{
           position: "absolute",
           zIndex: 50,
@@ -154,7 +157,7 @@ export function BulkItems() {
           <Grid item xs={12}>
             <Grid container justifyContent={"space-between"} spacing={1}>
               <HeaderTitle lg={7} xl={7}>
-                Bulk Listings
+                {t("market.bulkListings")}
               </HeaderTitle>
 
               <MarketActions />
@@ -188,6 +191,7 @@ export function BulkItems() {
 }
 
 export function BuyOrderItems() {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [drawerOpen] = useDrawerOpen()
   const theme = useTheme<ExtendedTheme>()
@@ -202,10 +206,10 @@ export function BuyOrderItems() {
   }, [])
 
   return (
-    <Page title={"Bulk Items"}>
+    <Page title={t("market.bulkItems")}>
       <IconButton
         color="secondary"
-        aria-label="toggle market sidebar"
+        aria-label={t("toggle_market_sidebar")}
         sx={{
           position: "absolute",
           zIndex: 50,
@@ -232,7 +236,7 @@ export function BuyOrderItems() {
           <Grid item xs={12}>
             <Grid container justifyContent={"space-between"} spacing={1}>
               <HeaderTitle lg={7} xl={7}>
-                Buy Orders
+                {t("market.buyOrders")}
               </HeaderTitle>
 
               <BuyOrderActions />

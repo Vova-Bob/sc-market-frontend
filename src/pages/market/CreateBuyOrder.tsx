@@ -8,8 +8,10 @@ import { BuyOrderForm } from "../../views/market/BuyOrderForm"
 import { Page } from "../../components/metadata/Page"
 import { ContainerGrid } from "../../components/layout/ContainerGrid"
 import { SelectGameItemStack } from "../../components/select/SelectGameItem"
+import { useTranslation } from "react-i18next"
 
 export function CreateBuyOrder() {
+  const { t } = useTranslation()
   const [itemType, setItemType] = useState<string>("Other")
   const [itemName, setItemName] = useState<string | null>(null)
 
@@ -30,9 +32,9 @@ export function CreateBuyOrder() {
   })
 
   return (
-    <Page title={"Create Buy Order"}>
+    <Page title={t("buyOrderActions.createBuyOrder")}>
       <ContainerGrid sidebarOpen={true}>
-        <FlatSection title={"Select Item"}>
+        <FlatSection title={t("buyOrderActions.selectMarketItem")}>
           <SelectGameItemStack
             onItemChange={(value) => setItemName(value)}
             onTypeChange={(value) => {

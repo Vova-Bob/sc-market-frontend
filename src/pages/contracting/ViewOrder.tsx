@@ -29,8 +29,10 @@ import { OrderReviewView } from "../../views/orders/OrderReviewView"
 import { useGetOfferSessionByIDQuery } from "../../store/offer"
 import { OfferMarketListings } from "../../views/offers/OfferMarketListings"
 import { OfferServiceArea } from "../../views/offers/OfferServiceArea"
+import { useTranslation } from "react-i18next"
 
 export function ViewOrder() {
+  const { t } = useTranslation()
   const { id } = useParams<{ id: string }>()
 
   const { data: order, error } = useGetOrderByIdQuery(id!)
@@ -98,7 +100,11 @@ export function ViewOrder() {
   )
 
   return (
-    <Page title={order?.title ? `${order?.title} - Order` : null}>
+    <Page
+      title={
+        order?.title ? `${order?.title} - ${t("orders.orderTitle")}` : null
+      }
+    >
       <ContainerGrid sidebarOpen={true} maxWidth={"xl"}>
         <Grid item xs={12}>
           <Breadcrumbs>
@@ -108,7 +114,7 @@ export function ViewOrder() {
               underline="hover"
               color={"text.primary"}
             >
-              Dashboard
+              {t("dashboard.title")}
             </MaterialLink>
             {order?.offer_session_id && (
               <MaterialLink
@@ -117,8 +123,11 @@ export function ViewOrder() {
                 underline="hover"
                 color={"text.secondary"}
               >
-                Offer{" "}
-                {(order?.offer_session_id || "").substring(0, 8).toUpperCase()}
+                {t("orders.offerShort", {
+                  id: (order?.offer_session_id || "")
+                    .substring(0, 8)
+                    .toUpperCase(),
+                })}
               </MaterialLink>
             )}
 
@@ -128,13 +137,15 @@ export function ViewOrder() {
               underline="hover"
               color={"text.secondary"}
             >
-              Order {(id || "").substring(0, 8).toUpperCase()}
+              {t("orders.orderShort", {
+                id: (id || "").substring(0, 8).toUpperCase(),
+              })}
             </MaterialLink>
           </Breadcrumbs>
         </Grid>
         <HeaderTitle>
           <BackArrow />
-          View Order
+          {t("orders.viewOrder")}
         </HeaderTitle>
 
         {error ? <Navigate to={"/404"} /> : null}

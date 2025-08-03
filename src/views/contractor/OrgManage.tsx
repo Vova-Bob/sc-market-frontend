@@ -42,6 +42,7 @@ import {
 } from "../../components/markdown/Markdown"
 import { external_resource_regex } from "../people/ViewProfile"
 import { ListingSellerRating } from "../../components/rating/ListingRating"
+import { useTranslation } from "react-i18next"
 
 export function OrgDetailEdit() {
   const [contractor] = useCurrentOrg()
@@ -68,6 +69,7 @@ export function OrgDetailEditSkeleton() {
 export function OrgDetailEditForm(props: { contractor: Contractor }) {
   const theme = useTheme<ExtendedTheme>()
   const { contractor } = props
+  const { t } = useTranslation()
   const issueAlert = useAlertHook()
 
   const [editingName, setEditingName] = useState(false)
@@ -105,14 +107,14 @@ export function OrgDetailEditForm(props: { contractor: Contractor }) {
 
     if (res?.data && !res?.error) {
       issueAlert({
-        message: "Submitted!",
+        message: t("orgDetailEdit.submitted"),
         severity: "success",
       })
     } else {
       issueAlert({
-        message: `Failed to submit! ${
-          res.error?.error || res.error?.data?.error || res.error
-        }`,
+        message: t("orgDetailEdit.failed_submit", {
+          reason: res.error?.error || res.error?.data?.error || res.error || "",
+        }),
         severity: "error",
       })
     }
@@ -183,13 +185,12 @@ export function OrgDetailEditForm(props: { contractor: Contractor }) {
                   >
                     <TextField
                       variant={"filled"}
-                      label={"Image URL"}
+                      label={t("orgDetailEdit.image_url")}
                       fullWidth
                       focused
                       multiline
                       helperText={
-                        avatarEntryOpen &&
-                        "Direct URL to the image, from Imgur, RSI, or starcitizen.tools"
+                        avatarEntryOpen && t("orgDetailEdit.image_url_helper")
                       }
                       onChange={(
                         event: React.ChangeEvent<{ value: string }>,
@@ -211,7 +212,7 @@ export function OrgDetailEditForm(props: { contractor: Contractor }) {
                         setAvatarEntryOpen(false)
                       }}
                     >
-                      Save
+                      {t("orgDetailEdit.save")}
                     </Button>
                   </Box>
                 </Collapse>
@@ -246,7 +247,7 @@ export function OrgDetailEditForm(props: { contractor: Contractor }) {
                         setEditingName((v) => !v)
                       }}
                     >
-                      Save
+                      {t("orgDetailEdit.save")}
                     </Button>
                   </Grid>
                 </Grid>
@@ -325,8 +326,8 @@ export function OrgDetailEditForm(props: { contractor: Contractor }) {
                   <TextField
                     {...params}
                     variant="outlined"
-                    label="Org Tags"
-                    placeholder="mining"
+                    label={t("orgDetailEdit.org_tags")}
+                    placeholder={t("orgDetailEdit.mining")}
                     fullWidth
                     SelectProps={{
                       IconComponent: KeyboardArrowDownRoundedIcon,
@@ -357,7 +358,7 @@ export function OrgDetailEditForm(props: { contractor: Contractor }) {
                   setEditingTags((v) => !v)
                 }}
               >
-                Save
+                {t("orgDetailEdit.save")}
               </Button>
             </CardContent>
           ) : (
@@ -374,7 +375,7 @@ export function OrgDetailEditForm(props: { contractor: Contractor }) {
                   />
                 ))
               ) : (
-                <Typography>No tags</Typography>
+                <Typography>{t("orgDetailEdit.no_tags")}</Typography>
               )}
               <IconButton
                 sx={{
@@ -414,7 +415,7 @@ export function OrgDetailEditForm(props: { contractor: Contractor }) {
                       setEditingDesc((v) => !v)
                     }}
                   >
-                    Save
+                    {t("orgDetailEdit.save")}
                   </Button>
                 </Box>
               </>
@@ -461,13 +462,12 @@ export function OrgDetailEditForm(props: { contractor: Contractor }) {
                   >
                     <TextField
                       variant={"filled"}
-                      label={"Image URL"}
+                      label={t("orgDetailEdit.image_url")}
                       fullWidth
                       focused
                       multiline
                       helperText={
-                        bannerEntryOpen &&
-                        "Direct URL to the image, from Imgur, RSI, or starcitizen.tools"
+                        bannerEntryOpen && t("orgDetailEdit.image_url_helper")
                       }
                       onChange={(
                         event: React.ChangeEvent<{ value: string }>,
@@ -485,7 +485,7 @@ export function OrgDetailEditForm(props: { contractor: Contractor }) {
 
                 <Fab
                   color={bannerEntryOpen ? "primary" : "secondary"}
-                  aria-label="Set new banner"
+                  aria-label={t("orgDetailEdit.set_banner")}
                   onClick={async () => {
                     if (bannerEntryOpen && newBannerURL) {
                       await submitUpdate({ banner_url: newBannerURL })

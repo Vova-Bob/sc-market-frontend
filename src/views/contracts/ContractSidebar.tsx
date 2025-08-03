@@ -141,14 +141,18 @@ export function ContractSidebar() {
       >
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <IconButton onClick={() => setOpen(false)} color={"secondary"}>
+            <IconButton
+              onClick={() => setOpen(false)}
+              color={"secondary"}
+              aria-label={t("service_market.toggle_sidebar")}
+            >
               <CloseIcon />
             </IconButton>
           </Grid>
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label={"Search"}
+              label={t("service_search.search")}
               InputProps={{
                 startAdornment: <SearchIcon />,
               }}
@@ -159,7 +163,7 @@ export function ContractSidebar() {
           </Grid>
           <Grid item xs={12}>
             <Typography variant={"subtitle2"} fontWeight={"bold"}>
-              Filtering
+              {t("service_search.filtering")}
             </Typography>
           </Grid>
           <Grid item xs={12}>
@@ -167,30 +171,33 @@ export function ContractSidebar() {
               select
               fullWidth
               value={kind}
-              label="Contract Type"
+              label={t("service_search.contract_type")}
               onChange={handleKindChange}
               color={"secondary"}
               SelectProps={{
                 IconComponent: KeyboardArrowDownRoundedIcon,
               }}
             >
-              {["Any", ...Object.keys(orderIcons)].map((k) => (
+              <MenuItem value={"Any"}>
+                {t("service_search.contract_types.Any")}
+              </MenuItem>
+              {Object.keys(orderIcons).map((k) => (
                 <MenuItem value={k} key={k}>
-                  {k}
+                  {t(`orderKinds.${k}`, k)}
                 </MenuItem>
               ))}
             </TextField>
           </Grid>
           <Grid item xs={12}>
             <Typography variant={"subtitle2"} fontWeight={"bold"}>
-              Sorting
+              {t("recruiting_sidebar.sorting")}
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <TextField
               select
               fullWidth
-              label="Sort Attribute"
+              label={t("recruiting_sidebar.sort_attribute")}
               value={sort || ""}
               onChange={handleSortChange}
               color={"secondary"}
@@ -198,17 +205,25 @@ export function ContractSidebar() {
                 IconComponent: KeyboardArrowDownRoundedIcon,
               }}
             >
-              <MenuItem value={""}>None</MenuItem>
-              <MenuItem value={"title"}>Title</MenuItem>
-              <MenuItem value={"price-low"}>Price (Low to High)</MenuItem>
-              <MenuItem value={"price-high"}>Price (High to Low)</MenuItem>
-              <MenuItem value={"date-new"}>Date Listed (Old to New)</MenuItem>
-              <MenuItem value={"date-old"}>Date Listed (New to Old)</MenuItem>
+              <MenuItem value={""}>{t("market.none")}</MenuItem>
+              <MenuItem value={"title"}>{t("market.title")}</MenuItem>
+              <MenuItem value={"price-low"}>
+                {t("market.price_low_to_high")}
+              </MenuItem>
+              <MenuItem value={"price-high"}>
+                {t("market.price_high_to_low")}
+              </MenuItem>
+              <MenuItem value={"date-new"}>
+                {t("market.date_old_to_new")}
+              </MenuItem>
+              <MenuItem value={"date-old"}>
+                {t("market.date_new_to_old")}
+              </MenuItem>
             </TextField>
           </Grid>
           <Grid item xs={12}>
             <Typography variant={"subtitle2"} fontWeight={"bold"}>
-              Offer
+              {t("service_search.cost")}
             </Typography>
           </Grid>
 
@@ -216,7 +231,7 @@ export function ContractSidebar() {
             <TextField
               fullWidth
               value={minOffer}
-              label="Minimum Offer"
+              label={t("service_search.min_cost")}
               onChange={handleMinCostChange}
               color={"secondary"}
               inputProps={{
@@ -235,7 +250,7 @@ export function ContractSidebar() {
             <TextField
               fullWidth
               value={maxOffer == null ? "" : maxOffer}
-              label="Maximum Offer"
+              label={t("service_search.max_cost")}
               onChange={handleMaxCostChange}
               color={"secondary"}
               inputProps={{
@@ -253,7 +268,7 @@ export function ContractSidebar() {
           <Grid item xs={12}>
             <TextField
               select
-              label={"Payment Type"}
+              label={t("service_search.payment_type")}
               value={paymentType}
               onChange={handlePaymentTypeChange}
               fullWidth
@@ -261,10 +276,12 @@ export function ContractSidebar() {
                 IconComponent: KeyboardArrowDownRoundedIcon,
               }}
             >
-              <MenuItem value={"any"}>Any</MenuItem>
+              <MenuItem value={"any"}>
+                {t("service_search.payment_types.any")}
+              </MenuItem>
               {PAYMENT_TYPES.slice(0, 3).map((paymentType) => (
                 <MenuItem key={paymentType.value} value={paymentType.value}>
-                  {t(paymentType.translationKey)}
+                  {t(`service_search.payment_types.${paymentType.value}`)}
                 </MenuItem>
               ))}
             </TextField>

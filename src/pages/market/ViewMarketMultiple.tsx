@@ -14,6 +14,7 @@ import { Button, Grid } from "@mui/material"
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded"
 import { BackArrow } from "../../components/button/BackArrow"
 import { MarketMultipleView } from "../../views/market/MarketMultipleView"
+import { useTranslation } from "react-i18next"
 
 export function ViewMarketMultiple(props: {}) {
   const { id } = useParams<{ id: string }>()
@@ -25,6 +26,7 @@ export function ViewMarketMultiple(props: {}) {
    *   order comments, update date,
    *   assigned person, payment
    */
+  const { t } = useTranslation()
 
   const { data: listing, error, refetch } = useMarketGetMultipleByIDQuery(id!)
 
@@ -39,7 +41,7 @@ export function ViewMarketMultiple(props: {}) {
           xs={12}
         >
           <HeaderTitle md={7} lg={7} xl={7}>
-            <BackArrow /> View Market Listing
+            <BackArrow /> {t("market.viewMarketListing")}
           </HeaderTitle>
 
           <Grid item>
@@ -53,7 +55,7 @@ export function ViewMarketMultiple(props: {}) {
                 variant={"contained"}
                 size={"large"}
               >
-                My Cart
+                {t("marketActions.myCart")}
               </Button>
             </Link>
           </Grid>
@@ -91,6 +93,7 @@ export function EditMarketMultiple(props: {}) {
    *   order comments, update date,
    *   assigned person, payment
    */
+  const { t } = useTranslation()
 
   const { data: listing, error, refetch } = useMarketGetListingByIDQuery(id!)
 
@@ -98,7 +101,7 @@ export function EditMarketMultiple(props: {}) {
     <Page title={listing?.details?.title}>
       <ContainerGrid sidebarOpen={true} maxWidth={"lg"}>
         <HeaderTitle>
-          <BackArrow /> Edit Market Listing
+          <BackArrow /> {t("market.editMarketListing")}
         </HeaderTitle>
 
         {error ? <Navigate to={"/404"} /> : null}

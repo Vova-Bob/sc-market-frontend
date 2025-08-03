@@ -26,34 +26,29 @@ export function Authenticate(props: {}) {
           color={"text.secondary"}
           sx={{ fontWeight: "bold" }}
         >
-          {t("auth.title", "Sign Up")}
+          {t("auth.title")}
         </Typography>
       </Grid>
       <Grid item xs={12}>
         <Divider light />
       </Grid>
       <Grid item xs={12}>
-        <TextField label={t("auth.email", "Email")} fullWidth />
+        <TextField label={t("auth.email")} fullWidth />
       </Grid>
       <Grid item xs={12}>
-        <TextField label={t("auth.username", "Username")} fullWidth />
+        <TextField label={t("auth.username")} fullWidth />
       </Grid>
       <Grid item xs={12}>
-        <TextField label={t("auth.password", "Password")} fullWidth />
+        <TextField label={t("auth.password")} fullWidth />
       </Grid>
       <Grid item xs={12}>
-        <TextField
-          label={t("auth.repeatPassword", "Repeat Password")}
-          fullWidth
-        />
+        <TextField label={t("auth.repeatPassword")} fullWidth />
       </Grid>
       <Grid item xs={12}>
         <Divider light />
       </Grid>
       <Grid item xs={12} alignItems={"center"} container>
-        <Typography display={"inline"}>
-          {t("auth.loginWith", "Login with")}
-        </Typography>
+        <Typography display={"inline"}>{t("auth.loginWith")}</Typography>
         <ButtonGroup variant="outlined" aria-label="outlined button group">
           <IconButton color={"primary"}>
             <Google />
@@ -69,14 +64,11 @@ export function Authenticate(props: {}) {
       <Grid item xs={8}>
         <Typography>
           <Checkbox />
-          {t(
-            "auth.terms",
-            "By clicking here you agree to our terms of service",
-          )}
+          {t("auth.terms")}
         </Typography>
       </Grid>
       <Grid item xs={4}>
-        <Button variant={"outlined"}>{t("auth.submit", "Submit")}</Button>
+        <Button variant={"outlined"}>{t("auth.submit")}</Button>
       </Grid>
     </Section>
   )

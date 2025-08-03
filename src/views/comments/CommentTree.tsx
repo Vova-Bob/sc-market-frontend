@@ -27,9 +27,11 @@ import { MarkdownRender } from "../../components/markdown/Markdown"
 import { useGetUserProfileQuery } from "../../store/profile"
 import { TrashCan } from "mdi-material-ui"
 import { CommentVotes } from "../../components/button/CommentVotes"
+import { useTranslation } from "react-i18next"
 
 export const defaultAvatar =
   "https://robertsspaceindustries.com/rsi/static/images/account/avatar_default_big.jpg"
+
 export function CommentTree(props: {
   comment: Comment
   post?: RecruitingPost
@@ -37,6 +39,7 @@ export function CommentTree(props: {
 }) {
   const { comment, post, depth } = props
   const [replyOpen, setReplyOpen] = useState(false)
+  const { t } = useTranslation()
 
   const [submitComment] = useCommentsReplyMutation()
   const [deleteComment] = useCommentsDeleteMutation()
@@ -58,7 +61,9 @@ export function CommentTree(props: {
           variant={"rounded"}
           src={comment.author?.avatar || defaultAvatar}
           sx={{ width: 64, height: 64 }}
-          alt={`Avatar of ${comment.author?.username}`}
+          alt={t("commentTree.avatar_alt", {
+            username: comment.author?.username,
+          })}
         />
         <Box>
           <MaterialLink
@@ -70,7 +75,7 @@ export function CommentTree(props: {
             }}
           >
             <UnderlineLink variant={"subtitle2"}>
-              {comment.author?.display_name || "[deleted]"}
+              {comment.author?.display_name || t("commentTree.deleted")}
             </UnderlineLink>
           </MaterialLink>
           <Typography>
@@ -106,7 +111,7 @@ export function CommentTree(props: {
               fullWidth
               sx={{ marginRight: 2 }}
               multiline
-              label={"Reply to Comment"}
+              label={t("commentTree.reply")}
               value={content}
               onChange={(event: React.ChangeEvent<{ value: string }>) => {
                 setContent(event.target.value)
@@ -128,7 +133,7 @@ export function CommentTree(props: {
                 setReplyOpen(false)
               }}
             >
-              Post
+              {t("commentTree.post")}
             </Button>
           </Box>
         </Collapse>

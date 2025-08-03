@@ -13,11 +13,13 @@ import { useGetAuthenticatorIdentifier } from "../../store/profile"
 import { useNavigate } from "react-router-dom"
 import { useContractorLinkMutation } from "../../store/contractor"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
+import { useTranslation } from "react-i18next"
 
 export function AuthenticateContractor(props: {}) {
   const identifier = useGetAuthenticatorIdentifier()
   const [orgName, setOrgName] = useState("")
   const [error, setError] = useState(false)
+  const { t } = useTranslation()
 
   const [
     activateContractorLink, // This is the mutation trigger
@@ -44,37 +46,37 @@ export function AuthenticateContractor(props: {}) {
         window.location.reload()
       } else {
         issueAlert({
-          message: `Failed to authenticate! ${
-            res.error?.error || res.error?.data?.error || res.error
-          }`,
+          message: t("authenticateContractor.failed_auth", {
+            reason:
+              res.error?.error || res.error?.data?.error || res.error || "",
+          }),
           severity: "error",
         })
       }
       return false
     },
-    [activateContractorLink, history, orgName, issueAlert],
+    [activateContractorLink, orgName, issueAlert, t, navigate],
   )
 
   return (
     <Section xs={12} lg={12}>
       <Grid item xs={12}>
         <TextField
-          label={"Org Spectrum ID"}
+          label={t("authenticateContractor.org_spectrum_id")}
           fullWidth
           value={orgName}
           onChange={(event) => setOrgName(event.target.value.toUpperCase())}
           error={error ? !orgName : false}
           helperText={
-            error && !orgName ? "Please set your org name" : undefined
+            error && !orgName
+              ? t("authenticateContractor.error_org_name")
+              : undefined
           }
         />
       </Grid>
       <Grid item xs={12}>
         <Typography display={"inline"}>
-          In order to verify you own the above organization, please click the
-          button below to open your org page and add the following code to your
-          org introduction, history, manifesto, or charter sections. You can
-          remove this code once verification is complete.
+          {t("authenticateContractor.instructions.1")}
           <Button
             style={{ display: "inline" }}
             color={"secondary"}
@@ -87,7 +89,7 @@ export function AuthenticateContractor(props: {}) {
           >
             {identifier.data?.identifier || "PLACEHOLDER"}
           </Button>
-          Click submit once the code is visible on the org page.
+          {t("authenticateContractor.instructions.2")}
         </Typography>
       </Grid>
       <Grid item xs={12}>
@@ -109,10 +111,10 @@ export function AuthenticateContractor(props: {}) {
               )
             }}
           >
-            Copy Code and Open Org Page
+            {t("authenticateContractor.copy_and_open")}
           </Button>
           <Button variant={"outlined"} onClick={submit}>
-            Submit
+            {t("authenticateContractor.submit")}
           </Button>
         </Box>
       </Grid>

@@ -44,6 +44,7 @@ import { Stack } from "@mui/system"
 import CharLogo from "../../assets/CharHoldings_Logo.png"
 import UNNLogo from "../../assets/UNN_Traders_Logo.jpg"
 import BirdIncLogo from "../../assets/birdinc.png"
+import { useTranslation } from "react-i18next"
 
 const bg = "https://media.tenor.com/4LKXThFQuHMAAAAd/perseus-star-citizen.gif"
 
@@ -150,6 +151,7 @@ export function RecentListingsSkeleton() {
 }
 
 export function OrderStatistics() {
+  const { t } = useTranslation()
   const { data: stats } = useMarketStatsQuery()
   const { total_orders, total_order_value, week_orders, week_order_value } =
     stats || {
@@ -162,11 +164,11 @@ export function OrderStatistics() {
   return (
     <Grid container spacing={2} justifyContent={"center"}>
       <MetricSection
-        title={"Total Orders"}
+        title={t("landing.totalOrders")}
         body={<AnimatedNumbers includeComma animateToNumber={total_orders} />}
       />
       <MetricSection
-        title={"Total Order Value"}
+        title={t("landing.totalOrderValue")}
         body={
           <Box display={"flex"}>
             {
@@ -182,7 +184,7 @@ export function OrderStatistics() {
       {+week_orders > 0 && (
         <>
           <MetricSection
-            title={"Orders This Week"}
+            title={t("landing.ordersThisWeek")}
             body={
               <Box display={"flex"}>
                 {<AnimatedNumbers includeComma animateToNumber={week_orders} />}
@@ -190,7 +192,7 @@ export function OrderStatistics() {
             }
           />
           <MetricSection
-            title={"Value of Orders This Week"}
+            title={t("landing.valueOfOrdersThisWeek")}
             body={
               <Box display={"flex"}>
                 {
@@ -210,6 +212,7 @@ export function OrderStatistics() {
 }
 
 export function LandingPage() {
+  const { t } = useTranslation()
   const theme = useTheme<ExtendedTheme>()
 
   return (
@@ -247,11 +250,23 @@ export function LandingPage() {
               paddingBottom: theme.spacing(8),
             }}
           >
-            <Container>
+            {/* corrected central block text */}
+            <Container
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                textAlign: "center",
+                padding: 0,
+                margin: 0,
+              }}
+            >
               <Stack
-                justifyContent={"center"}
-                alignItems={"center"}
-                flexDirection={"column"}
+                justifyContent="center"
+                alignItems="center"
+                flexDirection="column"
+                sx={{ width: "100%", textAlign: "center" }}
               >
                 <Avatar
                   sx={{
@@ -263,16 +278,18 @@ export function LandingPage() {
                       width: theme.spacing(24),
                       height: theme.spacing(24),
                     },
-                    // marginBottom: -8
                   }}
                   src={logo}
                   alt={`SC Market Logo`}
                 />
-                <Typography color={"secondary"} variant={"h1"}>
+                <Typography color="secondary" variant="h1">
                   <b>SC MARKET</b>
                 </Typography>
-                <Typography variant={"h2"}>
-                  Buy and sell goods. Buy and sell services.
+                <Typography
+                  variant="h2"
+                  sx={{ width: "100%", textAlign: "center" }}
+                >
+                  {t("landing.subtitle")}
                 </Typography>
               </Stack>
             </Container>
@@ -303,17 +320,14 @@ export function LandingPage() {
                       sx={{ fontWeight: "bold", textAlign: "center" }}
                       color={"text.secondary"}
                     >
-                      Buy and Sell Items
+                      {t("landing.buySellItemsTitle")}
                     </Typography>
                     <Typography
                       variant={"body1"}
                       sx={{ textAlign: "left" }}
                       color={"text.secondary"}
                     >
-                      List your items to be sold in whatever quantity you
-                      support. Get alerts in Discord when someone places an
-                      order, and work with buyers to fulfill their orders.{" "}
-                      <b>{"We don't take a cut."}</b>
+                      {t("landing.buySellItemsText")}
                     </Typography>
                   </Stack>
                 </Grid2>
@@ -325,16 +339,14 @@ export function LandingPage() {
                       sx={{ fontWeight: "bold", textAlign: "center" }}
                       color={"text.secondary"}
                     >
-                      Trade in Bulk
+                      {t("landing.tradeInBulkTitle")}
                     </Typography>
                     <Typography
                       variant={"body1"}
                       sx={{ textAlign: "left" }}
                       color={"text.secondary"}
                     >
-                      Whether you have 5 FS-9s to sell or 50, we want to support
-                      you. List your items in bulk or individually and manage
-                      your stock with the click of a button.
+                      {t("landing.tradeInBulkText")}
                     </Typography>
                   </Stack>
                 </Grid2>
@@ -346,18 +358,14 @@ export function LandingPage() {
                       sx={{ fontWeight: "bold", textAlign: "center" }}
                       color={"text.secondary"}
                     >
-                      Order Services
+                      {t("landing.orderServicesTitle")}
                     </Typography>
                     <Typography
                       variant={"body1"}
                       sx={{ textAlign: "left" }}
                       color={"text.secondary"}
                     >
-                      Do you or your org have provide a service? Whether its
-                      medical rescue, hauler escort, sourcing items or
-                      otherwise, find a home on SC Market where you can discover
-                      the many services being provided throughout the
-                      &apos;verse.
+                      {t("landing.orderServicesText")}
                     </Typography>
                   </Stack>
                 </Grid2>
@@ -387,7 +395,7 @@ export function LandingPage() {
                   color={"text.secondary"}
                 >
                   <span style={{ color: theme.palette.secondary.main }}>
-                    For Orgs
+                    {t("landing.forOrgs")}
                   </span>
                 </Typography>
               </Stack>
@@ -396,19 +404,19 @@ export function LandingPage() {
                 <Grid2 size={{ xs: 12, md: 4 }}>
                   <LandingSmallImage
                     src={recruitingCap}
-                    title={"Org Recruitment"}
+                    title={t("landing.orgRecruitment")}
                   />
                 </Grid2>
                 <Grid2 size={{ xs: 12, md: 4 }}>
                   <LandingSmallImage
                     src={servicesCap}
-                    title={"Service Listings"}
+                    title={t("landing.serviceListings")}
                   />
                 </Grid2>
                 <Grid2 size={{ xs: 12, md: 4 }}>
                   <LandingSmallImage
                     src={manageStockCap}
-                    title={"Stock Management"}
+                    title={t("landing.stockManagement")}
                   />
                 </Grid2>
               </Grid2>
@@ -424,16 +432,14 @@ export function LandingPage() {
                   sx={{ textAlign: "center" }}
                   color={"text.secondary"}
                 >
-                  We enable orgs to coordinate their members to fulfill orders
-                  and render services. Become a trusted group customers come to
-                  when they need work done.
+                  {t("landing.orgsHelpText")}
                 </Typography>
                 <Button
                   variant={"outlined"}
                   color={"secondary"}
                   href={`https://github.com/henry232323/sc-market/wiki`}
                 >
-                  Learn More
+                  {t("landing.learnMore")}
                 </Button>
               </Stack>
               <SupportersSection />
@@ -484,9 +490,9 @@ export function FAQQuestion(props: {
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        {/*<Box sx={{*/}
-        {/*    padding: theme.spacing(1)*/}
-        {/*}}>*/}
+        {/*<Box sx={{
+            padding: theme.spacing(1)
+        }}>*/}
         <ListItem
           sx={
             {
@@ -507,6 +513,7 @@ export function FAQQuestion(props: {
 }
 
 function FAQSection() {
+  const { t } = useTranslation()
   const theme = useTheme<ExtendedTheme>()
 
   return (
@@ -516,7 +523,7 @@ function FAQSection() {
         color={"text.secondary"}
         sx={{ maxWidth: "min(400px, 100%)", flexShrink: "0", marginBottom: 2 }}
       >
-        Your questions, answered
+        {t("landing.faqTitle")}
       </Typography>
       <Paper sx={{ flexGrow: "1" }}>
         <List
@@ -526,41 +533,25 @@ function FAQSection() {
           }}
         >
           <FAQQuestion
-            question={"How do I sell items?"}
-            answer={
-              "Create market listings for the items you want to sell. Buyers can add the items they want " +
-              "to their cart, then place an order with you for those items. From there it is up to you " +
-              "and the buyer to arrange a time and place to exchange the aUEC and goods."
-            }
+            question={t("landing.faqSellItemsQ")}
+            answer={t("landing.faqSellItemsA")}
             first
           />
           <FAQQuestion
-            question={"Is SC Market safe to use?"}
-            answer={
-              "Because we don't handle any of the goods or aUEC ourselves, we cannot make any guarantees. " +
-              "However, we do provide ways for buyers and sellers to review each other, so you can be sure " +
-              "that others have had positive experiences with a seller if you are wary of being scammed."
-            }
+            question={t("landing.faqSafeQ")}
+            answer={t("landing.faqSafeA")}
           />
           <FAQQuestion
-            question={"What kinds of things can I list on SC Market?"}
-            answer={
-              "You can list any item or service as long as you accept aUEC in exchange for it. " +
-              "Items and services should generally be related to Star Citizen and services may be conducted " +
-              "in our out of the game itself."
-            }
+            question={t("landing.faqListThingsQ")}
+            answer={t("landing.faqListThingsA")}
           />
           <FAQQuestion
-            question={"Does SC Market take a fee?"}
-            answer={
-              "No we do not. All services are provided here free of charge and no aUEC passes through us."
-            }
+            question={t("landing.faqFeeQ")}
+            answer={t("landing.faqFeeA")}
           />
           <FAQQuestion
-            question={"Can I list items for real money?"}
-            answer={
-              "No. All transactions on SC Market should be completed in aUEC."
-            }
+            question={t("landing.faqRealMoneyQ")}
+            answer={t("landing.faqRealMoneyA")}
             last
           />
         </List>
@@ -570,6 +561,7 @@ function FAQSection() {
 }
 
 function SupportersSection() {
+  const { t } = useTranslation()
   const supporters = [
     {
       avatar: CharLogo,
@@ -595,14 +587,14 @@ function SupportersSection() {
         sx={{ fontWeight: "bold", textAlign: "center" }}
         color={"text.secondary"}
       >
-        Our Supporters
+        {t("landing.supportersTitle")}
       </Typography>
       <Typography
         variant={"h5"}
         sx={{ textAlign: "center" }}
         color={"text.primary"}
       >
-        Thank you to all of our{" "}
+        {t("landing.supportersThanks")}
         <MaterialLink
           color={"secondary"}
           target={"_blank"}
@@ -612,7 +604,7 @@ function SupportersSection() {
         >
           Patreon
         </MaterialLink>{" "}
-        supporters
+        {t("landing.supporters")}
       </Typography>
       <Stack
         sx={{ maxWidth: "100%", overflow: "scroll", flexWrap: "wrap" }}

@@ -19,10 +19,12 @@ import { CounterOfferSubmitArea } from "../../views/offers/CounterOfferSubmitAre
 import { CounterOfferDetailsContext } from "../../hooks/offer/CounterOfferDetails"
 import { OfferServiceEditArea } from "../../views/offers/OfferServiceEditArea"
 import { OfferMarketListingsEditArea } from "../../views/offers/OfferMarketListingsEditArea"
+import { useTranslation } from "react-i18next"
 
 export function CounterOfferPage() {
   const { id } = useParams<{ id: string }>()
   const { data: session } = useGetOfferSessionByIDQuery(id!)
+  const { t } = useTranslation()
 
   const [counterOffer, setCounterOffer] = useState<CounterOfferBody>({
     cost: "0",
@@ -53,7 +55,7 @@ export function CounterOfferPage() {
   }, [session])
 
   return (
-    <Page title={"View Offer"}>
+    <Page title={t("offers.viewOffer")}>
       <CounterOfferDetailsContext.Provider
         value={[counterOffer, setCounterOffer]}
       >
@@ -66,7 +68,7 @@ export function CounterOfferPage() {
                 underline="hover"
                 color={"text.primary"}
               >
-                Dashboard
+                {t("offers.dashboard")}
               </MaterialLink>
               <MaterialLink
                 component={Link}
@@ -74,7 +76,7 @@ export function CounterOfferPage() {
                 underline="hover"
                 color={"text.primary"}
               >
-                Received Offers
+                {t("offers.receivedOffers")}
               </MaterialLink>
               <MaterialLink
                 component={Link}
@@ -82,14 +84,16 @@ export function CounterOfferPage() {
                 underline="hover"
                 color={"text.primary"}
               >
-                Offer {(id || "").substring(0, 8).toUpperCase()}
+                {t("offers.offer")} {(id || "").substring(0, 8).toUpperCase()}
               </MaterialLink>
-              <Typography color={"text.secondary"}>Counter Offer</Typography>
+              <Typography color={"text.secondary"}>
+                {t("offers.counterOffer")}
+              </Typography>
             </Breadcrumbs>
           </Grid>
 
           <HeaderTitle lg={12} xl={12}>
-            View Offer
+            {t("offers.viewOffer")}
           </HeaderTitle>
 
           {session ? (

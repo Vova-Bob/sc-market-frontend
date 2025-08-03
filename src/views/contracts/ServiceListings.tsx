@@ -120,7 +120,7 @@ export function ServiceListingBase(props: { service: Service; index: number }) {
                   {/*</Typography>*/}
                   <Typography color={"primary"} variant={"subtitle2"}>
                     {service.cost.toLocaleString(undefined)} aUEC{" "}
-                    {key ? t(key) : ""}
+                    {key ? t(`paymentTypes.${key}`) : ""}
                   </Typography>
                 </Box>
               }
@@ -128,7 +128,9 @@ export function ServiceListingBase(props: { service: Service; index: number }) {
                 <>
                   <Chip
                     color={"primary"}
-                    label={service.kind}
+                    label={t(`myServices.${service.kind}`, {
+                      defaultValue: service.kind,
+                    })}
                     sx={{ marginRight: 1, marginBottom: 1, padding: 1 }}
                     variant={"outlined"}
                     icon={orderIcons[service.kind]}

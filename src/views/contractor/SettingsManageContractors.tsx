@@ -7,8 +7,10 @@ import {
   useLeaveContractorMutation,
 } from "../../store/contractor"
 import { ThemedDataGrid } from "../../components/grid/ThemedDataGrid"
+import { useTranslation } from "react-i18next"
 
 export function SettingsManageContractors() {
+  const { t } = useTranslation() // ДОДАЙ ОЦЕ!
   const { data: profile } = useGetUserProfileQuery()
   const [showOrgOnProfile, setShowOrgOnProfile] = useState(true)
 
@@ -19,11 +21,11 @@ export function SettingsManageContractors() {
   }
 
   const columns: GridColDef[] = [
-    { field: "name", headerName: "Name", flex: 1 },
+    { field: "name", headerName: t("settingsManageContractors.name"), flex: 1 },
     // {
     //   field: "shown",
     //   renderHeader: () => null,
-    //   headerName: "Show on Profile",
+    //   headerName: t("settingsManageContractors.show_on_profile"),
     //   sortable: true,
     //   renderCell: ({ value }) => (
     //     <FormControlLabel
@@ -33,14 +35,14 @@ export function SettingsManageContractors() {
     //           onChange={(e) => setShowOrgOnProfile(e.target.checked)}
     //         />
     //       }
-    //       label="Show organization on profile"
+    //       label={t("settingsManageContractors.show_org_on_profile")}
     //       sx={{ mb: 2 }}
     //     />
     //   ),
     // },
     {
       field: "actions",
-      headerName: "Actions",
+      headerName: t("settingsManageContractors.actions"),
       flex: 1,
       sortable: false,
       align: "right",
@@ -71,7 +73,7 @@ export function SettingsManageContractors() {
             color="error"
             onClick={() => handleLeaveOrg(row.spectrum_id)}
           >
-            Leave Organization
+            {t("settingsManageContractors.leave_org")}
           </Button>
         )
       },

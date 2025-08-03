@@ -6,17 +6,19 @@ import { Navigate } from "react-router-dom"
 import { Grid } from "@mui/material"
 import { AuthenticateRSI } from "../../views/authentication/AuthenticateRSI"
 import { Page } from "../../components/metadata/Page"
+import { useTranslation } from "react-i18next"
 
 export function AuthenticateRSIPage() {
+  const { t } = useTranslation()
   const profile = useGetUserProfileQuery()
 
   return (
-    <Page title={"Account Link"}>
+    <Page title={t("login.accountLink")}>
       <ContainerGrid maxWidth={"xl"} sidebarOpen={false}>
         {profile.data?.rsi_confirmed && <Navigate to={"/dashboard"} />}
         <Grid item xs={12} lg={4}>
           <Grid container spacing={4} alignItems={"flex-start"}>
-            <HeaderTitle>Authenticate with RSI</HeaderTitle>
+            <HeaderTitle>{t("login.authenticateWithRSI")}</HeaderTitle>
             <AuthenticateRSI />
           </Grid>
         </Grid>

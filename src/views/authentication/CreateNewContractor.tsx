@@ -14,6 +14,7 @@ import { useRegisterContractorMutation } from "../../store/contractor"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { isAlphaNumeric } from "./AuthenticateRSI"
 import { MarkdownEditor } from "../../components/markdown/Markdown"
+import { useTranslation } from "react-i18next"
 
 export const fallback_image =
   "https://cdn.robertsspaceindustries.com/static/images/Temp/default-image.png"
@@ -27,6 +28,7 @@ export function CreateNewContractor() {
   const [banner, setBanner] = useState(fallback_banner)
   const [description, setDescription] = useState("")
   const [error, setError] = useState(false)
+  const { t } = useTranslation()
 
   const [
     registerNewContractor, // This is the mutation trigger
@@ -56,9 +58,10 @@ export function CreateNewContractor() {
         navigate(`/contractor/~${contractorIdentifier}`)
       } else {
         issueAlert({
-          message: `Failed to authenticate! ${
-            res.error?.error || res.error?.data?.error || res.error
-          }`,
+          message: t("contractorCreate.failed_auth", {
+            reason:
+              res.error?.error || res.error?.data?.error || res.error || "",
+          }),
           severity: "error",
         })
       }
@@ -73,6 +76,7 @@ export function CreateNewContractor() {
       banner,
       navigate,
       issueAlert,
+      t,
     ],
   )
 
@@ -80,7 +84,7 @@ export function CreateNewContractor() {
     <Section xs={12} lg={12}>
       <Grid item xs={12}>
         <TextField
-          label={"Contractor Name"}
+          label={t("contractorCreate.name")}
           fullWidth
           value={contractorName}
           onChange={(event) => {
@@ -96,14 +100,14 @@ export function CreateNewContractor() {
           error={error ? !contractorName : false}
           helperText={
             error && !contractorName
-              ? "Please set your contractor name"
+              ? t("contractorCreate.error_name")
               : undefined
           }
         />
       </Grid>
       <Grid item xs={12}>
         <TextField
-          label={"Contractor Identifier"}
+          label={t("contractorCreate.identifier")}
           fullWidth
           value={contractorIdentifier}
           onChange={(event) => {
@@ -122,7 +126,7 @@ export function CreateNewContractor() {
           error={error ? !contractorName : false}
           helperText={
             error && !contractorName
-              ? "Please set your identifier name"
+              ? t("contractorCreate.error_identifier")
               : undefined
           }
         />
@@ -135,7 +139,7 @@ export function CreateNewContractor() {
             setDescription(value)
           }}
           TextFieldProps={{
-            label: "Description",
+            label: t("contractorCreate.description"),
           }}
         />
       </Grid>
@@ -147,14 +151,14 @@ export function CreateNewContractor() {
           sx={{ marginRight: 2, height: 96, width: 96 }}
         />
         <TextField
-          label={"Logo"}
+          label={t("contractorCreate.logo")}
           fullWidth
           value={avatar}
           onChange={(event) => setAvatar(event.target.value)}
           error={error ? !avatar : false}
           helperText={
             error && !contractorName
-              ? "Please set your contractor logo"
+              ? t("contractorCreate.error_logo")
               : undefined
           }
         />
@@ -167,14 +171,14 @@ export function CreateNewContractor() {
           sx={{ marginRight: 2, height: 96, width: 96 }}
         />
         <TextField
-          label={"Banner"}
+          label={t("contractorCreate.banner")}
           fullWidth
           value={banner}
           onChange={(event) => setBanner(event.target.value)}
           error={error ? !banner : false}
           helperText={
             error && !contractorName
-              ? "Please set your contractor banner"
+              ? t("contractorCreate.error_banner")
               : undefined
           }
         />
@@ -186,7 +190,7 @@ export function CreateNewContractor() {
       <Grid item xs={12}>
         <Box display={"flex"} justifyContent={"right"}>
           <Button variant={"outlined"} onClick={submit}>
-            Submit
+            {t("contractorCreate.submit")}
           </Button>
         </Box>
       </Grid>

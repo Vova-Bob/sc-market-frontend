@@ -7,8 +7,10 @@ import { DISCORD_INVITE } from "../../util/constants"
 import { HookProvider } from "../../hooks/HookProvider"
 import { Root } from "../../components/layout/Root"
 import { useSearchParams } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 
 export function FrontendErrorBody() {
+  const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const target = searchParams.get("target")
   const message = searchParams.get("message")
@@ -22,7 +24,7 @@ export function FrontendErrorBody() {
           color={"text.secondary"}
           align={"center"}
         >
-          An Error Occurred Loading the Page
+          {t("frontendError.title")}
         </Typography>
       </Grid>
       <Grid item xs={12}>
@@ -31,18 +33,18 @@ export function FrontendErrorBody() {
           color={"text.primary"}
           align={"center"}
         >
-          Please let us know in{" "}
+          {t("frontendError.subtitle")}{" "}
           <Link rel="noopener noreferrer" target="_blank" href={DISCORD_INVITE}>
             <UnderlineLink color={"text.secondary"}>Discord</UnderlineLink>
           </Link>{" "}
-          if you see this error after refreshing the page.
+          {t("frontendError.afterRefresh")}
         </Typography>
 
         <Typography variant={"body2"} align={"center"}>
-          Error page: <code>{target}</code>
+          {t("frontendError.page")}: <code>{target}</code>
         </Typography>
         <Typography variant={"body2"} align={"center"}>
-          Message: <code>{message}</code>
+          {t("frontendError.message")}: <code>{message}</code>
         </Typography>
       </Grid>
 
@@ -52,7 +54,7 @@ export function FrontendErrorBody() {
           style={{ color: "inherit", textDecoration: "none" }}
         >
           <Button color={"secondary"} variant={"outlined"}>
-            Return to Dashboard
+            {t("frontendError.returnToDashboard")}
           </Button>
         </a>
       </Grid>
@@ -61,8 +63,9 @@ export function FrontendErrorBody() {
 }
 
 export function FrontendErrorPage() {
+  const { t } = useTranslation()
   return (
-    <Page title={"An Error Occurred"}>
+    <Page title={t("frontendError.pageTitle")}>
       <ContainerGrid maxWidth={"md"} sidebarOpen={true}>
         <FrontendErrorBody />
       </ContainerGrid>

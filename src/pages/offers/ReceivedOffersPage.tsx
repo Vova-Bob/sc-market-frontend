@@ -5,10 +5,13 @@ import React from "react"
 import { ReceivedOffersArea } from "../../views/offers/ReceivedOffersArea"
 import { Breadcrumbs, Link as MaterialLink, Grid } from "@mui/material"
 import { Link } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 
 export function ReceivedOffersPage() {
+  const { t } = useTranslation()
+
   return (
-    <Page title={"Received Offers"}>
+    <Page title={t("offers.receivedOffers")}>
       <ContainerGrid maxWidth={"xl"} sidebarOpen={true}>
         <Grid item xs={12}>
           <Breadcrumbs>
@@ -18,7 +21,7 @@ export function ReceivedOffersPage() {
               underline="hover"
               color={"text.primary"}
             >
-              Dashboard
+              {t("offers.dashboard")}
             </MaterialLink>
             <MaterialLink
               component={Link}
@@ -26,12 +29,12 @@ export function ReceivedOffersPage() {
               to={"/offers/received"}
               color={"text.primary"}
             >
-              Received Offers
+              {t("offers.receivedOffers")}
             </MaterialLink>
           </Breadcrumbs>
         </Grid>
         <HeaderTitle lg={12} xl={12}>
-          Received Offers
+          {t("offers.receivedOffers")}
         </HeaderTitle>
 
         <ReceivedOffersArea />

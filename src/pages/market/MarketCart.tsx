@@ -32,12 +32,14 @@ import { MarkdownEditor } from "../../components/markdown/Markdown"
 import { MarketAggregateListingComposite } from "../../datatypes/MarketListing"
 import { NumericFormat } from "react-number-format"
 import { formatMarketUrl } from "../../util/urls"
+import { useTranslation } from "react-i18next"
 
 export function CartItemEntry(props: {
   item: CartItem
   updateCart: () => void
   removeCartItem: (item: CartItem) => void
 }) {
+  const { t } = useTranslation()
   const { item, updateCart, removeCartItem } = props
   const { data: listing } = useMarketGetListingByIDQuery(item.listing_id)
   const composite = listing as MarketAggregateListingComposite | undefined
@@ -105,15 +107,17 @@ export function CartItemEntry(props: {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="start">
-                    {`of ${(
-                      listing?.listing?.quantity_available || 0
-                    ).toLocaleString(undefined)} available`}
+                    {t("cart.ofAvailable", {
+                      available: (
+                        listing?.listing?.quantity_available || 0
+                      ).toLocaleString(undefined),
+                    })}
                   </InputAdornment>
                 ),
                 inputMode: "numeric",
               }}
               size="small"
-              label={"Quantity"}
+              label={t("cart.quantity")}
               value={item.quantity}
               color={"secondary"}
             />
@@ -122,8 +126,8 @@ export function CartItemEntry(props: {
         <Grid item>
           <Box display={"flex"} justifyContent={"space-between"} width={240}>
             <Box sx={{ width: 120 }}>
-              <Typography>Price:</Typography>
-              <Typography>Quantity:</Typography>
+              <Typography>{t("cart.price")}</Typography>
+              <Typography>{t("cart.quantity")}</Typography>
             </Box>
             <Box sx={{ width: 120 }}>
               <Typography sx={{ textAlign: "right" }}>
@@ -137,7 +141,7 @@ export function CartItemEntry(props: {
           <Divider light />
           <Box display={"flex"} justifyContent={"space-between"} width={240}>
             <Box sx={{ width: 120 }}>
-              <Typography>Subtotal:</Typography>
+              <Typography>{t("cart.subtotal")}</Typography>
             </Box>
             <Box sx={{ width: 120 }}>
               <Typography sx={{ textAlign: "right" }}>
@@ -157,7 +161,7 @@ export function CartItemEntry(props: {
               size={"small"}
               onClick={() => removeCartItem(item)}
             >
-              Remove
+              {t("cart.remove")}
             </Button>
           </Box>
         </Grid>
@@ -171,6 +175,7 @@ export function CartSellerEntry(props: {
   updateCart: () => void
   removeSellerEntry: (item: CartSeller) => void
 }) {
+  const { t } = useTranslation()
   const { seller, updateCart, removeSellerEntry } = props
   const { data: user_seller } = useGetUserByUsernameQuery(
     seller.user_seller_id!,
@@ -239,7 +244,7 @@ export function CartSellerEntry(props: {
         .unwrap()
         .then((res) => {
           issueAlert({
-            message: "Purchase successful!",
+            message: t("cart.purchaseSuccess"),
             severity: "success",
           })
           removeSellerEntry(seller)
@@ -266,7 +271,7 @@ export function CartSellerEntry(props: {
   return (
     <Section
       xs={12}
-      title={"Seller - "}
+      title={t("cart.seller")}
       element_title={
         <MaterialLink
           component={Link}
@@ -300,7 +305,7 @@ export function CartSellerEntry(props: {
       <Grid item xs={12}>
         <Box display={"flex"} justifyContent={"space-between"}>
           <Typography variant={"h5"} color={"text.secondary"}>
-            Total
+            {t("cart.total")}
           </Typography>
 
           <Typography variant={"h5"} color={"text.secondary"}>
@@ -313,7 +318,7 @@ export function CartSellerEntry(props: {
         <MarkdownEditor
           sx={{ marginRight: 2, marginBottom: 1 }}
           TextFieldProps={{
-            label: "Note",
+            label: t("cart.note"),
           }}
           value={seller.note || ""}
           onChange={(value: string) => {
@@ -323,8 +328,7 @@ export function CartSellerEntry(props: {
         />
       </Grid>
       <Grid item xs={12} md={4}>
-        Submit Offer to send your offer and negotiate and coordinate with the
-        seller.
+        {t("cart.submitOfferDesc")}
       </Grid>
       <Grid item xs={12} md={8}>
         <Grid
@@ -339,21 +343,21 @@ export function CartSellerEntry(props: {
               variant={"body1"}
               sx={{ marginRight: 1, alignItems: "center" }}
             >
-              Pay Total: {total.toLocaleString(undefined)} aUEC
+              {t("cart.payTotal", { total: total.toLocaleString(undefined) })}
             </Typography>
           </Grid>
-          {/*<Grid item>*/}
-          {/*  <LoadingButton*/}
-          {/*    color={"primary"}*/}
-          {/*    variant={"contained"}*/}
-          {/*    loadingPosition="start"*/}
-          {/*    startIcon={<AddShoppingCartRounded />}*/}
-          {/*    loading={purchaseLoading}*/}
-          {/*    onClick={() => handlePurchase(undefined)}*/}
-          {/*  >*/}
-          {/*    Submit Order*/}
-          {/*  </LoadingButton>*/}
-          {/*</Grid>*/}
+          {/*<Grid item>
+            <LoadingButton
+              color={"primary"}
+              variant={"contained"}
+              loadingPosition="start"
+              startIcon={<AddShoppingCartRounded />}
+              loading={purchaseLoading}
+              onClick={() => handlePurchase(undefined)}
+            >
+              {t("cart.submitOrder")}
+            </LoadingButton>
+          </Grid>*/}
         </Grid>
         <Grid container spacing={1} justifyContent={"right"}>
           <Grid item>
@@ -379,7 +383,7 @@ export function CartSellerEntry(props: {
                     inputMode: "numeric",
                   }}
                   size="small"
-                  label={"Offer (Optional)"}
+                  label={t("cart.offerOptional")}
                   value={offer}
                   color={"secondary"}
                 />
@@ -392,7 +396,7 @@ export function CartSellerEntry(props: {
                   loading={purchaseLoading}
                   onClick={() => handlePurchase(offer)}
                 >
-                  Submit Offer
+                  {t("cart.submitOffer")}
                 </LoadingButton>
               </Grid>
             </Grid>
@@ -404,6 +408,7 @@ export function CartSellerEntry(props: {
 }
 
 export function MarketCart() {
+  const { t } = useTranslation()
   const [cookies, setCookie, deleteCookie] = useCookies(["market_cart"])
   const cart = cookies.market_cart
 
@@ -421,7 +426,7 @@ export function MarketCart() {
   )
 
   return (
-    <Page title={"My Cart"}>
+    <Page title={t("marketActions.myCart")}>
       <ContainerGrid maxWidth={"md"} sidebarOpen={true}>
         <Grid
           item
@@ -431,7 +436,7 @@ export function MarketCart() {
           xs={12}
         >
           <HeaderTitle>
-            <BackArrow /> Your Cart
+            <BackArrow /> {t("cart.yourCart")}
           </HeaderTitle>
         </Grid>
         <Grid item xs={12} lg={12}>
@@ -446,7 +451,7 @@ export function MarketCart() {
             ))}
             {(!cart || !cart.length) && (
               <Grid item xs={12} display={"flex"} justifyContent={"center"}>
-                <Typography variant={"h5"}>Your cart is empty</Typography>
+                <Typography variant={"h5"}>{t("cart.empty")}</Typography>
               </Grid>
             )}
           </Grid>

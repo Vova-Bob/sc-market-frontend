@@ -3,18 +3,20 @@ import React from "react"
 import { Button, Grid, TextField, Typography } from "@mui/material"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 import { useGetUserProfileQuery } from "../../store/profile"
+import { useTranslation } from "react-i18next"
 
 export function ContractApp(props: {}) {
   const [currentOrg] = useCurrentOrg()
   const profile = useGetUserProfileQuery()
+  const { t } = useTranslation()
 
   const orgName = currentOrg?.name
 
   return (
-    <Section xs={12} lg={4} title={"Apply"}>
+    <Section xs={12} lg={4} title={t("contractApp.apply")}>
       <Grid item xs={12}>
         <Typography variant={"subtitle1"}>
-          Applying as{" "}
+          {t("contractApp.applying_as")}{" "}
           <Typography color={"secondary"} display={"inline"}>
             {orgName || profile.data?.username}
           </Typography>
@@ -28,12 +30,12 @@ export function ContractApp(props: {}) {
           maxRows={5}
           minRows={5}
           color={"primary"}
-          label={"Note"}
+          label={t("contractApp.note")}
         ></TextField>
       </Grid>
       <Grid item xs={12} container justifyContent={"center"}>
         <Button color={"primary"} variant={"outlined"}>
-          Submit
+          {t("contractApp.submit")}
         </Button>
       </Grid>
     </Section>

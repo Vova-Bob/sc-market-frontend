@@ -18,6 +18,7 @@ import {
 import { useNavigate } from "react-router-dom"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { UnderlineLink } from "../../components/typography/UnderlineLink"
+import { useTranslation } from "react-i18next"
 
 export function isAlphaNumeric(str: string) {
   let code, i, len
@@ -57,6 +58,7 @@ export function isAlpha(str: string) {
 }
 
 export function AuthenticateRSI() {
+  const { t } = useTranslation()
   const { refetch: refetchProfile } = useGetUserProfileQuery()
   const identifier = useGetAuthenticatorIdentifier()
   const [username, setUsername] = useState("")
@@ -85,7 +87,7 @@ export function AuthenticateRSI() {
         .unwrap()
         .then((result) => {
           issueAlert({
-            message: `Authenticated!`,
+            message: t("authenticateRSI.authenticated"),
             severity: "success",
           })
           setUsername("")
@@ -97,26 +99,26 @@ export function AuthenticateRSI() {
 
       return false
     },
-    [activateAccountLink, navigate, issueAlert, username, tosAccepted],
+    [activateAccountLink, navigate, issueAlert, username, tosAccepted, t],
   )
 
   const [isError, errorMessage] = useMemo(() => {
     if (!isAlphaNumeric(username) || username.length < 3) {
-      return [true, "Invalid handle"]
+      return [true, t("authenticateRSI.invalid_handle")]
     }
 
     if (!username) {
-      return [error, "Please enter your username"]
+      return [error, t("authenticateRSI.enter_username")]
     }
 
     return [false, ""]
-  }, [username, error])
+  }, [username, error, t])
 
   return (
     <Section xs={12} lg={12}>
       <Grid item xs={12}>
         <TextField
-          label={"RSI Handle"}
+          label={t("authenticateRSI.handle")}
           fullWidth
           value={username}
           onChange={(event) =>
@@ -133,21 +135,7 @@ export function AuthenticateRSI() {
       </Grid>
       <Grid item xs={12}>
         <Typography display={"inline"}>
-          In order to verify you own the above RSI profile, please click the
-          button below to open your profile page and add the following code to
-          your user profile short bio, and enter your RSI handle (not monniker)
-          above. You can remove this code once verification is complete. See
-          &nbsp;
-          <a
-            href={
-              "https://github.com/henry232323/sc-market/wiki/How-to-Verify-Your-Account"
-            }
-          >
-            <UnderlineLink component={"a"} color={"primary"}>
-              here
-            </UnderlineLink>
-          </a>{" "}
-          for a screenshot guide.
+          {t("authenticateRSI.instructions.1")}
           <Button
             style={{ display: "inline" }}
             color={"secondary"}
@@ -160,14 +148,26 @@ export function AuthenticateRSI() {
           >
             {identifier.data?.identifier || "PLACEHOLDER"}
           </Button>
-          Click submit once the code is visible on your profile.
+          {t("authenticateRSI.instructions.2")}
+          <a
+            href={
+              "https://github.com/henry232323/sc-market/wiki/How-to-Verify-Your-Account"
+            }
+          >
+            <UnderlineLink component={"a"} color={"primary"}>
+              {t("authenticateRSI.here")}
+            </UnderlineLink>
+          </a>
+          {t("authenticateRSI.instructions.3")}
         </Typography>
       </Grid>
       <Grid item xs={12} display={"flex"} alignItems={"center"}>
         <Typography variant={"body2"}>
-          I have read and accepted SC Market&apos;s{" "}
+          {t("authenticateRSI.tos.1")}{" "}
           <a href={"/terms-of-service.html"} target={"_blank"} rel="noreferrer">
-            <UnderlineLink color={"primary"}>Terms of Service</UnderlineLink>
+            <UnderlineLink color={"primary"}>
+              {t("authenticateRSI.tos.2")}
+            </UnderlineLink>
           </a>
         </Typography>
         <Checkbox
@@ -195,14 +195,14 @@ export function AuthenticateRSI() {
               )
             }}
           >
-            Copy Code and Open Profile
+            {t("authenticateRSI.copy_and_open")}
           </Button>
           <Button
             variant={"outlined"}
             onClick={submit}
             disabled={isError || !username.length || !tosAccepted}
           >
-            Submit
+            {t("authenticateRSI.submit")}
           </Button>
         </Box>
       </Grid>

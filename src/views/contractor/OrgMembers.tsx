@@ -33,6 +33,7 @@ import { Contractor, ContractorRole } from "../../datatypes/Contractor"
 import SearchIcon from "@mui/icons-material/Search"
 import { Stack } from "@mui/system"
 import { BACKEND_URL } from "../../util/constants"
+import { useTranslation } from "react-i18next"
 
 function PeopleRow(props: {
   row: OrgMember
@@ -44,6 +45,7 @@ function PeopleRow(props: {
   contractor: Contractor
 }) {
   const { row, onClick, isItemSelected, labelId, contractor } = props
+  const { t } = useTranslation()
   const user = useGetUserByUsernameQuery(row.username)
 
   const [roles, setRoles] = useState(row.roles)
@@ -77,19 +79,20 @@ function PeopleRow(props: {
 
       if (res?.data && !res?.error) {
         issueAlert({
-          message: "Updated!",
+          message: t("manageMemberList.updated"),
           severity: "success",
         })
       } else {
         issueAlert({
-          message: `Failed to update! ${
-            res.error?.error || res.error?.data?.error || res.error
-          }`,
+          message: t("manageMemberList.update_failed", {
+            reason:
+              res.error?.error || res.error?.data?.error || res.error || "",
+          }),
           severity: "error",
         })
       }
     },
-    [contractor, row.username, issueAlert, applyRole],
+    [contractor, row.username, issueAlert, applyRole, t],
   )
 
   const removeRoleCallback = useCallback(
@@ -102,19 +105,20 @@ function PeopleRow(props: {
 
       if (res?.data && !res?.error) {
         issueAlert({
-          message: "Updated!",
+          message: t("manageMemberList.updated"),
           severity: "success",
         })
       } else {
         issueAlert({
-          message: `Failed to update! ${
-            res.error?.error || res.error?.data?.error || res.error
-          }`,
+          message: t("manageMemberList.update_failed", {
+            reason:
+              res.error?.error || res.error?.data?.error || res.error || "",
+          }),
           severity: "error",
         })
       }
     },
-    [contractor, row.username, issueAlert, removeRole],
+    [contractor, row.username, issueAlert, removeRole, t],
   )
 
   const kickMemberCallback = useCallback(async () => {
@@ -125,18 +129,18 @@ function PeopleRow(props: {
 
     if (res?.data && !res?.error) {
       issueAlert({
-        message: "Member kicked!",
+        message: t("manageMemberList.member_kicked"),
         severity: "success",
       })
     } else {
       issueAlert({
-        message: `Failed to kick! ${
-          res.error?.error || res.error?.data?.error || res.error
-        }`,
+        message: t("manageMemberList.kick_failed", {
+          reason: res.error?.error || res.error?.data?.error || res.error || "",
+        }),
         severity: "error",
       })
     }
-  }, [contractor, row.username, issueAlert, kickMember])
+  }, [contractor, row.username, issueAlert, kickMember, t])
 
   return (
     <TableRow
@@ -194,14 +198,18 @@ function PeopleRow(props: {
                 sx={{ marginRight: 2 }}
                 onClick={kickMemberCallback}
               >
-                Kick
+                {t("manageMemberList.kick")}
               </Button>
             )}
           </TableCell>
           <TableCell align="right">
             <Autocomplete
               renderInput={(params) => (
-                <TextField {...params} variant="standard" label="Roles" />
+                <TextField
+                  {...params}
+                  variant="standard"
+                  label={t("manageMemberList.roles")}
+                />
               )}
               options={(contractor?.roles || []).filter(
                 (r) => myPosition < r.position,
@@ -277,7 +285,7 @@ const headCells: readonly HeadCell<OrgMember>[] = [
     id: "username",
     numeric: false,
     disablePadding: false,
-    label: "Username",
+    label: "manageMemberList.username",
   },
   {
     id: "username",
@@ -289,13 +297,14 @@ const headCells: readonly HeadCell<OrgMember>[] = [
     id: "roles",
     numeric: true,
     disablePadding: false,
-    label: "Role",
+    label: "manageMemberList.role",
   },
 ]
 
 export function MemberList(props: { contractor: Contractor }) {
+  const { t } = useTranslation()
   return (
-    <Section xs={12} title={"Members"} disablePadding>
+    <Section xs={12} title={t("manageMemberList.members")} disablePadding>
       <PaginatedTable<OrgMember>
         rows={props.contractor?.members || []}
         initialSort={"username"}
@@ -303,7 +312,10 @@ export function MemberList(props: { contractor: Contractor }) {
           <PeopleRow {...iprops} manage contractor={props.contractor} />
         )}
         keyAttr={"username"}
-        headCells={headCells}
+        headCells={headCells.map((cell) => ({
+          ...cell,
+          label: t(cell.label, cell.label),
+        }))}
         disableSelect
       />
     </Section>
@@ -312,6 +324,7 @@ export function MemberList(props: { contractor: Contractor }) {
 
 export function ManageMemberList() {
   const [contractor] = useCurrentOrg()
+  const { t } = useTranslation()
 
   const [searchQuery, setSearchQuery] = useState("")
   const [roleFilter, setRoleFilter] = useState("any")
@@ -329,17 +342,17 @@ export function ManageMemberList() {
   return (
     <Section
       xs={12}
-      title={"Members"}
+      title={t("manageMemberList.members")}
       disablePadding
       subtitle={
         <Stack spacing={1} direction="row" sx={{ minWidth: 100 }}>
           <Button
             href={`${BACKEND_URL}/api/contractor/${contractor?.spectrum_id}/members/csv`}
           >
-            Export
+            {t("manageMemberList.export")}
           </Button>
           <TextField
-            label={"Search"}
+            label={t("manageMemberList.search")}
             size={"small"}
             InputProps={{
               endAdornment: (
@@ -356,7 +369,7 @@ export function ManageMemberList() {
           />
           <TextField
             select
-            label={"Role"}
+            label={t("manageMemberList.role")}
             value={roleFilter}
             onChange={(event: any) => {
               setRoleFilter(event.target.value)
@@ -365,7 +378,7 @@ export function ManageMemberList() {
             size={"small"}
             defaultValue={"any"}
           >
-            <MenuItem value={"any"}>Any</MenuItem>
+            <MenuItem value={"any"}>{t("manageMemberList.any")}</MenuItem>
             {(contractor?.roles || []).map((r) => (
               <MenuItem value={r.role_id}>{r.name}</MenuItem>
             ))}
@@ -380,7 +393,10 @@ export function ManageMemberList() {
           <PeopleRow {...props} manage contractor={contractor!} />
         )}
         keyAttr={"username"}
-        headCells={headCells}
+        headCells={headCells.map((cell) => ({
+          ...cell,
+          label: t(cell.label, cell.label),
+        }))}
         disableSelect
       />
     </Section>

@@ -66,7 +66,7 @@ export function ContractOfferForm(props: { contract: PublicContract }) {
         .unwrap()
         .then((data) => {
           issueAlert({
-            message: "Submitted!",
+            message: t("createPublicContract.submitted"),
             severity: "success",
           })
 
@@ -87,6 +87,9 @@ export function ContractOfferForm(props: { contract: PublicContract }) {
       navigate,
       paymentType,
       title,
+      t,
+      currentOrg,
+      contract.id,
     ],
   )
 
@@ -105,7 +108,7 @@ export function ContractOfferForm(props: { contract: PublicContract }) {
             color={"text.secondary"}
             sx={{ fontWeight: "bold" }}
           >
-            Contractor
+            {t("recruiting_post.contractor")}
           </Typography>
         </Grid>
         <Grid item xs={12} lg={8} justifyContent={"right"} display={"flex"}>
@@ -124,14 +127,14 @@ export function ContractOfferForm(props: { contract: PublicContract }) {
             color={"text.secondary"}
             sx={{ fontWeight: "bold" }}
           >
-            About
+            {t("createPublicContract.about")}
           </Typography>
         </Grid>
         <Grid item xs={12} lg={8} container spacing={2}>
           <Grid item xs={12} lg={12}>
             <TextField
               fullWidth
-              label="Title*"
+              label={t("createPublicContract.title_required")}
               id="order-title"
               value={title}
               onChange={(event: React.ChangeEvent<{ value: string }>) => {
@@ -145,7 +148,7 @@ export function ContractOfferForm(props: { contract: PublicContract }) {
             <TextField
               fullWidth
               select
-              label="Type*"
+              label={t("createPublicContract.type_required")}
               id="order-type"
               value={kind}
               onChange={(event: React.ChangeEvent<{ value: string }>) => {
@@ -158,7 +161,7 @@ export function ContractOfferForm(props: { contract: PublicContract }) {
             >
               {Object.keys(orderIcons).map((k) => (
                 <MenuItem value={k} key={k}>
-                  {k}
+                  {t(`orderKinds.${k}`, k)}
                 </MenuItem>
               ))}
             </TextField>
@@ -168,9 +171,9 @@ export function ContractOfferForm(props: { contract: PublicContract }) {
             <TextField
               multiline
               fullWidth={true}
-              label={"Description*"}
+              label={t("createPublicContract.description_required")}
               id="description"
-              helperText={"E.g. Transport Lithium from New Babbage to Hurston"}
+              helperText={t("createPublicContract.description_helper")}
               onChange={(event: React.ChangeEvent<{ value: string }>) => {
                 setDescription(event.target.value)
               }}
@@ -190,7 +193,7 @@ export function ContractOfferForm(props: { contract: PublicContract }) {
             color={"text.secondary"}
             sx={{ fontWeight: "bold" }}
           >
-            Costs
+            {t("createPublicContract.costs")}
           </Typography>
         </Grid>
         <Grid item xs={12} lg={8} container spacing={2}>
@@ -204,16 +207,12 @@ export function ContractOfferForm(props: { contract: PublicContract }) {
                 setCollateral(+(values.floatValue || 0))
               }}
               fullWidth={true}
-              label={"Collateral (Optional)"}
+              label={t("createPublicContract.collateral_optional")}
               id="collateral"
               color={"secondary"}
               value={collateral}
               type={"tel"}
-              helperText={
-                "If the contractor offers insurance, " +
-                "what is the lost value in the event the contractor fails to deliver? " +
-                "E.g. the value of the cargo being transported"
-              }
+              helperText={t("createPublicContract.collateral_helper")}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="start">{`aUEC`}</InputAdornment>
@@ -234,14 +233,12 @@ export function ContractOfferForm(props: { contract: PublicContract }) {
                 setCost(values.floatValue || 0)
               }}
               fullWidth={true}
-              label={"aUEC Offer"}
+              label={t("createPublicContract.offer")}
               id="offer"
               color={"secondary"}
               value={cost}
               type={"tel"}
-              helperText={
-                "How much will you offer the contractor to fulfill this order?"
-              }
+              helperText={t("createPublicContract.offer_helper")}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="start">{`aUEC`}</InputAdornment>
@@ -254,7 +251,7 @@ export function ContractOfferForm(props: { contract: PublicContract }) {
           <Grid item xs={12}>
             <TextField
               select
-              label={"Payment Type"}
+              label={t("createPublicContract.payment_type")}
               value={paymentType}
               onChange={(event: any) => {
                 setPaymentType(event.target.value)
@@ -282,7 +279,7 @@ export function ContractOfferForm(props: { contract: PublicContract }) {
           type="submit"
           onClick={submitContractOffer}
         >
-          Submit
+          {t("createPublicContract.submit")}
         </LoadingButton>
       </Grid>
     </>

@@ -9,9 +9,11 @@ import { useServiceSidebar } from "../../hooks/contract/ServiceSidebar"
 import { ServiceSearchArea } from "../services/ServiceSearchArea"
 import CloseIcon from "@mui/icons-material/Close"
 import { Stack } from "@mui/system"
+import { useTranslation } from "react-i18next"
 
 export function ServiceSidebar() {
   const theme: ExtendedTheme = useTheme()
+  const { t } = useTranslation()
 
   // States
   const [open, setOpen] = useServiceSidebar()
@@ -75,7 +77,11 @@ export function ServiceSidebar() {
       />
       <Stack justifyContent={"left"} direction={"column"}>
         <Box sx={{ paddingLeft: 2, paddingTop: 4 }}>
-          <IconButton onClick={() => setOpen(false)} color={"secondary"}>
+          <IconButton
+            onClick={() => setOpen(false)}
+            color={"secondary"}
+            aria-label={t("service_market.toggle_sidebar")}
+          >
             <CloseIcon />
           </IconButton>
         </Box>

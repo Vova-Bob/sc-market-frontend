@@ -5,11 +5,13 @@ import { Grid } from "@mui/material"
 import { OrgTransactions } from "../../views/contractor/OrgTransactions"
 import { OrderMetrics } from "../../views/orders/OrderMetrics"
 import { ContainerGrid } from "../../components/layout/ContainerGrid"
+import { useTranslation } from "react-i18next"
 
 export function OrgMoney() {
+  const { t } = useTranslation()
   return (
     <ContainerGrid maxWidth={"lg"} sidebarOpen={true}>
-      <HeaderTitle>Money</HeaderTitle>
+      <HeaderTitle>{t("org.moneyTitle")}</HeaderTitle>
 
       <Grid item xs={12} container spacing={4} justifyContent={"center"}>
         <Grid item xs={12} lg={4}>

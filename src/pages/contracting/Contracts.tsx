@@ -15,21 +15,22 @@ import { Button, Grid, IconButton } from "@mui/material"
 import { Page } from "../../components/metadata/Page"
 import { Link } from "react-router-dom"
 import { CreateRounded } from "@mui/icons-material"
+import { useTranslation } from "react-i18next"
 
 export function Contracts() {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(true)
-
   const [drawerOpen] = useDrawerOpen()
 
   return (
-    <Page title={"Contracts"}>
+    <Page title={t("contracts.contractsTitle")}>
       <ContractSearchContext.Provider
         value={useState<ContractSearchState>({ query: "", sort: "date-old" })}
       >
         <ContractSidebarContext.Provider value={[open, setOpen]}>
           <IconButton
             color="secondary"
-            aria-label="toggle market sidebar"
+            aria-label={t("contracts.toggleSidebar")}
             sx={{
               position: "absolute",
               zIndex: 50,
@@ -48,7 +49,7 @@ export function Contracts() {
             <Grid item xs={12}>
               <Grid container justifyContent={"space-between"} spacing={2}>
                 <HeaderTitle lg={8} xl={8}>
-                  Active Contracts
+                  {t("contracts.activeContracts")}
                 </HeaderTitle>
 
                 <Grid item>
@@ -62,7 +63,7 @@ export function Contracts() {
                       variant={"contained"}
                       size={"large"}
                     >
-                      Create Open Contract
+                      {t("contracts.createOpenContract")}
                     </Button>
                   </Link>
                 </Grid>

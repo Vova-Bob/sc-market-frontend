@@ -18,12 +18,14 @@ import { MinimalUser } from "../../datatypes/User"
 import { useInviteContractorMembersMutation } from "../../store/contractor"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
+import { useTranslation } from "react-i18next"
 
 export function OrgInvite() {
   const [currentOrg] = useCurrentOrg()
   const [query, setQuery] = useState("")
   const [buffer, setBuffer] = useState("")
   const [message, setMessage] = useState("")
+  const { t } = useTranslation()
 
   const { data: users } = useSearchUsersQuery(query, { skip: !query })
 
@@ -59,7 +61,7 @@ export function OrgInvite() {
           setBuffer("")
 
           issueAlert({
-            message: "Submitted!",
+            message: t("orgInvite.submitted"),
             severity: "success",
           })
         })
@@ -67,7 +69,7 @@ export function OrgInvite() {
 
       return false
     },
-    [choices, currentOrg?.spectrum_id, message, sendInvites, issueAlert],
+    [choices, currentOrg?.spectrum_id, message, sendInvites, issueAlert, t],
   )
 
   return (
@@ -79,7 +81,7 @@ export function OrgInvite() {
           color={"text.secondary"}
           sx={{ fontWeight: "bold" }}
         >
-          Invite Members
+          {t("orgInvite.invite_members")}
         </Typography>
       </Grid>
       <Grid item xs={12}>
@@ -93,14 +95,14 @@ export function OrgInvite() {
           options={users || []}
           getOptionLabel={(u) =>
             currentOrg!.members.find((m) => m.username === u.username)
-              ? `${u.username} (already member)`
+              ? `${u.username} (${t("orgInvite.already_member")})`
               : u.username
           }
           renderInput={(params: AutocompleteRenderInputParams) => (
             <TextField
               {...params}
               variant="outlined"
-              label="Username"
+              label={t("orgInvite.username")}
               fullWidth
               color={"secondary"}
               SelectProps={{
@@ -144,7 +146,7 @@ export function OrgInvite() {
           maxRows={5}
           minRows={5}
           color={"secondary"}
-          label={"Note"}
+          label={t("orgInvite.note")}
           value={message}
           onChange={(event: any) => {
             setMessage(event.target.value)
@@ -159,7 +161,7 @@ export function OrgInvite() {
           onClick={submitInviteForm}
           disabled={!choices.length}
         >
-          Submit
+          {t("orgInvite.submit")}
         </Button>
       </Grid>
     </Section>

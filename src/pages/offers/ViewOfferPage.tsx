@@ -16,12 +16,15 @@ import {
 } from "@mui/material"
 import { OfferMarketListings } from "../../views/offers/OfferMarketListings"
 import { OfferServiceArea } from "../../views/offers/OfferServiceArea"
+import { useTranslation } from "react-i18next"
 
 export function ViewOfferPage() {
   const { id } = useParams<{ id: string }>()
   const { data: session } = useGetOfferSessionByIDQuery(id!)
+  const { t } = useTranslation()
+
   return (
-    <Page title={"View Offer"}>
+    <Page title={t("offers.viewOffer")}>
       <ContainerGrid maxWidth={"xl"} sidebarOpen={true}>
         <Grid item xs={12}>
           <Breadcrumbs>
@@ -31,7 +34,7 @@ export function ViewOfferPage() {
               underline="hover"
               color={"text.primary"}
             >
-              Dashboard
+              {t("offers.dashboard")}
             </MaterialLink>
             <MaterialLink
               component={Link}
@@ -39,13 +42,13 @@ export function ViewOfferPage() {
               underline="hover"
               color={"text.secondary"}
             >
-              Offer {(id || "").substring(0, 8).toUpperCase()}
+              {t("offers.offer")} {(id || "").substring(0, 8).toUpperCase()}
             </MaterialLink>
           </Breadcrumbs>
         </Grid>
 
         <HeaderTitle lg={12} xl={12}>
-          View Offer
+          {t("offers.viewOffer")}
         </HeaderTitle>
 
         {session ? (

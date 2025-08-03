@@ -13,16 +13,18 @@ import {
   HideOnScroll,
   MarketNavArea,
 } from "../../components/navbar/MarketNavArea"
+import { useTranslation } from "react-i18next"
 
 export function AllMarketListings(props: {}) {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [drawerOpen] = useDrawerOpen()
 
   return (
-    <Page title={"All Market Listings"}>
+    <Page title={t("market.allListingsTitle")}>
       <IconButton
         color="secondary"
-        aria-label="toggle market sidebar"
+        aria-label={t("market.toggleSidebar")}
         sx={{
           position: "absolute",
           zIndex: 50,
@@ -46,7 +48,7 @@ export function AllMarketListings(props: {}) {
             xs={12}
           >
             <HeaderTitle lg={7} xl={7}>
-              Active Listings
+              {t("market.activeListings")}
             </HeaderTitle>
 
             <MarketActions />
@@ -81,7 +83,7 @@ export function AllMarketListings(props: {}) {
             xs={12}
           >
             <HeaderTitle lg={12} xl={12}>
-              Inactive Listings
+              {t("market.inactiveListings")}
             </HeaderTitle>
           </Grid>
 
@@ -108,7 +110,7 @@ export function AllMarketListings(props: {}) {
             xs={12}
           >
             <HeaderTitle lg={12} xl={12}>
-              Archived Listings
+              {t("market.archivedListings")}
             </HeaderTitle>
           </Grid>
 

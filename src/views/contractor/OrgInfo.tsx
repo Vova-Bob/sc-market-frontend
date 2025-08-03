@@ -54,6 +54,7 @@ import { useGetUserProfileQuery } from "../../store/profile"
 import { useRefetchContractorDetailsMutation } from "../../store/contractor"
 import { ListingSellerRating } from "../../components/rating/ListingRating"
 import { useGetServicesContractorQuery } from "../../store/services"
+import { useTranslation } from "react-i18next"
 
 const name_to_index = new Map([
   ["", 0],
@@ -97,6 +98,7 @@ export function OrgRelevantListingsArea(props: { org: string }) {
 export function OrgRefetchButton(props: { org: Contractor }) {
   const { data: profile } = useGetUserProfileQuery()
   const [refetch] = useRefetchContractorDetailsMutation()
+  const { t } = useTranslation()
 
   return (
     <>
@@ -130,6 +132,7 @@ export function OrgBannerArea(props: { org: Contractor }) {
 export function OrgInfo(props: { contractor: Contractor }) {
   const { contractor } = props
   const theme = useTheme<ExtendedTheme>()
+  const { t } = useTranslation()
 
   const { tab } = useParams<{ tab?: string }>()
   const page = useMemo(() => name_to_index.get(tab || "") || 0, [tab])
@@ -273,35 +276,35 @@ export function OrgInfo(props: { contractor: Contractor }) {
                   variant="scrollable"
                 >
                   <Tab
-                    label="About"
+                    label={t("orgInfo.about")}
                     component={Link}
                     to={`/contractor/${contractor.spectrum_id}`}
                     icon={<InfoRounded />}
                     {...a11yProps(0)}
                   />
                   <Tab
-                    label="Services"
+                    label={t("orgInfo.services")}
                     component={Link}
                     to={`/contractor/${contractor.spectrum_id}/services`}
                     icon={<DesignServicesRounded />}
                     {...a11yProps(1)}
                   />
                   <Tab
-                    label="Market"
+                    label={t("orgInfo.market")}
                     component={Link}
                     to={`/contractor/${contractor.spectrum_id}/market`}
                     icon={<GavelRounded />}
                     {...a11yProps(2)}
                   />
                   <Tab
-                    label="Order"
+                    label={t("orgInfo.order")}
                     component={Link}
                     to={`/contractor/${contractor.spectrum_id}/order`}
                     icon={<CreateRounded />}
                     {...a11yProps(3)}
                   />
                   <Tab
-                    label="Members"
+                    label={t("orgInfo.members")}
                     component={Link}
                     to={`/contractor/${contractor.spectrum_id}/members`}
                     icon={<PeopleAltRoundedIcon />}
@@ -309,7 +312,7 @@ export function OrgInfo(props: { contractor: Contractor }) {
                   />
                   {recruiting_post && (
                     <Tab
-                      label="Recruiting"
+                      label={t("orgInfo.recruiting")}
                       component={Link}
                       to={`/contractor/${contractor.spectrum_id}/recruiting`}
                       icon={<PersonAddRounded />}
@@ -370,6 +373,7 @@ export function OrgInfo(props: { contractor: Contractor }) {
 
 export function OrgInfoSkeleton() {
   const [page, setPage] = React.useState(0)
+  const { t } = useTranslation()
 
   const handleChange = (event: React.SyntheticEvent, newPage: number) => {
     setPage(newPage)
@@ -385,10 +389,18 @@ export function OrgInfoSkeleton() {
             aria-label="org info area"
             variant="scrollable"
           >
-            <Tab label="About" icon={<InfoIcon />} {...a11yProps(0)} />
-            <Tab label="Order" icon={<CreateIcon />} {...a11yProps(1)} />
             <Tab
-              label="Members"
+              label={t("orgInfo.about")}
+              icon={<InfoIcon />}
+              {...a11yProps(0)}
+            />
+            <Tab
+              label={t("orgInfo.order")}
+              icon={<CreateIcon />}
+              {...a11yProps(1)}
+            />
+            <Tab
+              label={t("orgInfo.members")}
               icon={<PeopleAltRoundedIcon />}
               {...a11yProps(2)}
             />

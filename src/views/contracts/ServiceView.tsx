@@ -88,7 +88,7 @@ export function ServiceView(props: { service: Service }) {
                     1 && (
                     <Chip
                       color={"secondary"}
-                      label={"New"}
+                      label={t("serviceListings.new")}
                       sx={{
                         marginRight: 1,
                         textTransform: "uppercase",
@@ -99,7 +99,13 @@ export function ServiceView(props: { service: Service }) {
                   )}
                   {amRelated && (
                     <Chip
-                      label={service.status.replace("-", " ")}
+                      label={t(
+                        `orders.status.${service.status.replace(
+                          /-([a-z])/g,
+                          (g) => g[1].toUpperCase(),
+                        )}`,
+                        { defaultValue: service.status.replace("-", " ") },
+                      )}
                       color={statusColors.get(service.status)}
                       sx={{
                         marginRight: 1,
@@ -142,7 +148,7 @@ export function ServiceView(props: { service: Service }) {
                     variant={"subtitle2"}
                   >
                     {service.cost.toLocaleString(undefined)} aUEC{" "}
-                    {paymentType ? t(paymentType) : ""}
+                    {paymentType ? t(`paymentTypes.${paymentType}`) : ""}
                   </Typography>
                 </Box>
               }
@@ -174,7 +180,9 @@ export function ServiceView(props: { service: Service }) {
               >
                 <Chip
                   color={"primary"}
-                  label={service.kind}
+                  label={t(`myServices.${service.kind}`, {
+                    defaultValue: service.kind,
+                  })}
                   sx={{ marginRight: 1, marginBottom: 1, padding: 1 }}
                   variant={"outlined"}
                   icon={orderIcons[service.kind]}

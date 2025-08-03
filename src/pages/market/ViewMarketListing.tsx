@@ -15,6 +15,7 @@ import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded"
 import { BackArrow } from "../../components/button/BackArrow"
 import { MarketMultipleEditView } from "../../views/market/MarketMultipleEditView"
 import { formatMarketUrl } from "../../util/urls"
+import { useTranslation } from "react-i18next"
 
 export function ViewMarketListing(props: {}) {
   const { id } = useParams<{ id: string }>()
@@ -26,6 +27,8 @@ export function ViewMarketListing(props: {}) {
    *   order comments, update date,
    *   assigned person, payment
    */
+
+  const { t } = useTranslation()
 
   const { data: listing, error, refetch } = useMarketGetListingByIDQuery(id!)
 
@@ -43,7 +46,7 @@ export function ViewMarketListing(props: {}) {
           xs={12}
         >
           <HeaderTitle md={7} lg={7} xl={7}>
-            <BackArrow /> View Market Listing
+            <BackArrow /> {t("market.viewMarketListing")}
           </HeaderTitle>
 
           <Grid item>
@@ -57,7 +60,7 @@ export function ViewMarketListing(props: {}) {
                 variant={"contained"}
                 size={"large"}
               >
-                My Cart
+                {t("marketActions.myCart")}
               </Button>
             </Link>
           </Grid>
@@ -86,8 +89,6 @@ export function ViewMarketListing(props: {}) {
 }
 
 export function EditMarketListing(props: {}) {
-  const { id } = useParams<{ id: string }>()
-
   /*
    * TODO:
    *   Contract appliants
@@ -95,6 +96,8 @@ export function EditMarketListing(props: {}) {
    *   order comments, update date,
    *   assigned person, payment
    */
+  const { id } = useParams<{ id: string }>()
+  const { t } = useTranslation()
 
   const { data: listing, error, refetch } = useMarketGetListingByIDQuery(id!)
 
@@ -102,7 +105,7 @@ export function EditMarketListing(props: {}) {
     <Page title={listing?.details?.title}>
       <ContainerGrid sidebarOpen={true} maxWidth={"lg"}>
         <HeaderTitle>
-          <BackArrow /> Edit Market Listing
+          <BackArrow /> {t("market.editMarketListing")}
         </HeaderTitle>
 
         {error ? <Navigate to={"/404"} /> : null}
@@ -129,6 +132,7 @@ export function EditMarketListing(props: {}) {
 
 export function EditMultipleListing(props: {}) {
   const { id } = useParams<{ id: string }>()
+  const { t } = useTranslation()
 
   const { data: listing, error, refetch } = useMarketGetMultipleByIDQuery(id!)
 
@@ -136,7 +140,7 @@ export function EditMultipleListing(props: {}) {
     <Page title={listing?.details?.title}>
       <ContainerGrid sidebarOpen={true} maxWidth={"lg"}>
         <HeaderTitle>
-          <BackArrow /> Edit Multiple Listing
+          <BackArrow /> {t("market.editMultipleListing")}
         </HeaderTitle>
 
         {error ? <Navigate to={"/404"} /> : null}

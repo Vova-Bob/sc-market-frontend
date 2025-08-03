@@ -12,9 +12,11 @@ import { MarketAggregateEditView } from "../../views/market/MarketAggregateEditV
 import { MarketAggregateView } from "../../views/market/MarketAggregateView"
 import { BackArrow } from "../../components/button/BackArrow"
 import { CurrentMarketListingContext } from "../../hooks/market/CurrentMarketItem"
+import { useTranslation } from "react-i18next"
 
 export function ViewMarketAggregate(props: {}) {
   const { id } = useParams<{ id: string }>()
+  const { t } = useTranslation()
 
   const {
     data: aggregate,
@@ -33,7 +35,7 @@ export function ViewMarketAggregate(props: {}) {
           xs={12}
         >
           <HeaderTitle md={7} lg={7} xl={7}>
-            <BackArrow /> View Market Listing
+            <BackArrow /> {t("market.viewMarketListing")}
           </HeaderTitle>
 
           <Grid item>
@@ -47,7 +49,7 @@ export function ViewMarketAggregate(props: {}) {
                 variant={"contained"}
                 size={"large"}
               >
-                My Cart
+                {t("marketActions.myCart")}
               </Button>
             </Link>
           </Grid>
@@ -75,6 +77,7 @@ export function EditMarketAggregate(props: {}) {
    *   order comments, update date,
    *   assigned person, payment
    */
+  const { t } = useTranslation()
 
   const {
     data: aggregate,
@@ -86,7 +89,7 @@ export function EditMarketAggregate(props: {}) {
     <Page title={aggregate?.details?.title}>
       <ContainerGrid sidebarOpen={true} maxWidth={"lg"}>
         <HeaderTitle>
-          <BackArrow /> Edit Market Listing
+          <BackArrow /> {t("market.editMarketListing")}
         </HeaderTitle>
 
         {error ? <Navigate to={"/404"} /> : null}

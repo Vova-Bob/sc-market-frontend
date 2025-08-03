@@ -15,12 +15,14 @@ import {
 import { Navigate, useParams } from "react-router-dom"
 import { CommentTree } from "../../views/comments/CommentTree"
 import { Box, Button, Grid, TextField } from "@mui/material"
+import { useTranslation } from "react-i18next"
 
 export function PostCommentArea(props: { post: RecruitingPost }) {
   const { post } = props
   const [submitCommentPost] = useRecruitingCommentOnPostMutation()
   const [content, setContent] = useState("")
   const { data: comments } = useRecruitingGetPostCommentsByIDQuery(post.post_id)
+  const { t } = useTranslation()
 
   return (
     <>
@@ -30,7 +32,7 @@ export function PostCommentArea(props: { post: RecruitingPost }) {
             fullWidth
             sx={{ marginRight: 2 }}
             value={content}
-            label={"Reply to Post"}
+            label={t("recruiting_post.commentArea.replyToPost")}
             multiline
             onChange={(event: React.ChangeEvent<{ value: string }>) => {
               setContent(event.target.value)
@@ -43,7 +45,7 @@ export function PostCommentArea(props: { post: RecruitingPost }) {
               setContent("")
             }}
           >
-            Post
+            {t("recruiting_post.commentArea.post")}
           </Button>
         </Box>
       </Grid>
@@ -68,11 +70,11 @@ export function RecruitingPostArea(props: { spectrum_id: string }) {
 
 export function RecruitingPostPage() {
   const { post_id } = useParams<{ post_id: string }>()
-
+  const { t } = useTranslation()
   const { data: post, isError } = useRecruitingGetPostByIDQuery(post_id!)
 
   return (
-    <Page title={"Create Post"}>
+    <Page title={t("recruiting_post.page.createPost")}>
       <ContainerGrid maxWidth={"md"} sidebarOpen={true}>
         {isError && <Navigate to={"/404"} />}
         {post ? <RecruitingPostView post={post} /> : <RecruitingPostSkeleton />}

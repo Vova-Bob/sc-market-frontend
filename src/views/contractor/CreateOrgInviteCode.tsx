@@ -4,10 +4,12 @@ import React, { useCallback, useState } from "react"
 import { useCreateContractorInviteMutation } from "../../store/contractor"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
+import { useTranslation } from "react-i18next"
 
 export function CreateOrgInviteCode() {
   const [currentOrg] = useCurrentOrg()
   const [maxUses, setMaxUses] = useState(0)
+  const { t } = useTranslation()
 
   const [
     createContractorInvite, // This is the mutation trigger
@@ -30,20 +32,21 @@ export function CreateOrgInviteCode() {
         setMaxUses(0)
 
         issueAlert({
-          message: "Submitted!",
+          message: t("inviteCodes.submitted"),
           severity: "success",
         })
       } else {
         issueAlert({
-          message: `Failed to submit! ${
-            res.error?.error || res.error?.data?.error || res.error
-          }`,
+          message: t("inviteCodes.failed_submit", {
+            reason:
+              res.error?.error || res.error?.data?.error || res.error || "",
+          }),
           severity: "error",
         })
       }
       return false
     },
-    [createContractorInvite, currentOrg, maxUses, issueAlert],
+    [createContractorInvite, currentOrg, maxUses, issueAlert, t],
   )
 
   return (
@@ -55,7 +58,7 @@ export function CreateOrgInviteCode() {
           color={"text.secondary"}
           sx={{ fontWeight: "bold" }}
         >
-          Create New Invite Code
+          {t("inviteCodes.create_new")}
         </Typography>
       </Grid>
       <Grid item xs={12}>
@@ -66,10 +69,8 @@ export function CreateOrgInviteCode() {
           fullWidth
           id="max-uses"
           color={"secondary"}
-          label={"Max Invite Uses"}
-          helperText={
-            "The maximum number of uses of this invite. Set to 0 to make unlimited."
-          }
+          label={t("inviteCodes.max_uses")}
+          helperText={t("inviteCodes.max_uses_helper")}
           value={maxUses}
           onChange={(event: any) => {
             setMaxUses(+event.target.value || 0)
@@ -83,7 +84,7 @@ export function CreateOrgInviteCode() {
           color={"primary"}
           onClick={submitCreateForm}
         >
-          Submit
+          {t("inviteCodes.submit")}
         </Button>
       </Grid>
     </Section>

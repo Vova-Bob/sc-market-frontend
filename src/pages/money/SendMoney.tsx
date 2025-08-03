@@ -20,8 +20,10 @@ import throttle from "lodash/throttle"
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 import { useCreateTransaction } from "../../store/transactions"
+import { useTranslation } from "react-i18next"
 
 export function SendMoney(props: { org?: boolean }) {
+  const { t } = useTranslation()
   const containerRef = React.useRef(null)
   const [error, setError] = useState("")
   const [amount, setAmount] = useState("")
@@ -92,11 +94,11 @@ export function SendMoney(props: { org?: boolean }) {
 
   const initiateSend = async () => {
     if (target === "") {
-      setError("Please enter a user to send to!")
+      setError(t("sendMoney.errors.enterUser"))
       return
     }
     if (targetObject === null) {
-      setError("Invalid User!")
+      setError(t("sendMoney.errors.invalidUser"))
       return
     }
 
@@ -122,11 +124,11 @@ export function SendMoney(props: { org?: boolean }) {
   return (
     <ContainerGrid maxWidth={"sm"} sidebarOpen={true} ref={containerRef}>
       {isSuccess && <Navigate to={props.org ? "/org/money" : "/dashboard"} />}
-      <HeaderTitle>Send Money</HeaderTitle>
+      <HeaderTitle>{t("sendMoney.title")}</HeaderTitle>
 
       {/*TODO: Add slide animation*/}
       {!next ? (
-        <Section xs={12} title={"Recipient"}>
+        <Section xs={12} title={t("sendMoney.recipient")}>
           <Grid item lg={9} xs={12}>
             <Autocomplete
               filterOptions={(x) => x}
@@ -142,7 +144,11 @@ export function SendMoney(props: { org?: boolean }) {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label={recipientType === "user" ? "Username" : "Contractor"}
+                  label={
+                    recipientType === "user"
+                      ? t("sendMoney.username")
+                      : t("sendMoney.contractor")
+                  }
                   SelectProps={{
                     IconComponent: KeyboardArrowDownRoundedIcon,
                   }}
@@ -160,15 +166,17 @@ export function SendMoney(props: { org?: boolean }) {
           </Grid>
           <Grid item lg={3} xs={12}>
             <Select
-              label={"Target Kind"}
+              label={t("sendMoney.targetKind")}
               value={recipientType}
               onChange={(event: any) => {
                 setRecipientType(event.target.value)
               }}
               fullWidth
             >
-              <MenuItem value={"user"}>User</MenuItem>
-              <MenuItem value={"contractor"}>Contractor</MenuItem>
+              <MenuItem value={"user"}>{t("sendMoney.user")}</MenuItem>
+              <MenuItem value={"contractor"}>
+                {t("sendMoney.contractor")}
+              </MenuItem>
             </Select>
           </Grid>
           <Grid item xs={12}>
@@ -178,12 +186,16 @@ export function SendMoney(props: { org?: boolean }) {
               disabled={!(target && !error && targetObject)}
               onClick={() => setNext(true)}
             >
-              Next
+              {t("sendMoney.next")}
             </Button>
           </Grid>
         </Section>
       ) : (
-        <Section xs={12} title={"Recipient"} justifyContent={"space-between"}>
+        <Section
+          xs={12}
+          title={t("sendMoney.recipient")}
+          justifyContent={"space-between"}
+        >
           <Grid item xs={12} container>
             <Grid item>
               <Avatar
@@ -209,20 +221,22 @@ export function SendMoney(props: { org?: boolean }) {
             <TextField
               type={"number"}
               fullWidth
-              label={"Amount"}
+              label={t("sendMoney.amount")}
               value={amount}
               onChange={(event: React.ChangeEvent<{ value: string }>) => {
                 setAmount(event.target.value)
               }}
               error={isNaN(Number.parseInt(amount))}
-              helperText={amount === "" ? "Please enter an amount!" : ""}
+              helperText={
+                amount === "" ? t("sendMoney.errors.enterAmount") : ""
+              }
               color={!isNaN(Number.parseInt(amount)) ? "success" : "primary"}
             />
           </Grid>
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label={"Note"}
+              label={t("sendMoney.note")}
               value={note}
               onChange={(event: React.ChangeEvent<{ value: string }>) => {
                 setNote(event.target.value)
@@ -236,7 +250,7 @@ export function SendMoney(props: { org?: boolean }) {
               color={"secondary"}
               onClick={() => setNext(false)}
             >
-              Back
+              {t("sendMoney.back")}
             </Button>
           </Grid>
           <Grid item xs={6} justifyContent={"right"} container>
@@ -246,7 +260,7 @@ export function SendMoney(props: { org?: boolean }) {
                 color={"primary"}
                 onClick={initiateSend}
               >
-                Send
+                {t("sendMoney.send")}
               </Button>
             </Grid>
           </Grid>

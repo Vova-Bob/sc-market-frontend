@@ -7,8 +7,10 @@ import { Box, Button, Grid, Typography } from "@mui/material"
 import { AddRounded, LocalShippingRounded } from "@mui/icons-material"
 import { useGetMyShips } from "../../store/ships"
 import { Link } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 
 export function MemberFleet() {
+  const { t } = useTranslation()
   const { data: ships } = useGetMyShips()
 
   return (
@@ -24,7 +26,7 @@ export function MemberFleet() {
             sx={{ fontWeight: "bold" }}
             color={"text.secondary"}
           >
-            My Fleet
+            {t("fleet.myFleetTitle")}
           </Typography>
 
           <Box display={"flex"} justifyContent={"flex-end"}>
@@ -41,7 +43,7 @@ export function MemberFleet() {
                   marginBottom: 2,
                 }}
               >
-                Add Ships
+                {t("fleet.addShips")}
               </Button>
             </Link>
             <Button
@@ -52,7 +54,7 @@ export function MemberFleet() {
                 marginBottom: 2,
               }}
             >
-              Create Delivery
+              {t("fleet.createDelivery")}
             </Button>
           </Box>
         </Box>

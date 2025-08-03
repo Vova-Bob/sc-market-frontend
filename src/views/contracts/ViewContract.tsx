@@ -18,10 +18,12 @@ import React from "react"
 import { useContractAppOpen } from "../../hooks/contract/ContractApp"
 import { MarkdownRender } from "../../components/markdown/Markdown"
 import { dateDiffInDays } from "../market/MarketListingView"
+import { useTranslation } from "react-i18next" //  i18n
 
 export function ViewContract(props: { listing: Order }) {
   const { listing } = props
   const [appOpen, setAppOpen] = useContractAppOpen()
+  const { t } = useTranslation()
 
   // TODO: Add proposed compensation
   return (
@@ -53,7 +55,7 @@ export function ViewContract(props: { listing: Order }) {
               {dateDiffInDays(new Date(), new Date(listing.timestamp)) <= 1 && (
                 <Chip
                   color={"secondary"}
-                  label={"New"}
+                  label={t("contracts.new")}
                   sx={{
                     marginRight: 1,
                     textTransform: "uppercase",
@@ -103,7 +105,9 @@ export function ViewContract(props: { listing: Order }) {
           >
             <Chip
               color={"primary"}
-              label={listing.kind}
+              label={t(`contracts.kind.${listing.kind}`, {
+                defaultValue: listing.kind,
+              })}
               sx={{ marginRight: 1, marginBottom: 1, padding: 1 }}
               variant={"outlined"}
               icon={orderIcons[listing.kind]}
@@ -116,7 +120,7 @@ export function ViewContract(props: { listing: Order }) {
               variant={"contained"}
               onClick={() => setAppOpen(true)}
             >
-              Apply
+              {t("contracts.apply")}
             </Button>
           </Grid>
         </CardActions>

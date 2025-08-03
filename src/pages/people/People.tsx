@@ -5,6 +5,7 @@ import { ContainerGrid } from "../../components/layout/ContainerGrid"
 import { Page } from "../../components/metadata/Page"
 import { AdminDailyActivity, AdminUserList } from "../../views/people/AllUsers"
 import { AdminExpressVerify } from "../../views/authentication/AdminExpressVerify"
+import { useTranslation } from "react-i18next"
 
 export function CustomerPage(props: {
   contractors?: boolean
@@ -12,10 +13,12 @@ export function CustomerPage(props: {
   customers?: boolean
   users?: boolean
 }) {
+  const { t } = useTranslation()
+
   return (
-    <Page title={"Customers"}>
+    <Page title={t("customerList.customers")}>
       <ContainerGrid maxWidth={"xl"} sidebarOpen={true}>
-        <HeaderTitle>People</HeaderTitle>
+        <HeaderTitle>{t("people.title")}</HeaderTitle>
 
         <CustomerList {...props} />
       </ContainerGrid>
@@ -24,10 +27,12 @@ export function CustomerPage(props: {
 }
 
 export function AdminUserListPage() {
+  const { t } = useTranslation()
+
   return (
-    <Page title={"Customers"}>
+    <Page title={t("customerList.customers")}>
       <ContainerGrid maxWidth={"xl"} sidebarOpen={true}>
-        <HeaderTitle>People</HeaderTitle>
+        <HeaderTitle>{t("people.title")}</HeaderTitle>
 
         <AdminDailyActivity />
         <AdminUserList />

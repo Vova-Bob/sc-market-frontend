@@ -11,18 +11,20 @@ import { ServiceSidebarContext } from "../../hooks/contract/ServiceSidebar"
 import { ServiceListings } from "../../views/contracts/ServiceListings"
 import { Link } from "react-router-dom"
 import { CreateRounded } from "@mui/icons-material"
+import { useTranslation } from "react-i18next"
 
 export function Services() {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(true)
 
   const [drawerOpen] = useDrawerOpen()
 
   return (
-    <Page title={"Contracts"}>
+    <Page title={t("services.contractsTitle")}>
       <ServiceSidebarContext.Provider value={[open, setOpen]}>
         <IconButton
           color="secondary"
-          aria-label="toggle service sidebar"
+          aria-label={t("services.toggleSidebar")}
           sx={{
             position: "absolute",
             zIndex: 50,
@@ -46,7 +48,7 @@ export function Services() {
             xs={12}
           >
             <HeaderTitle md={7} lg={7} xl={7}>
-              Contractor Services
+              {t("services.contractorServices")}
             </HeaderTitle>
             <Grid item>
               <Link
@@ -59,7 +61,7 @@ export function Services() {
                   variant={"contained"}
                   size={"large"}
                 >
-                  Create Service
+                  {t("services.createService")}
                 </Button>
               </Link>
             </Grid>

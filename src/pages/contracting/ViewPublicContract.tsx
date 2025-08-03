@@ -18,6 +18,7 @@ import { PageBody404 } from "../errors/Error404"
 import { ContractDetailsArea } from "../../views/contracts/ContractDetailsArea"
 import { ContractOfferForm } from "../../views/contracts/ContractOfferForm"
 import { useGetUserProfileQuery } from "../../store/profile"
+import { useTranslation } from "react-i18next"
 
 export function ViewPublicContractBody(props: { contract: PublicContract }) {
   const { contract } = props
@@ -32,13 +33,14 @@ export function ViewPublicContractBody(props: { contract: PublicContract }) {
 }
 
 export function ViewPublicContract() {
+  const { t } = useTranslation()
   const { contract_id } = useParams<{ contract_id: string }>()
   const { data: contract, isError } = useGetPublicContractQuery(
     contract_id || "",
   )
 
   return (
-    <Page title={`${contract?.title} - Public Order`}>
+    <Page title={`${contract?.title} - ${t("contracts.publicOrderTitle")}`}>
       <ContainerGrid sidebarOpen={true} maxWidth={"lg"}>
         <Grid item xs={12}>
           <Breadcrumbs>
@@ -48,7 +50,7 @@ export function ViewPublicContract() {
               underline="hover"
               color={"text.primary"}
             >
-              Public Contracts
+              {t("contracts.publicContracts")}
             </MaterialLink>
 
             <MaterialLink
@@ -57,13 +59,15 @@ export function ViewPublicContract() {
               underline="hover"
               color={"text.secondary"}
             >
-              Contract {(contract_id || "").substring(0, 8).toUpperCase()}
+              {t("contracts.contractShort", {
+                id: (contract_id || "").substring(0, 8).toUpperCase(),
+              })}
             </MaterialLink>
           </Breadcrumbs>
         </Grid>
         <HeaderTitle>
           <BackArrow />
-          View Contract
+          {t("contracts.viewContract")}
         </HeaderTitle>
 
         {isError ? (

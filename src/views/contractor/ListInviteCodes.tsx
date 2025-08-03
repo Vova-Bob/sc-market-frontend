@@ -16,15 +16,14 @@ import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { ContractorInviteCode } from "../../datatypes/Contractor"
 import { useTheme } from "@mui/material/styles"
 import { ExtendedTheme } from "../../hooks/styles/Theme"
-import { useLocation } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 
 export const headCells: readonly HeadCell<ContractorInviteCode>[] = [
   {
     id: "invite_id",
     numeric: false,
     disablePadding: false,
-    label: "Invite Code",
-    // maxWidth: '75%'
+    label: "inviteCodes.invite_code",
   },
   {
     id: "invite_id",
@@ -49,13 +48,12 @@ export function InviteRow(props: {
   isItemSelected: boolean
   labelId: string
 }): JSX.Element {
-  const { row, index, isItemSelected } = props // TODO: Add `assigned_to` column
+  const { row, index, isItemSelected } = props
   const [currentOrg] = useCurrentOrg()
   const theme = useTheme<ExtendedTheme>()
+  const { t } = useTranslation()
 
-  const [
-    deleteContractorInvite, // This is the mutation trigger
-  ] = useDeleteContractorInviteMutation()
+  const [deleteContractorInvite] = useDeleteContractorInviteMutation()
 
   const issueAlert = useAlertHook()
 
@@ -69,19 +67,19 @@ export function InviteRow(props: {
 
     if (res?.data && !res?.error) {
       issueAlert({
-        message: "Submitted!",
+        message: t("inviteCodes.submitted"),
         severity: "success",
       })
     } else {
       issueAlert({
-        message: `Failed to submit! ${
-          res.error?.error || res.error?.data?.error || res.error
-        }`,
+        message: t("inviteCodes.failed_submit", {
+          reason: res.error?.error || res.error?.data?.error || res.error || "",
+        }),
         severity: "error",
       })
     }
     return false
-  }, [currentOrg, deleteContractorInvite, row.invite_id, issueAlert])
+  }, [currentOrg, deleteContractorInvite, row.invite_id, issueAlert, t])
 
   return (
     <>
@@ -118,7 +116,10 @@ export function InviteRow(props: {
             }}
           >
             <Typography color={"text.primary"} variant={"body2"}>
-              Used {row.times_used}/{row.max_uses || "∞"} times
+              {t("inviteCodes.used_times", {
+                used: row.times_used,
+                max: row.max_uses || "∞",
+              })}
             </Typography>
           </Box>
         </TableCell>
@@ -136,7 +137,10 @@ export function InviteRow(props: {
                 `${window.location.origin}/contractor_invite/${row.invite_id}` ||
                   "PLACEHOLDER",
               )
-              issueAlert({ message: "Copied!", severity: "success" })
+              issueAlert({
+                message: t("inviteCodes.copied"),
+                severity: "success",
+              })
               event.stopPropagation()
             }}
           >
@@ -166,18 +170,29 @@ export function InviteRow(props: {
 
 export function ListInviteCodes() {
   const [currentOrg] = useCurrentOrg()
+  const { t } = useTranslation()
   const { data: contractorInvites } = useGetContractorInvitesQuery(
     currentOrg?.spectrum_id!,
   )
 
   return (
-    <Section xs={12} md={12} lg={12} xl={12} disablePadding title={"Invites"}>
+    <Section
+      xs={12}
+      md={12}
+      lg={12}
+      xl={12}
+      disablePadding
+      title={t("inviteCodes.invites")}
+    >
       <PaginatedTable
         rows={contractorInvites || []}
         initialSort={"invite_id"}
         generateRow={InviteRow}
         keyAttr={"invite_id"}
-        headCells={headCells}
+        headCells={headCells.map((cell) => ({
+          ...cell,
+          label: cell.label ? t(cell.label, cell.label) : "",
+        }))}
         disableSelect
       />
     </Section>

@@ -66,12 +66,12 @@ export function Contractors() {
   }, [searchState])
 
   return (
-    <Page title={t("contractors")}>
+    <Page title={t("contractorsPage.title")}>
       <ContractorSidebarContext.Provider value={[sidebarOpen, setSidebarOpen]}>
         <ContractorSearchContext.Provider value={[searchState, setSearchState]}>
           <IconButton
             color="secondary"
-            aria-label="toggle market sidebar"
+            aria-label={t("toggle_market_sidebar")}
             sx={{
               position: "absolute",
               zIndex: 50,
@@ -89,7 +89,7 @@ export function Contractors() {
           <ContractorSidebar />
           <ContainerGrid maxWidth={"md"} sidebarOpen={true}>
             <div ref={ref} />
-            <HeaderTitle>{t("contractors")}</HeaderTitle>
+            <HeaderTitle>{t("contractorsPage.title")}</HeaderTitle>
             {!isLoading
               ? (contractors || { items: [] }).items.map((item, index) => (
                   <ContractorListItem

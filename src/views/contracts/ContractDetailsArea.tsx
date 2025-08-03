@@ -25,7 +25,7 @@ export function ContractDetailsArea(props: { contract: PublicContract }) {
   return (
     <Grid item xs={12}>
       <TableContainer component={Paper}>
-        <Table aria-label="details table">
+        <Table aria-label={t("contractDetailsArea.details_table")}>
           <TableBody>
             <TableRow
               sx={{
@@ -33,7 +33,7 @@ export function ContractDetailsArea(props: { contract: PublicContract }) {
               }}
             >
               <TableCell component="th" scope="row">
-                Customer
+                {t("contractDetailsArea.customer")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
@@ -45,7 +45,7 @@ export function ContractDetailsArea(props: { contract: PublicContract }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                Date
+                {t("contractDetailsArea.date")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
@@ -57,7 +57,7 @@ export function ContractDetailsArea(props: { contract: PublicContract }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                Title
+                {t("contractDetailsArea.title")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
@@ -71,12 +71,12 @@ export function ContractDetailsArea(props: { contract: PublicContract }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                Kind
+                {t("contractDetailsArea.kind")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
                   <Typography color={"text.secondary"} variant={"subtitle2"}>
-                    {contract.kind}
+                    {t(`myServices.${contract.kind}`, contract.kind)}
                   </Typography>
                 </Stack>
               </TableCell>
@@ -86,7 +86,7 @@ export function ContractDetailsArea(props: { contract: PublicContract }) {
             >
               <TableCell colSpan={2}>
                 <Stack direction="column" spacing={1}>
-                  Details
+                  {t("contractDetailsArea.details")}
                   <Typography color={"text.secondary"} variant={"subtitle2"}>
                     <MarkdownRender text={contract.description} />
                   </Typography>
@@ -98,7 +98,7 @@ export function ContractDetailsArea(props: { contract: PublicContract }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                Offer
+                {t("contractDetailsArea.offer")}
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
@@ -109,7 +109,7 @@ export function ContractDetailsArea(props: { contract: PublicContract }) {
                       variant={"subtitle2"}
                       display={"inline"}
                     >
-                      aUEC {paymentType ? t(paymentType) : ""}
+                      aUEC {paymentType ? t(`paymentTypes.${paymentType}`) : ""}
                     </Typography>
                   </Typography>
                 </Stack>

@@ -7,12 +7,15 @@ import { CreateRecruitingPost } from "../../views/recruiting/CreateRecruitingPos
 import { Navigate, useParams } from "react-router-dom"
 import { useRecruitingGetPostByIDQuery } from "../../store/recruiting"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
+import { useTranslation } from "react-i18next"
 
 export function CreateRecruitingPostPage() {
+  const { t } = useTranslation()
+
   return (
-    <Page title={"Create Post"}>
+    <Page title={t("recruiting_post.page.createPost")}>
       <ContainerGrid maxWidth={"md"} sidebarOpen={true}>
-        <HeaderTitle>Create Post</HeaderTitle>
+        <HeaderTitle>{t("recruiting_post.page.createPost")}</HeaderTitle>
 
         <Grid item xs={12}>
           <Divider light />
@@ -26,16 +29,17 @@ export function CreateRecruitingPostPage() {
 
 export function UpdateRecruitingPostPage() {
   const { post_id } = useParams<{ post_id: string }>()
+  const { t } = useTranslation()
 
   const { data: post, isError } = useRecruitingGetPostByIDQuery(post_id!)
   const [currentOrg] = useCurrentOrg()
 
   return (
-    <Page title={"Create Post"}>
+    <Page title={t("recruiting_post.page.updatePost")}>
       {isError && <Navigate to={"/404"} />}
 
       <ContainerGrid maxWidth={"md"} sidebarOpen={true}>
-        <HeaderTitle>Update Post</HeaderTitle>
+        <HeaderTitle>{t("recruiting_post.page.updatePost")}</HeaderTitle>
 
         <Grid item xs={12}>
           <Divider light />

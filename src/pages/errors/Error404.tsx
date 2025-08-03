@@ -3,8 +3,10 @@ import { ContainerGrid } from "../../components/layout/ContainerGrid"
 import { Button, Divider, Grid, Typography } from "@mui/material"
 import { Link } from "react-router-dom"
 import { Page } from "../../components/metadata/Page"
+import { useTranslation } from "react-i18next"
 
 export function PageBody404() {
+  const { t } = useTranslation()
   return (
     <>
       <Grid item xs={12}>
@@ -14,7 +16,7 @@ export function PageBody404() {
           color={"text.secondary"}
           align={"center"}
         >
-          404: Page Not Found
+          {t("error404.title")}
         </Typography>
       </Grid>
       <Grid item xs={12}>
@@ -23,7 +25,7 @@ export function PageBody404() {
           color={"text.primary"}
           align={"center"}
         >
-          I wonder how you got here...
+          {t("error404.subtitle")}
         </Typography>
       </Grid>
 
@@ -39,7 +41,7 @@ export function PageBody404() {
           style={{ color: "inherit", textDecoration: "none" }}
         >
           <Button color={"secondary"} variant={"outlined"}>
-            Return to Dashboard
+            {t("error404.returnToDashboard")}
           </Button>
         </Link>
       </Grid>
@@ -48,6 +50,7 @@ export function PageBody404() {
 }
 
 export function Error404() {
+  const { t } = useTranslation()
   return (
     <Page title={"404"}>
       <ContainerGrid maxWidth={"md"} sidebarOpen={true}>

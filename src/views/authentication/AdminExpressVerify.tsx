@@ -25,7 +25,7 @@ export function AdminExpressVerify() {
       setState({ owner_discord_id: "", owner_username: "", spectrum_id: "" })
 
       issueAlert({
-        message: t("adminExpressVerify.success", "Submitted!"),
+        message: t("adminExpressVerify.success"),
         severity: "success",
       })
     } else {
@@ -41,10 +41,10 @@ export function AdminExpressVerify() {
   }, [state, t])
 
   return (
-    <FlatSection title={t("adminExpressVerify.title", "Express Verify User")}>
+    <FlatSection title={t("adminExpressVerify.title")}>
       <Grid item>
         <TextField
-          label={t("adminExpressVerify.ownerDiscordId", "Owner Discord ID")}
+          label={t("adminExpressVerify.ownerDiscordId")}
           value={state.owner_discord_id}
           onChange={(event) =>
             setState({ ...state, owner_discord_id: event.target.value })
@@ -53,7 +53,7 @@ export function AdminExpressVerify() {
       </Grid>
       <Grid item>
         <TextField
-          label={t("adminExpressVerify.ownerUsername", "Owner Username*")}
+          label={t("adminExpressVerify.ownerUsername")}
           value={state.owner_username}
           onChange={(event) =>
             setState({ ...state, owner_username: event.target.value })
@@ -62,7 +62,7 @@ export function AdminExpressVerify() {
       </Grid>
       <Grid item>
         <TextField
-          label={t("adminExpressVerify.spectrumId", "Org Spectrum ID*")}
+          label={t("adminExpressVerify.spectrumId")}
           value={state.spectrum_id}
           onChange={(event) =>
             setState({ ...state, spectrum_id: event.target.value })
@@ -71,7 +71,7 @@ export function AdminExpressVerify() {
       </Grid>
       <Grid item>
         <LoadingButton loading={isLoading} onClick={callback}>
-          {t("adminExpressVerify.submit", "Submit")}
+          {t("adminExpressVerify.submit")}
         </LoadingButton>
       </Grid>
     </FlatSection>

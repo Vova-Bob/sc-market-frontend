@@ -12,8 +12,10 @@ import LoadingButton from "@mui/lab/LoadingButton"
 import { Grid } from "@mui/material"
 import { ContainerGrid } from "../../components/layout/ContainerGrid"
 import { OrgDetails } from "../../components/list/UserDetails"
+import { useTranslation } from "react-i18next"
 
 export function AcceptOrgInvite() {
+  const { t } = useTranslation()
   const { invite_id } = useParams<{ invite_id: string }>()
 
   const issueAlert = useAlertHook()
@@ -35,7 +37,7 @@ export function AcceptOrgInvite() {
       .unwrap()
       .then(() => {
         issueAlert({
-          message: "Accepted invite!",
+          message: t("org.invite.accepted"),
           severity: "success",
         })
         navigate("/")
@@ -43,7 +45,7 @@ export function AcceptOrgInvite() {
       .catch((error) => {
         issueAlert(error)
       })
-  }, [acceptInvite, invite_id, issueAlert])
+  }, [acceptInvite, invite_id, issueAlert, navigate, t])
 
   const { data: contractor } = useGetContractorBySpectrumIDQuery(
     inviteDetails?.spectrum_id || "",
@@ -51,11 +53,11 @@ export function AcceptOrgInvite() {
   )
 
   return (
-    <Page title={`Accept Invite`}>
+    <Page title={t("org.invite.acceptInviteTitle")}>
       <ContainerGrid maxWidth={"md"} sidebarOpen={true}>
-        <Section title={"Accept Contractor Invite"}>
+        <Section title={t("org.invite.acceptContractorInvite")}>
           <Grid item xs={12}>
-            You&#39;ve been invited to{" "}
+            {t("org.invite.invitedMessage")}{" "}
             {contractor && <OrgDetails org={contractor} />}
           </Grid>
 
@@ -65,7 +67,7 @@ export function AcceptOrgInvite() {
               loading={isLoading}
               variant={"contained"}
             >
-              Accept
+              {t("org.invite.accept")}
             </LoadingButton>
           </Grid>
         </Section>

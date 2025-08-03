@@ -6,10 +6,13 @@ import { CreateRounded } from "@mui/icons-material"
 import { Link } from "react-router-dom"
 import { MyServices } from "../../views/orders/Services"
 import { Page } from "../../components/metadata/Page"
+import { useTranslation } from "react-i18next"
 
 export function MyServicesPage(props: {}) {
+  const { t } = useTranslation()
+
   return (
-    <Page title={"My Services"}>
+    <Page title={t("services.myServices")}>
       <ContainerGrid maxWidth={"lg"} sidebarOpen={true}>
         <Grid
           item
@@ -19,7 +22,7 @@ export function MyServicesPage(props: {}) {
           xs={12}
         >
           <HeaderTitle lg={8} xl={8}>
-            My Services
+            {t("services.myServices")}
           </HeaderTitle>
 
           <Grid item>
@@ -33,7 +36,7 @@ export function MyServicesPage(props: {}) {
                 variant={"contained"}
                 size={"large"}
               >
-                Create Service
+                {t("services.createService")}
               </Button>
             </Link>
           </Grid>

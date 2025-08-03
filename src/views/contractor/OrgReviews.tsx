@@ -23,6 +23,7 @@ import { ExtendedTheme } from "../../hooks/styles/Theme"
 import { UnderlineLink } from "../../components/typography/UnderlineLink"
 import { amber } from "@mui/material/colors"
 import { SellerRatingStars } from "../../components/rating/ListingRating"
+import { useTranslation } from "react-i18next"
 
 function ReviewRow(props: {
   row: OrderReview
@@ -33,6 +34,7 @@ function ReviewRow(props: {
 }) {
   const { row, onClick, isItemSelected, labelId } = props
   const theme = useTheme<ExtendedTheme>()
+  const { t } = useTranslation()
   const formatDate = useCallback(
     (date: number) =>
       Intl.DateTimeFormat("default", {
@@ -134,17 +136,18 @@ const headCells: readonly HeadCell<OrderReview>[] = [
     id: "rating",
     numeric: false,
     disablePadding: false,
-    label: "Rating",
+    label: "orderReviewView.ratingLabel",
   },
   {
     id: "content",
     numeric: true,
     disablePadding: false,
-    label: "Message",
+    label: "orderReviewView.review",
   },
 ]
 
 export function OrgReviews(props: { contractor: MinimalContractor }) {
+  const { t } = useTranslation()
   const { data: rows } = useGetContractorReviewsQuery(
     props.contractor.spectrum_id,
   )
@@ -156,7 +159,10 @@ export function OrgReviews(props: { contractor: MinimalContractor }) {
         initialSort={"timestamp"}
         generateRow={ReviewRow}
         keyAttr={"review_id"}
-        headCells={headCells}
+        headCells={headCells.map((cell) => ({
+          ...cell,
+          label: t(cell.label),
+        }))}
         disableSelect
       />
     </React.Fragment>
@@ -164,6 +170,7 @@ export function OrgReviews(props: { contractor: MinimalContractor }) {
 }
 
 export function UserReviews(props: { user: MinimalUser }) {
+  const { t } = useTranslation()
   const { data: rows } = useGetUserOrderReviews(props.user.username)
 
   return (
@@ -173,7 +180,10 @@ export function UserReviews(props: { user: MinimalUser }) {
         initialSort={"timestamp"}
         generateRow={ReviewRow}
         keyAttr={"review_id"}
-        headCells={headCells}
+        headCells={headCells.map((cell) => ({
+          ...cell,
+          label: t(cell.label),
+        }))}
         disableSelect
       />
     </React.Fragment>
@@ -201,6 +211,7 @@ export function ReviewSummaryArea(props: {
   target: MinimalContractor | MinimalUser
 }) {
   const { reviews, target } = props
+  const { t } = useTranslation()
   const counts = useMemo(() => {
     const vals = [0, 0, 0, 0, 0]
     reviews.forEach((item) => {
@@ -256,7 +267,7 @@ export function ReviewSummaryArea(props: {
             user={target as MinimalUser}
           />
           <Typography variant={"body1"} color={"text.primary"}>
-            {target.rating.rating_count} Review
+            {target.rating.rating_count} {t("orderReviewArea.review")}
             {target.rating.rating_count !== 1 ? "s" : ""}
           </Typography>
         </Box>
