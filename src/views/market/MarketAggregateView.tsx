@@ -64,7 +64,9 @@ import { Section } from "../../components/paper/Section"
 import Chart from "react-apexcharts"
 import { NumericFormat } from "react-number-format"
 import { Stack } from "@mui/system"
+import { useTranslation } from "react-i18next" // Localization
 
+// Table headers with i18n keys
 const headCells: readonly HeadCell<
   MarketAggregateListing & { rating: number }
 >[] = [
@@ -72,19 +74,19 @@ const headCells: readonly HeadCell<
     id: "rating",
     numeric: false,
     disablePadding: false,
-    label: "Seller Rating",
+    label: "MarketAggregateView.sellerRating",
   },
   {
     id: "price",
     numeric: true,
     disablePadding: false,
-    label: "Price",
+    label: "MarketAggregateView.price",
   },
   {
     id: "quantity_available",
     numeric: true,
     disablePadding: false,
-    label: "Quantity Available",
+    label: "MarketAggregateView.quantityAvailable",
   },
   {
     id: "listing_id",
@@ -101,26 +103,26 @@ const buyOrderHeadCells: readonly HeadCell<
     id: "rating",
     numeric: false,
     disablePadding: false,
-    label: "Buyer",
+    label: "MarketAggregateView.buyer",
   },
   {
     id: "price",
     numeric: true,
     disablePadding: false,
-    label: "Price",
+    label: "MarketAggregateView.price",
   },
   {
     id: "quantity",
     numeric: true,
     disablePadding: false,
-    label: "Quantity",
+    label: "MarketAggregateView.quantity",
   },
   {
     id: "total",
     numeric: true,
     disablePadding: false,
     noSort: false,
-    label: "Total",
+    label: "MarketAggregateView.total",
   },
   {
     id: "buy_order_id",
@@ -132,7 +134,7 @@ const buyOrderHeadCells: readonly HeadCell<
 ]
 
 export function MarketAggregateView() {
-  // TODO: Update listing details
+  const { t } = useTranslation() // Localization hook
   const [complete] = useCurrentMarketListing<MarketAggregate>()
   const { listings, details, photos } = complete
   const { data: profile } = useGetUserProfileQuery()
@@ -285,7 +287,7 @@ export function MarketAggregateView() {
                       color="inherit"
                       to="/market"
                     >
-                      Market
+                      {t("MarketAggregateView.market")}
                     </MaterialLink>
                     <MaterialLink
                       component={Link}
@@ -367,7 +369,7 @@ export function MarketAggregateView() {
                   fontWeight={"bold"}
                   color={"text.secondary"}
                 >
-                  Description
+                  {t("MarketAggregateView.description")}
                 </Typography>
                 <Typography>
                   <MarkdownRender text={details.description} />
@@ -377,7 +379,7 @@ export function MarketAggregateView() {
           </Card>
         </Fade>
       </Grid>
-      <HeaderTitle>Sell Orders</HeaderTitle>
+      <HeaderTitle>{t("MarketAggregateView.sellOrders")}</HeaderTitle>
       <Grid item xs={12}>
         <PaginatedTable
           disableSelect
@@ -397,7 +399,7 @@ export function MarketAggregateView() {
         />
         {/*{listing.listings.map((l, index) => <AggregateRow listing={l} index={index}/>)}*/}
       </Grid>
-      <HeaderTitle>Buy Orders</HeaderTitle>
+      <HeaderTitle>{t("MarketAggregateView.buyOrders")}</HeaderTitle>
       <Grid item xs={12}>
         <PaginatedTable
           disableSelect
@@ -415,7 +417,7 @@ export function MarketAggregateView() {
       </Grid>
       <BuyOrderForm aggregate={complete} />
       <AggregateBuySellWall aggregate={complete} />
-      <HeaderTitle>Price History</HeaderTitle>
+      <HeaderTitle>{t("MarketAggregateView.priceHistory")}</HeaderTitle>
       <AggregateChart aggregate={complete} />
     </>
   )
@@ -428,6 +430,7 @@ export function AggregateRow(props: {
   isItemSelected: boolean
   labelId: string
 }) {
+  const { t } = useTranslation()
   const { row: listing, index } = props
   const [quantity, setQuantity] = useState(1)
 
@@ -481,11 +484,11 @@ export function AggregateRow(props: {
 
     setCookie("market_cart", cart, { path: "/", sameSite: "strict" })
     issueAlert({
-      message: `Added to cart!`,
+      message: t("MarketAggregateView.addedToCart"),
       severity: "success",
     })
     setCartRedirect(true)
-  }, [cookies.market_cart, listing, quantity, setCookie])
+  }, [cookies.market_cart, listing, quantity, setCookie, t])
 
   const issueAlert = useAlertHook()
 
@@ -554,13 +557,15 @@ export function AggregateRow(props: {
           InputProps={{
             endAdornment: (
               <InputAdornment position="start">
-                {`of ${listing.quantity_available} available`}
+                {t("MarketAggregateView.ofAvailable", {
+                  count: listing.quantity_available,
+                })}
               </InputAdornment>
             ),
             inputMode: "numeric",
           }}
           size="small"
-          label={"Quantity to Buy"}
+          label={t("MarketAggregateView.quantityToBuy")}
           value={quantity}
           color={"secondary"}
         />
@@ -592,6 +597,7 @@ export function BuyOrderRow(props: {
   isItemSelected: boolean
   labelId: string
 }) {
+  const { t } = useTranslation()
   const { row: buy_order, index } = props
   const issueAlert = useAlertHook()
 
@@ -610,22 +616,22 @@ export function BuyOrderRow(props: {
 
     if (res?.data && !res?.error) {
       issueAlert({
-        message: "Submitted!",
+        message: t("MarketAggregateView.submitted"),
         severity: "success",
       })
 
       navigate(`/contract/${res.data.order_id}`)
     } else {
       issueAlert({
-        message: `Failed to submit! ${
-          res.error?.error || res.error?.data?.error || res.error
-        }`,
+        message:
+          t("MarketAggregateView.failedSubmit") +
+          ` ${res.error?.error || res.error?.data?.error || res.error}`,
         severity: "error",
       })
     }
 
     return false
-  }, [buy_order])
+  }, [buy_order, t])
 
   const cancelCallback = useCallback(async () => {
     const res: { data?: Order; error?: any } = await cancelBuyOrder(
@@ -634,20 +640,20 @@ export function BuyOrderRow(props: {
 
     if (res?.data && !res?.error) {
       issueAlert({
-        message: "Cancelled!",
+        message: t("MarketAggregateView.cancelled"),
         severity: "success",
       })
     } else {
       issueAlert({
-        message: `Failed to submit! ${
-          res.error?.error || res.error?.data?.error || res.error
-        }`,
+        message:
+          t("MarketAggregateView.failedSubmit") +
+          ` ${res.error?.error || res.error?.data?.error || res.error}`,
         severity: "error",
       })
     }
 
     return false
-  }, [buy_order])
+  }, [buy_order, t])
 
   return (
     <TableRow
@@ -723,7 +729,7 @@ export function BuyOrderRow(props: {
           size={"large"}
           onClick={callback}
         >
-          Fulfill
+          {t("MarketAggregateView.fulfill")}
         </Button>
         {buy_order.buyer.username === profile?.username && (
           <Button
@@ -735,7 +741,7 @@ export function BuyOrderRow(props: {
               marginLeft: 1,
             }}
           >
-            Cancel
+            {t("MarketAggregateView.cancel")}
           </Button>
         )}
       </TableCell>
@@ -775,6 +781,7 @@ export function AggregateChart(props: { aggregate: MarketAggregate }) {
 }
 
 export function AggregateBuySellWall(props: { aggregate: MarketAggregate }) {
+  const { t } = useTranslation()
   const { aggregate } = props
 
   const { series, buyMax, sellMax } = useMemo(() => {
@@ -862,12 +869,18 @@ export function AggregateBuySellWall(props: { aggregate: MarketAggregate }) {
                     { series: _, seriesIndex, dataPointIndex, w },
                   ) =>
                     `${value} ${
-                      seriesIndex ? "sell" : "buy"
-                    } orders at ${series[seriesIndex][
-                      dataPointIndex
-                    ].x.toLocaleString(undefined)} aUEC or ${
-                      seriesIndex ? "lower" : "higher"
-                    }`,
+                      seriesIndex
+                        ? t("MarketAggregateView.sellOrdersChart")
+                        : t("MarketAggregateView.buyOrdersChart")
+                    } ${t("MarketAggregateView.atPrice", {
+                      price:
+                        series[seriesIndex][dataPointIndex].x.toLocaleString(
+                          undefined,
+                        ),
+                      direction: seriesIndex
+                        ? t("MarketAggregateView.orLower")
+                        : t("MarketAggregateView.orHigher"),
+                    })}`,
                   title: { formatter: (seriesName) => "" },
                 },
               },
@@ -906,11 +919,11 @@ export function AggregateBuySellWall(props: { aggregate: MarketAggregate }) {
             }}
             series={[
               {
-                name: "Buy Orders",
+                name: t("MarketAggregateView.buyOrdersChart"),
                 data: buyWall,
               },
               {
-                name: "Sell Orders",
+                name: t("MarketAggregateView.sellOrdersChart"),
                 data: sellWall,
               },
             ]}
