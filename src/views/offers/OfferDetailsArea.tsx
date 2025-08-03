@@ -39,10 +39,10 @@ import { useGetUserProfileQuery } from "../../store/profile"
 import LoadingButton from "@mui/lab/LoadingButton"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { Link, useNavigate } from "react-router-dom"
-import { paymentTypeMessages } from "../orders/Services"
 import { useGetPublicContractQuery } from "../../store/public_contracts"
 import { ListingSellerRating } from "../../components/rating/ListingRating"
 import { useTranslation } from "react-i18next"
+import { PAYMENT_TYPE_MAP } from "../../util/constants"
 
 export function OfferMessagesArea(props: { offer: OfferSession }) {
   const { offer } = props
@@ -326,7 +326,7 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
                       display={"inline"}
                     >
                       aUEC{" "}
-                      {paymentTypeMessages.get(session.offers[0].payment_type)}
+                      {t(PAYMENT_TYPE_MAP.get(session.offers[0].payment_type) || "")}
                     </Typography>
                   </Typography>
                 </Stack>

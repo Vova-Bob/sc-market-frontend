@@ -467,13 +467,6 @@
     "no_title": "Назву не вказано",
     "no_type": "Тип не вказано",
     "no_description": "Опис не вказано",
-    "per_hour": "за годину",
-    "per_day": "за день",
-    "per_unit": "за одиницю",
-    "per_box": "за коробку",
-    "per_scu": "за SCU",
-    "per_cscu": "за cSCU",
-    "per_mscu": "за mSCU",
     "active": "Активні",
     "inactive": "Неактивні",
     "services": "Послуги"

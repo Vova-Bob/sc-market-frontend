@@ -27,7 +27,7 @@ import {
 import { MarkdownRender } from "../../components/markdown/Markdown"
 import { useContractSearch } from "../../hooks/contract/ContractSearch"
 import { dateDiffInDays } from "../market/MarketListingView"
-import { paymentTypeMessages } from "../orders/Services"
+import { PAYMENT_TYPE_MAP } from "../../util/constants"
 
 export function ContractListing(props: {
   contract: PublicContract
@@ -35,7 +35,7 @@ export function ContractListing(props: {
 }) {
   const { contract, index } = props
   const { t } = useTranslation()
-  const key = paymentTypeMessages.get(contract.payment_type)
+  const key = PAYMENT_TYPE_MAP.get(contract.payment_type) || ""
 
   return (
     <Grid item xs={12} lg={6}>

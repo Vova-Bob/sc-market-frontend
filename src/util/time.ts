@@ -28,8 +28,6 @@ export const getRelativeTime = (d1: Date, d2: Date = new Date()) => {
   return ""
 }
 
-import moment, { Moment } from "moment"
-
 /**
  * Returns the most significant time difference between now and a future date
  * in shorthand format (e.g., "1mo", "8d", "2h", "10m", "53s").

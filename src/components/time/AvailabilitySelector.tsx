@@ -74,7 +74,7 @@ export function AvailabilitySelector(props: {
   onSave: (selections: boolean[]) => any
   initialSelections?: boolean[]
 }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { onSave, initialSelections } = props
 
   const [clicked, setClicked] = useState(false)
@@ -96,6 +96,11 @@ export function AvailabilitySelector(props: {
       arrayRotate(initialSelections || generateInitialSelection(), tzOffset),
     )
   }, [initialSelections])
+
+  const getDayOfWeek = useCallback(
+    (i: number) => moment().startOf("week").add(i, "days").format("ddd"),
+    [i18n.language],
+  )
 
   const setClickCallback = useCallback(
     (value: boolean) => {
@@ -195,9 +200,7 @@ export function AvailabilitySelector(props: {
             <tbody>
               <tr>
                 {[...Array(7).keys()].map((i) => (
-                  <th key={i}>
-                    {moment().startOf("week").add(i, "days").format("ddd")}
-                  </th>
+                  <th key={i}>{getDayOfWeek(i)}</th>
                 ))}
               </tr>
 

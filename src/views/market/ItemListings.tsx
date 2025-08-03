@@ -158,6 +158,7 @@ export function ItemListingBase(props: {
   const { details, listing, auction_details, photos } = complete
   const { user_seller, contractor_seller } = listing
   const theme = useTheme<ExtendedTheme>()
+  const { t } = useTranslation()
   const [timeDisplay, setTimeDisplay] = useState(
     auction_details ? getRelativeTime(new Date(auction_details.end_time)) : "",
   )
@@ -380,7 +381,7 @@ export function ItemListingBase(props: {
                 variant={"subtitle2"}
               >
                 {t("market.available", {
-                  count: listing.quantity_available.toLocaleString(undefined),
+                  count: listing.quantity_available,
                 })}
               </Typography>
             </CardContent>

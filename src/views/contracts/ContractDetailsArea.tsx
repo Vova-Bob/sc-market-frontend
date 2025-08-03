@@ -12,7 +12,7 @@ import { Stack } from "@mui/system"
 import { UserDetails } from "../../components/list/UserDetails"
 import moment from "moment"
 import { MarkdownRender } from "../../components/markdown/Markdown"
-import { paymentTypeMessages } from "../orders/Services"
+import { PAYMENT_TYPE_MAP } from "../../util/constants"
 import React from "react"
 import { PublicContract } from "../../store/public_contracts"
 import { useTranslation } from "react-i18next"
@@ -20,7 +20,7 @@ import { useTranslation } from "react-i18next"
 export function ContractDetailsArea(props: { contract: PublicContract }) {
   const { contract } = props
   const { t } = useTranslation()
-  const paymentType = paymentTypeMessages.get(contract.payment_type)
+  const paymentType = PAYMENT_TYPE_MAP.get(contract.payment_type) || ""
 
   return (
     <Grid item xs={12}>
@@ -109,7 +109,7 @@ export function ContractDetailsArea(props: { contract: PublicContract }) {
                       variant={"subtitle2"}
                       display={"inline"}
                     >
-                      aUEC {paymentType ? t(`paymentTypes.${paymentType}`) : ""}
+                      aUEC {paymentType ? t(paymentType) : ""}
                     </Typography>
                   </Typography>
                 </Stack>

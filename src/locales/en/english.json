@@ -467,13 +467,6 @@
     "no_title": "Title not defined",
     "no_type": "Type not defined",
     "no_description": "Description not defined",
-    "per_hour": "per hour",
-    "per_day": "per day",
-    "per_unit": "per unit",
-    "per_box": "per box",
-    "per_scu": "per SCU",
-    "per_cscu": "per cSCU",
-    "per_mscu": "per mSCU",
     "active": "Active",
     "inactive": "Inactive",
     "services": "Services"

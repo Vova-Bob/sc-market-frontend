@@ -2,6 +2,9 @@ import i18n from "i18next"
 import { initReactI18next } from "react-i18next"
 import LanguageDetector from "i18next-browser-languagedetector"
 
+import moment from "moment"
+import "moment/locale/uk"
+
 import en from "../locales/en/english.json"
 import uk from "../locales/uk/ukrainian.json"
 // Language configuration with endonyms
@@ -24,9 +27,6 @@ i18n
       uk: { translation: uk },
     },
   })
-
-import moment from "moment"
-import "moment/locale/uk"
 
 i18n.on("languageChanged", (lng) => {
   moment.locale(lng)

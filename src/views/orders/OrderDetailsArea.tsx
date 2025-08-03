@@ -43,7 +43,7 @@ import {
   PlayArrowRounded,
 } from "@mui/icons-material"
 import { has_permission } from "../contractor/OrgRoles"
-import { paymentTypeMessages } from "./Services"
+import { PAYMENT_TYPE_MAP } from "../../util/constants"
 import { useTranslation } from "react-i18next"
 
 export function OrderMessagesArea(props: { order: Order }) {
@@ -326,7 +326,7 @@ export function OrderDetailsArea(props: { order: Order }) {
                       variant={"subtitle2"}
                       display={"inline"}
                     >
-                      aUEC {paymentTypeMessages.get(order.payment_type)}
+                      aUEC {t(PAYMENT_TYPE_MAP.get(order.payment_type) || "")}
                     </Typography>
                   </Typography>
                 </Stack>

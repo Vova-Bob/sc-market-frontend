@@ -18,3 +18,8 @@ export const PAYMENT_TYPES = [
   { value: "cscu", translationKey: "paymentTypes.cscu" },
   { value: "mscu", translationKey: "paymentTypes.mscu" },
 ] as const
+
+// Map for faster payment type lookups
+export const PAYMENT_TYPE_MAP = new Map(
+  PAYMENT_TYPES.map((pt) => [pt.value, pt.translationKey]),
+)

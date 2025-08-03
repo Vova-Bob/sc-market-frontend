@@ -30,7 +30,7 @@ import {
   useGetServicesContractorQuery,
   useGetServicesQuery,
 } from "../../store/services"
-import { paymentTypeMessages } from "../orders/Services"
+import { PAYMENT_TYPE_MAP } from "../../util/constants"
 import { formatServiceUrl } from "../../util/urls"
 
 export type ContractKindIconKey = keyof typeof orderIcons
@@ -38,7 +38,7 @@ export type ContractKindIconKey = keyof typeof orderIcons
 export function ServiceListingBase(props: { service: Service; index: number }) {
   const { service, index } = props
   const { t } = useTranslation()
-  const key = paymentTypeMessages.get(service.payment_type)
+  const key = PAYMENT_TYPE_MAP.get(service.payment_type) || ""
 
   return (
     <Link
@@ -120,7 +120,7 @@ export function ServiceListingBase(props: { service: Service; index: number }) {
                   {/*</Typography>*/}
                   <Typography color={"primary"} variant={"subtitle2"}>
                     {service.cost.toLocaleString(undefined)} aUEC{" "}
-                    {key ? t(`paymentTypes.${key}`) : ""}
+                    {key ? t(key) : ""}
                   </Typography>
                 </Box>
               }

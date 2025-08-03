@@ -29,6 +29,7 @@ import {
   useGetServicesQuery,
 } from "../../store/services"
 import { useTranslation } from "react-i18next"
+import { PAYMENT_TYPE_MAP } from "../../util/constants"
 
 export interface ServiceRowProps {
   row: Service
@@ -141,22 +142,17 @@ export function ServiceDetailsRow(props: { open: boolean; service: Service }) {
   )
 }
 
-export const paymentTypeMessages = new Map<PaymentType, string>()
-paymentTypeMessages.set("one-time", "")
-paymentTypeMessages.set("hourly", "myServices.per_hour")
-paymentTypeMessages.set("daily", "myServices.per_day")
-paymentTypeMessages.set("unit", "myServices.per_unit")
-paymentTypeMessages.set("box", "myServices.per_box")
-paymentTypeMessages.set("scu", "myServices.per_scu")
-paymentTypeMessages.set("cscu", "myServices.per_cscu")
-paymentTypeMessages.set("mscu", "myServices.per_mscu")
+// Helper function to get payment type translation key
+const getPaymentTypeTranslationKey = (paymentType: PaymentType): string => {
+  return PAYMENT_TYPE_MAP.get(paymentType) || ""
+}
 
 export function MobileServiceRow(props: ServiceRowProps) {
   const { row, index, isItemSelected } = props
   const [open, setOpen] = useState(false)
   const { t } = useTranslation()
 
-  const key = paymentTypeMessages.get(row.payment_type)
+  const key = getPaymentTypeTranslationKey(row.payment_type)
   const paymentType = key ? t(key) : ""
 
   useEffect(() => {
