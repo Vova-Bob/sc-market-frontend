@@ -992,5 +992,172 @@
     "configure": "Configure the comment template that will be added to new market orders that users can fill out to provide you additional details.",
     "submit": "Submit",
     "submitted": "Submitted!"
+  },
+  "MarketAggregateView": {
+    "market": "Market",
+    "sellerRating": "Seller Rating",
+    "price": "Price",
+    "quantityAvailable": "Quantity Available",
+    "buyer": "Buyer",
+    "quantity": "Quantity",
+    "total": "Total",
+    "description": "Description",
+    "sellOrders": "Sell Orders",
+    "buyOrders": "Buy Orders",
+    "priceHistory": "Price History",
+    "addedToCart": "Added to cart!",
+    "quantityToBuy": "Quantity to Buy",
+    "ofAvailable": "of {{count}} available",
+    "fulfill": "Fulfill",
+    "cancel": "Cancel",
+    "submitted": "Submitted!",
+    "failedSubmit": "Failed to submit!",
+    "cancelled": "Cancelled!",
+    "buyOrdersChart": "Buy Orders",
+    "sellOrdersChart": "Sell Orders",
+    "atPrice": "orders at {{price}} aUEC or {{direction}}",
+    "orLower": "lower",
+    "orHigher": "higher"
+  },
+  "MarketAggregateEditView": {
+    "updated": "Updated!",
+    "errorWhileUpdating": "Error while updating!",
+    "deactivate": "Deactivate Listing",
+    "activate": "Activate Listing",
+    "update": "Update",
+    "title": "Title",
+    "itemType": "Item Type",
+    "armor": "Armor",
+    "weapon": "Weapon",
+    "paint": "Paint",
+    "bundle": "Bundle",
+    "other": "Other",
+    "quantityAvailable": "Quantity Available",
+    "price": "Price",
+    "minBidIncrement": "Minimum Bid Increment",
+    "description": "Description"
+  },
+  "ItemStockRework": {
+    "noItemSelected": "No item selected",
+    "updateAmount": "Update Amount",
+    "add": "Add",
+    "sub": "Sub",
+    "zero": "0",
+    "owner": "Owner",
+    "item": "Item",
+    "quantity": "Quantity",
+    "qty": "Qty.",
+    "location": "Location",
+    "actions": "Actions",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "listed": "Listed",
+    "toggleListed": "Toggle whether stock is listed",
+    "addRow": "Add Row"
+  },
+  "ItemStock": {
+    "updated": "Updated!",
+    "updateAmount": "Update Amount",
+    "add": "Add",
+    "zero": "0",
+    "sub": "Sub",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "addQuickListing": "Add Quick Listing",
+    "selectItemError": "Please select an item",
+    "created": "Listing created successfully!",
+    "createError": "Failed to create listing",
+    "title": "Title",
+    "noItemSelected": "No item selected",
+    "price": "Price",
+    "quantity": "Quantity",
+    "qty": "Qty",
+    "offersAccepted": "Offers Accepted",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "expiration": "Expiration",
+    "refreshListing": "Refresh listing",
+    "edit": "Edit",
+    "save": "Save",
+    "discard": "Discard",
+    "editListing": "Edit Listing"
+  },
+  "itemMarket": {
+    "toggleSidebar": "Toggle market sidebar"
+  },
+  "image_search": {
+    "select_image": "Select Image",
+    "image_url": "Image URL",
+    "image_url_help": "Must be a direct URL to the image, from Imgur, RSI, or starcitizen.tools",
+    "image_search": "Image Search",
+    "image_search_help": "Search query to search for images from starcitizen.tools",
+    "cancel": "Cancel",
+    "save_and_close": "Save and Close"
+  },
+  "buyorder": {
+    "create_buy_order": "Create Buy Order",
+    "price_per_unit": "Price per Unit",
+    "quantity": "Quantity",
+    "total_price": "Total Price",
+    "expiration": "Order Expiration ({{tz}})",
+    "submit": "Submit",
+    "submitted": "Submitted!",
+    "failed": "Failed to submit! {{error}}",
+    "unknown_error": "Unknown error"
+  },
+  "bids": {
+    "title": "Bids",
+    "bidder": "Bidder",
+    "bid": "Bid"
+  },
+  "ships": {
+    "section_title": "Ships",
+    "table": {
+      "ship": "Ship",
+      "manufacturer": "Manufacturer",
+      "kind": "Kind",
+      "condition": "Condition",
+      "last_checkin": "Last Checkin"
+    },
+    "condition": {
+      "flight-ready": "Flight Ready",
+      "in-repair": "In Repair",
+      "awaiting-repair": "Awaiting Repair",
+      "in-concept": "In Concept"
+    },
+    "report_condition": "Report Condition",
+    "register": {
+      "title": "Register Ship",
+      "ship_label": "Ship",
+      "submit": "Submit"
+    },
+    "import": {
+      "title": "Import from Hangar XPlorer File",
+      "upload": "Upload File",
+      "submit": "Submit",
+      "submitted": "Submitted!",
+      "failed": "Failed to submit! {{error}}"
+    }
+  },
+  "deliveries": {
+    "section_title": "Active Deliveries",
+    "table": {
+      "location": "Location",
+      "start": "Start",
+      "end": "End",
+      "status": "Status",
+      "progress": "Progress"
+    },
+    "status": {
+      "OK": "OK",
+      "Damaged": "Damaged",
+      "Low Fuel": "Low Fuel",
+      "Off Course": "Off Course",
+      "Under Attack": "Under Attack",
+      "Offline": "Offline"
+    }
   }
 }

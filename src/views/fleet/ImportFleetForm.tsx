@@ -5,8 +5,10 @@ import { useImportShipFile } from "../../store/ships"
 import { AlertInterface } from "../../datatypes/Alert"
 import { Navigate } from "react-router-dom"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
+import { useTranslation } from "react-i18next"
 
 export function ImportFleetForm() {
+  const { t } = useTranslation()
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null)
 
   const [
@@ -22,14 +24,14 @@ export function ImportFleetForm() {
 
     if (res?.data && !res?.error) {
       issueAlert({
-        message: "Submitted!",
+        message: t("ships.import.submitted"),
         severity: "success",
       })
     } else {
       issueAlert({
-        message: `Failed to submit! ${
-          res.error?.error || res.error?.data?.error || res.error
-        }`,
+        message: t("ships.import.failed", {
+          error: res.error?.error || res.error?.data?.error || res.error || "",
+        }),
         severity: "error",
       })
     }
@@ -48,7 +50,7 @@ export function ImportFleetForm() {
             color={"text.secondary"}
             sx={{ fontWeight: "bold" }}
           >
-            Import from Hangar XPlorer File
+            {t("ships.import.title")}
           </Typography>
         </Grid>
         <Grid item xs={12} lg={8} container spacing={2}>
@@ -68,7 +70,7 @@ export function ImportFleetForm() {
                 {selectedFile?.name}
               </Typography>
               <Button variant="outlined" component="label" color={"secondary"}>
-                Upload File
+                {t("ships.import.upload")}
                 <input
                   type="file"
                   hidden
@@ -86,7 +88,7 @@ export function ImportFleetForm() {
                 color={"primary"}
                 onClick={onFileUpload}
               >
-                Submit
+                {t("ships.import.submit")}
               </Button>
             </Grid>
           </Grid>

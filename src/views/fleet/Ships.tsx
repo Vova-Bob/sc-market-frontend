@@ -6,6 +6,7 @@ import { ScrollableTable } from "../../components/table/ScrollableTable"
 import { HeadCell } from "../../components/table/PaginatedTable"
 import { getRelativeTime } from "../../util/time"
 import { useGetMyShips } from "../../store/ships"
+import { useTranslation } from "react-i18next" // Import translation hook
 
 const statusColors = new Map<
   string,
@@ -24,6 +25,7 @@ export function ShipTableRow(props: {
   labelId: string
 }) {
   const { row, index, isItemSelected } = props
+  const { t } = useTranslation()
 
   return (
     <Fade
@@ -55,7 +57,9 @@ export function ShipTableRow(props: {
         <TableCell>
           <Chip
             color={statusColors.get(row.condition) || "info"}
-            label={row.condition}
+            label={t(`ships.condition.${row.condition}`, {
+              defaultValue: row.condition,
+            })}
           />
         </TableCell>
         {/*<TableCell align="right">*/}
@@ -71,44 +75,55 @@ export const fleetHeadCells: readonly HeadCell<Ship>[] = [
     id: "name",
     numeric: false,
     disablePadding: false,
-    label: "Ship",
+    label: "ships.table.ship", // i18n key
   },
   {
     id: "manufacturer",
     numeric: false,
     disablePadding: false,
-    label: "Manufacturer",
+    label: "ships.table.manufacturer",
   },
   {
     id: "kind",
     numeric: false,
     disablePadding: false,
-    label: "Kind",
+    label: "ships.table.kind",
   },
   {
     id: "condition",
     numeric: false,
     disablePadding: false,
-    label: "Condition",
+    label: "ships.table.condition",
   },
   // {
   //     id: 'checkin_timestamp',
   //     numeric: true,
   //     disablePadding: false,
-  //     label: 'Last Checkin',
+  //     label: 'ships.table.last_checkin',
   // },
 ]
 
 export function Ships() {
+  const { t } = useTranslation()
   const { data: ships } = useGetMyShips()
 
   return (
-    <Section xs={12} md={12} lg={12} xl={5} title={"Ships"} disablePadding>
+    <Section
+      xs={12}
+      md={12}
+      lg={12}
+      xl={5}
+      title={t("ships.section_title")}
+      disablePadding
+    >
       <ScrollableTable
         rows={ships || []}
         initialSort={"manufacturer"}
         generateRow={ShipTableRow}
-        headCells={fleetHeadCells}
+        headCells={fleetHeadCells.map((cell) => ({
+          ...cell,
+          label: t(cell.label),
+        }))}
         keyAttr={"ship_id"}
         disableSelect
         sx={{ maxHeight: 855, marginBottom: 4 }}

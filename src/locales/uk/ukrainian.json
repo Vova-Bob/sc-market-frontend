@@ -992,5 +992,172 @@
     "configure": "Налаштуйте шаблон коментаря, який буде додано до нових ринкових замовлень, і який користувачі можуть заповнити для надання вам додаткових деталей.",
     "submit": "Зберегти",
     "submitted": "Збережено!"
+  },
+  "MarketAggregateView": {
+    "market": "Маркет",
+    "sellerRating": "Рейтинг продавця",
+    "price": "Ціна",
+    "quantityAvailable": "Доступна кількість",
+    "buyer": "Покупець",
+    "quantity": "Кількість",
+    "total": "Всього",
+    "description": "Опис",
+    "sellOrders": "Ордери на продаж",
+    "buyOrders": "Ордери на купівлю",
+    "priceHistory": "Історія цін",
+    "addedToCart": "Додано в кошик!",
+    "quantityToBuy": "Кількість для купівлі",
+    "ofAvailable": "з {{count}} доступних",
+    "fulfill": "Виконати",
+    "cancel": "Скасувати",
+    "submitted": "Виконано!",
+    "failedSubmit": "Не вдалося виконати!",
+    "cancelled": "Скасовано!",
+    "buyOrdersChart": "Ордери на купівлю",
+    "sellOrdersChart": "Ордери на продаж",
+    "atPrice": "ордерів за {{price}} aUEC чи {{direction}}",
+    "orLower": "нижче",
+    "orHigher": "вище"
+  },
+  "MarketAggregateEditView": {
+    "updated": "Оновлено!",
+    "errorWhileUpdating": "Помилка під час оновлення!",
+    "deactivate": "Деактивувати оголошення",
+    "activate": "Активувати оголошення",
+    "update": "Оновити",
+    "title": "Назва",
+    "itemType": "Тип предмета",
+    "armor": "Броня",
+    "weapon": "Зброя",
+    "paint": "Фарбування",
+    "bundle": "Набір",
+    "other": "Інше",
+    "quantityAvailable": "Доступна кількість",
+    "price": "Ціна",
+    "minBidIncrement": "Мінімальний крок ставки",
+    "description": "Опис"
+  },
+  "ItemStockRework": {
+    "noItemSelected": "Не вибрано предмет",
+    "updateAmount": "Оновити кількість",
+    "add": "Додати",
+    "sub": "Відняти",
+    "zero": "0",
+    "owner": "Власник",
+    "item": "Предмет",
+    "quantity": "Кількість",
+    "qty": "К-сть",
+    "location": "Локація",
+    "actions": "Дії",
+    "save": "Зберегти",
+    "cancel": "Скасувати",
+    "edit": "Редагувати",
+    "delete": "Видалити",
+    "listed": "Опубліковано",
+    "toggleListed": "Перемкнути публікацію запасу",
+    "addRow": "Додати рядок"
+  },
+  "ItemStock": {
+    "updated": "Оновлено!",
+    "updateAmount": "Оновити кількість",
+    "add": "Додати",
+    "zero": "0",
+    "sub": "Відняти",
+    "activate": "Активувати",
+    "deactivate": "Деактивувати",
+    "addQuickListing": "Додати швидке оголошення",
+    "selectItemError": "Оберіть позицію",
+    "created": "Оголошення успішно створено!",
+    "createError": "Не вдалося створити оголошення",
+    "title": "Назва",
+    "noItemSelected": "Позицію не обрано",
+    "price": "Ціна",
+    "quantity": "Кількість",
+    "qty": "К-сть",
+    "offersAccepted": "Прийнято пропозицій",
+    "status": "Статус",
+    "active": "Активне",
+    "inactive": "Неактивне",
+    "expiration": "Термін дії",
+    "refreshListing": "Оновити оголошення",
+    "edit": "Редагувати",
+    "save": "Зберегти",
+    "discard": "Відхилити",
+    "editListing": "Редагувати оголошення"
+  },
+  "itemMarket": {
+    "toggleSidebar": "Перемкнути бічну панель ринку"
+  },
+  "image_search": {
+    "select_image": "Вибір зображення",
+    "image_url": "URL зображення",
+    "image_url_help": "Має бути пряме посилання на зображення з Imgur, RSI або starcitizen.tools",
+    "image_search": "Пошук зображення",
+    "image_search_help": "Пошуковий запит для пошуку зображень зі starcitizen.tools",
+    "cancel": "Скасувати",
+    "save_and_close": "Зберегти та закрити"
+  },
+  "buyorder": {
+    "create_buy_order": "Створити запит на покупку",
+    "price_per_unit": "Ціна за одиницю",
+    "quantity": "Кількість",
+    "total_price": "Загальна ціна",
+    "expiration": "Термін дії заявки ({{tz}})",
+    "submit": "Надіслати",
+    "submitted": "Успішно надіслано!",
+    "failed": "Не вдалося надіслати! {{error}}",
+    "unknown_error": "Невідома помилка"
+  },
+  "bids": {
+    "title": "Ставки",
+    "bidder": "Учасник",
+    "bid": "Ставка"
+  },
+  "ships": {
+    "section_title": "Кораблі",
+    "table": {
+      "ship": "Корабель",
+      "manufacturer": "Виробник",
+      "kind": "Тип",
+      "condition": "Стан",
+      "last_checkin": "Остання перевірка"
+    },
+    "condition": {
+      "flight-ready": "Готовий до польоту",
+      "in-repair": "В ремонті",
+      "awaiting-repair": "Очікує ремонту",
+      "in-concept": "Концепт"
+    },
+    "report_condition": "Повідомити про стан",
+    "register": {
+      "title": "Реєстрація корабля",
+      "ship_label": "Корабель",
+      "submit": "Підтвердити"
+    },
+    "import": {
+      "title": "Імпорт із файлу Hangar XPlorer",
+      "upload": "Завантажити файл",
+      "submit": "Підтвердити",
+      "submitted": "Успішно відправлено!",
+      "failed": "Не вдалося відправити! {{error}}"
+    }
+  },
+  "deliveries": {
+    "section_title": "Активні доставки",
+    "table": {
+      "location": "Локація",
+      "start": "Відправлення",
+      "end": "Призначення",
+      "status": "Статус",
+      "progress": "Прогрес"
+    },
+    "status": {
+      "OK": "ОК",
+      "Damaged": "Пошкоджено",
+      "Low Fuel": "Мало пального",
+      "Off Course": "Збито з курсу",
+      "Under Attack": "Атакують",
+      "Offline": "Відключено"
+    }
   }
 }

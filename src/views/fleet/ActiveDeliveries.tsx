@@ -15,6 +15,7 @@ import {
   makeActiveDeliveries,
 } from "../../datatypes/Deliveries"
 import { HeadCell } from "../../components/table/PaginatedTable"
+import { useTranslation } from "react-i18next" // Added for localization
 
 const statusColors = new Map<
   string,
@@ -35,6 +36,8 @@ export function ActiveDeliveryTableRow(props: {
   labelId: string
 }) {
   const { row, index, isItemSelected } = props
+  const { t } = useTranslation()
+
   return (
     <Fade
       in={true}
@@ -65,7 +68,7 @@ export function ActiveDeliveryTableRow(props: {
         <TableCell>
           <Chip
             color={statusColors.get(row.status) || "info"}
-            label={row.status}
+            label={t(`deliveries.status.${row.status}`)}
           />
         </TableCell>
         <TableCell align="right" colSpan={2}>
@@ -80,48 +83,54 @@ export function ActiveDeliveryTableRow(props: {
   )
 }
 
-export const activeDeliveryHeadCells: readonly HeadCell<ActiveDelivery>[] = [
-  {
-    id: "id",
-    numeric: false,
-    disablePadding: true,
-    label: "",
-    noSort: true,
-  },
-  {
-    id: "location",
-    numeric: false,
-    disablePadding: false,
-    label: "Location",
-  },
-  {
-    id: "departure",
-    numeric: false,
-    disablePadding: false,
-    label: "Start",
-  },
-  {
-    id: "destination",
-    numeric: false,
-    disablePadding: false,
-    label: "End",
-  },
-  {
-    id: "status",
-    numeric: false,
-    disablePadding: false,
-    label: "Status",
-  },
-  {
-    id: "progress",
-    numeric: true,
-    disablePadding: false,
-    label: "Progress",
-  },
-]
+// Language headCells via t()
+export function useActiveDeliveryHeadCells() {
+  const { t } = useTranslation()
+  return [
+    {
+      id: "id",
+      numeric: false,
+      disablePadding: true,
+      label: "",
+      noSort: true,
+    },
+    {
+      id: "location",
+      numeric: false,
+      disablePadding: false,
+      label: t("deliveries.table.location"),
+    },
+    {
+      id: "departure",
+      numeric: false,
+      disablePadding: false,
+      label: t("deliveries.table.start"),
+    },
+    {
+      id: "destination",
+      numeric: false,
+      disablePadding: false,
+      label: t("deliveries.table.end"),
+    },
+    {
+      id: "status",
+      numeric: false,
+      disablePadding: false,
+      label: t("deliveries.table.status"),
+    },
+    {
+      id: "progress",
+      numeric: true,
+      disablePadding: false,
+      label: t("deliveries.table.progress"),
+    },
+  ] as const
+}
 
 export function ActiveDeliveries() {
   const deliveries = makeActiveDeliveries()
+  const { t } = useTranslation()
+  const headCells = useActiveDeliveryHeadCells()
 
   return (
     <Section
@@ -129,14 +138,14 @@ export function ActiveDeliveries() {
       md={12}
       lg={12}
       xl={12}
-      title={"Active Deliveries"}
+      title={t("deliveries.section_title")}
       disablePadding
     >
       <ScrollableTable
         rows={deliveries}
         initialSort={"id"}
         generateRow={ActiveDeliveryTableRow}
-        headCells={activeDeliveryHeadCells}
+        headCells={headCells}
         keyAttr={"id"}
         disableSelect
         sx={{ maxHeight: 435 }}
