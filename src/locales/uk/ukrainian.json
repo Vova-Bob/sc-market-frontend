@@ -107,7 +107,16 @@
     "toggleSidebar": "Перемкнути бокове меню маркету",
     "activeListings": "Активні оголошення",
     "inactiveListings": "Неактивні оголошення",
-    "archivedListings": "Архівні оголошення"
+    "archivedListings": "Архівні оголошення",
+
+    "total_requested": "{{count}} запитано",
+    "total_available": "{{count}} у наявності",
+    "starting_at": "Від {{price}} aUEC",
+    "new": "Нове",
+    "ended": "Завершено",
+    "ending_in": "Завершується {{time}}",
+    "expiration": "Термін дії: {{time}}",
+    "available": "{{count}} доступно"
   },
   "marketActions": {
     "createListing": "Створити оголошення",
@@ -912,10 +921,10 @@
     "market": "Маркет",
     "new": "Нове",
     "ended": "Завершено",
-    "endingIn": "Завершується через",
+    "endingIn": "Завершується",
     "listed": "Створено",
     "updated": "Оновлено",
-    "expires": "Дійсно до",
+    "expires": "Термін спливає",
     "description": "Опис",
     "activeOrders": "Активні замовлення",
     "previousOrders": "Завершені замовлення"

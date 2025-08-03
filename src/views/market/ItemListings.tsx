@@ -355,8 +355,9 @@ export function ItemListingBase(props: {
                     color={ending ? "error.light" : "inherit"}
                     variant={"subtitle2"}
                   >
-                    {timeDisplay.endsWith("ago") ? "Ended" : "Ending in"}{" "}
-                    {timeDisplay}
+                    {timeDisplay.endsWith("ago")
+                      ? t("market.ended", { time: timeDisplay })
+                      : t("market.ending_in", { time: timeDisplay })}
                   </Typography>
                 </Typography>
               )}
@@ -367,7 +368,9 @@ export function ItemListingBase(props: {
                     color={ending ? "error.light" : "inherit"}
                     variant={"subtitle2"}
                   >
-                    Expiration: {getRelativeTime(new Date(listing.expiration!))}
+                    {t("market.expiration", {
+                      time: getRelativeTime(new Date(listing.expiration!)),
+                    })}
                   </Typography>
                 </Typography>
               )}
@@ -376,7 +379,9 @@ export function ItemListingBase(props: {
                 color={"text.primary"}
                 variant={"subtitle2"}
               >
-                {listing.quantity_available.toLocaleString(undefined)} available
+                {t("market.available", {
+                  count: listing.quantity_available.toLocaleString(undefined),
+                })}
               </Typography>
             </CardContent>
           </Card>

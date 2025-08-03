@@ -25,4 +25,11 @@ i18n
     },
   })
 
+import moment from "moment"
+import "moment/locale/uk"
+
+i18n.on("languageChanged", (lng) => {
+  moment.locale(lng)
+})
+
 export default i18n

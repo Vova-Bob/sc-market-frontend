@@ -26,6 +26,11 @@ import { useLocation } from "react-router-dom"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment"
 
+// Add moment and locale import + i18n
+import moment from "moment"
+import "moment/locale/uk"
+import i18n from "../util/i18n"
+
 export function HookProvider(props: { children: React.ReactElement }) {
   const drawerWidthState = useState(false)
   const [alert, issueAlert] = useState<AlertInterface | null>(null)
@@ -55,6 +60,17 @@ export function HookProvider(props: { children: React.ReactElement }) {
   useEffect(() => {
     setCookie("theme", useLightTheme, { path: "/", sameSite: "strict" })
   }, [useLightTheme, setCookie])
+
+  // Add useEffect to support the moment.js language
+  useEffect(() => {
+    // Set moment.js locale according to current i18n language
+    moment.locale(i18n.language)
+    const handler = () => {
+      moment.locale(i18n.language)
+    }
+    i18n.on("languageChanged", handler)
+    return () => i18n.off("languageChanged", handler)
+  }, [])
 
   return (
     <Provider store={store}>

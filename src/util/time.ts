@@ -1,3 +1,6 @@
+import i18n from "../util/i18n" // // Import i18n instance for dynamic language support
+import moment, { Moment } from "moment"
+
 const units = {
   year: 24 * 60 * 60 * 1000 * 365,
   month: (24 * 60 * 60 * 1000 * 365) / 12,
@@ -7,7 +10,9 @@ const units = {
   second: 1000,
 }
 
-const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" })
+// rtf now uses current language
+const getRtf = () =>
+  new Intl.RelativeTimeFormat(i18n.language, { numeric: "auto" })
 
 export const getRelativeTime = (d1: Date, d2: Date = new Date()) => {
   const elapsed = d1.getTime() - d2.getTime()
@@ -15,7 +20,7 @@ export const getRelativeTime = (d1: Date, d2: Date = new Date()) => {
   // "Math.abs" accounts for both "past" & "future" scenarios
   for (const [u, val] of Object.entries(units))
     if (Math.abs(elapsed) > val || u === "second")
-      return rtf.format(
+      return getRtf().format(
         Math.round(elapsed / val),
         u as Intl.RelativeTimeFormatUnit,
       )

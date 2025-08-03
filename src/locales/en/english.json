@@ -107,7 +107,16 @@
     "toggleSidebar": "toggle market sidebar",
     "activeListings": "Active Listings",
     "inactiveListings": "Inactive Listings",
-    "archivedListings": "Archived Listings"
+    "archivedListings": "Archived Listings",
+
+    "total_requested": "{{count}} total requested",
+    "total_available": "{{count}} total available",
+    "starting_at": "Starting at {{price}} aUEC",
+    "new": "New",
+    "ended": "Ended",
+    "ending_in": "Ending {{time}}",
+    "expiration": "Expiration: {{time}}",
+    "available": "{{count}} available"
   },
   "marketActions": {
     "createListing": "Create Listing",
