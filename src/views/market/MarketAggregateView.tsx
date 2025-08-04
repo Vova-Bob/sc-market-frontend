@@ -66,7 +66,7 @@ import { NumericFormat } from "react-number-format"
 import { Stack } from "@mui/system"
 import { useTranslation } from "react-i18next" // Localization
 
-// Table headers with i18n keys
+// Localized headCells only here!
 const headCells: readonly HeadCell<
   MarketAggregateListing & { rating: number }
 >[] = [
@@ -96,6 +96,7 @@ const headCells: readonly HeadCell<
     label: "",
   },
 ]
+
 const buyOrderHeadCells: readonly HeadCell<
   BuyOrder & { rating: Rating; total: number }
 >[] = [
@@ -433,9 +434,10 @@ export function AggregateRow(props: {
   const { t } = useTranslation()
   const { row: listing, index } = props
   const [quantity, setQuantity] = useState(1)
-
+  const issueAlert = useAlertHook()
   const [cookies, setCookie] = useCookies(["market_cart"])
   const [cartRedirect, setCartRedirect] = useState(false)
+
   const addToCart = useCallback(async () => {
     const cart: Cart = cookies.market_cart || []
     let found = false
@@ -488,9 +490,7 @@ export function AggregateRow(props: {
       severity: "success",
     })
     setCartRedirect(true)
-  }, [cookies.market_cart, listing, quantity, setCookie, t])
-
-  const issueAlert = useAlertHook()
+  }, [cookies.market_cart, listing, quantity, setCookie, t, issueAlert])
 
   return (
     <TableRow
@@ -631,7 +631,7 @@ export function BuyOrderRow(props: {
     }
 
     return false
-  }, [buy_order, t])
+  }, [buy_order, t, issueAlert, fulfillBuyOrder, currentOrg, navigate])
 
   const cancelCallback = useCallback(async () => {
     const res: { data?: Order; error?: any } = await cancelBuyOrder(
@@ -653,7 +653,7 @@ export function BuyOrderRow(props: {
     }
 
     return false
-  }, [buy_order, t])
+  }, [buy_order, t, issueAlert, cancelBuyOrder])
 
   return (
     <TableRow
