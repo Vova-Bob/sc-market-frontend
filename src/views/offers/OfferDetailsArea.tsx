@@ -44,6 +44,14 @@ import { ListingSellerRating } from "../../components/rating/ListingRating"
 import { useTranslation } from "react-i18next"
 import { PAYMENT_TYPE_MAP } from "../../util/constants"
 
+// Status map for unified translation and colour coding
+const statusTextToKey: Record<string, string> = {
+  "Waiting for Seller": "waitingSeller",
+  "Waiting for Customer": "waitingCustomer",
+  Accepted: "accepted",
+  Rejected: "rejected",
+}
+
 export function OfferMessagesArea(props: { offer: OfferSession }) {
   const { offer } = props
   const [currentChat, setCurrentChat] = useCurrentChat()
@@ -100,51 +108,56 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
     { skip: !session?.contract_id },
   )
 
+  // Generate a status key for translation and icons/colours
+  const statusKey = statusTextToKey[session.status] || session.status
+
   const [statusColor, icon] = useMemo(() => {
-    if (session.status === t("OfferDetailsArea.waitingSeller")) {
+    if (statusKey === "waitingSeller") {
       return ["warning" as const, <Announcement key={"warning"} />] as const
-    } else if (session.status === t("OfferDetailsArea.waitingCustomer")) {
+    } else if (statusKey === "waitingCustomer") {
       return ["info" as const, <HourglassTop key={"info"} />] as const
-    } else if (session.status === t("OfferDetailsArea.rejected")) {
+    } else if (statusKey === "rejected") {
       return ["error" as const, <Cancel key={"error"} />] as const
     } else {
       return ["success" as const, <CheckCircle key={"success"} />] as const
     }
-  }, [session.status, t])
+  }, [statusKey])
 
   const showAccept = useMemo(() => {
     if (
-      [t("OfferDetailsArea.rejected"), t("OfferDetailsArea.accepted")].includes(
-        session.status,
-      )
+      [
+        t("OffersViewPaginated.rejected"),
+        t("OffersViewPaginated.accepted"),
+      ].includes(statusKey)
     ) {
       return false
     }
 
     if (session.contractor) {
       if (org?.spectrum_id === session.contractor.spectrum_id) {
-        return session.status === t("OfferDetailsArea.waitingSeller")
+        return statusKey === "waitingSeller"
       }
     }
 
     if (session.assigned_to) {
       if (profile?.username === session.assigned_to.username) {
-        return session.status === t("OfferDetailsArea.waitingSeller")
+        return statusKey === "waitingSeller"
       }
     }
 
     if (profile?.username === session.customer.username) {
-      return session.status === t("OfferDetailsArea.waitingCustomer")
+      return statusKey === "waitingCustomer"
     }
 
     return false
-  }, [profile, org, session, t])
+  }, [profile, org, session, statusKey, t])
 
   const showCancel =
     !showAccept &&
-    ![t("OfferDetailsArea.rejected"), t("OfferDetailsArea.accepted")].includes(
-      session.status,
-    )
+    ![
+      t("OffersViewPaginated.rejected"),
+      t("OffersViewPaginated.accepted"),
+    ].includes(statusKey)
 
   const [updateStatus, { isLoading: isUpdatingStatus }] =
     useUpdateOfferStatusMutation()
@@ -258,7 +271,7 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
                 <Stack direction="row" justifyContent={"right"}>
                   <Chip
                     label={t(
-                      `OfferDetailsArea.${session.status.replace(/\s/g, "").toLowerCase()}`,
+                      `OffersViewPaginated.${statusKey}`,
                       session.status,
                     )}
                     color={statusColor}
