@@ -28,7 +28,6 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment"
 
 // Add moment and locale import + i18n
 import moment from "moment"
-import "moment/locale/uk"
 import i18n from "../util/i18n"
 
 export function HookProvider(props: { children: React.ReactElement }) {
