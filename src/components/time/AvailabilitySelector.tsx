@@ -97,8 +97,16 @@ export function AvailabilitySelector(props: {
     )
   }, [initialSelections])
 
-  const getDayOfWeek = useCallback(
-    (i: number) => moment().startOf("week").add(i, "days").format("ddd"),
+  // Days of the week always with current locality
+  const daysOfWeek = useMemo(
+    () =>
+      [...Array(7).keys()].map((i) =>
+        moment()
+          .locale(i18n.language)
+          .startOf("week")
+          .add(i, "days")
+          .format("ddd"),
+      ),
     [i18n.language],
   )
 
@@ -199,8 +207,8 @@ export function AvailabilitySelector(props: {
           <table style={{ width: "100%", height: 400 }} draggable={"false"}>
             <tbody>
               <tr>
-                {[...Array(7).keys()].map((i) => (
-                  <th key={i}>{getDayOfWeek(i)}</th>
+                {daysOfWeek.map((day, i) => (
+                  <th key={i}>{day}</th>
                 ))}
               </tr>
 
@@ -235,10 +243,23 @@ export function AvailabilitySelector(props: {
 export function AvailabilityDisplay(
   props: { value: boolean[]; name: string } & GridProps,
 ) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { value, name, ...gridprops } = props
   const availability = useMemo(() => arrayRotate(value, tzOffset), [value])
   const { data: profile } = useGetUserProfileQuery()
+
+  // Days of the week always with current locality
+  const daysOfWeek = useMemo(
+    () =>
+      [...Array(7).keys()].map((i) =>
+        moment()
+          .locale(i18n.language)
+          .startOf("week")
+          .add(i, "days")
+          .format("ddd"),
+      ),
+    [i18n.language],
+  )
 
   return (
     <Section
@@ -296,10 +317,8 @@ export function AvailabilityDisplay(
         <table style={{ width: "100%", height: 400 }} draggable={"false"}>
           <tbody>
             <tr>
-              {[...Array(7).keys()].map((i) => (
-                <th key={i}>
-                  {moment().startOf("week").add(i, "days").format("ddd")}
-                </th>
+              {daysOfWeek.map((day, i) => (
+                <th key={i}>{day}</th>
               ))}
             </tr>
 
