@@ -326,7 +326,10 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
                       display={"inline"}
                     >
                       aUEC{" "}
-                      {t(PAYMENT_TYPE_MAP.get(session.offers[0].payment_type) || "")}
+                      {t(
+                        PAYMENT_TYPE_MAP.get(session.offers[0].payment_type) ||
+                          "",
+                      )}
                     </Typography>
                   </Typography>
                 </Stack>
