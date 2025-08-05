@@ -34,6 +34,14 @@ import { OrderSearchSortMethod } from "../../datatypes/Order"
 import { UserAvatar } from "../../components/avatar/UserAvatar"
 import { useTranslation } from "react-i18next"
 
+// Map for all statuses
+const statusTextToKey: Record<string, string> = {
+  "Waiting for Seller": "waitingSeller",
+  "Waiting for Customer": "waitingCustomer",
+  Accepted: "accepted",
+  Rejected: "rejected",
+}
+
 export const OffersHeadCells: readonly HeadCell<
   OfferSessionStub & { customer_name: string }
 >[] = [
@@ -65,20 +73,24 @@ export function OfferRow(props: {
   labelId: string
 }) {
   const { t } = useTranslation()
-  const { row, index, isItemSelected } = props // TODO: Add `assigned_to` column
+  const { row, index, isItemSelected } = props
   const date = useMemo(() => new Date(row.timestamp), [row.timestamp])
   const theme = useTheme()
+
+  // Key for translation and colour
+  const statusKey = statusTextToKey[row.status] || row.status
+
   const [statusColor, icon] = useMemo(() => {
-    if (row.status === t("OffersViewPaginated.waitingSeller")) {
+    if (statusKey === "waitingSeller") {
       return ["warning" as const, <Announcement key={"warning"} />] as const
-    } else if (row.status === t("OffersViewPaginated.waitingCustomer")) {
+    } else if (statusKey === "waitingCustomer") {
       return ["info" as const, <HourglassTop key={"info"} />] as const
-    } else if (row.status === t("OffersViewPaginated.rejected")) {
+    } else if (statusKey === "rejected") {
       return ["error" as const, <Cancel key={"error"} />] as const
     } else {
       return ["success" as const, <CheckCircle key={"success"} />] as const
     }
-  }, [row.status, t])
+  }, [statusKey])
 
   return (
     <TableRow
@@ -143,10 +155,7 @@ export function OfferRow(props: {
       </TableCell>
       <TableCell align={"right"}>
         <Chip
-          label={t(
-            `OffersViewPaginated.${row.status.replace(/\s/g, "").toLowerCase()}`,
-            row.status,
-          )}
+          label={t(`OffersViewPaginated.${statusKey}`, row.status)}
           color={statusColor}
           icon={icon}
         />
