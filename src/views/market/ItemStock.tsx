@@ -65,6 +65,7 @@ import LoadingButton from "@mui/lab/LoadingButton"
 import { ThemedDataGrid } from "../../components/grid/ThemedDataGrid"
 import { SelectGameItemStack } from "../../components/select/SelectGameItem"
 import { useGetUserProfileQuery } from "../../store/profile"
+import { useTranslation } from "react-i18next" // Added for i18n
 
 export const ItemStockContext = React.createContext<
   | [UniqueListing[], React.Dispatch<React.SetStateAction<UniqueListing[]>>]
@@ -78,6 +79,7 @@ export function ManageStockArea(props: { listings: UniqueListing[] }) {
   const [updateListing] = useMarketUpdateListingQuantityMutation()
 
   const issueAlert = useAlertHook()
+  const { t } = useTranslation() // i18n hook
 
   const updateListingCallback = useCallback(
     async (listing: UniqueListing, body: { quantity_available: number }) => {
@@ -88,13 +90,13 @@ export function ManageStockArea(props: { listings: UniqueListing[] }) {
         .unwrap()
         .then(() =>
           issueAlert({
-            message: "Updated!",
+            message: t("ItemStock.updated"),
             severity: "success",
           }),
         )
         .catch((err) => issueAlert(err))
     },
-    [listings, issueAlert, updateListing],
+    [listings, issueAlert, updateListing, t],
   )
 
   return (
@@ -117,7 +119,7 @@ export function ManageStockArea(props: { listings: UniqueListing[] }) {
           minWidth: 200,
         }}
         size="small"
-        label={"Update Amount"}
+        label={t("ItemStock.updateAmount")}
         value={quantity}
         color={"secondary"}
       />
@@ -136,7 +138,7 @@ export function ManageStockArea(props: { listings: UniqueListing[] }) {
           color={"success"}
           startIcon={<AddRounded />}
         >
-          Add
+          {t("ItemStock.add")}
         </Button>
 
         <Button
@@ -148,7 +150,7 @@ export function ManageStockArea(props: { listings: UniqueListing[] }) {
           }
           color={"warning"}
         >
-          0
+          {t("ItemStock.zero")}
         </Button>
         <Button
           variant={"contained"}
@@ -163,7 +165,7 @@ export function ManageStockArea(props: { listings: UniqueListing[] }) {
           color={"error"}
           startIcon={<RemoveRounded />}
         >
-          Sub
+          {t("ItemStock.sub")}
         </Button>
       </ButtonGroup>
     </>
@@ -211,6 +213,7 @@ function ItemStockToolbar(props: {
 }) {
   const [selectedListings] = useContext(ItemStockContext)!
   const { data: profile } = useGetUserProfileQuery()
+  const { t } = useTranslation() // i18n hook
 
   const [updateListing, { isLoading }] = useMarketUpdateListingMutation()
   const updateListingCallback = useCallback(
@@ -238,7 +241,7 @@ function ItemStockToolbar(props: {
           updateListingCallback({ status: "active" })
         }}
       >
-        Activate
+        {t("ItemStock.activate")}
       </LoadingButton>
       <LoadingButton
         color={"error"}
@@ -250,9 +253,9 @@ function ItemStockToolbar(props: {
           updateListingCallback({ status: "inactive" })
         }}
       >
-        Deactivate
+        {t("ItemStock.deactivate")}
       </LoadingButton>
-      <Tooltip title="Add Quick Listing">
+      <Tooltip title={t("ItemStock.addQuickListing")}>
         <IconButton
           onClick={() => {
             const id = `new-${Date.now()}`
@@ -287,6 +290,7 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
   const [refresh] = useMarketRefreshListingMutation()
   const { data: profile } = useGetUserProfileQuery()
   const [currentOrg] = useCurrentOrg()
+  const { t } = useTranslation() // i18n hook
 
   // State for new listing rows
   const [newRows, setNewRows] = React.useState<NewListingRow[]>([])
@@ -356,7 +360,10 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
     if (row.isNew) {
       // Create new listing
       if (!editingRow.item_name) {
-        issueAlert({ message: "Please select an item", severity: "error" })
+        issueAlert({
+          message: t("ItemStock.selectItemError"),
+          severity: "error",
+        })
         return
       }
 
@@ -386,14 +393,14 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
         }).unwrap()
 
         issueAlert({
-          message: "Listing created successfully!",
+          message: t("ItemStock.created"),
           severity: "success",
         })
 
         // Remove the new row from the editable rows
         setNewRows((prev) => prev.filter((r) => r.id !== id))
       } catch (error) {
-        issueAlert({ message: "Failed to create listing", severity: "error" })
+        issueAlert({ message: t("ItemStock.createError"), severity: "error" })
         return
       }
     }
@@ -428,7 +435,7 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
   const columns: GridColDef[] = [
     {
       field: "title",
-      headerName: "Title",
+      headerName: t("ItemStock.title"),
       flex: 1,
       display: "flex",
       renderCell: (params: GridRenderCellParams) => {
@@ -475,7 +482,7 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
           } else {
             return params.value?.item_name
               ? `${params.value.item_type} / ${params.value.item_name}`
-              : "No item selected"
+              : t("ItemStock.noItemSelected")
           }
         }
 
@@ -506,7 +513,7 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
     },
     {
       field: "price",
-      headerName: "Price",
+      headerName: t("ItemStock.price"),
       width: 150,
       display: "flex",
       renderCell: (params: GridRenderCellParams) => {
@@ -536,7 +543,7 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
                   }))
                 }}
                 size="small"
-                label="Price"
+                label={t("ItemStock.price")}
                 value={currentPrice}
               />
             )
@@ -550,7 +557,7 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
     },
     {
       field: "quantity_available",
-      headerName: "Quantity",
+      headerName: t("ItemStock.quantity"),
       width: 90,
       display: "flex",
       renderCell: (params: GridRenderCellParams) => {
@@ -581,7 +588,7 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
                   }))
                 }}
                 size="small"
-                label="Qty"
+                label={t("ItemStock.qty")}
                 value={currentQuantity}
               />
             )
@@ -595,7 +602,7 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
     },
     {
       field: "offer_count",
-      headerName: "Offers Accepted",
+      headerName: t("ItemStock.offersAccepted"),
       width: 120,
       display: "flex",
       renderCell: (params: GridRenderCellParams) => {
@@ -620,7 +627,7 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
     },
     {
       field: "status",
-      headerName: "Status",
+      headerName: t("ItemStock.status"),
       width: 100,
       display: "flex",
       renderCell: (params: GridRenderCellParams) => {
@@ -656,7 +663,9 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
                 color={params.value === "active" ? "success" : "error"}
                 variant="subtitle2"
               >
-                {params.value === "active" ? "Active" : "Inactive"}
+                {params.value === "active"
+                  ? t("ItemStock.active")
+                  : t("ItemStock.inactive")}
               </Typography>
             )
           }
@@ -675,14 +684,16 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
               fontSize="small"
               style={{ marginRight: 1 }}
             />{" "}
-            {params.value === "active" ? "Active" : "Inactive"}
+            {params.value === "active"
+              ? t("ItemStock.active")
+              : t("ItemStock.inactive")}
           </Typography>
         )
       },
     },
     {
       field: "expiration",
-      headerName: "Expiration",
+      headerName: t("ItemStock.expiration"),
       renderHeader: () => <RefreshCircle />,
       width: 50,
       display: "flex",
@@ -698,7 +709,7 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
             {new Date(params.value) > new Date() ? (
               formatMostSignificantDiff(params.value)
             ) : (
-              <Tooltip title={"Refresh listing"}>
+              <Tooltip title={t("ItemStock.refreshListing")}>
                 <IconButton
                   sx={{ color: "error.main" }}
                   onClick={(event) => {
@@ -719,7 +730,7 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
       sortable: false,
       field: "listing_id",
       renderHeader: () => null,
-      headerName: "Edit",
+      headerName: t("ItemStock.edit"),
       width: 90,
       display: "flex",
       renderCell: (params: GridRenderCellParams) => {
@@ -739,7 +750,7 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
                 justifyContent="flex-end"
                 sx={{ width: "100%" }}
               >
-                <Tooltip title="Save">
+                <Tooltip title={t("ItemStock.save")}>
                   <IconButton
                     size="small"
                     onClick={handleSaveClick(params.id)}
@@ -749,7 +760,7 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
                     <SaveRounded />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Discard">
+                <Tooltip title={t("ItemStock.discard")}>
                   <IconButton
                     size="small"
                     onClick={handleCancelClick(params.id)}
@@ -768,7 +779,7 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
                 justifyContent="flex-end"
                 sx={{ width: "100%" }}
               >
-                <Tooltip title="Edit">
+                <Tooltip title={t("ItemStock.edit")}>
                   <IconButton
                     size="small"
                     onClick={handleEditClick(params.id)}
@@ -783,7 +794,7 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
         }
 
         return (
-          <Tooltip title={"Edit Listing"}>
+          <Tooltip title={t("ItemStock.editListing")}>
             <Link
               to={`/market_edit/${params.value}`}
               style={{ color: "inherit" }}
@@ -822,7 +833,7 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
     const newRowsWithId = newRows.map((row) => ({
       ...row,
       id: row.id,
-      title: row.item_name || "No item selected",
+      title: row.item_name || t("ItemStock.noItemSelected"),
       price: row.price,
       quantity_available: row.quantity_available,
       status: row.status,
@@ -834,7 +845,7 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
     }))
 
     return [...existingRows, ...newRowsWithId]
-  }, [rows, newRows])
+  }, [rows, newRows, t])
 
   return (
     <Box sx={{ width: "100%" }}>

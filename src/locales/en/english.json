@@ -126,13 +126,14 @@
     "bulkItems": "Bulk Items",
     "bulkListings": "Bulk Listings",
     "buyOrders": "Buy Orders",
-    "total_requested": "{{count}} total requested",
-    "total_available": "{{count}} total available",
+    "total_requested": "total requested",
+    "total_available": "total available",
     "starting_at": "Starting at {{price}} aUEC",
     "new": "New",
     "ended": "Ended",
     "ending_in": "Ending {{time}}",
     "expiration": "Expiration: {{time}}",
+    "unit": "ea",
     "available": "{{count}} available"
   },
   "marketActions": {

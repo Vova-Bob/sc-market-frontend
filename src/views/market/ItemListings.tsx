@@ -154,11 +154,11 @@ export function ItemListingBase(props: {
   listing: UniqueListing
   index: number
 }) {
+  const { t } = useTranslation()
   const { listing: complete, index } = props
   const { details, listing, auction_details, photos } = complete
   const { user_seller, contractor_seller } = listing
   const theme = useTheme<ExtendedTheme>()
-  const { t } = useTranslation()
   const [timeDisplay, setTimeDisplay] = useState(
     auction_details ? getRelativeTime(new Date(auction_details.end_time)) : "",
   )
@@ -228,7 +228,7 @@ export function ItemListingBase(props: {
               )}
             {moment(listing.timestamp) > moment().subtract(3, "days") && (
               <Chip
-                label={"New"}
+                label={t("market.new")}
                 color={"secondary"}
                 sx={{
                   position: "absolute",
@@ -458,6 +458,7 @@ export function AggregateListingBase(props: {
   aggregate: MarketAggregate
   index: number
 }) {
+  const { t } = useTranslation()
   const { aggregate, index } = props
   const { details, listings, photos } = aggregate
   const theme = useTheme<ExtendedTheme>()
@@ -589,7 +590,8 @@ export function AggregateListingBase(props: {
                   color={"text.primary"}
                   variant={"subtitle2"}
                 >
-                  {sum_available.toLocaleString(undefined)} total available
+                  {sum_available.toLocaleString(undefined)}{" "}
+                  {t("market.total_available")}
                 </Typography>
               </CardContent>
             </Box>
@@ -624,6 +626,7 @@ export function AggregateBuyOrderListingBase(props: {
   aggregate: MarketAggregate
   index: number
 }) {
+  const { t } = useTranslation()
   const { aggregate, index } = props
   const { details, listings, photos } = aggregate
   const theme = useTheme<ExtendedTheme>()
@@ -735,7 +738,8 @@ export function AggregateBuyOrderListingBase(props: {
                   fontWeight={"bold"}
                 >
                   {minimum_price.toLocaleString(undefined)} -{" "}
-                  {maximum_price.toLocaleString(undefined)} aUEC/ea
+                  {maximum_price.toLocaleString(undefined)} aUEC/
+                  {t("market.unit")}
                 </Typography>
                 <Typography
                   variant={"subtitle2"}
@@ -761,7 +765,8 @@ export function AggregateBuyOrderListingBase(props: {
                   color={"text.primary"}
                   variant={"subtitle2"}
                 >
-                  {sum_requested.toLocaleString(undefined)} total requested
+                  {sum_requested.toLocaleString(undefined)}{" "}
+                  {t("market.total_requested")}
                 </Typography>
               </CardContent>
             </Box>
@@ -818,6 +823,7 @@ export function MultipleListingBase(props: {
   multiple: MarketMultiple
   index: number
 }) {
+  const { t } = useTranslation()
   const { multiple, index } = props
   const { details, listings, photos } = multiple
   const theme = useTheme<ExtendedTheme>()
@@ -923,7 +929,10 @@ export function MultipleListingBase(props: {
                   color={"primary"}
                   fontWeight={"bold"}
                 >
-                  Starting at {minimum_price.toLocaleString(undefined)} aUEC
+                  {t("market.starting_at", {
+                    price: minimum_price.toLocaleString(undefined),
+                  })}{" "}
+                  aUEC
                 </Typography>
                 <Typography
                   variant={"subtitle2"}
@@ -949,7 +958,8 @@ export function MultipleListingBase(props: {
                   color={"text.primary"}
                   variant={"subtitle2"}
                 >
-                  {sum_available.toLocaleString(undefined)} total available
+                  {sum_available.toLocaleString(undefined)}{" "}
+                  {t("market.total_available")}
                 </Typography>
               </CardContent>
             </Box>

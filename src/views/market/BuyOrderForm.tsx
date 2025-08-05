@@ -10,8 +10,10 @@ import { useMarketCreateBuyOrderMutation } from "../../store/market"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { useNavigate } from "react-router-dom"
 import { NumericFormat } from "react-number-format"
+import { useTranslation } from "react-i18next"
 
 export function BuyOrderForm(props: { aggregate: MarketAggregate }) {
+  const { t } = useTranslation()
   const { aggregate } = props
   const [state, setState] = useState({
     game_item_id: aggregate.details.game_item_id,
@@ -33,22 +35,33 @@ export function BuyOrderForm(props: { aggregate: MarketAggregate }) {
 
     if (res?.data && !res?.error) {
       issueAlert({
-        message: "Submitted!",
+        message: t("buyorder.submitted"),
         severity: "success",
       })
 
       navigate(`/market/aggregate/${aggregate.details.game_item_id}`)
     } else {
       issueAlert({
-        message: `Failed to submit! ${
-          res.error?.error || res.error?.data?.error || res.error
-        }`,
+        message: t("buyorder.failed", {
+          error:
+            res.error?.error ||
+            res.error?.data?.error ||
+            res.error ||
+            t("buyorder.unknown_error"),
+        }),
         severity: "error",
       })
     }
 
     return false
-  }, [state])
+  }, [
+    state,
+    t,
+    createBuyOrder,
+    aggregate.details.game_item_id,
+    issueAlert,
+    navigate,
+  ])
 
   return (
     <>
@@ -92,7 +105,7 @@ export function BuyOrderForm(props: { aggregate: MarketAggregate }) {
       </Grid>
       <Grid item xs={12} lg={8}>
         <Grid container spacing={2}>
-          <FlatSection title={"Create Buy Order"}>
+          <FlatSection title={t("buyorder.create_buy_order")}>
             <Grid item xs={12} display={"flex"} justifyContent={"right"}>
               <NumericFormat
                 decimalScale={0}
@@ -106,7 +119,7 @@ export function BuyOrderForm(props: { aggregate: MarketAggregate }) {
                   })
                 }}
                 fullWidth
-                label={"Price per Unit"}
+                label={t("buyorder.price_per_unit")}
                 id="price"
                 color={"secondary"}
                 value={state.price}
@@ -132,7 +145,7 @@ export function BuyOrderForm(props: { aggregate: MarketAggregate }) {
                   })
                 }}
                 fullWidth
-                label={"Quantity"}
+                label={t("buyorder.quantity")}
                 id="quantity"
                 color={"secondary"}
                 value={state.quantity}
@@ -146,7 +159,7 @@ export function BuyOrderForm(props: { aggregate: MarketAggregate }) {
                 customInput={TextField}
                 thousandSeparator
                 fullWidth
-                label={"Total Price"}
+                label={t("buyorder.total_price")}
                 id="price-per-unit"
                 color={"secondary"}
                 variant={"standard"}
@@ -166,9 +179,9 @@ export function BuyOrderForm(props: { aggregate: MarketAggregate }) {
             </Grid>
             <Grid item xs={12} display={"flex"} justifyContent={"right"}>
               <DateTimePicker
-                label={`Order Expiration (${
-                  Intl.DateTimeFormat().resolvedOptions().timeZone
-                })`}
+                label={t("buyorder.expiration", {
+                  tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                })}
                 value={state.expiry}
                 onChange={(newValue) =>
                   setState({
@@ -187,7 +200,7 @@ export function BuyOrderForm(props: { aggregate: MarketAggregate }) {
                 loading={isLoading}
                 onClick={callback}
               >
-                Submit
+                {t("buyorder.submit")}
               </LoadingButton>
             </Grid>
           </FlatSection>

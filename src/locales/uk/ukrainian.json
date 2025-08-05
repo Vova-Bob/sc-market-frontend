@@ -126,13 +126,14 @@
     "bulkItems": "Оптові товари",
     "bulkListings": "Оптові пропозиції",
     "buyOrders": "Заявка на купівлю",
-    "total_requested": "{{count}} запитано",
-    "total_available": "{{count}} у наявності",
+    "total_requested": "шт. замовлено",
+    "total_available": "у наявності",
     "starting_at": "Від {{price}} aUEC",
     "new": "Нове",
     "ended": "Завершено",
     "ending_in": "Завершується {{time}}",
     "expiration": "Термін дії: {{time}}",
+    "unit": "шт",
     "available": "{{count}} доступно"
   },
   "marketActions": {

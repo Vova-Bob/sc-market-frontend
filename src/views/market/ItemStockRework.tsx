@@ -55,6 +55,7 @@ import {
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { LoadingButton } from "@mui/lab"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
+import { useTranslation } from "react-i18next" // Added for localization
 
 interface StockEntry extends GridValidRowModel {
   id: string
@@ -70,8 +71,9 @@ interface StockEntry extends GridValidRowModel {
 export function StockEntryItemDisplay(props: {
   listing: UniqueListing | null
 }) {
+  const { t } = useTranslation()
   if (!props.listing || !props.listing.details) {
-    return "No item selected"
+    return t("ItemStockRework.noItemSelected")
   }
   return `${props.listing.details.item_type} / ${props.listing.details.title}`
 }
@@ -80,6 +82,7 @@ export function ManageStockArea(props: {
   selectedRows: StockEntry[]
   onUpdateQuantity: (rowId: string, newQuantity: number) => void
 }) {
+  const { t } = useTranslation()
   const [quantity, setQuantity] = React.useState(1)
   const { selectedRows, onUpdateQuantity } = props
 
@@ -114,7 +117,7 @@ export function ManageStockArea(props: {
           minWidth: 200,
         }}
         size="small"
-        label={"Update Amount"}
+        label={t("ItemStockRework.updateAmount")}
         value={quantity}
         color={"secondary"}
       />
@@ -128,7 +131,7 @@ export function ManageStockArea(props: {
           color={"success"}
           startIcon={<AddRounded />}
         >
-          Add
+          {t("ItemStockRework.add")}
         </Button>
 
         <Button
@@ -136,7 +139,7 @@ export function ManageStockArea(props: {
           onClick={() => updateSelectedRows(() => 0)}
           color={"warning"}
         >
-          0
+          {t("ItemStockRework.zero")}
         </Button>
         <Button
           variant={"contained"}
@@ -146,7 +149,7 @@ export function ManageStockArea(props: {
           color={"error"}
           startIcon={<RemoveRounded />}
         >
-          Sub
+          {t("ItemStockRework.sub")}
         </Button>
       </ButtonGroup>
     </Stack>
@@ -163,6 +166,7 @@ declare module "@mui/x-data-grid" {
 }
 
 export function ItemStockRework() {
+  const { t } = useTranslation()
   const { data: profile } = useGetUserProfileQuery()
   const [rowSelectionModel, setRowSelectionModel] =
     React.useState<GridRowSelectionModel>({ type: "include", ids: new Set() })
@@ -296,7 +300,7 @@ export function ItemStockRework() {
       sortable: true,
       field: "owner",
       display: "flex",
-      headerName: "Owner",
+      headerName: t("ItemStockRework.owner"),
       width: 120,
       renderCell: (params: GridRenderCellParams) => (
         <UserAvatar user={params.value} />
@@ -307,7 +311,7 @@ export function ItemStockRework() {
       field: "listing",
       width: 450,
       display: "flex",
-      headerName: "Item",
+      headerName: t("ItemStockRework.item"),
       renderCell: (params: GridRenderCellParams) => {
         const isInEditMode =
           rowModesModel[params.id]?.mode === GridRowModes.Edit
@@ -352,7 +356,7 @@ export function ItemStockRework() {
     },
     {
       field: "quantity_available",
-      headerName: "Quantity",
+      headerName: t("ItemStockRework.quantity"),
       display: "flex",
       valueFormatter: (value: number) => value.toLocaleString(undefined),
       renderCell: (params: GridRenderCellParams) => {
@@ -395,7 +399,7 @@ export function ItemStockRework() {
                 inputMode: "numeric",
               }}
               size="small"
-              label={"Qty."}
+              label={t("ItemStockRework.qty")}
               value={currentQuantity}
               color={"secondary"}
             />
@@ -411,7 +415,7 @@ export function ItemStockRework() {
       field: "location",
       width: 150,
       display: "flex",
-      headerName: "Location",
+      headerName: t("ItemStockRework.location"),
       renderCell: (params: GridRenderCellParams) => {
         const isInEditMode =
           rowModesModel[params.id]?.mode === GridRowModes.Edit
@@ -467,7 +471,7 @@ export function ItemStockRework() {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Location"
+                  label={t("ItemStockRework.location")}
                   slotProps={{
                     input: {
                       ...params.InputProps,
@@ -487,7 +491,7 @@ export function ItemStockRework() {
       sortable: false,
       field: "actions",
       type: "actions",
-      headerName: "Actions",
+      headerName: t("ItemStockRework.actions"),
       cellClassName: "actions",
       width: 75,
       getActions: ({ id, row }: GridRowParams<StockEntry>) => {
@@ -501,7 +505,7 @@ export function ItemStockRework() {
           return [
             <GridActionsCellItem
               icon={<SaveRounded style={{ color: "primary.main" }} />}
-              label="Save"
+              label={t("ItemStockRework.save")}
               key={"save"}
               onClick={handleSaveClick(id)}
               disabled={!hasValidListing}
@@ -509,7 +513,7 @@ export function ItemStockRework() {
             <GridActionsCellItem
               icon={<CancelRounded />}
               key={"cancel"}
-              label="Cancel"
+              label={t("ItemStockRework.cancel")}
               className="textPrimary"
               onClick={handleCancelClick(id)}
               color="inherit"
@@ -520,7 +524,7 @@ export function ItemStockRework() {
         return [
           <GridActionsCellItem
             icon={<CreateRounded />}
-            label="Edit"
+            label={t("ItemStockRework.edit")}
             key={"edit"}
             className="textPrimary"
             onClick={handleEditClick(id)}
@@ -528,7 +532,7 @@ export function ItemStockRework() {
           />,
           <GridActionsCellItem
             icon={<DeleteRounded />}
-            label="Delete"
+            label={t("ItemStockRework.delete")}
             key={"delete"}
             onClick={handleDeleteClick(id)}
             color="inherit"
@@ -540,11 +544,11 @@ export function ItemStockRework() {
       sortable: true,
       field: "listed",
       display: "flex",
-      headerName: "Listed",
+      headerName: t("ItemStockRework.listed"),
       width: 75,
       renderCell: ({ id, value }) => {
         return (
-          <Tooltip title="Toggle whether stock is listed">
+          <Tooltip title={t("ItemStockRework.toggleListed")}>
             <Switch checked={value} onClick={handleToggleEnable(id)} />
           </Tooltip>
         )
@@ -579,7 +583,7 @@ export function ItemStockRework() {
                 selectedRows={selectedRows}
                 onUpdateQuantity={handleUpdateQuantity}
               />
-              <Tooltip title={"Add Row"}>
+              <Tooltip title={t("ItemStockRework.addRow")}>
                 <IconButton
                   onClick={() => {
                     const id = rows.length.toString()
