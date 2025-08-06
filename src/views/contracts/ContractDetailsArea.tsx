@@ -19,7 +19,7 @@ import { useTranslation } from "react-i18next"
 
 export function ContractDetailsArea(props: { contract: PublicContract }) {
   const { contract } = props
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const paymentType = PAYMENT_TYPE_MAP.get(contract.payment_type) || ""
 
   return (
@@ -49,7 +49,9 @@ export function ContractDetailsArea(props: { contract: PublicContract }) {
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
-                  {moment(contract.timestamp).format("MMMM Do YYYY, h:mm:ss a")}
+                  {moment(contract.timestamp)
+                    .locale(i18n.language)
+                    .format("MMMM Do YYYY, h:mm:ss a")}
                 </Stack>
               </TableCell>
             </TableRow>

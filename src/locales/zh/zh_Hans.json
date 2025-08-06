@@ -1,0 +1,1539 @@
+{
+  "admin": {
+    "orderStats": "Admin Order Stats"
+  },
+  "adminExpressVerify": {
+    "title": "Express Verify User",
+    "ownerDiscordId": "Owner Discord ID",
+    "ownerUsername": "Owner Username*",
+    "spectrumId": "Org Spectrum ID*",
+    "submit": "Submit",
+    "success": "Submitted!",
+    "failure": "Failed to submit! {{reason}}"
+  },
+  "auth": {
+    "title": "注册",
+    "email": "邮箱",
+    "username": "用户名",
+    "password": "密码",
+    "repeatPassword": "重输密码",
+    "loginWith": "用此方法登录",
+    "terms": "点此同意服务条款",
+    "submit": "提交",
+    "loginWithDiscord": "用Discord登录",
+    "accountLink": "账户链接",
+    "authenticateWithRSI": "用RSI验证"
+  },
+  "availability": {
+    "select_availability": "选择在线时间段",
+    "save": "保存",
+    "availability_for": "Availability for",
+    "title": "我的可用时间段",
+    "updated": "可用时间段已更新！",
+    "failed": "更新失败！"
+  },
+  "buyOrderActions": {
+    "createBuyOrder": "创建购买订单",
+    "selectMarketItem": "选择物品",
+    "createBuyOrderTooltip": "创建一个新的购买订单"
+  },
+  "commentVotes": {
+    "upvoteTooltip": "为此评论点赞",
+    "downvoteTooltip": "为此评论点踩"
+  },
+  "cookie_consent": {
+    "title": "同意Cookie",
+    "description": "我们使用Cookie以优化用户体验并分析服务性能（通过Google Analytics）。点击“全部接受” 以接受全部的Cookie，或\"仅必要\"以只接受必要的Cookie。",
+    "accept_all": "全部接受",
+    "accept_necessary": "仅必要"
+  },
+  "footer": {
+    "support": "支持",
+    "discord": "Discord",
+    "discordBot": "Discord机器人",
+    "wiki": "维基",
+    "donate": "捐赠",
+    "github": "Github",
+    "privacyPolicy": "隐私政策",
+    "termsOfService": "服务条款",
+    "copyright": "著作权©",
+    "trademark": "Star Citizen®（“星际公民”），Squadron 42®（“42中队”），Roberts Space Industries®（“罗伯茨太空工业”），以及Cloud Imperium®（“云间帝国”）均为Cloud Imperium Rights有限责任公司旗下的注册商标。",
+    "unofficial": "这是一个非官方的星际公民玩家自制网站，不附属于云间帝国（Cloud Imperium）公司集团。所有这个网站上不为站长或用户群体所作的内容均为它们对应所属人的财产。",
+    "referralCode": "使用我们的邀请码：{{code}}",
+    "acknowledgments": "Thank you to <ladyFleurLink>LadyFleur</ladyFleurLink> for the site logo, and to <starCitizenApiLink>StarCitizen-API</starCitizenApiLink>, <nexdLink>NEXD</nexdLink>, and <starCitizenWikiLink>Star Citizen Wiki</starCitizenWikiLink> for their APIs."
+  },
+  "listing": {
+    "95PercentRating25PlusTransactions": "95%+ 好评率和25+ 成交记录",
+    "90PercentRating25PlusTransactions": "90%+ 好评率和25+ 成交记录",
+    "tenPlusFiveStarStreak": "10+ 连续五星好评",
+    "fivePlusFiveStarStreak": "5+ 连续五星好评"
+  },
+  "manageListingsActions": {
+    "activateListings": "上架商品页",
+    "activateTooltip": "上架选中的全部商品页",
+    "deactivateListings": "下架商品页",
+    "deactivateTooltip": "下架选中的全部商品页"
+  },
+  "market": {
+    "search_query": "搜索关键字",
+    "filters": "过滤标签",
+    "search": "搜索",
+    "sort_by": "排序法",
+    "none": "无",
+    "title": "标题",
+    "price_low_to_high": "价格（低到高）",
+    "price_high_to_low": "价格（高到低）",
+    "quantity_low_to_high": "在售数量（低到高）",
+    "quantity_high_to_low": "在售数量（高到低）",
+    "date_old_to_new": "上架日期（早到新）",
+    "date_new_to_old": "上架日期（新到早）",
+    "recent_activity": "Recent Activity",
+    "rating_high_to_low": "评分（高到低）",
+    "quantity_available": "在售数量",
+    "sale_type": "售卖类型",
+    "any": "任意",
+    "sale": "零售",
+    "aggregate": "合售",
+    "auction": "拍卖",
+    "min_cost": "最低花费",
+    "max_cost": "最高花费",
+    "item_type": "物品类型",
+    "item_name": "物品名",
+    "other_category": "其他",
+    "allListings": "市集上全部商品页",
+    "toggleSidebar": "开关市集侧边栏",
+    "activeListings": "在售商品页",
+    "inactiveListings": "停售商品页",
+    "archivedListings": "已归档商品页",
+    "viewMarketListing": "查看市集商品页",
+    "editMarketListing": "编辑市集商品页",
+    "editMultipleListing": "编辑多个商品页",
+    "createMarketListing": "创建市集商品页",
+    "bulkListingTab": "大宗商品页",
+    "uniqueListingTab": "Unique Listing",
+    "auctionTab": "拍卖",
+    "combinedListingTab": "Combined Listing",
+    "market": "市集",
+    "itemsTab": "商品",
+    "servicesTab": "服务",
+    "bulkItems": "大宗物品",
+    "bulkListings": "大宗商品页",
+    "buyOrders": "购买订单",
+    "total_requested": "total requested",
+    "total_available": "全部在售数",
+    "starting_at": "起拍价为{{price}}aEUC",
+    "new": "新",
+    "ended": "已结束",
+    "ending_in": "Ending {{time}}",
+    "expiration": "Expiration: {{time}}",
+    "unit": "ea",
+    "available": "{{count}}在售"
+  },
+  "marketActions": {
+    "createListing": "创建商品页",
+    "createListingTooltip": "创建一个新的商品页",
+    "myCart": "我的购物车",
+    "myCartTooltip": "查看您的购物车"
+  },
+  "navigation": {
+    "goBack": "上一页"
+  },
+  "notifications": {
+    "notifications": "通知",
+    "delete_notification": "删除通知",
+    "new_review_by": "New Review Left by",
+    "new_order_comment_by": "New Order Comment Left by",
+    "new_order_message_by": "New Order Message by",
+    "new_order_placed_by": "New Order Placed by",
+    "new_offer_received_from": "New Offer Received From",
+    "counter_offer_received_from": "Counter Offer Received From",
+    "order_status_updated_to": "Order status updated to {{status}} by",
+    "contractor_invite_from": "<contractorLink>{{spectrum_id}}</contractorLink>邀请您加入该合约组织",
+    "submitted": "已提交！",
+    "accept": "同意",
+    "decline": "拒绝",
+    "new_bid_placed_by": "New Bid Placed by",
+    "for": "for",
+    "clear_all": "清除全部通知",
+    "mark_all_as_read": "全部已读"
+  },
+  "recruitmentVotes": {
+    "upvoteButtonTooltip": "为此帖点赞"
+  },
+  "recruiting_sidebar": {
+    "search": "搜索",
+    "sorting": "排序",
+    "sort_attribute": "排序法",
+    "sort": {
+      "activity": "Activity",
+      "upvotes_all_time": "被点赞数（全部时间）",
+      "rating_high": "评分（高到低）",
+      "rating_low": "评分（低到高）",
+      "name_a_z": "名字（A到Z）",
+      "name_z_a": "名字（Z到A）",
+      "members_high": "成员数（高到低）",
+      "members_low": "成员数（低到高）",
+      "date_old": "组织上市日期（早到新）",
+      "date_new": "组织上市日期（新到早）",
+      "post_old": "发帖日期（早到新）",
+      "post_new": "发帖日期（新到早）"
+    },
+    "filtering": "按标签过滤",
+    "org_tags": "组织标签",
+    "org_tags_placeholder": "矿业",
+    "min_rating": "最低评分"
+  },
+  "selectLocation": {
+    "title": "地点",
+    "inputLabel": "来源（非强制）",
+    "helperText": "比如说护送和运输服务，该订单的出发地和开始时间都是什么？协助服务的话，合约工该去哪里找你？"
+  },
+  "selectMarketListing": {
+    "label": "选择市集商品页"
+  },
+  "settings": {
+    "title": "设置",
+    "tabs": {
+      "profile": "个人资料",
+      "privacy": "隐私",
+      "discordIntegration": "Discord集成",
+      "market": "市集",
+      "contractors": "合约组织"
+    },
+    "profile": {
+      "updateAndVerify": "更新用户名并重新验证账户",
+      "authenticateWithRSI": "用RSI验证",
+      "viewUserProfile": "查看用户资料"
+    }
+  },
+  "sidebar": {
+    "dashboard": {
+      "title": "仪表板",
+      "text": "仪表板"
+    },
+    "manage_market_listings": "管理市集商品页",
+    "manage_services": "管理提供服务",
+    "availability": "在线时间段",
+    "my_fleet": "我的舰队",
+    "messaging": "Messaging",
+    "my_organization": {
+      "title": "我的组织"
+    },
+    "orders": {
+      "title": "订单",
+      "text": "订单"
+    },
+    "my_org": "我的组织",
+    "manage": "管理",
+    "settings": "设置",
+    "my_market_listings": "我的市集商品页",
+    "manage_listings": "管理商品页",
+    "archived_listings": "已归档商品页",
+    "money": "钱款",
+    "invoices": "发票",
+    "fleet": "舰队",
+    "new_chip": "新！",
+    "people": "People",
+    "customers": "客户",
+    "members": "成员",
+    "market": {
+      "title": "市集",
+      "text": "市集"
+    },
+    "player_market": "玩家市集",
+    "everything": "全部物品",
+    "weapons": "武器",
+    "armor": "护甲",
+    "components": "组件",
+    "bulk_items": "大宗",
+    "buy_orders": "购买订单",
+    "contractor_services": "合约服务",
+    "my_org_listings": "我的组织的商品页",
+    "sell_materials": "材料售卖",
+    "contracting": {
+      "title": "合约"
+    },
+    "my_orders": "我的订单",
+    "contractors": "合约组织",
+    "open_contracts": "开放合约",
+    "organizations": {
+      "title": "组织"
+    },
+    "recruiting": "招募中",
+    "register": "注册",
+    "admin": {
+      "title": "管理员"
+    },
+    "users": "用户",
+    "sc_market": "SC市集",
+    "sc_market_home": "SC市集主页",
+    "toggle_drawer": "Toggle Drawer"
+  },
+  "sidebar_actor_select": {
+    "select_role": "选择身份",
+    "login_to_select_role": "登录以选择身份",
+    "avatar_of": "{{username}}的头像"
+  },
+  "select_all_items": "选择全部物品",
+  "sorted_descending": "降序",
+  "sorted_ascending": "升序",
+  "select_all": "全选",
+  "rows_per_page": "每页行数",
+  "no_listings": "无可用的商品页",
+  "displayed_rows": "{{from}}–{{to}}页，全{{count}}页",
+  "all": "全部",
+  "contractors": "合约组织",
+  "recruiting_orgs": "招募中的组织",
+  "toggle_market_sidebar": "开关市集侧边栏",
+  "update_post": "更新招募贴",
+  "create_post": "创建帖子",
+  "discord_bot": {
+    "integrating_with_discord": "集成进Discord",
+    "how_to_get_notified": "如何在有订单创建时收到提醒",
+    "how_to_get_notified_answer": "将官方的[SC市集Discord机器人](https://discord.com/oauth2/authorize?client_id=868709691469987860&permissions=361314126849&integration_type=0&scope=bot)加入到您的服务器以在一条订单被创建或被指派给您时收到自动私信。您也可以用下方设置去在[SC市集的官方服务器]({{DISCORD_INVITE}})里完成订单。",
+    "how_to_communicate": "如何用Discord与买家交流",
+    "how_to_communicate_answer": "将官方的[SC市集Discord机器人](https://discord.com/oauth2/authorize?client_id=868709691469987860&permissions=361314126849&integration_type=0&scope=bot)加入到您的服务器后，您可以注册一条频道以在订单下单时自动在其中创建买卖方的讨论串。买家会自动收到您的服务器邀请，之后可以在那里协商完成订单的相关事宜。\n\n1. 把[机器人](https://discord.com/oauth2/authorize?client_id=868709691469987860&permissions=361314126849&integration_type=0&scope=bot)添加进您的服务器。\n\n2. 对一个独立用户或一整个合约组织使用`/register 服务器`指令。如需将订单关联至您个人，使用`/register Server User`指令。如需关联一个组织，使用`/register Server Contractor ORGNAME`。在此之后，相关用户将会在下单后自动收到您的服务器邀请。\n\n3. 对一个独立用户或一整个合约组织使用`/register Channel` 指令。如需将订单关联至您个人，使用`/register Channel User`指令。如需关联一个组织，使用`/register Channel Contractor ORGNAME`。在此之后，买家与指派的卖家将会在下单后被加入到同一讨论串中。"
+  },
+  "preferences": {
+    "page_settings": "页面设置",
+    "theme": "主题",
+    "light": "亮",
+    "dark": "暗",
+    "language": "语言",
+    "select_language": "选择语言"
+  },
+  "languages": {
+    "en": "英语",
+    "uk": "乌克兰语",
+    "fr": "法语",
+    "de": "德语",
+    "ja": "日语"
+  },
+  "privacy_settings": {
+    "title": "隐私",
+    "public_discord": "公开显示Discord账号",
+    "share_discord_with_sellers": "与卖家分享Discord账号",
+    "request_data_title": "申请我的数据",
+    "request_data_description": "申请您与该网站的相关信息。该功能仍在优化中，且不代表您的全部数据。我们仍在尽量扩展数据范围，但现在它包含了大部分与您的账号相关的数据。",
+    "request_data_button": "申请数据"
+  },
+  "transactions": {
+    "recent_transactions": "最近交易记录",
+    "date": "日期",
+    "details": "细节",
+    "amount": "金额",
+    "from": "付款方",
+    "to": "收款方",
+    "yesterday": "昨天",
+    "status": {
+      "title": "状态",
+      "completed": "完成",
+      "pending": "进行中",
+      "cancelled": "已取消"
+    },
+    "kind": {
+      "Payment": "付款",
+      "Refund": "退款",
+      "Withdrawal": "提款",
+      "Deposit": "存款"
+    },
+    "months": {
+      "jan": "一月",
+      "feb": "二月",
+      "mar": "三月",
+      "apr": "四月",
+      "may": "五月",
+      "jun": "六月",
+      "jul": "七月",
+      "aug": "八月",
+      "sep": "九月",
+      "oct": "十月",
+      "nov": "十一月",
+      "dec": "十二月"
+    },
+    "time": {
+      "am": "am",
+      "pm": "pm"
+    }
+  },
+  "service_actions": {
+    "create_service": "创建服务"
+  },
+  "service_market": {
+    "toggle_sidebar": "开关服务侧边栏"
+  },
+  "service_search": {
+    "search": "搜索",
+    "filtering": "过滤",
+    "contract_type": "合约种类",
+    "contract_types": {
+      "Any": "任意"
+    },
+    "cost": "价格",
+    "min_cost": "最低价格",
+    "max_cost": "最高价格",
+    "payment_type": "付款类型",
+    "payment_types": {
+      "any": "任意",
+      "one_time": "一次性",
+      "hourly": "时结",
+      "daily": "日结",
+      "unit": "计件",
+      "box": "按箱数",
+      "scu": "按SCU数",
+      "cscu": "按cSCU数",
+      "mscu": "按mSCU数"
+    }
+  },
+  "recruiting_post": {
+    "about": "关于我们",
+    "title_required": "标题*",
+    "description_required": "简介*",
+    "submit": "提交",
+    "alert": {
+      "submitted": "已提交！",
+      "failed": "提交失败！"
+    },
+    "markdown_info": "Github式的Markdown可用，Youtube链接会自动嵌入，且用Imgur或RSI提供的图片也可内嵌。",
+    "markdown_link": "点此查看",
+    "markdown_info_end": "更多细节",
+    "contractor": "合约组织",
+    "commentArea": {
+      "replyToPost": "回复",
+      "post": "发帖"
+    },
+    "page": {
+      "createPost": "创建",
+      "updatePost": "Update Post"
+    }
+  },
+  "contractor": {
+    "fields": {
+      "mining": "Mining",
+      "trading": "Trading",
+      "security": "Security"
+    }
+  },
+  "adminUsers": {
+    "users": "Users",
+    "membership_count": "Membership Count",
+    "daily_activity": "Daily Activity",
+    "weekly_activity": "Weekly Activity",
+    "monthly_activity": "Monthly Activity",
+    "username": "Username",
+    "date_joined": "Date Joined",
+    "role": "Role",
+    "active_users": "Active Users",
+    "verified_users": "Verified Users"
+  },
+  "customerList": {
+    "customers": "Customers",
+    "username": "Username",
+    "orders": "Orders",
+    "total_value": "Total Value"
+  },
+  "profileNavAvatar": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "viewProfile": {
+    "submitted": "Submitted!",
+    "failed": "Failed to submit!",
+    "image_url": "Image URL",
+    "image_url_helper": "Direct URL to the image, from Imgur, RSI, or starcitizen.tools",
+    "save": "Save",
+    "no_user_description": "No user description",
+    "myProfile": "My Profile",
+    "profile_tab": "Profile",
+    "services_tab": "Services",
+    "market_tab": "Market",
+    "order_tab": "Order",
+    "reviews_tab": "Reviews"
+  },
+  "viewPublicOrder": {
+    "new": "New",
+    "apply": "Apply",
+    "applied": "Applied!"
+  },
+  "myServices": {
+    "title": "Title",
+    "no_title": "Title not defined",
+    "no_type": "Type not defined",
+    "no_description": "Description not defined",
+    "active": "Active",
+    "inactive": "Inactive",
+    "services": "Services"
+  },
+  "recentOrders": {
+    "title": "Recent Orders"
+  },
+  "orderTrend": {
+    "order_count_daily": "Order Count Daily",
+    "order_count_weekly": "Order Count Weekly",
+    "order_count_monthly": "Order Count Monthly",
+    "orders_daily": "Orders Daily",
+    "orders_weekly": "Orders Weekly",
+    "orders_monthly": "Orders Monthly",
+    "in_progress": "In Progress",
+    "fulfilled": "Fulfilled",
+    "cancelled": "Cancelled",
+    "not_started": "Not Started"
+  },
+  "orderServiceArea": {
+    "associated_services": "Associated Services",
+    "no_associated_services": "No associated services"
+  },
+  "contracts": {
+    "new": "New",
+    "see_more": "See More",
+    "apply": "Apply",
+    "publicOrderTitle": "Public Order",
+    "publicContracts": "Public Contracts",
+    "createPublicContract": "Create Public Contract",
+    "contractsTitle": "Contracts",
+    "toggleSidebar": "toggle market sidebar",
+    "activeContracts": "Active Contracts",
+    "createOpenContract": "Create Open Contract",
+    "contractShort": "Contract {{id}}",
+    "viewContract": "View Contract",
+    "contractTitle": "Contract",
+    "kind": {
+      "Escort": "Escort",
+      "Transport": "Transport",
+      "Bounty": "Bounty",
+      "Delivery": "Delivery",
+      "Mining": "Mining",
+      "Salvage": "Salvage",
+      "Other": "Other"
+    }
+  },
+  "serviceListings": {
+    "new": "New",
+    "rush": "Rush"
+  },
+  "contractListings": {
+    "new": "New",
+    "see_more": "See More"
+  },
+  "table": {
+    "rows_per_page": "Rows per page",
+    "displayed_rows": "{from}-{to} of {count}"
+  },
+  "select_rows_per_page": "Select rows per page",
+  "createPublicContract": {
+    "submitted": "Submitted!",
+    "about": "About",
+    "title_required": "Title*",
+    "type_required": "Type*",
+    "description_required": "Description*",
+    "description_helper": "E.g. Transport Lithium from New Babbage to Hurston",
+    "costs": "Costs",
+    "collateral_optional": "Collateral (Optional)",
+    "collateral_helper": "If the contractor offers insurance, what is the lost value in the event the contractor fails to deliver? E.g. the value of the cargo being transported",
+    "offer": "aUEC Offer",
+    "offer_helper": "How much will you offer the contractor to fulfill this order?",
+    "payment_type": "Payment Type",
+    "submit": "Submit"
+  },
+  "paymentTypes": {
+    "one_time": "One time",
+    "hourly": "Hourly",
+    "daily": "Daily",
+    "unit": "Unit",
+    "box": "Box",
+    "scu": "SCU",
+    "cscu": "cSCU",
+    "mscu": "mSCU"
+  },
+  "orderReviewView": {
+    "review": "Review",
+    "ratingLabel": "Rating:"
+  },
+  "orderReviewArea": {
+    "review": "Review",
+    "leaveFor": "Leave a review for",
+    "commentLabel": "Comment",
+    "ratingLabel": "Rating:",
+    "leaveReviewButton": "Leave Review",
+    "alert": {
+      "success": "Left review!",
+      "error": "Failed to leave review!"
+    }
+  },
+  "orderMetrics": {
+    "activeOrders": "Active Orders",
+    "allOrders": "All Orders",
+    "activeOrderValue": "Active Order Value",
+    "completedOrderValue": "Completed Order Value"
+  },
+  "marketListings": {
+    "associatedListings": "Associated Market Listings",
+    "noListings": "No associated listings",
+    "product": "Product",
+    "qty": "Qty",
+    "unitPrice": "Unit Price",
+    "total": "Total"
+  },
+  "orders": {
+    "status": {
+      "fulfilled": "Fulfilled",
+      "inProgress": "In Progress",
+      "cancelled": "Cancelled",
+      "notStarted": "Not Started",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "table": {
+      "order": "Order",
+      "customer": "Customer",
+      "contractor": "Contractor",
+      "status": "Status"
+    },
+    "tabs": {
+      "all": "All",
+      "active": "Active",
+      "past": "Past",
+      "fulfilled": "Fulfilled",
+      "inProgress": "In Progress",
+      "notStarted": "Not Started",
+      "cancelled": "Cancelled"
+    },
+    "orderLabel": "Order",
+    "items": "items",
+    "public": "Public",
+    "orgOrdersTitle": "Org Orders",
+    "ordersTitle": "Orders",
+    "orderTitle": "Order",
+    "orderShort": "Order {{id}}",
+    "offerShort": "Offer {{id}}",
+    "createOrderTitle": "Create Order",
+    "viewOrder": "View Order"
+  },
+  "orderDetailsArea": {
+    "updated_status": "Updated status!",
+    "details_table": "details table",
+    "customer": "Customer",
+    "seller": "Seller",
+    "assigned": "Assigned",
+    "date": "Date",
+    "status": "Status",
+    "title": "Title",
+    "kind": "Kind",
+    "details": "Details",
+    "order": "Order",
+    "discord_thread": "Discord Thread",
+    "thread_link": "Thread Link",
+    "created_thread": "Created thread",
+    "create_thread": "Create Thread",
+    "update_status": "Update Status",
+    "cancel": "Cancel",
+    "complete_order": "Complete Order",
+    "begin_work": "Begin Work",
+    "not_started": "Not Started"
+  },
+  "orderAvailabilityArea": {
+    "customer_name": "{{name}} (Customer)",
+    "assigned_name": "{{name}} (Assigned)"
+  },
+  "orderApplicantsArea": {
+    "applicants": "Applicants",
+    "accepted": "Accepted!",
+    "failed_accept": "Failed to accept!",
+    "expand": "Expand",
+    "accept": "Accept",
+    "applied": "Applied!",
+    "failed_apply": "Failed to apply!",
+    "apply": "Apply",
+    "message": "Message"
+  },
+  "myOrders": {
+    "title": "My Orders"
+  },
+  "memberAssignArea": {
+    "assigned": "Assigned!",
+    "failed_assign": "Failed to assign!",
+    "unassigned": "Unassigned!",
+    "failed_unassign": "Failed to unassign!",
+    "assign": "Assign",
+    "reassign": "Reassign",
+    "unassign": "Unassign",
+    "handle": "Handle"
+  },
+  "CreateServiceForm": {
+    "serviceDetails": "Service Details",
+    "serviceName": "Service Name",
+    "serviceActive": "Service is Active",
+    "serviceInactive": "Service is Inactive",
+    "serviceDescription": "Service Description",
+    "serviceDescriptionHelper": "E.g. We offer transport of goods between locations!",
+    "orderServiceDetails": "Order Service Details",
+    "title": "Title",
+    "typeOptional": "Type (Optional)",
+    "rush": "Rush",
+    "description": "Description",
+    "descriptionHelper": "E.g. Transport Lithium from New Babbage to Hurston",
+    "costs": "Costs",
+    "collateralOptional": "Collateral (Optional)",
+    "collateralHelper": "If the contractor offers insurance, what is the lost value in the event the contractor fails to deliver? E.g. the value of the cargo being transported",
+    "cost": "Cost",
+    "costHelper": "How much should the customer pay for this service?",
+    "paymentType": "Payment Type",
+    "submit": "Submit",
+    "update": "Update",
+    "alert": {
+      "submitted": "Submitted!",
+      "failed": "Failed to submit!"
+    }
+  },
+  "CreateOrderForm": {
+    "services": "Services",
+    "selectServiceOptional": "Select Service (Optional)",
+    "noService": "No Service",
+    "about": "About",
+    "title": "Title",
+    "type": "Type",
+    "rush": "Rush",
+    "description": "Description",
+    "descriptionHelper": "E.g. Transport Lithium from New Babbage to Hurston",
+    "costs": "Costs",
+    "collateralOptional": "Collateral (Optional)",
+    "collateralHelper": "If the contractor offers insurance, what is the lost value in the event the contractor fails to deliver? E.g. the value of the cargo being transported",
+    "aUECOffer": "aUEC Offer",
+    "aUECOfferHelper": "How much will you offer the contractor to fulfill this order?",
+    "paymentType": "Payment Type",
+    "submit": "Submit",
+    "alert": {
+      "submitted": "Submitted!"
+    }
+  },
+  "OffersViewPaginated": {
+    "offers": "Offers",
+    "all": "All",
+    "offer": "Offer",
+    "user": "User",
+    "status": "Status",
+    "waitingSeller": "Waiting for Seller",
+    "waitingCustomer": "Waiting for Customer",
+    "accepted": "Accepted",
+    "rejected": "Rejected",
+    "items": "items"
+  },
+  "OfferServiceEditArea": {
+    "associatedServices": "Associated Services",
+    "selectServiceOptional": "Select Service (Optional)",
+    "noService": "No Service"
+  },
+  "OfferServiceArea": {
+    "associatedServices": "Associated Services",
+    "noAssociatedServices": "No associated services"
+  },
+  "OfferMarketListingsEditArea": {
+    "associatedMarketListings": "Associated Market Listings",
+    "addMarketListing": "Add Market Listing",
+    "selectListing": "Select Listing...",
+    "of": "of {{count}}",
+    "ofAvailable": "of {{count}} available",
+    "quantity": "Quantity",
+    "qty": "Qty.",
+    "add": "Add",
+    "total": "Total"
+  },
+  "OfferMarketListings": {
+    "associatedMarketListings": "Associated Market Listings",
+    "noAssociatedListings": "No associated listings",
+    "product": "Product",
+    "qty": "Qty",
+    "unitPrice": "Unit Price",
+    "total": "Total"
+  },
+  "OfferDetailsEditArea": {
+    "customer": "Customer",
+    "seller": "Seller",
+    "date": "Date",
+    "title": "Title",
+    "kind": "Kind",
+    "details": "Details",
+    "offer": "Offer",
+    "offerAmount": "Offer Amount",
+    "paymentType": "Payment Type"
+  },
+  "OfferDetailsArea": {
+    "customer": "Customer",
+    "associatedContract": "Associated Contract",
+    "seller": "Seller",
+    "date": "Date",
+    "status": "Status",
+    "title": "Title",
+    "kind": "Kind",
+    "details": "Details",
+    "offer": "Offer",
+    "discordThread": "Discord Thread",
+    "threadLink": "Thread Link",
+    "createdThread": "Created thread",
+    "createThread": "Create Thread",
+    "acceptOrDecline": "Accept or Decline",
+    "accept": "Accept",
+    "counterOffer": "Counter Offer",
+    "reject": "Reject",
+    "cancelOrder": "Cancel Order",
+    "cancel": "Cancel",
+    "waitingSeller": "Waiting for Seller",
+    "waitingCustomer": "Waiting for Customer",
+    "rejected": "Rejected",
+    "accepted": "Accepted"
+  },
+  "CounterOfferSubmitArea": {
+    "submitCounterOffer": "Submit Counter Offer"
+  },
+  "Webhooks": {
+    "title": "Webhooks",
+    "name": "Name",
+    "submitted": "Submitted!",
+    "failedToSubmit": "Failed to submit! "
+  },
+  "DashNotificationArea": {
+    "notifications": "Notifications"
+  },
+  "ConfigureDiscord": {
+    "orderManagement": "Order Management",
+    "integratedChannel": "Integrated Channel",
+    "notConfigured": "Not configured",
+    "useOfficial1": "Use The Official",
+    "serverName": "SC Market Server",
+    "useOfficial2": "for Orders. This will replace your existing integration settings.",
+    "useOfficialServer": "Use Official Server"
+  },
+  "AddNotificationWebhook": {
+    "addWebhook": "Add Discord Notification Webhook",
+    "webhookName": "Webhook Name",
+    "webhookUrl": "Webhook URL",
+    "invalidUrl": "Invalid URL",
+    "orderCreated": "Order Created",
+    "orderAssigned": "Order Assigned to Me",
+    "publicOrderCreated": "Public Contract Created",
+    "orderStatusChange": "Order Status Change",
+    "orderReview": "Order Review Recieved",
+    "orderComment": "Order Comment Recieved",
+    "marketBid": "Market Bid Received",
+    "submit": "Submit",
+    "submitted": "Submitted!"
+  },
+  "MessagingSidebar": {
+    "messages": "Messages",
+    "group": "Group",
+    "search": "Search",
+    "noMessages": "No messages"
+  },
+  "MessagesBody": {
+    "toggleSidebar": "Toggle sidebar",
+    "copyDate": "Copy Date",
+    "copyTime": "Copy Time",
+    "send": "Send",
+    "system": "System",
+    "scMarket": "SC Market"
+  },
+  "CreateMessageGroupBody": {
+    "toggleSidebar": "Toggle sidebar",
+    "usernames": "Usernames",
+    "create": "Create",
+    "close": "Close"
+  },
+  "MemberBalance": {
+    "myBalance": "My Balance",
+    "sendAUEC": "Send aUEC",
+    "withdraw": "Withdraw"
+  },
+  "MemberAssignments": {
+    "assignments": "Assignments"
+  },
+  "SellMaterialsList": {
+    "title": "Sell Materials",
+    "commodity": "Commodity",
+    "code": "Code",
+    "kindLabel": "Kind",
+    "sellPrice": "Sell Price",
+    "sell": "Sell",
+    "search": "Search",
+    "any": "Any",
+    "kind": {
+      "Agricultural": "Agricultural",
+      "Waste": "Waste",
+      "Metal": "Metal",
+      "Drug": "Drug",
+      "Vice": "Vice",
+      "Natural": "Natural",
+      "Mineral": "Mineral",
+      "Halogen": "Halogen",
+      "Temporary": "Temporary",
+      "Scrap": "Scrap",
+      "Gas": "Gas",
+      "Medical": "Medical",
+      "Food": "Food",
+      "Other": "Other"
+    }
+  },
+  "PageSearch": {
+    "selectItem": "Select Item",
+    "selectedItem": "Selected Item",
+    "wikiPage": "Wiki Page",
+    "itemSearch": "Item Search",
+    "searchHelper": "Search query to search for items from starcitizen.tools",
+    "cancel": "Cancel",
+    "saveAndClose": "Save and Close"
+  },
+  "MarketOffers": {
+    "user": "User",
+    "offer": "Offer",
+    "quantity": "Quantity",
+    "total": "Total"
+  },
+  "MarketSearchArea": {
+    "searchBtn": "Search",
+    "search": "Search",
+    "sorting": "Sorting",
+    "sortAttribute": "Sort Attribute",
+    "none": "None",
+    "title": "Title",
+    "priceLowHigh": "Price (Low to High)",
+    "priceHighLow": "Price (High to Low)",
+    "quantityLowHigh": "Quantity Available (Low to High)",
+    "quantityHighLow": "Quantity Available (High to Low)",
+    "dateOldNew": "Date Listed (Old to New)",
+    "dateNewOld": "Date Listed (New to Old)",
+    "activity": "Recent Activity",
+    "rating": "Rating (High to Low)",
+    "filtering": "Filtering",
+    "quantityAvailable": "Quantity Available",
+    "listingStatus": "Listing Status",
+    "either": "Either",
+    "active": "Active",
+    "inactive": "Inactive",
+    "saleType": "Sale Type",
+    "any": "Any",
+    "sale": "Sale",
+    "commodity": "Commodity",
+    "auction": "Auction",
+    "cost": "Cost",
+    "minCost": "Minimum Cost",
+    "maxCost": "Maximum Cost"
+  },
+  "MarketMultipleView": {
+    "market": "Market",
+    "people": "People",
+    "seller": "Seller",
+    "new": "New",
+    "listed": "Listed",
+    "updated": "Updated",
+    "expires": "Expires",
+    "selectItem": "Select Item",
+    "description": "Description",
+    "activeOrders": "Active Orders",
+    "previousOrders": "Previous Orders"
+  },
+  "MarketMultipleEditView": {
+    "about": "About",
+    "title": "Title",
+    "description": "Description",
+    "helperText": "E.g. Exclusive subscriber flare for August 2020",
+    "listings": "Listings",
+    "defaultListing": "Default Listing",
+    "includeListings": "Listings to Include",
+    "update": "Update",
+    "submitted": "Submitted!",
+    "failedSubmit": "Failed to submit! {{error}}"
+  },
+  "MarketListingView": {
+    "addedToCart": "Added to cart!",
+    "price": "Price",
+    "ofAvailable": "of {{count}} available",
+    "quantity": "Quantity",
+    "addToCart": "Add to Cart",
+    "bidSuccess": "Bid successful!",
+    "bidError": "Error while bidding! {{error}}",
+    "currentBid": "Current Bid: {{price}} aUEC",
+    "bid": "Bid",
+    "placeBid": "Place Bid",
+    "people": "People",
+    "seller": "Seller",
+    "market": "Market",
+    "new": "New",
+    "ended": "Ended",
+    "endingIn": "Ending in",
+    "listed": "Listed",
+    "updated": "Updated",
+    "expires": "Expires",
+    "description": "Description",
+    "activeOrders": "Active Orders",
+    "previousOrders": "Previous Orders"
+  },
+  "MarketListingForm": {
+    "about": "About",
+    "title": "Title",
+    "quantityAvailable": "Quantity Available",
+    "description": "Description",
+    "descriptionHelp": "E.g. Exclusive subscriber flare for August 2020",
+    "imageHint": "Search for images or upload your own",
+    "relatedListings": "Related Listings",
+    "availability": "Availability",
+    "active": "Listing Active",
+    "orgInternal": "Org Internal Listing",
+    "costs": "Costs",
+    "price": "Price",
+    "startingBid": "Starting Bid",
+    "minBidIncrement": "Minimum bid increment",
+    "endTime": "End Time ({{tz}})",
+    "submit": "Submit",
+    "submitted": "Submitted!",
+    "failedSubmit": "Failed to submit!"
+  },
+  "AggregateMarketListingForm": {
+    "about": "About",
+    "quantityAvailable": "Quantity Available",
+    "chooseNewItem": "Choose New Item",
+    "availability": "Availability",
+    "active": "Listing Active",
+    "orgInternal": "Org Internal Listing",
+    "costs": "Costs",
+    "price": "Price",
+    "submit": "Submit",
+    "submitted": "Submitted!",
+    "failedSubmit": "Failed to submit!"
+  },
+  "MarketMultipleForm": {
+    "about": "About",
+    "title": "Title",
+    "description": "Description",
+    "helperText": "E.g. Exclusive subscriber flare for August 2020",
+    "listings": "Listings",
+    "defaultListing": "Default Listing",
+    "listingsToInclude": "Listings to Include",
+    "submit": "Submit",
+    "submitted": "Submitted!",
+    "failedSubmit": "Failed to submit!"
+  },
+  "MarketListingEditView": {
+    "deactivate": "Deactivate Listing",
+    "activate": "Activate Listing",
+    "archive": "Archive Listing",
+    "updateBtn": "Update",
+    "title": "Title",
+    "quantityAvailable": "Quantity Available",
+    "price": "Price",
+    "minBidIncrement": "Minimum Bid Increment",
+    "description": "Description",
+    "updated": "Updated!",
+    "updateError": "Error while updating!"
+  },
+  "MarketEditTemplate": {
+    "title": "Edit Market Message Template",
+    "configure": "Configure the comment template that will be added to new market orders that users can fill out to provide you additional details.",
+    "submit": "Submit",
+    "submitted": "Submitted!"
+  },
+  "MarketAggregateView": {
+    "market": "Market",
+    "sellerRating": "Seller Rating",
+    "price": "Price",
+    "quantityAvailable": "Quantity Available",
+    "buyer": "Buyer",
+    "quantity": "Quantity",
+    "total": "Total",
+    "description": "Description",
+    "sellOrders": "Sell Orders",
+    "buyOrders": "Buy Orders",
+    "priceHistory": "Price History",
+    "addedToCart": "Added to cart!",
+    "quantityToBuy": "Quantity to Buy",
+    "ofAvailable": "of {{count}} available",
+    "fulfill": "Fulfill",
+    "cancel": "Cancel",
+    "submitted": "Submitted!",
+    "failedSubmit": "Failed to submit!",
+    "cancelled": "Cancelled!",
+    "buyOrdersChart": "Buy Orders",
+    "sellOrdersChart": "Sell Orders",
+    "atPrice": "orders at {{price}} aUEC or {{direction}}",
+    "orLower": "lower",
+    "orHigher": "higher"
+  },
+  "MarketAggregateEditView": {
+    "updated": "Updated!",
+    "errorWhileUpdating": "Error while updating!",
+    "deactivate": "Deactivate Listing",
+    "activate": "Activate Listing",
+    "update": "Update",
+    "title": "Title",
+    "itemType": "Item Type",
+    "armor": "Armor",
+    "weapon": "Weapon",
+    "paint": "Paint",
+    "bundle": "Bundle",
+    "other": "Other",
+    "quantityAvailable": "Quantity Available",
+    "price": "Price",
+    "minBidIncrement": "Minimum Bid Increment",
+    "description": "Description"
+  },
+  "ItemStockRework": {
+    "noItemSelected": "No item selected",
+    "updateAmount": "Update Amount",
+    "add": "Add",
+    "sub": "Sub",
+    "zero": "0",
+    "owner": "Owner",
+    "item": "Item",
+    "quantity": "Quantity",
+    "qty": "Qty.",
+    "location": "Location",
+    "actions": "Actions",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "listed": "Listed",
+    "toggleListed": "Toggle whether stock is listed",
+    "addRow": "Add Row"
+  },
+  "ItemStock": {
+    "updated": "Updated!",
+    "updateAmount": "Update Amount",
+    "add": "Add",
+    "zero": "0",
+    "sub": "Sub",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "addQuickListing": "Add Quick Listing",
+    "selectItemError": "Please select an item",
+    "created": "Listing created successfully!",
+    "createError": "Failed to create listing",
+    "title": "Title",
+    "noItemSelected": "No item selected",
+    "price": "Price",
+    "quantity": "Quantity",
+    "qty": "Qty",
+    "offersAccepted": "Offers Accepted",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "expiration": "Expiration",
+    "refreshListing": "Refresh listing",
+    "edit": "Edit",
+    "save": "Save",
+    "discard": "Discard",
+    "editListing": "Edit Listing"
+  },
+  "itemMarket": {
+    "toggleSidebar": "Toggle market sidebar"
+  },
+  "image_search": {
+    "select_image": "Select Image",
+    "image_url": "Image URL",
+    "image_url_help": "Must be a direct URL to the image, from Imgur, RSI, or starcitizen.tools",
+    "image_search": "Image Search",
+    "image_search_help": "Search query to search for images from starcitizen.tools",
+    "cancel": "Cancel",
+    "save_and_close": "Save and Close"
+  },
+  "buyorder": {
+    "create_buy_order": "Create Buy Order",
+    "price_per_unit": "Price per Unit",
+    "quantity": "Quantity",
+    "total_price": "Total Price",
+    "expiration": "Order Expiration ({{tz}})",
+    "submit": "Submit",
+    "submitted": "Submitted!",
+    "failed": "Failed to submit! {{error}}",
+    "unknown_error": "Unknown error"
+  },
+  "bids": {
+    "title": "Bids",
+    "bidder": "Bidder",
+    "bid": "Bid"
+  },
+  "ships": {
+    "section_title": "Ships",
+    "table": {
+      "ship": "Ship",
+      "manufacturer": "Manufacturer",
+      "kind": "Kind",
+      "condition": "Condition",
+      "last_checkin": "Last Checkin"
+    },
+    "condition": {
+      "flight-ready": "Flight Ready",
+      "in-repair": "In Repair",
+      "awaiting-repair": "Awaiting Repair",
+      "in-concept": "In Concept"
+    },
+    "report_condition": "Report Condition",
+    "register": {
+      "title": "Register Ship",
+      "ship_label": "Ship",
+      "submit": "Submit"
+    },
+    "import": {
+      "title": "Import from Hangar XPlorer File",
+      "upload": "Upload File",
+      "submit": "Submit",
+      "submitted": "Submitted!",
+      "failed": "Failed to submit! {{error}}"
+    }
+  },
+  "deliveries": {
+    "section_title": "Active Deliveries",
+    "table": {
+      "location": "Location",
+      "start": "Start",
+      "end": "End",
+      "status": "Status",
+      "progress": "Progress"
+    },
+    "status": {
+      "OK": "OK",
+      "Damaged": "Damaged",
+      "Low Fuel": "Low Fuel",
+      "Off Course": "Off Course",
+      "Under Attack": "Under Attack",
+      "Offline": "Offline"
+    }
+  },
+  "contractDetailsArea": {
+    "details_table": "details table",
+    "customer": "Customer",
+    "date": "Date",
+    "title": "Title",
+    "kind": "Kind",
+    "details": "Details",
+    "offer": "Offer"
+  },
+  "contractApp": {
+    "apply": "Apply",
+    "applying_as": "Applying as",
+    "note": "Note",
+    "submit": "Submit"
+  },
+  "settingsManageContractors": {
+    "name": "Name",
+    "actions": "Actions",
+    "leave_org": "Leave Organization"
+  },
+  "manageRoles": {
+    "title": "Roles",
+    "add_role": "Add Role",
+    "create": "Create",
+    "save": "Save",
+    "delete": "Delete",
+    "updated": "Updated!",
+    "deleted": "Deleted!",
+    "role_name": "Role Name",
+    "role_position": "Role Position",
+    "position_helper": "Lower numbers have higher priority over other roles.",
+    "permissions": {
+      "manage_org_details": "Manage Org Details",
+      "manage_roles": "Manage Roles",
+      "manage_orders": "Manage Orders",
+      "manage_invites": "Manage Invites",
+      "manage_stock": "Manage Stock",
+      "manage_market": "Manage Market",
+      "manage_recruiting": "Manage Recruiting",
+      "manage_webhooks": "Manage Webhooks",
+      "kick_members": "Kick Members"
+    },
+    "headCells": {
+      "name": "Name",
+      "position": "Position"
+    }
+  },
+  "manageMemberList": {
+    "members": "Members",
+    "export": "Export",
+    "search": "Search",
+    "role": "Role",
+    "roles": "Roles",
+    "any": "Any",
+    "kick": "Kick",
+    "username": "Username",
+    "updated": "Updated!",
+    "update_failed": "Failed to update! {{reason}}",
+    "member_kicked": "Member kicked!",
+    "kick_failed": "Failed to kick! {{reason}}"
+  },
+  "orgDetailEdit": {
+    "submitted": "Submitted!",
+    "failed_submit": "Failed to submit! {{reason}}",
+    "save": "Save",
+    "image_url": "Image URL",
+    "image_url_helper": "Direct URL to the image, from Imgur, RSI, or starcitizen.tools",
+    "org_tags": "Org Tags",
+    "mining": "mining",
+    "no_tags": "No tags",
+    "set_banner": "Set new banner"
+  },
+  "orgInvite": {
+    "invite_members": "Invite Members",
+    "already_member": "already member",
+    "username": "Username",
+    "note": "Note",
+    "submit": "Submit",
+    "submitted": "Submitted!"
+  },
+  "orgInfo": {
+    "about": "About",
+    "services": "Services",
+    "market": "Market",
+    "order": "Order",
+    "members": "Members",
+    "recruiting": "Recruiting"
+  },
+  "orgBalance": {
+    "balance": "Org Balance",
+    "send": "Send aUEC",
+    "withdraw": "Withdraw"
+  },
+  "inviteCodes": {
+    "invites": "Invites",
+    "create_new": "Create New Invite Code",
+    "invite_code": "Invite Code",
+    "max_uses": "Max Invite Uses",
+    "used_times": "Used {{used}}/{{max}} times",
+    "max_uses_helper": "The maximum number of uses of this invite. Set to 0 to make unlimited.",
+    "copied": "Copied!",
+    "submit": "Submit",
+    "submitted": "Submitted!",
+    "failed_submit": "Failed to submit! {{reason}}"
+  },
+  "contractorSidebar": {
+    "search": "Search",
+    "sorting": "Sorting",
+    "sort_attribute": "Sort Attribute",
+    "rating_high_low": "Rating (High to Low)",
+    "rating_low_high": "Rating (Low to High)",
+    "name_a_z": "Name (A to Z)",
+    "name_z_a": "Name (Z to A)",
+    "members_high_low": "Member Count (High to Low)",
+    "members_low_high": "Member Count (Low to High)",
+    "date_old_new": "Date Listed (Old to New)",
+    "date_new_old": "Date Listed (New to Old)",
+    "filtering": "Filtering",
+    "org_tags": "Org Tags",
+    "mining": "mining",
+    "min_rating": "Minimum Rating"
+  },
+  "contractorList": {
+    "fields": {
+      "freight": "Freight",
+      "refuel": "Refuel",
+      "repair": "Repair",
+      "escort": "Escort",
+      "transport": "Transport",
+      "mining": "Mining",
+      "exploration": "Exploration",
+      "combat": "Combat",
+      "salvage": "Salvage",
+      "refining": "Refining",
+      "construction": "Construction",
+      "social": "Social",
+      "roleplay": "Roleplay",
+      "medical": "Medical",
+      "intelligence": "Intelligence"
+    }
+  },
+  "commentTree": {
+    "reply": "Reply to Comment",
+    "post": "Post",
+    "deleted": "[deleted]",
+    "avatar_alt": "Avatar of {{username}}"
+  },
+  "contractorCreate": {
+    "name": "Contractor Name",
+    "identifier": "Contractor Identifier",
+    "description": "Description",
+    "logo": "Logo",
+    "banner": "Banner",
+    "submit": "Submit",
+    "error_name": "Please set your contractor name",
+    "error_identifier": "Please set your identifier name",
+    "error_logo": "Please set your contractor logo",
+    "error_banner": "Please set your contractor banner",
+    "failed_auth": "Failed to authenticate! {{reason}}"
+  },
+  "authenticateRSI": {
+    "handle": "RSI Handle",
+    "invalid_handle": "Invalid handle",
+    "enter_username": "Please enter your username",
+    "authenticated": "Authenticated!",
+    "here": "here",
+    "submit": "Submit",
+    "copy_and_open": "Copy Code and Open Profile",
+    "instructions": {
+      "1": "In order to verify you own the above RSI profile, please click the button below to copy your code and add it to your user profile short bio, then enter your RSI handle (not monniker) above. You can remove this code once verification is complete. See ",
+      "2": " for a screenshot guide.",
+      "3": " Click submit once the code is visible on your profile."
+    },
+    "tos": {
+      "1": "I have read and accepted SC Market's",
+      "2": "Terms of Service"
+    }
+  },
+  "authenticateContractor": {
+    "org_spectrum_id": "Org Spectrum ID",
+    "error_org_name": "Please set your org name",
+    "copy_and_open": "Copy Code and Open Org Page",
+    "submit": "Submit",
+    "failed_auth": "Failed to authenticate! {{reason}}",
+    "instructions": {
+      "1": "In order to verify you own the above organization, please click the button below to open your org page and add the following code to your org introduction, history, manifesto, or charter sections. You can remove this code once verification is complete.",
+      "2": " Click submit once the code is visible on the org page."
+    }
+  },
+  "people": {
+    "title": "People"
+  },
+  "offers": {
+    "viewOffer": "View Offer",
+    "dashboard": "Dashboard",
+    "offer": "Offer",
+    "receivedOffers": "Received Offers",
+    "counterOffer": "Counter Offer"
+  },
+  "sendMoney": {
+    "title": "Send Money",
+    "recipient": "Recipient",
+    "username": "Username",
+    "contractor": "Contractor",
+    "targetKind": "Target Kind",
+    "user": "User",
+    "next": "Next",
+    "back": "Back",
+    "send": "Send",
+    "amount": "Amount",
+    "note": "Note",
+    "errors": {
+      "enterUser": "Please enter a user to send to!",
+      "invalidUser": "Invalid User!",
+      "enterAmount": "Please enter an amount!"
+    }
+  },
+  "sellMaterials": {
+    "commodities": "Commodities",
+    "title": "We Buy Resources!",
+    "subtitle": "Sell your resources in bulk with us! Skip the refining process and sell to us at a premium!"
+  },
+  "cart": {
+    "ofAvailable": "of {{available}} available",
+    "quantity": "Quantity",
+    "price": "Price:",
+    "subtotal": "Subtotal:",
+    "remove": "Remove",
+    "seller": "Seller - ",
+    "total": "Total",
+    "note": "Note",
+    "submitOfferDesc": "Submit Offer to send your offer and negotiate and coordinate with the seller.",
+    "payTotal": "Pay Total: {{total}} aUEC",
+    "offerOptional": "Offer (Optional)",
+    "submitOffer": "Submit Offer",
+    "submitOrder": "Submit Order",
+    "purchaseSuccess": "Purchase successful!",
+    "yourCart": "Your Cart",
+    "empty": "Your cart is empty"
+  },
+  "landing": {
+    "subtitle": "Buy and sell goods. Buy and sell services.",
+    "totalOrders": "Total Orders",
+    "totalOrderValue": "Total Order Value",
+    "ordersThisWeek": "Orders This Week",
+    "valueOfOrdersThisWeek": "Value of Orders This Week",
+    "buySellItemsTitle": "Buy and Sell Items",
+    "buySellItemsText": "List your items to be sold in whatever quantity you support. Get alerts in Discord when someone places an order, and work with buyers to fulfill their orders. We don't take a cut.",
+    "tradeInBulkTitle": "Trade in Bulk",
+    "tradeInBulkText": "Whether you have 5 FS-9s to sell or 50, we want to support you. List your items in bulk or individually and manage your stock with the click of a button.",
+    "orderServicesTitle": "Order Services",
+    "orderServicesText": "Do you or your org have provide a service? Whether its medical rescue, hauler escort, sourcing items or otherwise, find a home on SC Market where you can discover the many services being provided throughout the 'verse.",
+    "forOrgs": "For Orgs",
+    "orgRecruitment": "Org Recruitment",
+    "serviceListings": "Service Listings",
+    "stockManagement": "Stock Management",
+    "orgsHelpText": "We enable orgs to coordinate their members to fulfill orders and render services. Become a trusted group customers come to when they need work done.",
+    "learnMore": "Learn More",
+    "supportersTitle": "Our Supporters",
+    "supportersThanks": "Thank you to all of our ",
+    "supporters": "supporters",
+    "faqTitle": "Your questions, answered",
+    "faqSellItemsQ": "How do I sell items?",
+    "faqSellItemsA": "Create market listings for the items you want to sell. Buyers can add the items they want to their cart, then place an order with you for those items. From there it is up to you and the buyer to arrange a time and place to exchange the aUEC and goods.",
+    "faqSafeQ": "Is SC Market safe to use?",
+    "faqSafeA": "Because we don't handle any of the goods or aUEC ourselves, we cannot make any guarantees. However, we do provide ways for buyers and sellers to review each other, so you can be sure that others have had positive experiences with a seller if you are wary of being scammed.",
+    "faqListThingsQ": "What kinds of things can I list on SC Market?",
+    "faqListThingsA": "You can list any item or service as long as you accept aUEC in exchange for it. Items and services should generally be related to Star Citizen and services may be conducted in our out of the game itself.",
+    "faqFeeQ": "Does SC Market take a fee?",
+    "faqFeeA": "No we do not. All services are provided here free of charge and no aUEC passes through us.",
+    "faqRealMoneyQ": "Can I list items for real money?",
+    "faqRealMoneyA": "No. All transactions on SC Market should be completed in aUEC."
+  },
+  "fleet": {
+    "fleetTitle": "Fleet",
+    "importFleet": "Import Fleet",
+    "myFleetTitle": "My Fleet",
+    "addShips": "Add Ships",
+    "createDelivery": "Create Delivery"
+  },
+  "error404": {
+    "title": "404: Page Not Found",
+    "subtitle": "I wonder how you got here...",
+    "returnToDashboard": "Return to Dashboard"
+  },
+  "frontendError": {
+    "title": "An Error Occurred Loading the Page",
+    "subtitle": "Please let us know in",
+    "afterRefresh": "if you see this error after refreshing the page.",
+    "page": "Error page",
+    "message": "Message",
+    "returnToDashboard": "Return to Dashboard",
+    "pageTitle": "An Error Occurred"
+  },
+  "org": {
+    "orgTitle": "Org",
+    "myOrgTitle": "My Org",
+    "registerOrgTitle": "Register an Org",
+    "existingRsiOrg": "Existing RSI Org",
+    "newContractor": "New Contractor",
+    "moneyTitle": "Money",
+    "manageOrgTitle": "Manage Org",
+    "dashboard": "Dashboard",
+    "aboutTab": "About",
+    "invitesTab": "Invites",
+    "rolesTab": "Roles and Members",
+    "discordTab": "Discord Integration",
+    "marketTab": "Market",
+    "invite": {
+      "acceptInviteTitle": "Accept Invite",
+      "acceptContractorInvite": "Accept Contractor Invite",
+      "invitedMessage": "You've been invited to",
+      "accept": "Accept",
+      "accepted": "Accepted invite!"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard"
+  },
+  "contractorsPage": {
+    "title": "Contractors"
+  },
+  "services": {
+    "contractsTitle": "Contracts",
+    "toggleSidebar": "toggle service sidebar",
+    "contractorServices": "Contractor Services",
+    "createService": "Create Service",
+    "myServices": "My Services",
+    "updateService": "Update Service"
+  },
+  "loginInfoPanel": {
+    "dashboardScreenshot": "Contractor Dashboard Screenshot"
+  },
+  "login": {
+    "title": "Login",
+    "accountLink": "Account Link",
+    "authenticateWithRSI": "Authenticate with RSI"
+  }
+}

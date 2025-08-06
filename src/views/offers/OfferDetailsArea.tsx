@@ -99,7 +99,7 @@ export function OfferMessagesArea(props: { offer: OfferSession }) {
 }
 
 export function OfferDetailsArea(props: { session: OfferSession }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { session } = props
   const [org] = useCurrentOrg()
   const { data: profile } = useGetUserProfileQuery()
@@ -255,9 +255,9 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" justifyContent={"right"}>
-                  {moment(session.offers[0].timestamp).format(
-                    "MMMM Do YYYY, h:mm:ss a",
-                  )}
+                  {moment(session.offers[0].timestamp)
+                    .locale(i18n.language)
+                    .format("MMMM Do YYYY, h:mm:ss a")}
                 </Stack>
               </TableCell>
             </TableRow>
