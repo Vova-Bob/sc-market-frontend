@@ -59,15 +59,8 @@
     "copyright": "Copyright ©",
     "trademark": "Star Citizen®, Squadron 42®, Roberts Space Industries®, and Cloud Imperium® are registered trademarks of Cloud Imperium Rights LLC",
     "unofficial": "This is an unofficial Star Citizen fansite, not affiliated with the Cloud Imperium group of companies. All content on this site not authored by its host or users are property of their respective owners",
-    "thanksTo": "Thank you to",
-    "ladyFleur": "LadyFleur",
-    "forLogo": "for the site logo, and to",
-    "starCitizenApi": "StarCitizen-API",
-    "nexd": "NEXD",
-    "and": "and",
-    "starCitizenWiki": "Star Citizen Wiki",
-    "forTheirApis": "for their APIs.",
-    "referralCode": "Use our referral code:"
+    "acknowledgments": "Thank you to <ladyFleurLink>LadyFleur</ladyFleurLink> for the site logo, and to <starCitizenApiLink>StarCitizen-API</starCitizenApiLink>, <nexdLink>NEXD</nexdLink>, and <starCitizenWikiLink>Star Citizen Wiki</starCitizenWikiLink> for their APIs.",
+    "referralCode": "Use our referral code: {{code}}"
   },
   "listing": {
     "95PercentRating25PlusTransactions": "95%+ rating and 25+ transactions",
@@ -155,7 +148,7 @@
     "new_offer_received_from": "New Offer Received From",
     "counter_offer_received_from": "Counter Offer Received From",
     "order_status_updated_to": "Order status updated to {{status}} by",
-    "contractor_invite_from": "Contractor invite from",
+    "contractor_invite_from": "Contractor invite from <contractorLink>{{spectrum_id}}</contractorLink>",
     "submitted": "Submitted!",
     "accept": "Accept",
     "decline": "Decline",
@@ -1478,7 +1471,7 @@
     "faqFeeQ": "Does SC Market take a fee?",
     "faqFeeA": "No we do not. All services are provided here free of charge and no aUEC passes through us.",
     "faqRealMoneyQ": "Can I list items for real money?",
-    " faqRealMoneyA": "No. All transactions on SC Market should be completed in aUEC."
+    "faqRealMoneyA": "No. All transactions on SC Market should be completed in aUEC."
   },
   "fleet": {
     "fleetTitle": "Fleet",

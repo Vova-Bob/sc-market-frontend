@@ -45,7 +45,7 @@ import {
 import { MarketBid } from "../../datatypes/MarketListing"
 import { useMarketGetListingByIDQuery } from "../../store/market"
 import { OfferSession } from "../../store/offer"
-import { useTranslation } from "react-i18next"
+import { Trans, useTranslation } from "react-i18next"
 
 /*
 VALUES ('order_create', 'orders'),
@@ -377,16 +377,24 @@ export function NotificationContractorInvite(props: { notif: Notification }) {
         onClick={() => setOpen((o) => !o)}
         notif={notif}
       >
-        {t("notifications.contractor_invite_from")}{" "}
-        <Link
-          to={`/contractor/${invite.spectrum_id}`}
-          style={{
-            textDecoration: "none",
-            color: theme.palette.secondary.main,
+        <Trans
+          i18nKey="notifications.contractor_invite_from"
+          t={t}
+          values={{ spectrum_id: invite.spectrum_id }}
+          components={{
+            contractorLink: (
+              <Link
+                to={`/contractor/${invite.spectrum_id}`}
+                style={{
+                  textDecoration: "none",
+                  color: theme.palette.secondary.main,
+                }}
+              >
+                <UnderlineLink>Placeholder</UnderlineLink>
+              </Link>
+            ),
           }}
-        >
-          <UnderlineLink>{invite.spectrum_id}</UnderlineLink>
-        </Link>
+        />
       </NotificationBase>
       <Collapse in={open}>
         <ListItem>
