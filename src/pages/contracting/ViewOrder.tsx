@@ -16,10 +16,6 @@ import {
   OrderMessagesArea,
 } from "../../views/orders/OrderDetailsArea"
 import { useGetUserProfileQuery } from "../../store/profile"
-import {
-  OrderApplicantsArea,
-  OrderApplyArea,
-} from "../../views/orders/OrderApplicationAreas"
 import { OrderAvailabilityArea } from "../../views/orders/OrderAvailabilityArea"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 import { MemberAssignArea } from "../../views/orders/MemberAssignArea"
