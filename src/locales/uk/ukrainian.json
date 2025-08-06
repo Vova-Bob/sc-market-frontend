@@ -148,7 +148,7 @@
     "new_offer_received_from": "Отримано нову пропозицію від",
     "counter_offer_received_from": "Отримано зустрічну пропозицію від",
     "order_status_updated_to": "Статус замовлення змінено на {{status}} користувачем",
-    "contractor_invite_from": "Запрошення підрядника від",
+    "contractor_invite_from": "Запрошення підрядника від <contractorLink>{{spectrum_id}}</contractorLink>",
     "submitted": "Надіслано!",
     "accept": "Прийняти",
     "decline": "Відхилити",

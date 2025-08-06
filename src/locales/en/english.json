@@ -148,7 +148,7 @@
     "new_offer_received_from": "New Offer Received From",
     "counter_offer_received_from": "Counter Offer Received From",
     "order_status_updated_to": "Order status updated to {{status}} by",
-    "contractor_invite_from": "Contractor invite from",
+    "contractor_invite_from": "Contractor invite from <contractorLink>{{spectrum_id}}</contractorLink>",
     "submitted": "Submitted!",
     "accept": "Accept",
     "decline": "Decline",
