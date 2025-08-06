@@ -1,0 +1,1539 @@
+{
+  "admin": {
+    "orderStats": "Admin Order Stats"
+  },
+  "adminExpressVerify": {
+    "title": "Express Verify User",
+    "ownerDiscordId": "Owner Discord ID",
+    "ownerUsername": "Owner Username*",
+    "spectrumId": "Org Spectrum ID*",
+    "submit": "Submit",
+    "success": "Submitted!",
+    "failure": "Failed to submit! {{reason}}"
+  },
+  "auth": {
+    "title": "注册",
+    "email": "邮箱",
+    "username": "用户名",
+    "password": "密码",
+    "repeatPassword": "重输密码",
+    "loginWith": "用此方法登录",
+    "terms": "点此同意服务条款",
+    "submit": "提交",
+    "loginWithDiscord": "用Discord登录",
+    "accountLink": "账户链接",
+    "authenticateWithRSI": "用RSI验证"
+  },
+  "availability": {
+    "select_availability": "选择在线时间段",
+    "save": "保存",
+    "availability_for": "",
+    "title": "我的可用时间段",
+    "updated": "可用时间段已更新！",
+    "failed": "更新失败！"
+  },
+  "buyOrderActions": {
+    "createBuyOrder": "创建购买订单",
+    "selectMarketItem": "选择物品",
+    "createBuyOrderTooltip": "创建一个新的购买订单"
+  },
+  "commentVotes": {
+    "upvoteTooltip": "为此评论点赞",
+    "downvoteTooltip": "为此评论点踩"
+  },
+  "cookie_consent": {
+    "title": "同意Cookie",
+    "description": "我们使用Cookie以优化用户体验并分析服务性能（通过Google Analytics）。点击“全部接受” 以接受全部的Cookie，或\"仅必要\"以只接受必要的Cookie。",
+    "accept_all": "全部接受",
+    "accept_necessary": "仅必要"
+  },
+  "footer": {
+    "support": "支持",
+    "discord": "Discord",
+    "discordBot": "Discord机器人",
+    "wiki": "维基",
+    "donate": "捐赠",
+    "github": "Github",
+    "privacyPolicy": "隐私政策",
+    "termsOfService": "服务条款",
+    "copyright": "著作权©",
+    "trademark": "Star Citizen®（“星际公民”），Squadron 42®（“42中队”），Roberts Space Industries®（“罗伯茨太空工业”），以及Cloud Imperium®（“云间帝国”）均为Cloud Imperium Rights有限责任公司旗下的注册商标。",
+    "unofficial": "这是一个非官方的星际公民玩家自制网站，不附属于云间帝国（Cloud Imperium）公司集团。所有这个网站上不为站长或用户群体所作的内容均为它们对应所属人的财产。",
+    "referralCode": "使用我们的邀请码：{{code}}",
+    "acknowledgments": ""
+  },
+  "listing": {
+    "95PercentRating25PlusTransactions": "95%+ 好评率和25+ 成交记录",
+    "90PercentRating25PlusTransactions": "90%+ 好评率和25+ 成交记录",
+    "tenPlusFiveStarStreak": "10+ 连续五星好评",
+    "fivePlusFiveStarStreak": "5+ 连续五星好评"
+  },
+  "manageListingsActions": {
+    "activateListings": "上架商品页",
+    "activateTooltip": "上架选中的全部商品页",
+    "deactivateListings": "下架商品页",
+    "deactivateTooltip": "下架选中的全部商品页"
+  },
+  "market": {
+    "search_query": "搜索关键字",
+    "filters": "过滤标签",
+    "search": "搜索",
+    "sort_by": "排序法",
+    "none": "无",
+    "title": "标题",
+    "price_low_to_high": "价格（低到高）",
+    "price_high_to_low": "价格（高到低）",
+    "quantity_low_to_high": "在售数量（低到高）",
+    "quantity_high_to_low": "在售数量（高到低）",
+    "date_old_to_new": "上架日期（早到新）",
+    "date_new_to_old": "上架日期（新到早）",
+    "recent_activity": "",
+    "rating_high_to_low": "评分（高到低）",
+    "quantity_available": "在售数量",
+    "sale_type": "售卖类型",
+    "any": "任意",
+    "sale": "零售",
+    "aggregate": "合售",
+    "auction": "拍卖",
+    "min_cost": "最低花费",
+    "max_cost": "最高花费",
+    "item_type": "物品类型",
+    "item_name": "物品名",
+    "other_category": "其他",
+    "allListings": "市集上全部商品页",
+    "toggleSidebar": "开关市集侧边栏",
+    "activeListings": "在售商品页",
+    "inactiveListings": "停售商品页",
+    "archivedListings": "已归档商品页",
+    "viewMarketListing": "查看市集商品页",
+    "editMarketListing": "编辑市集商品页",
+    "editMultipleListing": "编辑多个商品页",
+    "createMarketListing": "创建市集商品页",
+    "bulkListingTab": "大宗商品页",
+    "uniqueListingTab": "",
+    "auctionTab": "拍卖",
+    "combinedListingTab": "",
+    "market": "市集",
+    "itemsTab": "商品",
+    "servicesTab": "服务",
+    "bulkItems": "大宗物品",
+    "bulkListings": "大宗商品页",
+    "buyOrders": "购买订单",
+    "total_requested": "",
+    "total_available": "全部在售数",
+    "starting_at": "起拍价为{{price}}aEUC",
+    "new": "新",
+    "ended": "已结束",
+    "ending_in": "",
+    "expiration": "",
+    "unit": "",
+    "available": "{{count}}在售"
+  },
+  "marketActions": {
+    "createListing": "创建商品页",
+    "createListingTooltip": "创建一个新的商品页",
+    "myCart": "我的购物车",
+    "myCartTooltip": "查看您的购物车"
+  },
+  "navigation": {
+    "goBack": "上一页"
+  },
+  "notifications": {
+    "notifications": "通知",
+    "delete_notification": "删除通知",
+    "new_review_by": "",
+    "new_order_comment_by": "",
+    "new_order_message_by": "",
+    "new_order_placed_by": "",
+    "new_offer_received_from": "",
+    "counter_offer_received_from": "",
+    "order_status_updated_to": "",
+    "contractor_invite_from": "<contractorLink>{{spectrum_id}}</contractorLink>邀请您加入该合约组织",
+    "submitted": "已提交！",
+    "accept": "同意",
+    "decline": "拒绝",
+    "new_bid_placed_by": "",
+    "for": "for",
+    "clear_all": "清除全部通知",
+    "mark_all_as_read": "全部已读"
+  },
+  "recruitmentVotes": {
+    "upvoteButtonTooltip": "为此帖点赞"
+  },
+  "recruiting_sidebar": {
+    "search": "搜索",
+    "sorting": "排序",
+    "sort_attribute": "排序法",
+    "sort": {
+      "activity": "",
+      "upvotes_all_time": "被点赞数（全部时间）",
+      "rating_high": "评分（高到低）",
+      "rating_low": "评分（低到高）",
+      "name_a_z": "名字（A到Z）",
+      "name_z_a": "名字（Z到A）",
+      "members_high": "成员数（高到低）",
+      "members_low": "成员数（低到高）",
+      "date_old": "组织上市日期（早到新）",
+      "date_new": "组织上市日期（新到早）",
+      "post_old": "发帖日期（早到新）",
+      "post_new": "发帖日期（新到早）"
+    },
+    "filtering": "按标签过滤",
+    "org_tags": "组织标签",
+    "org_tags_placeholder": "矿业",
+    "min_rating": "最低评分"
+  },
+  "selectLocation": {
+    "title": "地点",
+    "inputLabel": "来源（非强制）",
+    "helperText": "比如说护送和运输服务，该订单的出发地和开始时间都是什么？协助服务的话，合约工该去哪里找你？"
+  },
+  "selectMarketListing": {
+    "label": "选择市集商品页"
+  },
+  "settings": {
+    "title": "设置",
+    "tabs": {
+      "profile": "个人资料",
+      "privacy": "隐私",
+      "discordIntegration": "Discord集成",
+      "market": "市集",
+      "contractors": "合约组织"
+    },
+    "profile": {
+      "updateAndVerify": "更新用户名并重新验证账户",
+      "authenticateWithRSI": "用RSI验证",
+      "viewUserProfile": "查看用户资料"
+    }
+  },
+  "sidebar": {
+    "dashboard": {
+      "title": "仪表板",
+      "text": "仪表板"
+    },
+    "manage_market_listings": "管理市集商品页",
+    "manage_services": "管理提供服务",
+    "availability": "在线时间段",
+    "my_fleet": "我的舰队",
+    "messaging": "",
+    "my_organization": {
+      "title": "我的组织"
+    },
+    "orders": {
+      "title": "订单",
+      "text": "订单"
+    },
+    "my_org": "我的组织",
+    "manage": "管理",
+    "settings": "设置",
+    "my_market_listings": "我的市集商品页",
+    "manage_listings": "管理商品页",
+    "archived_listings": "已归档商品页",
+    "money": "钱款",
+    "invoices": "发票",
+    "fleet": "舰队",
+    "new_chip": "新！",
+    "people": "",
+    "customers": "客户",
+    "members": "成员",
+    "market": {
+      "title": "市集",
+      "text": "市集"
+    },
+    "player_market": "玩家市集",
+    "everything": "全部物品",
+    "weapons": "武器",
+    "armor": "护甲",
+    "components": "组件",
+    "bulk_items": "大宗",
+    "buy_orders": "购买订单",
+    "contractor_services": "合约服务",
+    "my_org_listings": "我的组织的商品页",
+    "sell_materials": "材料售卖",
+    "contracting": {
+      "title": "合约"
+    },
+    "my_orders": "我的订单",
+    "contractors": "合约组织",
+    "open_contracts": "开放合约",
+    "organizations": {
+      "title": "组织"
+    },
+    "recruiting": "招募中",
+    "register": "注册",
+    "admin": {
+      "title": "管理员"
+    },
+    "users": "用户",
+    "sc_market": "SC市集",
+    "sc_market_home": "SC市集主页",
+    "toggle_drawer": ""
+  },
+  "sidebar_actor_select": {
+    "select_role": "选择身份",
+    "login_to_select_role": "登录以选择身份",
+    "avatar_of": "{{username}}的头像"
+  },
+  "select_all_items": "选择全部物品",
+  "sorted_descending": "降序",
+  "sorted_ascending": "升序",
+  "select_all": "全选",
+  "rows_per_page": "每页行数",
+  "no_listings": "无可用的商品页",
+  "displayed_rows": "{{from}}–{{to}}页，全{{count}}页",
+  "all": "全部",
+  "contractors": "合约组织",
+  "recruiting_orgs": "招募中的组织",
+  "toggle_market_sidebar": "开关市集侧边栏",
+  "update_post": "更新招募贴",
+  "create_post": "创建帖子",
+  "discord_bot": {
+    "integrating_with_discord": "集成进Discord",
+    "how_to_get_notified": "如何在有订单创建时收到提醒",
+    "how_to_get_notified_answer": "将官方的[SC市集Discord机器人](https://discord.com/oauth2/authorize?client_id=868709691469987860&permissions=361314126849&integration_type=0&scope=bot)加入到您的服务器以在一条订单被创建或被指派给您时收到自动私信。您也可以用下方设置去在[SC市集的官方服务器]({{DISCORD_INVITE}})里完成订单。",
+    "how_to_communicate": "如何用Discord与买家交流",
+    "how_to_communicate_answer": "将官方的[SC市集Discord机器人](https://discord.com/oauth2/authorize?client_id=868709691469987860&permissions=361314126849&integration_type=0&scope=bot)加入到您的服务器后，您可以注册一条频道以在订单下单时自动在其中创建买卖方的讨论串。买家会自动收到您的服务器邀请，之后可以在那里协商完成订单的相关事宜。\n\n1. 把[机器人](https://discord.com/oauth2/authorize?client_id=868709691469987860&permissions=361314126849&integration_type=0&scope=bot)添加进您的服务器。\n\n2. 对一个独立用户或一整个合约组织使用`/register 服务器`指令。如需将订单关联至您个人，使用`/register Server User`指令。如需关联一个组织，使用`/register Server Contractor ORGNAME`。在此之后，相关用户将会在下单后自动收到您的服务器邀请。\n\n3. 对一个独立用户或一整个合约组织使用`/register Channel` 指令。如需将订单关联至您个人，使用`/register Channel User`指令。如需关联一个组织，使用`/register Channel Contractor ORGNAME`。在此之后，买家与指派的卖家将会在下单后被加入到同一讨论串中。"
+  },
+  "preferences": {
+    "page_settings": "页面设置",
+    "theme": "主题",
+    "light": "亮",
+    "dark": "暗",
+    "language": "语言",
+    "select_language": "选择语言"
+  },
+  "languages": {
+    "en": "英语",
+    "uk": "乌克兰语",
+    "fr": "法语",
+    "de": "德语",
+    "ja": "日语"
+  },
+  "privacy_settings": {
+    "title": "隐私",
+    "public_discord": "公开显示Discord账号",
+    "share_discord_with_sellers": "与卖家分享Discord账号",
+    "request_data_title": "申请我的数据",
+    "request_data_description": "申请您与该网站的相关信息。该功能仍在优化中，且不代表您的全部数据。我们仍在尽量扩展数据范围，但现在它包含了大部分与您的账号相关的数据。",
+    "request_data_button": "申请数据"
+  },
+  "transactions": {
+    "recent_transactions": "最近交易记录",
+    "date": "日期",
+    "details": "细节",
+    "amount": "金额",
+    "from": "付款方",
+    "to": "收款方",
+    "yesterday": "昨天",
+    "status": {
+      "title": "状态",
+      "completed": "完成",
+      "pending": "进行中",
+      "cancelled": "已取消"
+    },
+    "kind": {
+      "Payment": "付款",
+      "Refund": "退款",
+      "Withdrawal": "提款",
+      "Deposit": "存款"
+    },
+    "months": {
+      "jan": "一月",
+      "feb": "二月",
+      "mar": "三月",
+      "apr": "四月",
+      "may": "五月",
+      "jun": "六月",
+      "jul": "七月",
+      "aug": "八月",
+      "sep": "九月",
+      "oct": "十月",
+      "nov": "十一月",
+      "dec": "十二月"
+    },
+    "time": {
+      "am": "",
+      "pm": ""
+    }
+  },
+  "service_actions": {
+    "create_service": "创建服务"
+  },
+  "service_market": {
+    "toggle_sidebar": "开关服务侧边栏"
+  },
+  "service_search": {
+    "search": "搜索",
+    "filtering": "过滤",
+    "contract_type": "合约种类",
+    "contract_types": {
+      "Any": "任意"
+    },
+    "cost": "价格",
+    "min_cost": "最低价格",
+    "max_cost": "最高价格",
+    "payment_type": "付款类型",
+    "payment_types": {
+      "any": "任意",
+      "one_time": "一次性",
+      "hourly": "时结",
+      "daily": "日结",
+      "unit": "计件",
+      "box": "按箱数",
+      "scu": "按SCU数",
+      "cscu": "按cSCU数",
+      "mscu": "按mSCU数"
+    }
+  },
+  "recruiting_post": {
+    "about": "关于我们",
+    "title_required": "标题*",
+    "description_required": "简介*",
+    "submit": "提交",
+    "alert": {
+      "submitted": "已提交！",
+      "failed": "提交失败！"
+    },
+    "markdown_info": "Github式的Markdown可用，Youtube链接会自动嵌入，且用Imgur或RSI提供的图片也可内嵌。",
+    "markdown_link": "点此查看",
+    "markdown_info_end": "更多细节",
+    "contractor": "合约组织",
+    "commentArea": {
+      "replyToPost": "回复",
+      "post": "发帖"
+    },
+    "page": {
+      "createPost": "创建",
+      "updatePost": ""
+    }
+  },
+  "contractor": {
+    "fields": {
+      "mining": "",
+      "trading": "",
+      "security": ""
+    }
+  },
+  "adminUsers": {
+    "users": "",
+    "membership_count": "",
+    "daily_activity": "",
+    "weekly_activity": "",
+    "monthly_activity": "",
+    "username": "",
+    "date_joined": "",
+    "role": "",
+    "active_users": "",
+    "verified_users": ""
+  },
+  "customerList": {
+    "customers": "",
+    "username": "",
+    "orders": "",
+    "total_value": ""
+  },
+  "profileNavAvatar": {
+    "profile": "",
+    "settings": "",
+    "logout": ""
+  },
+  "viewProfile": {
+    "submitted": "",
+    "failed": "",
+    "image_url": "",
+    "image_url_helper": "",
+    "save": "",
+    "no_user_description": "",
+    "myProfile": "",
+    "profile_tab": "",
+    "services_tab": "",
+    "market_tab": "",
+    "order_tab": "",
+    "reviews_tab": ""
+  },
+  "viewPublicOrder": {
+    "new": "",
+    "apply": "",
+    "applied": ""
+  },
+  "myServices": {
+    "title": "",
+    "no_title": "",
+    "no_type": "",
+    "no_description": "",
+    "active": "",
+    "inactive": "",
+    "services": ""
+  },
+  "recentOrders": {
+    "title": ""
+  },
+  "orderTrend": {
+    "order_count_daily": "",
+    "order_count_weekly": "",
+    "order_count_monthly": "",
+    "orders_daily": "",
+    "orders_weekly": "",
+    "orders_monthly": "",
+    "in_progress": "",
+    "fulfilled": "",
+    "cancelled": "",
+    "not_started": ""
+  },
+  "orderServiceArea": {
+    "associated_services": "",
+    "no_associated_services": ""
+  },
+  "contracts": {
+    "new": "",
+    "see_more": "",
+    "apply": "",
+    "publicOrderTitle": "",
+    "publicContracts": "",
+    "createPublicContract": "",
+    "contractsTitle": "",
+    "toggleSidebar": "",
+    "activeContracts": "",
+    "createOpenContract": "",
+    "contractShort": "",
+    "viewContract": "",
+    "contractTitle": "",
+    "kind": {
+      "Escort": "",
+      "Transport": "",
+      "Bounty": "",
+      "Delivery": "",
+      "Mining": "",
+      "Salvage": "",
+      "Other": ""
+    }
+  },
+  "serviceListings": {
+    "new": "",
+    "rush": ""
+  },
+  "contractListings": {
+    "new": "",
+    "see_more": ""
+  },
+  "table": {
+    "rows_per_page": "",
+    "displayed_rows": ""
+  },
+  "select_rows_per_page": "",
+  "createPublicContract": {
+    "submitted": "",
+    "about": "",
+    "title_required": "",
+    "type_required": "",
+    "description_required": "",
+    "description_helper": "",
+    "costs": "",
+    "collateral_optional": "",
+    "collateral_helper": "",
+    "offer": "",
+    "offer_helper": "",
+    "payment_type": "",
+    "submit": ""
+  },
+  "paymentTypes": {
+    "one_time": "",
+    "hourly": "",
+    "daily": "",
+    "unit": "",
+    "box": "",
+    "scu": "",
+    "cscu": "",
+    "mscu": ""
+  },
+  "orderReviewView": {
+    "review": "",
+    "ratingLabel": ""
+  },
+  "orderReviewArea": {
+    "review": "",
+    "leaveFor": "",
+    "commentLabel": "",
+    "ratingLabel": "",
+    "leaveReviewButton": "",
+    "alert": {
+      "success": "",
+      "error": ""
+    }
+  },
+  "orderMetrics": {
+    "activeOrders": "",
+    "allOrders": "",
+    "activeOrderValue": "",
+    "completedOrderValue": ""
+  },
+  "marketListings": {
+    "associatedListings": "",
+    "noListings": "",
+    "product": "",
+    "qty": "",
+    "unitPrice": "",
+    "total": ""
+  },
+  "orders": {
+    "status": {
+      "fulfilled": "",
+      "inProgress": "",
+      "cancelled": "",
+      "notStarted": "",
+      "active": "",
+      "inactive": ""
+    },
+    "table": {
+      "order": "",
+      "customer": "",
+      "contractor": "",
+      "status": ""
+    },
+    "tabs": {
+      "all": "",
+      "active": "",
+      "past": "",
+      "fulfilled": "",
+      "inProgress": "",
+      "notStarted": "",
+      "cancelled": ""
+    },
+    "orderLabel": "",
+    "items": "",
+    "public": "",
+    "orgOrdersTitle": "",
+    "ordersTitle": "",
+    "orderTitle": "",
+    "orderShort": "",
+    "offerShort": "",
+    "createOrderTitle": "",
+    "viewOrder": ""
+  },
+  "orderDetailsArea": {
+    "updated_status": "",
+    "details_table": "",
+    "customer": "",
+    "seller": "",
+    "assigned": "",
+    "date": "",
+    "status": "",
+    "title": "",
+    "kind": "",
+    "details": "",
+    "order": "",
+    "discord_thread": "",
+    "thread_link": "",
+    "created_thread": "",
+    "create_thread": "",
+    "update_status": "",
+    "cancel": "",
+    "complete_order": "",
+    "begin_work": "",
+    "not_started": ""
+  },
+  "orderAvailabilityArea": {
+    "customer_name": "",
+    "assigned_name": ""
+  },
+  "orderApplicantsArea": {
+    "applicants": "",
+    "accepted": "",
+    "failed_accept": "",
+    "expand": "",
+    "accept": "",
+    "applied": "",
+    "failed_apply": "",
+    "apply": "",
+    "message": ""
+  },
+  "myOrders": {
+    "title": ""
+  },
+  "memberAssignArea": {
+    "assigned": "",
+    "failed_assign": "",
+    "unassigned": "",
+    "failed_unassign": "",
+    "assign": "",
+    "reassign": "",
+    "unassign": "",
+    "handle": ""
+  },
+  "CreateServiceForm": {
+    "serviceDetails": "",
+    "serviceName": "",
+    "serviceActive": "",
+    "serviceInactive": "",
+    "serviceDescription": "",
+    "serviceDescriptionHelper": "",
+    "orderServiceDetails": "",
+    "title": "",
+    "typeOptional": "",
+    "rush": "",
+    "description": "",
+    "descriptionHelper": "",
+    "costs": "",
+    "collateralOptional": "",
+    "collateralHelper": "",
+    "cost": "",
+    "costHelper": "",
+    "paymentType": "",
+    "submit": "",
+    "update": "",
+    "alert": {
+      "submitted": "",
+      "failed": ""
+    }
+  },
+  "CreateOrderForm": {
+    "services": "",
+    "selectServiceOptional": "",
+    "noService": "",
+    "about": "",
+    "title": "",
+    "type": "",
+    "rush": "",
+    "description": "",
+    "descriptionHelper": "",
+    "costs": "",
+    "collateralOptional": "",
+    "collateralHelper": "",
+    "aUECOffer": "",
+    "aUECOfferHelper": "",
+    "paymentType": "",
+    "submit": "",
+    "alert": {
+      "submitted": ""
+    }
+  },
+  "OffersViewPaginated": {
+    "offers": "",
+    "all": "",
+    "offer": "",
+    "user": "",
+    "status": "",
+    "waitingSeller": "",
+    "waitingCustomer": "",
+    "accepted": "",
+    "rejected": "",
+    "items": ""
+  },
+  "OfferServiceEditArea": {
+    "associatedServices": "",
+    "selectServiceOptional": "",
+    "noService": ""
+  },
+  "OfferServiceArea": {
+    "associatedServices": "",
+    "noAssociatedServices": ""
+  },
+  "OfferMarketListingsEditArea": {
+    "associatedMarketListings": "",
+    "addMarketListing": "",
+    "selectListing": "",
+    "of": "",
+    "ofAvailable": "",
+    "quantity": "",
+    "qty": "",
+    "add": "",
+    "total": ""
+  },
+  "OfferMarketListings": {
+    "associatedMarketListings": "",
+    "noAssociatedListings": "",
+    "product": "",
+    "qty": "",
+    "unitPrice": "",
+    "total": ""
+  },
+  "OfferDetailsEditArea": {
+    "customer": "",
+    "seller": "",
+    "date": "",
+    "title": "",
+    "kind": "",
+    "details": "",
+    "offer": "",
+    "offerAmount": "",
+    "paymentType": ""
+  },
+  "OfferDetailsArea": {
+    "customer": "",
+    "associatedContract": "",
+    "seller": "",
+    "date": "",
+    "status": "",
+    "title": "",
+    "kind": "",
+    "details": "",
+    "offer": "",
+    "discordThread": "",
+    "threadLink": "",
+    "createdThread": "",
+    "createThread": "",
+    "acceptOrDecline": "",
+    "accept": "",
+    "counterOffer": "",
+    "reject": "",
+    "cancelOrder": "",
+    "cancel": "",
+    "waitingSeller": "",
+    "waitingCustomer": "",
+    "rejected": "",
+    "accepted": ""
+  },
+  "CounterOfferSubmitArea": {
+    "submitCounterOffer": ""
+  },
+  "Webhooks": {
+    "title": "",
+    "name": "",
+    "submitted": "",
+    "failedToSubmit": ""
+  },
+  "DashNotificationArea": {
+    "notifications": ""
+  },
+  "ConfigureDiscord": {
+    "orderManagement": "",
+    "integratedChannel": "",
+    "notConfigured": "",
+    "useOfficial1": "",
+    "serverName": "",
+    "useOfficial2": "",
+    "useOfficialServer": ""
+  },
+  "AddNotificationWebhook": {
+    "addWebhook": "",
+    "webhookName": "",
+    "webhookUrl": "",
+    "invalidUrl": "",
+    "orderCreated": "",
+    "orderAssigned": "",
+    "publicOrderCreated": "",
+    "orderStatusChange": "",
+    "orderReview": "",
+    "orderComment": "",
+    "marketBid": "",
+    "submit": "",
+    "submitted": ""
+  },
+  "MessagingSidebar": {
+    "messages": "",
+    "group": "",
+    "search": "",
+    "noMessages": ""
+  },
+  "MessagesBody": {
+    "toggleSidebar": "",
+    "copyDate": "",
+    "copyTime": "",
+    "send": "",
+    "system": "",
+    "scMarket": ""
+  },
+  "CreateMessageGroupBody": {
+    "toggleSidebar": "",
+    "usernames": "",
+    "create": "",
+    "close": ""
+  },
+  "MemberBalance": {
+    "myBalance": "",
+    "sendAUEC": "",
+    "withdraw": ""
+  },
+  "MemberAssignments": {
+    "assignments": ""
+  },
+  "SellMaterialsList": {
+    "title": "",
+    "commodity": "",
+    "code": "",
+    "kindLabel": "",
+    "sellPrice": "",
+    "sell": "",
+    "search": "",
+    "any": "",
+    "kind": {
+      "Agricultural": "",
+      "Waste": "",
+      "Metal": "",
+      "Drug": "",
+      "Vice": "",
+      "Natural": "",
+      "Mineral": "",
+      "Halogen": "",
+      "Temporary": "",
+      "Scrap": "",
+      "Gas": "",
+      "Medical": "",
+      "Food": "",
+      "Other": ""
+    }
+  },
+  "PageSearch": {
+    "selectItem": "",
+    "selectedItem": "",
+    "wikiPage": "",
+    "itemSearch": "",
+    "searchHelper": "",
+    "cancel": "",
+    "saveAndClose": ""
+  },
+  "MarketOffers": {
+    "user": "",
+    "offer": "",
+    "quantity": "",
+    "total": ""
+  },
+  "MarketSearchArea": {
+    "searchBtn": "",
+    "search": "",
+    "sorting": "",
+    "sortAttribute": "",
+    "none": "",
+    "title": "",
+    "priceLowHigh": "",
+    "priceHighLow": "",
+    "quantityLowHigh": "",
+    "quantityHighLow": "",
+    "dateOldNew": "",
+    "dateNewOld": "",
+    "activity": "",
+    "rating": "",
+    "filtering": "",
+    "quantityAvailable": "",
+    "listingStatus": "",
+    "either": "",
+    "active": "",
+    "inactive": "",
+    "saleType": "",
+    "any": "",
+    "sale": "",
+    "commodity": "",
+    "auction": "",
+    "cost": "",
+    "minCost": "",
+    "maxCost": ""
+  },
+  "MarketMultipleView": {
+    "market": "",
+    "people": "",
+    "seller": "",
+    "new": "",
+    "listed": "",
+    "updated": "",
+    "expires": "",
+    "selectItem": "",
+    "description": "",
+    "activeOrders": "",
+    "previousOrders": ""
+  },
+  "MarketMultipleEditView": {
+    "about": "",
+    "title": "",
+    "description": "",
+    "helperText": "",
+    "listings": "",
+    "defaultListing": "",
+    "includeListings": "",
+    "update": "",
+    "submitted": "",
+    "failedSubmit": ""
+  },
+  "MarketListingView": {
+    "addedToCart": "",
+    "price": "",
+    "ofAvailable": "",
+    "quantity": "",
+    "addToCart": "",
+    "bidSuccess": "",
+    "bidError": "",
+    "currentBid": "",
+    "bid": "",
+    "placeBid": "",
+    "people": "",
+    "seller": "",
+    "market": "",
+    "new": "",
+    "ended": "",
+    "endingIn": "",
+    "listed": "",
+    "updated": "",
+    "expires": "",
+    "description": "",
+    "activeOrders": "",
+    "previousOrders": ""
+  },
+  "MarketListingForm": {
+    "about": "",
+    "title": "",
+    "quantityAvailable": "",
+    "description": "",
+    "descriptionHelp": "",
+    "imageHint": "",
+    "relatedListings": "",
+    "availability": "",
+    "active": "",
+    "orgInternal": "",
+    "costs": "",
+    "price": "",
+    "startingBid": "",
+    "minBidIncrement": "",
+    "endTime": "",
+    "submit": "",
+    "submitted": "",
+    "failedSubmit": ""
+  },
+  "AggregateMarketListingForm": {
+    "about": "",
+    "quantityAvailable": "",
+    "chooseNewItem": "",
+    "availability": "",
+    "active": "",
+    "orgInternal": "",
+    "costs": "",
+    "price": "",
+    "submit": "",
+    "submitted": "",
+    "failedSubmit": ""
+  },
+  "MarketMultipleForm": {
+    "about": "",
+    "title": "",
+    "description": "",
+    "helperText": "",
+    "listings": "",
+    "defaultListing": "",
+    "listingsToInclude": "",
+    "submit": "",
+    "submitted": "",
+    "failedSubmit": ""
+  },
+  "MarketListingEditView": {
+    "deactivate": "",
+    "activate": "",
+    "archive": "",
+    "updateBtn": "",
+    "title": "",
+    "quantityAvailable": "",
+    "price": "",
+    "minBidIncrement": "",
+    "description": "",
+    "updated": "",
+    "updateError": ""
+  },
+  "MarketEditTemplate": {
+    "title": "",
+    "configure": "",
+    "submit": "",
+    "submitted": ""
+  },
+  "MarketAggregateView": {
+    "market": "",
+    "sellerRating": "",
+    "price": "",
+    "quantityAvailable": "",
+    "buyer": "",
+    "quantity": "",
+    "total": "",
+    "description": "",
+    "sellOrders": "",
+    "buyOrders": "",
+    "priceHistory": "",
+    "addedToCart": "",
+    "quantityToBuy": "",
+    "ofAvailable": "",
+    "fulfill": "",
+    "cancel": "",
+    "submitted": "",
+    "failedSubmit": "",
+    "cancelled": "",
+    "buyOrdersChart": "",
+    "sellOrdersChart": "",
+    "atPrice": "",
+    "orLower": "",
+    "orHigher": ""
+  },
+  "MarketAggregateEditView": {
+    "updated": "",
+    "errorWhileUpdating": "",
+    "deactivate": "",
+    "activate": "",
+    "update": "",
+    "title": "",
+    "itemType": "",
+    "armor": "",
+    "weapon": "",
+    "paint": "",
+    "bundle": "",
+    "other": "",
+    "quantityAvailable": "",
+    "price": "",
+    "minBidIncrement": "",
+    "description": ""
+  },
+  "ItemStockRework": {
+    "noItemSelected": "",
+    "updateAmount": "",
+    "add": "",
+    "sub": "",
+    "zero": "",
+    "owner": "",
+    "item": "",
+    "quantity": "",
+    "qty": "",
+    "location": "",
+    "actions": "",
+    "save": "",
+    "cancel": "",
+    "edit": "",
+    "delete": "",
+    "listed": "",
+    "toggleListed": "",
+    "addRow": ""
+  },
+  "ItemStock": {
+    "updated": "",
+    "updateAmount": "",
+    "add": "",
+    "zero": "",
+    "sub": "",
+    "activate": "",
+    "deactivate": "",
+    "addQuickListing": "",
+    "selectItemError": "",
+    "created": "",
+    "createError": "",
+    "title": "",
+    "noItemSelected": "",
+    "price": "",
+    "quantity": "",
+    "qty": "",
+    "offersAccepted": "",
+    "status": "",
+    "active": "",
+    "inactive": "",
+    "expiration": "",
+    "refreshListing": "",
+    "edit": "",
+    "save": "",
+    "discard": "",
+    "editListing": ""
+  },
+  "itemMarket": {
+    "toggleSidebar": ""
+  },
+  "image_search": {
+    "select_image": "",
+    "image_url": "",
+    "image_url_help": "",
+    "image_search": "",
+    "image_search_help": "",
+    "cancel": "",
+    "save_and_close": ""
+  },
+  "buyorder": {
+    "create_buy_order": "",
+    "price_per_unit": "",
+    "quantity": "",
+    "total_price": "",
+    "expiration": "",
+    "submit": "",
+    "submitted": "",
+    "failed": "",
+    "unknown_error": ""
+  },
+  "bids": {
+    "title": "",
+    "bidder": "",
+    "bid": ""
+  },
+  "ships": {
+    "section_title": "",
+    "table": {
+      "ship": "",
+      "manufacturer": "",
+      "kind": "",
+      "condition": "",
+      "last_checkin": ""
+    },
+    "condition": {
+      "flight-ready": "",
+      "in-repair": "",
+      "awaiting-repair": "",
+      "in-concept": ""
+    },
+    "report_condition": "",
+    "register": {
+      "title": "",
+      "ship_label": "",
+      "submit": ""
+    },
+    "import": {
+      "title": "",
+      "upload": "",
+      "submit": "",
+      "submitted": "",
+      "failed": ""
+    }
+  },
+  "deliveries": {
+    "section_title": "",
+    "table": {
+      "location": "",
+      "start": "",
+      "end": "",
+      "status": "",
+      "progress": ""
+    },
+    "status": {
+      "OK": "",
+      "Damaged": "",
+      "Low Fuel": "",
+      "Off Course": "",
+      "Under Attack": "",
+      "Offline": ""
+    }
+  },
+  "contractDetailsArea": {
+    "details_table": "",
+    "customer": "",
+    "date": "",
+    "title": "",
+    "kind": "",
+    "details": "",
+    "offer": ""
+  },
+  "contractApp": {
+    "apply": "",
+    "applying_as": "",
+    "note": "",
+    "submit": ""
+  },
+  "settingsManageContractors": {
+    "name": "",
+    "actions": "",
+    "leave_org": ""
+  },
+  "manageRoles": {
+    "title": "",
+    "add_role": "",
+    "create": "",
+    "save": "",
+    "delete": "",
+    "updated": "",
+    "deleted": "",
+    "role_name": "",
+    "role_position": "",
+    "position_helper": "",
+    "permissions": {
+      "manage_org_details": "",
+      "manage_roles": "",
+      "manage_orders": "",
+      "manage_invites": "",
+      "manage_stock": "",
+      "manage_market": "",
+      "manage_recruiting": "",
+      "manage_webhooks": "",
+      "kick_members": ""
+    },
+    "headCells": {
+      "name": "",
+      "position": ""
+    }
+  },
+  "manageMemberList": {
+    "members": "",
+    "export": "",
+    "search": "",
+    "role": "",
+    "roles": "",
+    "any": "",
+    "kick": "",
+    "username": "",
+    "updated": "",
+    "update_failed": "",
+    "member_kicked": "",
+    "kick_failed": ""
+  },
+  "orgDetailEdit": {
+    "submitted": "",
+    "failed_submit": "",
+    "save": "",
+    "image_url": "",
+    "image_url_helper": "",
+    "org_tags": "",
+    "mining": "",
+    "no_tags": "",
+    "set_banner": ""
+  },
+  "orgInvite": {
+    "invite_members": "",
+    "already_member": "",
+    "username": "",
+    "note": "",
+    "submit": "",
+    "submitted": ""
+  },
+  "orgInfo": {
+    "about": "",
+    "services": "",
+    "market": "",
+    "order": "",
+    "members": "",
+    "recruiting": ""
+  },
+  "orgBalance": {
+    "balance": "",
+    "send": "",
+    "withdraw": ""
+  },
+  "inviteCodes": {
+    "invites": "",
+    "create_new": "",
+    "invite_code": "",
+    "max_uses": "",
+    "used_times": "",
+    "max_uses_helper": "",
+    "copied": "",
+    "submit": "",
+    "submitted": "",
+    "failed_submit": ""
+  },
+  "contractorSidebar": {
+    "search": "",
+    "sorting": "",
+    "sort_attribute": "",
+    "rating_high_low": "",
+    "rating_low_high": "",
+    "name_a_z": "",
+    "name_z_a": "",
+    "members_high_low": "",
+    "members_low_high": "",
+    "date_old_new": "",
+    "date_new_old": "",
+    "filtering": "",
+    "org_tags": "",
+    "mining": "",
+    "min_rating": ""
+  },
+  "contractorList": {
+    "fields": {
+      "freight": "",
+      "refuel": "",
+      "repair": "",
+      "escort": "",
+      "transport": "",
+      "mining": "",
+      "exploration": "",
+      "combat": "",
+      "salvage": "",
+      "refining": "",
+      "construction": "",
+      "social": "",
+      "roleplay": "",
+      "medical": "",
+      "intelligence": ""
+    }
+  },
+  "commentTree": {
+    "reply": "",
+    "post": "",
+    "deleted": "",
+    "avatar_alt": ""
+  },
+  "contractorCreate": {
+    "name": "",
+    "identifier": "",
+    "description": "",
+    "logo": "",
+    "banner": "",
+    "submit": "",
+    "error_name": "",
+    "error_identifier": "",
+    "error_logo": "",
+    "error_banner": "",
+    "failed_auth": ""
+  },
+  "authenticateRSI": {
+    "handle": "",
+    "invalid_handle": "",
+    "enter_username": "",
+    "authenticated": "",
+    "here": "",
+    "submit": "",
+    "copy_and_open": "",
+    "instructions": {
+      "1": "",
+      "2": "",
+      "3": ""
+    },
+    "tos": {
+      "1": "",
+      "2": ""
+    }
+  },
+  "authenticateContractor": {
+    "org_spectrum_id": "",
+    "error_org_name": "",
+    "copy_and_open": "",
+    "submit": "",
+    "failed_auth": "",
+    "instructions": {
+      "1": "",
+      "2": ""
+    }
+  },
+  "people": {
+    "title": ""
+  },
+  "offers": {
+    "viewOffer": "",
+    "dashboard": "",
+    "offer": "",
+    "receivedOffers": "",
+    "counterOffer": ""
+  },
+  "sendMoney": {
+    "title": "",
+    "recipient": "",
+    "username": "",
+    "contractor": "",
+    "targetKind": "",
+    "user": "",
+    "next": "",
+    "back": "",
+    "send": "",
+    "amount": "",
+    "note": "",
+    "errors": {
+      "enterUser": "",
+      "invalidUser": "",
+      "enterAmount": ""
+    }
+  },
+  "sellMaterials": {
+    "commodities": "",
+    "title": "",
+    "subtitle": ""
+  },
+  "cart": {
+    "ofAvailable": "",
+    "quantity": "",
+    "price": "",
+    "subtotal": "",
+    "remove": "",
+    "seller": "",
+    "total": "",
+    "note": "",
+    "submitOfferDesc": "",
+    "payTotal": "",
+    "offerOptional": "",
+    "submitOffer": "",
+    "submitOrder": "",
+    "purchaseSuccess": "",
+    "yourCart": "",
+    "empty": ""
+  },
+  "landing": {
+    "subtitle": "",
+    "totalOrders": "",
+    "totalOrderValue": "",
+    "ordersThisWeek": "",
+    "valueOfOrdersThisWeek": "",
+    "buySellItemsTitle": "",
+    "buySellItemsText": "",
+    "tradeInBulkTitle": "",
+    "tradeInBulkText": "",
+    "orderServicesTitle": "",
+    "orderServicesText": "",
+    "forOrgs": "",
+    "orgRecruitment": "",
+    "serviceListings": "",
+    "stockManagement": "",
+    "orgsHelpText": "",
+    "learnMore": "",
+    "supportersTitle": "",
+    "supportersThanks": "",
+    "supporters": "",
+    "faqTitle": "",
+    "faqSellItemsQ": "",
+    "faqSellItemsA": "",
+    "faqSafeQ": "",
+    "faqSafeA": "",
+    "faqListThingsQ": "",
+    "faqListThingsA": "",
+    "faqFeeQ": "",
+    "faqFeeA": "",
+    "faqRealMoneyQ": "",
+    "faqRealMoneyA": ""
+  },
+  "fleet": {
+    "fleetTitle": "",
+    "importFleet": "",
+    "myFleetTitle": "",
+    "addShips": "",
+    "createDelivery": ""
+  },
+  "error404": {
+    "title": "",
+    "subtitle": "",
+    "returnToDashboard": ""
+  },
+  "frontendError": {
+    "title": "",
+    "subtitle": "",
+    "afterRefresh": "",
+    "page": "",
+    "message": "",
+    "returnToDashboard": "",
+    "pageTitle": ""
+  },
+  "org": {
+    "orgTitle": "",
+    "myOrgTitle": "",
+    "registerOrgTitle": "",
+    "existingRsiOrg": "",
+    "newContractor": "",
+    "moneyTitle": "",
+    "manageOrgTitle": "",
+    "dashboard": "",
+    "aboutTab": "",
+    "invitesTab": "",
+    "rolesTab": "",
+    "discordTab": "",
+    "marketTab": "",
+    "invite": {
+      "acceptInviteTitle": "",
+      "acceptContractorInvite": "",
+      "invitedMessage": "",
+      "accept": "",
+      "accepted": ""
+    }
+  },
+  "dashboard": {
+    "title": ""
+  },
+  "contractorsPage": {
+    "title": ""
+  },
+  "services": {
+    "contractsTitle": "",
+    "toggleSidebar": "",
+    "contractorServices": "",
+    "createService": "",
+    "myServices": "",
+    "updateService": ""
+  },
+  "loginInfoPanel": {
+    "dashboardScreenshot": ""
+  },
+  "login": {
+    "title": "",
+    "accountLink": "",
+    "authenticateWithRSI": ""
+  }
+}
