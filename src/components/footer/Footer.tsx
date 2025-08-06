@@ -2,7 +2,7 @@ import { UnderlineLink } from "../typography/UnderlineLink"
 import { Divider, Grid, Link, Typography } from "@mui/material"
 import React from "react"
 import { DISCORD_INVITE } from "../../util/constants"
-import { useTranslation } from "react-i18next"
+import { Trans, useTranslation } from "react-i18next"
 
 export function Footer() {
   const { t } = useTranslation()
@@ -120,53 +120,67 @@ export function Footer() {
               "This is an unofficial Star Citizen fansite, not affiliated with the Cloud Imperium group of companies. All content on this site not authored by its host or users are property of their respective owners",
             )}
             <br />
-            {t("footer.thanksTo", "Thank you to")}{" "}
-            <Link
-              rel="noopener noreferrer"
-              target="_blank"
-              href={"https://www.youtube.com/@robinerino"}
-              aria-label={t("footer.ladyFleur", "LadyFleur")}
-            >
-              <UnderlineLink color={"text.primary"} variant="body2">
-                {t("footer.ladyFleur", "LadyFleur")}
-              </UnderlineLink>
-            </Link>{" "}
-            {t("footer.forLogo", "for the site logo, and to")}{" "}
-            <Link
-              rel="noopener noreferrer"
-              target="_blank"
-              href={"https://starcitizen-api.com/"}
-              aria-label={t("footer.starCitizenApi", "StarCitizen-API")}
-            >
-              <UnderlineLink color={"text.primary"} variant="body2">
-                {t("footer.starCitizenApi", "StarCitizen-API")}
-              </UnderlineLink>
-            </Link>
-            ,{" "}
-            <Link
-              rel="noopener noreferrer"
-              target="_blank"
-              href={"https://nexd.to/ "}
-              aria-label={t("footer.nexd", "NEXD")}
-            >
-              <UnderlineLink color={"text.primary"} variant="body2">
-                {t("footer.nexd", "NEXD")}
-              </UnderlineLink>
-            </Link>
-            , {t("footer.and", "and")}{" "}
-            <Link
-              rel="noopener noreferrer"
-              target="_blank"
-              href={"https://starcitizen.tools/"}
-              aria-label={t("footer.starCitizenWiki", "Star Citizen Wiki")}
-            >
-              <UnderlineLink color={"text.primary"} variant="body2">
-                {t("footer.starCitizenWiki", "Star Citizen Wiki")}
-              </UnderlineLink>
-            </Link>{" "}
-            {t("footer.forTheirApis", "for their APIs.")}
+            <Trans
+              i18nKey="footer.acknowledgments"
+              t={t}
+              components={{
+                ladyFleurLink: (
+                  <Link
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    href={"https://www.youtube.com/@robinerino"}
+                    aria-label={t("footer.ladyFleur", "LadyFleur")}
+                  >
+                    <UnderlineLink color={"text.primary"} variant="body2">
+                      LadyFleur
+                    </UnderlineLink>
+                  </Link>
+                ),
+                starCitizenApiLink: (
+                  <Link
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    href={"https://starcitizen-api.com/"}
+                    aria-label={t("footer.starCitizenApi", "StarCitizen-API")}
+                  >
+                    <UnderlineLink color={"text.primary"} variant="body2">
+                      StarCitizen-API
+                    </UnderlineLink>
+                  </Link>
+                ),
+                nexdLink: (
+                  <Link
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    href={"https://nexd.to/"}
+                    aria-label={t("footer.nexd", "NEXD")}
+                  >
+                    <UnderlineLink color={"text.primary"} variant="body2">
+                      NEXD
+                    </UnderlineLink>
+                  </Link>
+                ),
+                starCitizenWikiLink: (
+                  <Link
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    href={"https://starcitizen.tools/"}
+                    aria-label={t(
+                      "footer.starCitizenWiki",
+                      "Star Citizen Wiki",
+                    )}
+                  >
+                    <UnderlineLink color={"text.primary"} variant="body2">
+                      Star Citizen Wiki
+                    </UnderlineLink>
+                  </Link>
+                ),
+              }}
+            />
             <br />
-            {t("footer.referralCode", "Use our referral code:")} STAR-GSFY-MQW9
+            {t("footer.referralCode", {
+              code: "STAR-GSFY-MQW9",
+            })}
           </Typography>
         </Grid>
       </Grid>

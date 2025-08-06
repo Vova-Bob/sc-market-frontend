@@ -59,15 +59,8 @@
     "copyright": "Авторське право ©",
     "trademark": "Star Citizen®, Squadron 42®, Roberts Space Industries® та Cloud Imperium® — зареєстровані торговельні марки компанії Cloud Imperium Rights LLC",
     "unofficial": "Це неофіційний фан-сайт Star Citizen, який не має стосунку до компаній групи Cloud Imperium. Увесь контент, який не створено адміністрацією чи користувачами цього сайту, є власністю відповідних правовласників",
-    "thanksTo": "Дякуємо",
-    "ladyFleur": "LadyFleur",
-    "forLogo": "за логотип сайту, а також",
-    "starCitizenApi": "StarCitizen-API",
-    "nexd": "NEXD",
-    "and": "та",
-    "starCitizenWiki": "Star Citizen Wiki",
-    "forTheirApis": "за їхні API.",
-    "referralCode": "Використайте наш реферальний код:"
+    "acknowledgments": "Дякуємо <ladyFleurLink>LadyFleur</ladyFleurLink> за логотип сайту, а також <starCitizenApiLink>StarCitizen-API</starCitizenApiLink>, <nexdLink>NEXD</nexdLink>, та <starCitizenWikiLink>Star Citizen Wiki</starCitizenWikiLink> за їхні API.",
+    "referralCode": "Використайте наш реферальний код: {{code}}"
   },
   "listing": {
     "95PercentRating25PlusTransactions": "95%+ рейтинг і 25+ транзакцій",
