@@ -1478,7 +1478,7 @@
     "faqFeeQ": "Does SC Market take a fee?",
     "faqFeeA": "No we do not. All services are provided here free of charge and no aUEC passes through us.",
     "faqRealMoneyQ": "Can I list items for real money?",
-    " faqRealMoneyA": "No. All transactions on SC Market should be completed in aUEC."
+    "faqRealMoneyA": "No. All transactions on SC Market should be completed in aUEC."
   },
   "fleet": {
     "fleetTitle": "Fleet",
