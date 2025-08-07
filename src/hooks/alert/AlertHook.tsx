@@ -1,5 +1,6 @@
 import React from "react"
 import { AlertInterface } from "../../datatypes/Alert"
+import i18n from "../../util/i18n"
 
 export const AlertHookContext = React.createContext<
   | [
@@ -11,11 +12,14 @@ export const AlertHookContext = React.createContext<
 
 export interface UnwrappedErrorInterface {
   message: string
+  code?: string
   error?: {
     message: string
+    code?: string
   }
   errors: {
     message: string
+    code?: string
   }[]
   validationErrors: {
     instancePath: string
@@ -34,6 +38,13 @@ export interface ErrorInterface {
 export function formatErrorAlert(
   error: UnwrappedErrorInterface,
 ): AlertInterface {
+  const code = error.error?.code || error.code || error.errors?.[0]?.code
+  if (code) {
+    return {
+      message: i18n.t(`errors.${code}`),
+      severity: "error",
+    }
+  }
   let message = error.error?.message || error.message
   if (error.errors?.length) {
     message = message.concat(" ", error.errors[0].message)

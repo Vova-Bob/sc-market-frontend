@@ -47,6 +47,9 @@
     "accept_all": "Прийняти всі",
     "accept_necessary": "Прийняти необхідні"
   },
+  "errors": {
+    "unknown": "Сталася невідома помилка"
+  },
   "footer": {
     "support": "Підтримка",
     "discord": "Discord",

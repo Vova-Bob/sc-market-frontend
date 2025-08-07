@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { BACKEND_URL } from "../../util/constants"
+import i18n from "../../util/i18n"
 import throttle from "lodash/throttle"
 import { Autocomplete, Grid, TextField, Typography } from "@mui/material"
 import { Section } from "../paper/Section"
@@ -85,6 +86,9 @@ export function SelectLocation() {
       {
         method: "GET",
         credentials: "include",
+        headers: {
+          "Accept-Language": i18n.language,
+        },
       },
     )
     const data = await resp.json()

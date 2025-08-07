@@ -28,6 +28,7 @@ import {
 } from "../../store/services"
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
+import i18n from "../../util/i18n"
 
 function romanize(num: number) {
   if (isNaN(num)) return NaN
@@ -175,6 +176,9 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
       {
         method: "GET",
         credentials: "include",
+        headers: {
+          "Accept-Language": i18n.language,
+        },
       },
     )
     const data = await resp.json()

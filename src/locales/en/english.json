@@ -47,6 +47,9 @@
     "accept_all": "Accept All",
     "accept_necessary": "Accept Necessary"
   },
+  "errors": {
+    "unknown": "An unknown error occurred"
+  },
   "footer": {
     "support": "Support",
     "discord": "Discord",

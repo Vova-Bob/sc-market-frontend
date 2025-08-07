@@ -29,11 +29,13 @@ export interface Notification {
 export interface AccountSettings {
   discord_order_share: boolean
   discord_public: boolean
+  preferred_language?: string
 }
 
 export interface AccountSettingsBody {
   discord_order_share?: boolean
   discord_public?: boolean
+  preferred_language?: string
 }
 
 export interface AvailabilitySelection {

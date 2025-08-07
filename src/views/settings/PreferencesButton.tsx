@@ -16,11 +16,13 @@ import { SettingsRounded } from "@mui/icons-material"
 import React, { useState } from "react"
 import { useTranslation } from "react-i18next"
 import i18n, { languages } from "../../util/i18n"
+import { useProfileUpdateSettingsMutation } from "../../store/profile"
 
 export function PreferencesButton() {
   const [lightTheme, setLightTheme] = useLightTheme()
   const theme = useTheme()
   const { t } = useTranslation()
+  const [updateSettings] = useProfileUpdateSettingsMutation()
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
   const open = Boolean(anchorEl)
@@ -35,6 +37,7 @@ export function PreferencesButton() {
 
   const handleLanguageChange = (language: string) => {
     i18n.changeLanguage(language)
+    updateSettings({ preferred_language: language })
   }
 
   const currentLanguage = i18n.language

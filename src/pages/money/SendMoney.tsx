@@ -21,6 +21,7 @@ import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownR
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 import { useCreateTransaction } from "../../store/transactions"
 import { useTranslation } from "react-i18next"
+import i18n from "../../util/i18n"
 
 export function SendMoney(props: { org?: boolean }) {
   const { t } = useTranslation()
@@ -53,6 +54,9 @@ export function SendMoney(props: { org?: boolean }) {
         {
           method: "GET",
           credentials: "include",
+          headers: {
+            "Accept-Language": i18n.language,
+          },
         },
       )
         .then(async (resp) => {

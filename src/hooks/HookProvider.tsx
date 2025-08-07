@@ -25,10 +25,24 @@ import { CUSTOM_THEMES } from "./styles/custom_themes"
 import { useLocation } from "react-router-dom"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment"
+import { useGetUserProfileQuery } from "../store/profile"
 
 // Add moment and locale import + i18n
 import moment from "moment"
 import i18n from "../util/i18n"
+
+function LanguageSync() {
+  const { data } = useGetUserProfileQuery()
+  useEffect(() => {
+    if (
+      data?.settings?.preferred_language &&
+      data.settings.preferred_language !== i18n.language
+    ) {
+      i18n.changeLanguage(data.settings.preferred_language)
+    }
+  }, [data])
+  return null
+}
 
 export function HookProvider(props: { children: React.ReactElement }) {
   const drawerWidthState = useState(false)
@@ -73,6 +87,7 @@ export function HookProvider(props: { children: React.ReactElement }) {
 
   return (
     <Provider store={store}>
+      <LanguageSync />
       <LightThemeContext.Provider value={[useLightTheme, setUseLightTheme]}>
         <ThemeProvider theme={themeChoice}>
           <LocalizationProvider dateAdapter={AdapterMoment}>
