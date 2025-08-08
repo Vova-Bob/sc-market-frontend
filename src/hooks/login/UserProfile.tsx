@@ -65,4 +65,5 @@ export interface UserProfileState {
   settings: AccountSettings
   // TODO: Factor this out of user and move it to shop
   market_order_template: string
+  locale: string
 }

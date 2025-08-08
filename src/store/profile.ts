@@ -124,6 +124,17 @@ export const userApi = serviceApi.injectEndpoints({
         "MyProfile" as const,
       ],
     }),
+    profileUpdateLocale: builder.mutation<
+      { data: { message: string; locale: string }; status: string },
+      { locale: string }
+    >({
+      query: (body) => ({
+        url: `${baseUrl}`,
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: [{ type: "MyProfile" as const }, "MyProfile" as const],
+    }),
     profileCreateWebhook: builder.mutation<
       void,
       {
@@ -188,6 +199,8 @@ export const useUpdateProfile =
   userApi.endpoints.profileUpdateProfile.useMutation
 export const useProfileGetAllUsers =
   userApi.endpoints.profileGetAllUsers.useQuery
+export const useProfileUpdateLocale =
+  userApi.endpoints.profileUpdateLocale.useMutation
 
 export const {
   useProfileUpdateSettingsMutation,

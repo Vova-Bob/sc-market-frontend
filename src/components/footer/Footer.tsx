@@ -129,7 +129,7 @@ export function Footer() {
                     rel="noopener noreferrer"
                     target="_blank"
                     href={"https://www.youtube.com/@robinerino"}
-                    aria-label={t("footer.ladyFleur", "LadyFleur")}
+                    aria-label={"LadyFleur"}
                   >
                     <UnderlineLink color={"text.primary"} variant="body2">
                       LadyFleur
@@ -141,7 +141,7 @@ export function Footer() {
                     rel="noopener noreferrer"
                     target="_blank"
                     href={"https://starcitizen-api.com/"}
-                    aria-label={t("footer.starCitizenApi", "StarCitizen-API")}
+                    aria-label={"StarCitizen-API"}
                   >
                     <UnderlineLink color={"text.primary"} variant="body2">
                       StarCitizen-API
@@ -153,7 +153,7 @@ export function Footer() {
                     rel="noopener noreferrer"
                     target="_blank"
                     href={"https://nexd.to/"}
-                    aria-label={t("footer.nexd", "NEXD")}
+                    aria-label={"NEXD"}
                   >
                     <UnderlineLink color={"text.primary"} variant="body2">
                       NEXD
@@ -165,10 +165,7 @@ export function Footer() {
                     rel="noopener noreferrer"
                     target="_blank"
                     href={"https://starcitizen.tools/"}
-                    aria-label={t(
-                      "footer.starCitizenWiki",
-                      "Star Citizen Wiki",
-                    )}
+                    aria-label={"Star Citizen Wiki"}
                   >
                     <UnderlineLink color={"text.primary"} variant="body2">
                       Star Citizen Wiki

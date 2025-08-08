@@ -1,4 +1,4 @@
-import { useLightTheme } from "../../hooks/styles/LightTheme"
+import { useTheme } from "@mui/material/styles"
 import {
   Box,
   Fab,
@@ -11,19 +11,32 @@ import {
   Autocomplete,
   TextField,
 } from "@mui/material"
-import { useTheme } from "@mui/material/styles"
 import { SettingsRounded } from "@mui/icons-material"
-import React, { useState } from "react"
+import { useState, useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import i18n, { languages } from "../../util/i18n"
+import {
+  useProfileUpdateLocale,
+  useGetUserProfileQuery,
+} from "../../store/profile"
+import { useLightTheme } from "../../hooks/styles/LightTheme"
 
 export function PreferencesButton() {
-  const [lightTheme, setLightTheme] = useLightTheme()
   const theme = useTheme()
   const { t } = useTranslation()
-
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
+  const [lightTheme, setLightTheme] = useLightTheme()
+  const [updateLocale] = useProfileUpdateLocale()
+  const { data: userProfile } = useGetUserProfileQuery()
+
   const open = Boolean(anchorEl)
+
+  // Initialize language from user profile if available
+  useEffect(() => {
+    if (userProfile?.locale && userProfile.locale !== i18n.language) {
+      i18n.changeLanguage(userProfile.locale)
+    }
+  }, [userProfile?.locale])
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
@@ -33,8 +46,17 @@ export function PreferencesButton() {
     setAnchorEl(null)
   }
 
-  const handleLanguageChange = (language: string) => {
-    i18n.changeLanguage(language)
+  const handleLanguageChange = async (language: string) => {
+    try {
+      // Update the backend with the new locale
+      await updateLocale({ locale: language }).unwrap()
+      // Update the frontend i18n
+      i18n.changeLanguage(language)
+    } catch (error) {
+      console.error("Failed to update locale:", error)
+      // Still update the frontend even if backend fails
+      i18n.changeLanguage(language)
+    }
   }
 
   const currentLanguage = i18n.language

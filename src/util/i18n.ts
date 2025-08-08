@@ -3,7 +3,6 @@ import { initReactI18next } from "react-i18next"
 import LanguageDetector from "i18next-browser-languagedetector"
 
 import moment from "moment"
-import "moment/locale/uk"
 
 import en from "../locales/en/english.json"
 import uk from "../locales/uk/ukrainian.json"
@@ -11,19 +10,19 @@ import de from "../locales/de/de.json"
 import ja from "../locales/ja/ja.json"
 import es from "../locales/es/es.json"
 import fr from "../locales/fr/fr.json"
-import zh_Hans from "../locales/zh/zh_Hans.json"
-import zh_Hant from "../locales/zh/zh_Hant.json"
+import zhCN from "../locales/zh/zh_Hans.json"
+import zhTW from "../locales/zh/zh_Hant.json"
 
 // Language configuration with endonyms
 export const languages = [
   { code: "en", endonym: "English" },
   { code: "uk", endonym: "Українська" },
-  // { code: "de", endonym: "Deutsch" },
   // { code: "es", endonym: "Español" },
+  // { code: "de", endonym: "Deutsch" },
   // { code: "fr", endonym: "Français" },
   // { code: "ja", endonym: "日本語" },
-  // { code: "zh_Hans", endonym: "简体中文" },
-  // { code: "zh_Hant", endonym: "繁體中文" },
+  { code: "zh-CN", endonym: "简体中文" },
+  // { code: "zh-TW", endonym: "繁體中文" }, // Not currently supported by API
 ]
 
 i18n
@@ -42,8 +41,8 @@ i18n
       // de: { translation: de },
       // fr: { translation: fr },
       // ja: { translation: ja },
-      // zh_Hans: { translation: zh_Hans },
-      // zh_Hant: { translation: zh_Hant },
+      "zh-CN": { translation: zhCN },
+      // "zh-TW": { translation: zhTW }, // Not currently supported by API
     },
   })
 

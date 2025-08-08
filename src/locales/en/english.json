@@ -305,9 +305,11 @@
   "languages": {
     "en": "English",
     "uk": "Ukrainian",
+    "es": "Spanish",
     "fr": "French",
     "de": "German",
-    "ja": "Japanese"
+    "ja": "Japanese",
+    "zh-CN": "Chinese (Simplified)"
   },
   "privacy_settings": {
     "title": "Privacy",
