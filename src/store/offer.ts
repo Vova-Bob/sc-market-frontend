@@ -33,6 +33,7 @@ export interface OfferSession {
   discord_thread_id: string | null
   discord_server_id: string | null
   availability: OrderAvailability
+  order_id?: string | null
 }
 
 export interface Offer {

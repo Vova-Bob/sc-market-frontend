@@ -1,9 +1,9 @@
 import { Page } from "../../components/metadata/Page"
 import { ContainerGrid } from "../../components/layout/ContainerGrid"
 import { HeaderTitle } from "../../components/typography/HeaderTitle"
-import React from "react"
+import React, { useEffect } from "react"
 import { useGetOfferSessionByIDQuery } from "../../store/offer"
-import { Link, useParams } from "react-router-dom"
+import { Link, useParams, useNavigate } from "react-router-dom"
 import {
   OfferDetailsArea,
   OfferMessagesArea,
@@ -22,6 +22,14 @@ export function ViewOfferPage() {
   const { id } = useParams<{ id: string }>()
   const { data: session } = useGetOfferSessionByIDQuery(id!)
   const { t } = useTranslation()
+  const navigate = useNavigate()
+
+  // Redirect to order if offer has an associated order
+  useEffect(() => {
+    if (session?.order_id) {
+      navigate(`/contract/${session.order_id}`, { replace: true })
+    }
+  }, [session?.order_id, navigate])
 
   return (
     <Page title={t("offers.viewOffer")}>
