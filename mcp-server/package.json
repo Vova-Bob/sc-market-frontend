@@ -1,0 +1,28 @@
+{
+  "name": "openapi-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for querying OpenAPI specifications",
+  "type": "module",
+  "main": "dist/openapi-mcp-server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/openapi-mcp-server.js",
+    "dev": "tsx openapi-mcp-server.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.0.0"
+  },
+  "keywords": [
+    "mcp",
+    "openapi",
+    "api",
+    "specification"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}

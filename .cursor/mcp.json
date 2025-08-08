@@ -1,0 +1,149 @@
+{
+  "mcpServers": {
+    "openapi": {
+      "command": "node",
+      "args": ["mcp-server/dist/openapi-mcp-server.js"],
+      "env": {},
+      "description": "OpenAPI MCP Server for querying API specifications",
+      "capabilities": {
+        "tools": [
+          {
+            "name": "fetch_openapi_spec",
+            "description": "Fetch the OpenAPI specification from the API server",
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "force_refresh": {
+                  "type": "boolean",
+                  "description": "Force refresh the cached spec",
+                  "default": false
+                }
+              }
+            }
+          },
+          {
+            "name": "query_endpoints",
+            "description": "Query endpoints based on various criteria",
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "description": "Filter by path pattern (supports wildcards)"
+                },
+                "method": {
+                  "type": "string",
+                  "description": "Filter by HTTP method (GET, POST, PUT, DELETE, etc.)",
+                  "enum": [
+                    "GET",
+                    "POST",
+                    "PUT",
+                    "DELETE",
+                    "PATCH",
+                    "HEAD",
+                    "OPTIONS"
+                  ]
+                },
+                "tags": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "Filter by tags"
+                },
+                "search": {
+                  "type": "string",
+                  "description": "Search in summary and description"
+                }
+              }
+            }
+          },
+          {
+            "name": "get_endpoint_details",
+            "description": "Get detailed information about a specific endpoint",
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "description": "The endpoint path"
+                },
+                "method": {
+                  "type": "string",
+                  "description": "The HTTP method",
+                  "enum": [
+                    "GET",
+                    "POST",
+                    "PUT",
+                    "DELETE",
+                    "PATCH",
+                    "HEAD",
+                    "OPTIONS"
+                  ]
+                }
+              },
+              "required": ["path", "method"]
+            }
+          },
+          {
+            "name": "list_schemas",
+            "description": "List all available schemas/components",
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "description": "Filter by component type",
+                  "enum": ["schemas", "parameters", "responses"],
+                  "default": "schemas"
+                },
+                "search": {
+                  "type": "string",
+                  "description": "Search in schema names and descriptions"
+                }
+              }
+            }
+          },
+          {
+            "name": "get_schema_details",
+            "description": "Get detailed information about a specific schema",
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The schema name"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "The component type",
+                  "enum": ["schemas", "parameters", "responses"],
+                  "default": "schemas"
+                }
+              },
+              "required": ["name"]
+            }
+          }
+        ],
+        "resources": [
+          {
+            "uri": "openapi://spec",
+            "name": "OpenAPI Specification",
+            "description": "The complete OpenAPI specification",
+            "mimeType": "application/json"
+          },
+          {
+            "uri": "openapi://endpoints",
+            "name": "All Endpoints",
+            "description": "List of all available endpoints",
+            "mimeType": "application/json"
+          },
+          {
+            "uri": "openapi://schemas",
+            "name": "All Schemas",
+            "description": "List of all available schemas",
+            "mimeType": "application/json"
+          }
+        ]
+      }
+    }
+  }
+}
