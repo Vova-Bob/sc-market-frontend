@@ -30,4 +30,4 @@ module.exports = {
     "src/components/**/*.{ts,tsx}",
     "!src/components/**/__tests__/**",
   ],
-};
+}

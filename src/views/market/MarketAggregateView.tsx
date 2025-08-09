@@ -281,7 +281,10 @@ export function MarketAggregateView() {
                   spacing={1}
                   justifyContent={"left"}
                 >
-                  <Breadcrumbs aria-label={t("ui.aria.breadcrumb")} color={"text.primary"}>
+                  <Breadcrumbs
+                    aria-label={t("ui.aria.breadcrumb")}
+                    color={"text.primary"}
+                  >
                     <MaterialLink
                       component={Link}
                       underline="hover"

@@ -236,7 +236,7 @@ function BannerEditArea(props: {
       </Collapse>
 
       {isMyProfile && (
-          <Fab
+        <Fab
           color={bannerEntryOpen ? "primary" : "secondary"}
           aria-label={t("orgDetailEdit.set_banner")}
           onClick={async () => {
@@ -576,7 +576,7 @@ export function ViewProfile(props: { profile: User }) {
                                   setDescriptionEditOpen(false)
                                 }}
                               >
-                                Save
+                                {t("ui.buttons.save")}
                               </Button>
                             }
                           />

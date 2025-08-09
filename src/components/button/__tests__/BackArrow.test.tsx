@@ -1,28 +1,30 @@
-import React from 'react'
-import { render, screen, fireEvent } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
-import { BackArrow } from '../BackArrow'
+import React from "react"
+import { render, screen, fireEvent } from "@testing-library/react"
+import { MemoryRouter } from "react-router-dom"
+import { BackArrow } from "../BackArrow"
 
 // Mock i18n
-jest.mock('react-i18next', () => ({
-  useTranslation: () => ({ t: (_: string, fallback?: string) => fallback || '' }),
+jest.mock("react-i18next", () => ({
+  useTranslation: () => ({
+    t: (_: string, fallback?: string) => fallback || "",
+  }),
 }))
 
 const mockNavigate = jest.fn()
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
   useNavigate: () => mockNavigate,
 }))
 
-describe('BackArrow', () => {
-  it('renders and triggers navigate(-1) on click', () => {
+describe("BackArrow", () => {
+  it("renders and triggers navigate(-1) on click", () => {
     render(
       <MemoryRouter>
         <BackArrow />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
-    const button = screen.getByRole('button')
+    const button = screen.getByRole("button")
     fireEvent.click(button)
     expect(mockNavigate).toHaveBeenCalledWith(-1)
   })

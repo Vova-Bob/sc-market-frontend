@@ -19,6 +19,7 @@ import { store } from "../../store/store"
 import throttle from "lodash/throttle"
 import { transformSearchResults, wikiRestApi } from "../../store/wiki"
 import { useTheme } from "@mui/material/styles"
+import { useTranslation } from "react-i18next"
 
 export function ImageSearch(props: {
   open: boolean
@@ -30,6 +31,7 @@ export function ImageSearch(props: {
   const [query, setQuery] = useState<string | null>(null)
   const [options, setOptions] = useState<string[]>([])
   const theme = useTheme<ExtendedTheme>()
+  const { t } = useTranslation()
 
   const fetchOptions = useCallback(
     async (query: string) => {
@@ -63,7 +65,7 @@ export function ImageSearch(props: {
     <Modal open={open} onClose={() => callback(image)}>
       <ContainerGrid sidebarOpen={false} maxWidth={"md"} noFooter>
         <Section
-          title={"Select Image"}
+          title={t("ui.dialog.selectImage.title")}
           xs={12}
           onClick={(event) => {
             event.preventDefault()
@@ -88,13 +90,11 @@ export function ImageSearch(props: {
             <Box sx={{ marginBottom: 2 }}>
               <TextField
                 variant={"outlined"}
-                label={"Image URL"}
+                label={t("ui.dialog.selectImage.imageUrl.label")}
                 fullWidth
                 focused
                 multiline
-                helperText={
-                  "Must be a direct URL to the image, from Imgur, RSI, or starcitizen.tools"
-                }
+                helperText={t("ui.dialog.selectImage.imageUrl.placeholder")}
                 onChange={(event: React.ChangeEvent<{ value: string }>) => {
                   setImage(event.target.value)
                 }}
@@ -105,13 +105,11 @@ export function ImageSearch(props: {
             <Box>
               <TextField
                 variant={"outlined"}
-                label={"Image Search"}
+                label={t("ui.dialog.selectImage.imageSearch.label")}
                 fullWidth
                 focused
                 multiline
-                helperText={
-                  "Search query to search for images from starcitizen.tools"
-                }
+                helperText={t("ui.dialog.selectImage.imageSearch.placeholder")}
                 onChange={(event: React.ChangeEvent<{ value: string }>) => {
                   setQuery(event.target.value)
                 }}
@@ -175,7 +173,7 @@ export function ImageSearch(props: {
                 }}
                 sx={{ marginRight: 1 }}
               >
-                Cancel
+                {t("ui.dialog.selectImage.buttons.cancel")}
               </Button>
               <Button
                 color={"primary"}
@@ -185,7 +183,7 @@ export function ImageSearch(props: {
                   callback(image)
                 }}
               >
-                Save and Close
+                {t("ui.dialog.selectImage.buttons.saveAndClose")}
               </Button>
             </Box>
           </Grid>
