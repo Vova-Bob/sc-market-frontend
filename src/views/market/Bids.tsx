@@ -12,6 +12,7 @@ import { UnderlineLink } from "../../components/typography/UnderlineLink"
 import { getRelativeTime } from "../../util/time"
 import { useMarketAcceptBidMutation } from "../../store/market"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
+import { useTranslation } from "react-i18next"
 
 export interface BidRowProps {
   row: MarketBid
@@ -23,6 +24,7 @@ export interface BidRowProps {
 
 export function BidRow(props: BidRowProps): JSX.Element {
   const { row, index, isItemSelected } = props // TODO: Add `assigned_to` column
+  const { i18n } = useTranslation()
 
   return (
     <TableRow
@@ -57,7 +59,7 @@ export function BidRow(props: BidRowProps): JSX.Element {
       </TableCell>
       <TableCell align="right">
         <Typography variant={"subtitle1"} color={"text.primary"}>
-          {row.bid.toLocaleString("en-US")} aUEC
+          {row.bid.toLocaleString(i18n.language)} aUEC
         </Typography>
       </TableCell>
 

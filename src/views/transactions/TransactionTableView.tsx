@@ -74,7 +74,7 @@ export function TransactionTableRow(props: {
   labelId: string
 }) {
   const { row, index, isItemSelected } = props
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   const { data: profile } = useGetUserProfileQuery()
   const userRec = useMemo(
@@ -136,12 +136,12 @@ export function TransactionTableRow(props: {
           {row.status === "Cancelled" ? (
             <Typography sx={{ textDecoration: "line-through" }}>
               {receiving ? "" : "-"}
-              {row.amount.toLocaleString("en-US")} aUEC
+              {row.amount.toLocaleString(i18n.language)} aUEC
             </Typography>
           ) : (
             <Typography color={receiving ? "success.light" : "error.dark"}>
               {receiving ? "" : "-"}
-              {row.amount.toLocaleString("en-US")} aUEC
+              {row.amount.toLocaleString(i18n.language)} aUEC
             </Typography>
           )}
         </TableCell>

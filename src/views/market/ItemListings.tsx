@@ -154,7 +154,7 @@ export function ItemListingBase(props: {
   listing: UniqueListing
   index: number
 }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { listing: complete, index } = props
   const { details, listing, auction_details, photos } = complete
   const { user_seller, contractor_seller } = listing
@@ -292,7 +292,7 @@ export function ItemListingBase(props: {
               }}
             >
               <Typography variant={"h5"} color={"primary"} fontWeight={"bold"}>
-                {listing.price.toLocaleString("en-US")} aUEC
+                {listing.price.toLocaleString(i18n.language)} aUEC
               </Typography>
               <Typography
                 variant={"subtitle2"}

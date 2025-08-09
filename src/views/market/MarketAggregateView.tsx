@@ -281,7 +281,7 @@ export function MarketAggregateView() {
                   spacing={1}
                   justifyContent={"left"}
                 >
-                  <Breadcrumbs aria-label="breadcrumb" color={"text.primary"}>
+                  <Breadcrumbs aria-label={t("ui.aria.breadcrumb")} color={"text.primary"}>
                     <MaterialLink
                       component={Link}
                       underline="hover"
@@ -431,7 +431,7 @@ export function AggregateRow(props: {
   isItemSelected: boolean
   labelId: string
 }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { row: listing, index } = props
   const [quantity, setQuantity] = useState(1)
   const issueAlert = useAlertHook()
@@ -532,7 +532,7 @@ export function AggregateRow(props: {
         }}
       >
         <Typography variant={"subtitle2"} color={"primary"}>
-          {listing.price.toLocaleString("en-US")} aUEC
+          {listing.price.toLocaleString(i18n.language)} aUEC
         </Typography>
       </TableCell>
 
@@ -597,7 +597,7 @@ export function BuyOrderRow(props: {
   isItemSelected: boolean
   labelId: string
 }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { row: buy_order, index } = props
   const issueAlert = useAlertHook()
 
@@ -691,7 +691,7 @@ export function BuyOrderRow(props: {
         }}
       >
         <Typography variant={"subtitle2"} color={"primary"}>
-          {buy_order.price.toLocaleString("en-US")} aUEC
+          {buy_order.price.toLocaleString(i18n.language)} aUEC
         </Typography>
       </TableCell>
 
@@ -702,7 +702,7 @@ export function BuyOrderRow(props: {
         }}
       >
         <Typography variant={"subtitle2"} color={"primary"}>
-          {buy_order.quantity.toLocaleString("en-US")}
+          {buy_order.quantity.toLocaleString(i18n.language)}
         </Typography>
       </TableCell>
 
@@ -713,7 +713,7 @@ export function BuyOrderRow(props: {
         }}
       >
         <Typography variant={"subtitle2"} color={"primary"}>
-          {buy_order.total.toLocaleString("en-US")} aUEC
+          {buy_order.total.toLocaleString(i18n.language)} aUEC
         </Typography>
       </TableCell>
 

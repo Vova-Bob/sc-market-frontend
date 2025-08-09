@@ -32,7 +32,7 @@ export function OfferDetailsEditArea(props: { session: OfferSession }) {
   return (
     <Grid item xs={12} lg={12} md={12}>
       <TableContainer component={Paper}>
-        <Table aria-label="details table" sx={{ overflowY: "hidden" }}>
+        <Table aria-label={t("offers.details_table")} sx={{ overflowY: "hidden" }}>
           <TableBody>
             <TableRow
               sx={{

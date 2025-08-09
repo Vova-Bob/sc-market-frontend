@@ -259,7 +259,7 @@ export function OffersViewPaginated(props: {
           <Tabs
             value={tab}
             // onChange={(_, newPage) => setPage(newPage)}
-            aria-label="offer tabs"
+            aria-label={t("offers.aria.offerTabs")}
             variant="scrollable"
           >
             <Tab

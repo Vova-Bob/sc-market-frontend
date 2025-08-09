@@ -40,7 +40,7 @@ export function SettingsPage() {
           <Tabs
             value={page}
             onChange={handleChange}
-            aria-label="org info area"
+            aria-label={t("ui.aria.orgInfoArea")}
             variant="scrollable"
             textColor="secondary"
             indicatorColor="secondary"

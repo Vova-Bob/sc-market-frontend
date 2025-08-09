@@ -156,7 +156,7 @@ export function OrgDetailEditForm(props: { contractor: Contractor }) {
                 </IconButton>
                 <Avatar
                   src={contractor?.avatar}
-                  aria-label="contractor"
+                  aria-label={t("contractors.contractor")}
                   variant={"rounded"}
                   sx={{
                     maxHeight: theme.spacing(12),
