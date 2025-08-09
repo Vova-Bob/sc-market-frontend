@@ -17,18 +17,20 @@ import { useTheme } from "@mui/material/styles"
 import { useDrawerOpen } from "../../hooks/layout/Drawer"
 import CloseIcon from "@mui/icons-material/CloseRounded"
 import MenuIcon from "@mui/icons-material/MenuRounded"
+import { useTranslation } from "react-i18next"
 
 export function ItemMarketView() {
   const theme = useTheme()
   const xs = useMediaQuery(theme.breakpoints.down("md"))
   const drawerOpen = useDrawerOpen()
   const [open, setOpen] = useState(false)
+  const { t } = useTranslation()
 
   return (
     <>
       <IconButton
         color="secondary"
-        aria-label="toggle market sidebar"
+        aria-label={t("market.toggleSidebar")}
         sx={{
           position: "absolute",
           zIndex: 50,

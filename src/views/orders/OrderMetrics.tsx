@@ -50,7 +50,7 @@ export function OrderMetrics(props: {}) {
     skip: !!contractor,
   })
 
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   const filteredOrders = useCallback(
     (state?: string) => {
@@ -82,7 +82,7 @@ export function OrderMetrics(props: {}) {
         </Grid>
         <Grid item xs={12}>
           <Typography variant={"h6"} color={"success.main"}>
-            {filteredOrders("active").length.toLocaleString("en-US")}
+            {filteredOrders("active").length.toLocaleString(i18n.language)}
           </Typography>
         </Grid>
         <Grid item xs={12}>

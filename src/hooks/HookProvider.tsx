@@ -64,7 +64,6 @@ export function HookProvider(props: { children: React.ReactElement }) {
     setCookie("theme", useLightTheme, { path: "/", sameSite: "strict" })
   }, [useLightTheme, setCookie])
 
-
   // Add useEffect to support the moment.js language
   useEffect(() => {
     // Set moment.js locale according to current i18n language

@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next"
 
 export function OrgBalance() {
   const [contractor] = useCurrentOrg()
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   return (
     <Section>
@@ -33,7 +33,7 @@ export function OrgBalance() {
         >
           {contractor &&
             contractor?.balance &&
-            contractor?.balance.toLocaleString("en-US")}{" "}
+            contractor?.balance.toLocaleString(i18n.language)}{" "}
           aUEC
         </Typography>
       </Grid>

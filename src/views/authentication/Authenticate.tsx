@@ -49,7 +49,10 @@ export function Authenticate(props: {}) {
       </Grid>
       <Grid item xs={12} alignItems={"center"} container>
         <Typography display={"inline"}>{t("auth.loginWith")}</Typography>
-        <ButtonGroup variant="outlined" aria-label="outlined button group">
+        <ButtonGroup
+          variant="outlined"
+          aria-label={t("auth.aria.outlinedGroup")}
+        >
           <IconButton color={"primary"}>
             <Google />
           </IconButton>

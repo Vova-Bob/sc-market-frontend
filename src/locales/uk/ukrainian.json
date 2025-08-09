@@ -22,7 +22,10 @@
     "submit": "Надіслати",
     "loginWithDiscord": "Увійти через Discord",
     "accountLink": "Прив’язка акаунта",
-    "authenticateWithRSI": "Аутентифікація через RSI"
+    "authenticateWithRSI": "Аутентифікація через RSI",
+    "aria": {
+      "outlinedGroup": "група кнопок з обводкою"
+    }
   },
   "availability": {
     "select_availability": "Оберіть доступність",
@@ -101,6 +104,9 @@
     "item_name": "Назва предмета",
     "other_category": "Інше",
     "allListings": "Всі оголошення на маркеті",
+    "aria": {
+      "listingTabs": "вкладки оголошень ринку"
+    },
     "toggleSidebar": "Перемкнути бокове меню маркету",
     "activeListings": "Активні оголошення",
     "inactiveListings": "Неактивні оголошення",
@@ -610,7 +616,10 @@
     "orderShort": "Замовлення {{id}}",
     "offerShort": "Пропозиція {{id}}",
     "createOrderTitle": "Створити замовлення",
-    "viewOrder": "Перегляд замовлення"
+    "viewOrder": "Перегляд замовлення",
+    "aria": {
+      "orderTabs": "вкладки замовлень"
+    }
   },
   "orderDetailsArea": {
     "updated_status": "Статус оновлено!",
@@ -1399,7 +1408,10 @@
     "dashboard": "Панель",
     "offer": "Пропозиція",
     "receivedOffers": "Отримані пропозиції",
-    "counterOffer": "Зустрічна пропозиція"
+    "counterOffer": "Зустрічна пропозиція",
+    "aria": {
+      "offerTabs": "вкладки пропозицій"
+    }
   },
   "sendMoney": {
     "title": "Надіслати кошти",
@@ -1520,6 +1532,9 @@
   },
   "dashboard": {
     "title": "Панель управління"
+  },
+  "contractors": {
+    "contractor": "підрядник"
   },
   "contractorsPage": {
     "title": "Підрядники"

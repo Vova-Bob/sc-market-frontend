@@ -62,7 +62,7 @@ export const BorderlessCell = styled(TableCell)({
 export function ServiceDetailsRow(props: { open: boolean; service: Service }) {
   const theme = useTheme<ExtendedTheme>()
   const { open, service } = props
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   return (
     <TableRow
@@ -150,7 +150,7 @@ const getPaymentTypeTranslationKey = (paymentType: PaymentType): string => {
 export function MobileServiceRow(props: ServiceRowProps) {
   const { row, index, isItemSelected } = props
   const [open, setOpen] = useState(false)
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   const key = getPaymentTypeTranslationKey(row.payment_type)
   const paymentType = key ? t(key) : ""
@@ -193,7 +193,7 @@ export function MobileServiceRow(props: ServiceRowProps) {
             </span>
           </Box>
           <Typography variant={"subtitle2"} color={"primary"}>
-            {row.cost.toLocaleString("en-US")} aUEC {paymentType}
+            {row.cost.toLocaleString(i18n.language)} aUEC {paymentType}
           </Typography>
         </BorderlessCell>
 

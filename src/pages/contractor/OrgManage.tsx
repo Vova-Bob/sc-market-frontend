@@ -69,7 +69,7 @@ export function OrgManage() {
             <Tabs
               value={page}
               onChange={handleChange}
-              aria-label="org info area"
+              aria-label={t("ui.aria.orgInfoArea")}
               variant="scrollable"
             >
               {canManageOrgDetails && (

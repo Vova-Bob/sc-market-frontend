@@ -119,7 +119,7 @@ export function ContractorListItem(props: {
                         contractor.avatar ||
                         "https://cdn.robertsspaceindustries.com/static/images/Temp/default-image.png"
                       }
-                      aria-label="contractor"
+                      aria-label={t("contractors.contractor")}
                       variant={"rounded"}
                       imgProps={{
                         onError: ({ currentTarget }) => {

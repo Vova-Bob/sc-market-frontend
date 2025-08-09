@@ -238,7 +238,7 @@ function BannerEditArea(props: {
       {isMyProfile && (
         <Fab
           color={bannerEntryOpen ? "primary" : "secondary"}
-          aria-label="Set new banner"
+          aria-label={t("orgDetailEdit.set_banner")}
           onClick={async () => {
             if (bannerEntryOpen && newBannerURL) {
               await submitUpdate({ banner_url: newBannerURL })
@@ -630,7 +630,7 @@ export function ViewProfile(props: { profile: User }) {
               <Tabs
                 value={page}
                 // onChange={handleChange}
-                aria-label="org info area"
+                aria-label={t("ui.aria.orgInfoArea")}
                 variant="scrollable"
                 textColor="secondary"
                 indicatorColor="secondary"

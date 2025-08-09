@@ -22,7 +22,10 @@
     "submit": "Submit",
     "loginWithDiscord": "Login with Discord",
     "accountLink": "Account Link",
-    "authenticateWithRSI": "Authenticate with RSI"
+    "authenticateWithRSI": "Authenticate with RSI",
+    "aria": {
+      "outlinedGroup": "outlined button group"
+    }
   },
   "availability": {
     "select_availability": "Select Availability",
@@ -101,6 +104,9 @@
     "item_name": "Item Name",
     "other_category": "Other",
     "allListings": "All Market Listings",
+    "aria": {
+      "listingTabs": "market listing tabs"
+    },
     "toggleSidebar": "toggle market sidebar",
     "activeListings": "Active Listings",
     "inactiveListings": "Inactive Listings",
@@ -610,7 +616,10 @@
     "orderShort": "Order {{id}}",
     "offerShort": "Offer {{id}}",
     "createOrderTitle": "Create Order",
-    "viewOrder": "View Order"
+    "viewOrder": "View Order",
+    "aria": {
+      "orderTabs": "order tabs"
+    }
   },
   "orderDetailsArea": {
     "updated_status": "Updated status!",
@@ -1399,7 +1408,10 @@
     "dashboard": "Dashboard",
     "offer": "Offer",
     "receivedOffers": "Received Offers",
-    "counterOffer": "Counter Offer"
+    "counterOffer": "Counter Offer",
+    "aria": {
+      "offerTabs": "offer tabs"
+    }
   },
   "sendMoney": {
     "title": "Send Money",
@@ -1520,6 +1532,9 @@
   },
   "dashboard": {
     "title": "Dashboard"
+  },
+  "contractors": {
+    "contractor": "contractor"
   },
   "contractorsPage": {
     "title": "Contractors"
