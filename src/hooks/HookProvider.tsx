@@ -5,6 +5,8 @@ import {
   Snackbar,
   ThemeProvider,
   useMediaQuery,
+  createTheme,
+  responsiveFontSizes,
 } from "@mui/material"
 import { DrawerOpenContext } from "./layout/Drawer"
 import { CurrentChatIDContext } from "./messaging/CurrentChatID"
@@ -28,7 +30,8 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment"
 
 // Add moment and locale import + i18n
 import moment from "moment"
-import i18n from "../util/i18n"
+import { getMuiLocales } from "../util/i18n"
+import { useTranslation } from "react-i18next"
 
 export function HookProvider(props: { children: React.ReactElement }) {
   const drawerWidthState = useState(false)
@@ -40,25 +43,27 @@ export function HookProvider(props: { children: React.ReactElement }) {
     cookies.theme || (prefersLight ? "light" : "dark"),
   )
   const location = useLocation()
+  const { i18n } = useTranslation()
 
-  const themeChoice = useMemo(() => {
+  const baseTheme = useMemo(() => {
     if (CURRENT_CUSTOM_ORG) {
       const theme = CUSTOM_THEMES.get(CURRENT_CUSTOM_ORG)
-      if (theme) {
-        return theme
-      }
+      if (theme) return theme
     }
-
-    // if (["/", "", null].includes(location.pathname)) {
-    //   return mainTheme
-    // }
-
     return useLightTheme === "light" ? lightTheme : mainTheme
   }, [useLightTheme, location.pathname])
+
+  // Build a localized theme when language changes
+  const localizedTheme = useMemo(() => {
+    const { core, pickers, grid } = getMuiLocales(i18n.language)
+    // Merge locale bundles into the current base theme
+    return responsiveFontSizes(createTheme(baseTheme, core, pickers, grid))
+  }, [baseTheme, i18n.language])
 
   useEffect(() => {
     setCookie("theme", useLightTheme, { path: "/", sameSite: "strict" })
   }, [useLightTheme, setCookie])
+
 
   // Add useEffect to support the moment.js language
   useEffect(() => {
@@ -74,7 +79,7 @@ export function HookProvider(props: { children: React.ReactElement }) {
   return (
     <Provider store={store}>
       <LightThemeContext.Provider value={[useLightTheme, setUseLightTheme]}>
-        <ThemeProvider theme={themeChoice}>
+        <ThemeProvider theme={localizedTheme}>
           <LocalizationProvider dateAdapter={AdapterMoment}>
             <AlertHookContext.Provider value={[alert, issueAlert]}>
               <CurrentOrgProvider>

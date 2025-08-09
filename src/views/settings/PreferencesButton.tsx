@@ -14,7 +14,7 @@ import {
 import { SettingsRounded } from "@mui/icons-material"
 import { useState, useEffect } from "react"
 import { useTranslation } from "react-i18next"
-import i18n, { languages } from "../../util/i18n"
+import { languages } from "../../util/i18n"
 import {
   useProfileUpdateLocale,
   useGetUserProfileQuery,
@@ -23,7 +23,7 @@ import { useLightTheme } from "../../hooks/styles/LightTheme"
 
 export function PreferencesButton() {
   const theme = useTheme()
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
   const [lightTheme, setLightTheme] = useLightTheme()
   const [updateLocale] = useProfileUpdateLocale()
