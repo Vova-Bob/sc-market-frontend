@@ -12,6 +12,7 @@ import {
   InfoRounded,
   PersonAddRounded,
   StoreRounded,
+  SettingsRounded,
 } from "@mui/icons-material"
 import { a11yProps, TabPanel } from "../../components/tabs/Tabs"
 import { CreateOrgInviteCode } from "../../views/contractor/CreateOrgInviteCode"
@@ -30,6 +31,7 @@ import { Discord } from "../../components/icon/DiscordIcon"
 import { ConfigureDiscord } from "../../views/notifications/ConfigureDiscord"
 import { MarketEditTemplate } from "../../views/market/MarketEditTemplate"
 import { useTranslation } from "react-i18next"
+import { OrgSettings } from "../../views/contractor/OrgSettings"
 
 export function OrgManage() {
   const { t } = useTranslation()
@@ -108,6 +110,13 @@ export function OrgManage() {
                   {...a11yProps(4)}
                 />
               )}
+              {canManageOrgDetails && (
+                <Tab
+                  label={t("org.settingsTab")}
+                  icon={<SettingsRounded />}
+                  {...a11yProps(5)}
+                />
+              )}
               {/*<Tab*/}
               {/*    label="Customers"*/}
               {/*    icon={*/}
@@ -152,6 +161,9 @@ export function OrgManage() {
             </Grid>
           </TabPanel>
           <TabPanel value={page} index={5}>
+            <OrgSettings />
+          </TabPanel>
+          <TabPanel value={page} index={6}>
             <Grid container spacing={2}>
               <CustomerList />
             </Grid>

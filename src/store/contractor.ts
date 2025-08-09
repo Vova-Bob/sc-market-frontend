@@ -238,6 +238,7 @@ export const contractorsApi = serviceApi.injectEndpoints({
           site_url?: string
           name?: string
           market_order_template?: string
+          locale?: "en" | "es" | "uk" | "zh-CN" | "fr" | "de" | "ja"
         }
       }
     >({

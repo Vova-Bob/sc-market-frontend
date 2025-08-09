@@ -1522,6 +1522,13 @@
     "rolesTab": "Roles and Members",
     "discordTab": "Discord Integration",
     "marketTab": "Market",
+    "settingsTab": "Settings",
+    "settings": {
+      "locale": {
+        "title": "Organization Language",
+        "select": "Select organization language"
+      }
+    },
     "invite": {
       "acceptInviteTitle": "Accept Invite",
       "acceptContractorInvite": "Accept Contractor Invite",
