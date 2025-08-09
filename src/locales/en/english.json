@@ -1539,5 +1539,39 @@
     "title": "Login",
     "accountLink": "Account Link",
     "authenticateWithRSI": "Authenticate with RSI"
+  },
+  "ui": {
+    "buttons": {
+      "save": "Save"
+    },
+    "dialog": {
+      "selectImage": {
+        "title": "Select Image",
+        "imageUrl": {
+          "label": "Image URL",
+          "placeholder": "Must be a direct URL to the image, from Imgur, RSI, or starcitizen.tools"
+        },
+        "imageSearch": {
+          "label": "Image Search",
+          "placeholder": "Search query to search for images from starcitizen.tools"
+        },
+        "buttons": {
+          "cancel": "Cancel",
+          "saveAndClose": "Save and Close"
+        }
+      }
+    },
+    "aria": {
+      "orgInfoArea": "org info area",
+      "breadcrumb": "breadcrumb",
+      "loadingButtonGroup": "contained primary loadingButton group",
+      "currentContractor": "current contractor"
+    },
+    "datagrid": {
+      "noRows": "No rows",
+      "noResults": "No results",
+      "rowsPerPage": "Rows per page:",
+      "displayedRows": "{{from}}-{{to}} of {{count}}"
+    }
   }
 }

@@ -576,7 +576,7 @@ export function ViewProfile(props: { profile: User }) {
                                   setDescriptionEditOpen(false)
                                 }}
                               >
-                                Save
+                                {t("ui.buttons.save")}
                               </Button>
                             }
                           />

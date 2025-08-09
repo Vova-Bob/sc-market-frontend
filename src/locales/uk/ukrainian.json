@@ -1539,5 +1539,39 @@
     "title": "Вхід",
     "accountLink": "Прив'язка акаунта",
     "authenticateWithRSI": "Авторизація через RSI"
+  },
+  "ui": {
+    "buttons": {
+      "save": "Зберегти"
+    },
+    "dialog": {
+      "selectImage": {
+        "title": "Вибір зображення",
+        "imageUrl": {
+          "label": "URL зображення",
+          "placeholder": "Має бути прямий URL до зображення (Imgur, RSI або starcitizen.tools)"
+        },
+        "imageSearch": {
+          "label": "Пошук зображення",
+          "placeholder": "Пошуковий запит для зображень зі starcitizen.tools"
+        },
+        "buttons": {
+          "cancel": "Скасувати",
+          "saveAndClose": "Зберегти й закрити"
+        }
+      }
+    },
+    "aria": {
+      "orgInfoArea": "область інформації про організацію",
+      "breadcrumb": "навігаційний ланцюжок",
+      "loadingButtonGroup": "група кнопок завантаження",
+      "currentContractor": "поточний підрядник"
+    },
+    "datagrid": {
+      "noRows": "Немає рядків",
+      "noResults": "Немає результатів",
+      "rowsPerPage": "Рядків на сторінку:",
+      "displayedRows": "{{from}}–{{to}} з {{count}}"
+    }
   }
 }
