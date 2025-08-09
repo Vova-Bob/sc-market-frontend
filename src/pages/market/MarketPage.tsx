@@ -74,7 +74,7 @@ export function MarketPage() {
                 </Typography>
                 <Tabs
                   value={tabPage}
-                  aria-label="org info area"
+                  aria-label={t("ui.aria.orgInfoArea")}
                   variant="scrollable"
                   textColor="secondary"
                   indicatorColor="secondary"

@@ -412,7 +412,7 @@ export function Sidebar() {
               >
                 <Avatar
                   src={avatar}
-                  aria-label="current contractor"
+                  aria-label={t("ui.aria.currentContractor")}
                   variant={"rounded"}
                   sx={{
                     maxHeight: theme.spacing(6),

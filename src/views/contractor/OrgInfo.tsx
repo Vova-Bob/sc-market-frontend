@@ -171,7 +171,7 @@ export function OrgInfo(props: { contractor: Contractor }) {
                     <Grid item sm={4}>
                       <Avatar
                         src={contractor?.avatar}
-                        aria-label="contractor"
+                        aria-label={t("contractors.contractor")}
                         variant={"rounded"}
                         sx={{
                           maxHeight: theme.spacing(12),
@@ -272,7 +272,7 @@ export function OrgInfo(props: { contractor: Contractor }) {
                 <Tabs
                   value={page}
                   // onChange={handleChange}
-                  aria-label="org info area"
+                  aria-label={t("ui.aria.orgInfoArea")}
                   variant="scrollable"
                 >
                   <Tab
@@ -386,7 +386,7 @@ export function OrgInfoSkeleton() {
           <Tabs
             value={page}
             onChange={handleChange}
-            aria-label="org info area"
+            aria-label={t("ui.aria.orgInfoArea")}
             variant="scrollable"
           >
             <Tab

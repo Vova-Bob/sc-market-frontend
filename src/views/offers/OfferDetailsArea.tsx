@@ -184,7 +184,7 @@ export function OfferDetailsArea(props: { session: OfferSession }) {
   return (
     <Grid item xs={12} lg={8} md={6}>
       <TableContainer component={Paper}>
-        <Table aria-label="details table">
+        <Table aria-label={t("offers.details_table")}>
           <TableBody>
             <TableRow
               sx={{

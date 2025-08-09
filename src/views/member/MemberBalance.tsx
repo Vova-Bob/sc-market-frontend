@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next"
 
 export function MemberBalance() {
   const profile = useGetUserProfileQuery()
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   return (
     <Section xs={12} lg={12}>
@@ -32,7 +32,7 @@ export function MemberBalance() {
           sx={{ fontWeight: "bold", transition: "0.3s" }}
         >
           {profile.data?.balance &&
-            profile.data?.balance.toLocaleString("en-US")}{" "}
+            profile.data?.balance.toLocaleString(i18n.language)}{" "}
           aUEC
         </Typography>
       </Grid>

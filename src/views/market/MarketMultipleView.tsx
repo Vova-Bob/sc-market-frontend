@@ -232,7 +232,7 @@ export function MarketMultipleView() {
                           justifyContent={"left"}
                         >
                           <Breadcrumbs
-                            aria-label="breadcrumb"
+                            aria-label={t("ui.aria.breadcrumb")}
                             color={"text.primary"}
                           >
                             <MaterialLink

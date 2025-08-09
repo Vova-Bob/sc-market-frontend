@@ -351,7 +351,7 @@ export function OrdersViewPaginated(props: {
           <Tabs
             value={tab}
             // onChange={(_, newPage) => setPage(newPage)}
-            aria-label="order tabs"
+            aria-label={t("orders.aria.orderTabs")}
             variant="scrollable"
           >
             {tabs.map(([id, tag], index) => (

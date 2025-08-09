@@ -392,11 +392,12 @@ export function MarketSideBarToggleButton() {
   const [open, setOpen] = useMarketSidebar()
   const theme = useTheme<ExtendedTheme>()
   const [drawerOpen] = useDrawerOpen()
+  const { t } = useTranslation()
 
   return (
     <IconButton
       color="secondary"
-      aria-label="toggle market sidebar"
+      aria-label={t("market.toggleSidebar")}
       sx={{
         zIndex: theme.zIndex.drawer - 2,
         position: "absolute",

@@ -27,7 +27,7 @@ export function OrgRegister() {
           <Tabs
             value={page}
             onChange={(_, newPage) => setPage(newPage)}
-            aria-label="org info area"
+            aria-label={t("ui.aria.orgInfoArea")}
             variant="scrollable"
           >
             <Tab

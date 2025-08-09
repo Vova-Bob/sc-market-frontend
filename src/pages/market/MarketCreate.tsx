@@ -37,7 +37,7 @@ export function MarketCreate(props: {}) {
           <Tabs
             value={page}
             // onChange={handleChange}
-            aria-label="market listing tabs"
+            aria-label={t("market.aria.listingTabs")}
             variant="scrollable"
             textColor="secondary"
             indicatorColor="secondary"

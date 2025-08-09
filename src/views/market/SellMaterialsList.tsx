@@ -70,7 +70,7 @@ function SellItemRow(props: {
   isItemSelected: boolean
   labelId: string
 }): JSX.Element {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { row, onClick, isItemSelected, labelId } = props
   const bgColor = useMemo(
     () => (kindIcons[row.kind] ? kindIcons[row.kind][1] : "#FFF"),
@@ -112,7 +112,7 @@ function SellItemRow(props: {
 
       <TableCell align="right">
         <Typography variant={"subtitle1"} color={"secondary"}>
-          {(row.trade_price_sell * 0.9).toLocaleString("en-US")} aUEC
+          {(row.trade_price_sell * 0.9).toLocaleString(i18n.language)} aUEC
         </Typography>
       </TableCell>
 

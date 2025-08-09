@@ -409,7 +409,7 @@ export function OrderDetailsArea(props: { order: Order }) {
                     amAssigned) && (
                     <ButtonGroup
                       variant="contained"
-                      aria-label="contained primary loadingButton group"
+                      aria-label={t("ui.aria.loadingButtonGroup")}
                     >
                       {(profile?.role === "admin" ||
                         order.status === "not-started" ||
