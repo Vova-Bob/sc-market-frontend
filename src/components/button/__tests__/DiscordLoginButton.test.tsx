@@ -1,32 +1,34 @@
-import React from 'react'
-import { render, screen, fireEvent } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
+import React from "react"
+import { render, screen, fireEvent } from "@testing-library/react"
+import { MemoryRouter } from "react-router-dom"
 
 // Mock i18n hook to return the key fallback
-jest.mock('react-i18next', () => ({
-  useTranslation: () => ({ t: (key: string, fallback?: string) => fallback || key }),
+jest.mock("react-i18next", () => ({
+  useTranslation: () => ({
+    t: (key: string, fallback?: string) => fallback || key,
+  }),
 }))
 
 // Mock constants to avoid import.meta.env in tests
-jest.mock('../../../util/constants', () => ({
-  BACKEND_URL: 'http://backend',
+jest.mock("../../../util/constants", () => ({
+  BACKEND_URL: "http://backend",
 }))
 
 // Mock icon to avoid MUI SvgIcon rendering complexity
-jest.mock('../../icon/DiscordIcon', () => ({
+jest.mock("../../icon/DiscordIcon", () => ({
   Discord: () => <span data-testid="discord-icon" />,
 }))
 
-describe('DiscordLoginButton', () => {
+describe("DiscordLoginButton", () => {
   const installHrefSpy = () => {
     const hrefSet = jest.fn()
-    Object.defineProperty(window, 'location', {
+    Object.defineProperty(window, "location", {
       value: {
         set href(v: string) {
           hrefSet(v)
         },
         get href() {
-          return ''
+          return ""
         },
       },
       writable: true,
@@ -34,33 +36,37 @@ describe('DiscordLoginButton', () => {
     return hrefSet
   }
 
-  it('navigates to discord auth URL on click using current path', () => {
+  it("navigates to discord auth URL on click using current path", () => {
     const hrefSet = installHrefSpy()
-    const { DiscordLoginButton } = require('../DiscordLoginButton')
+    const { DiscordLoginButton } = require("../DiscordLoginButton")
 
     render(
-      <MemoryRouter initialEntries={['/foo']}>
+      <MemoryRouter initialEntries={["/foo"]}>
         <DiscordLoginButton />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
-    fireEvent.click(screen.getByRole('button', { name: /Login with Discord/i }))
+    fireEvent.click(screen.getByRole("button", { name: /Login with Discord/i }))
 
-    expect(hrefSet).toHaveBeenCalledWith('http://backend/auth/discord?path=%2Ffoo')
+    expect(hrefSet).toHaveBeenCalledWith(
+      "http://backend/auth/discord?path=%2Ffoo",
+    )
   })
 
-  it('uses /market when on root path', () => {
+  it("uses /market when on root path", () => {
     const hrefSet = installHrefSpy()
-    const { DiscordLoginButton } = require('../DiscordLoginButton')
+    const { DiscordLoginButton } = require("../DiscordLoginButton")
 
     render(
-      <MemoryRouter initialEntries={['/']}>
+      <MemoryRouter initialEntries={["/"]}>
         <DiscordLoginButton />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
-    fireEvent.click(screen.getByRole('button', { name: /Login with Discord/i }))
+    fireEvent.click(screen.getByRole("button", { name: /Login with Discord/i }))
 
-    expect(hrefSet).toHaveBeenCalledWith('http://backend/auth/discord?path=%2Fmarket')
+    expect(hrefSet).toHaveBeenCalledWith(
+      "http://backend/auth/discord?path=%2Fmarket",
+    )
   })
 })

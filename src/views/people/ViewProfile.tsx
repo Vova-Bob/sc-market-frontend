@@ -236,7 +236,7 @@ function BannerEditArea(props: {
       </Collapse>
 
       {isMyProfile && (
-          <Fab
+        <Fab
           color={bannerEntryOpen ? "primary" : "secondary"}
           aria-label={t("orgDetailEdit.set_banner")}
           onClick={async () => {
