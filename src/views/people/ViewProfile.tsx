@@ -62,7 +62,7 @@ import { Discord } from "../../components/icon/DiscordIcon"
 import { useGetServicesQuery } from "../../store/services"
 
 const external_resource_pattern =
-  /^https?:\/\/(www\.)?((((media)|(cdn)\.)?robertsspaceindustries\.com)|((media\.)?starcitizen.tools)|(i\.imgur\.com)|(media\.discordapp\.net)|(cdn\.discordapp\.com)|(cstone\.space))\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/
+  /^https?:\/\/(www\.)?((((media)|(cdn)\.)?robertsspaceindustries\.com)|((media\.)?starcitizen.tools)|(i\.imgur\.com)|(cstone\.space))\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/
 export const external_resource_regex = new RegExp(external_resource_pattern)
 
 const name_to_index = new Map([

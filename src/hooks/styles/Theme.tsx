@@ -377,4 +377,4 @@ export const lightTheme = responsiveFontSizes(
 )
 
 export const MISSING_IMAGE_URL =
-  "https://media.discordapp.net/attachments/690989503397101678/1072360279091978240/placeholder-image-square.jpeg"
+  "https://media.starcitizen.tools/thumb/9/93/Placeholderv2.png/399px-Placeholderv2.png.webp"
