@@ -163,6 +163,7 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
     useState<StarmapObject | null>(null)
   const [destTargetObject, setDestTargetObject] =
     useState<StarmapObject | null>(null)
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
   const navigate = useNavigate()
 
   const getSuggestions = React.useCallback(async (query: string) => {
@@ -215,6 +216,14 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
     [getSuggestions],
   )
 
+  const handleFileUpload = useCallback((files: File[]) => {
+    console.log(`[Service Photo Upload] Files selected:`, {
+      count: files.length,
+      files: files.map(f => ({ name: f.name, size: f.size, type: f.type }))
+    })
+    setUploadedFiles(prev => [...prev, ...files])
+  }, [])
+
   useEffect(() => {
     retrieveDepart(departTarget)
   }, [departTarget, retrieveDepart])
@@ -233,10 +242,21 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
   const submitService = useCallback(
     async (event: any) => {
       // event.preventDefault();
-      let res: { data?: any; error?: any }
+      
+      // Combine existing photos with uploaded files
+      const allPhotos = [...state.photos, ...uploadedFiles.map(file => file.name)]
+      
+      console.log(`[Service Photo Upload] Submitting service with photos:`, {
+        existing_photos: state.photos,
+        uploaded_files: uploadedFiles.map(f => ({ name: f.name, size: f.size, type: f.type })),
+        total_photos: allPhotos.length,
+        service_name: state.service_name,
+        service_type: props.service ? 'update' : 'create'
+      })
 
       if (props.service) {
-        res = await updateService({
+        console.log(`[Service Photo Upload] Updating service ${props.service.service_id}`)
+        updateService({
           service_id: props.service.service_id,
           body: {
             service_name: state.service_name,
@@ -252,11 +272,55 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
             payment_type: state.payment_type,
             contractor: currentOrg?.spectrum_id,
             status: state.status,
-            photos: state.photos,
+            photos: allPhotos,
           },
         })
+          .unwrap()
+          .then(() => {
+            console.log(`[Service Photo Upload] Service update successful for ${props.service?.service_id}`)
+            setState({
+              service_name: "",
+              service_description: "",
+              title: "",
+              rush: false,
+              description: "",
+              type: "",
+              collateral: 0,
+              estimate: 0,
+              offer: 0,
+              payment_type: "one-time",
+              departure: null,
+              departureInput: "",
+              departChangeTimer: Date.now(),
+              destination: null,
+              destinationInput: "",
+              destChangeTimer: Date.now(),
+              status: "active",
+              photos: [],
+            })
+
+            // Clear uploaded files after successful submission
+            setUploadedFiles([])
+
+            issueAlert({
+              message: t("CreateServiceForm.alert.submitted"),
+              severity: "success",
+            })
+
+            navigate("/order/services")
+          })
+          .catch((err) => {
+            console.error(`[Service Photo Upload] Service update failed for ${props.service?.service_id}:`, {
+              service_id: props.service?.service_id,
+              error: err,
+              error_message: (err as any)?.message || 'Unknown error',
+              error_status: (err as any)?.status || 'No status'
+            })
+            issueAlert(err)
+          })
       } else {
-        res = await createService({
+        console.log(`[Service Photo Upload] Creating new service`)
+        createService({
           service_name: state.service_name,
           service_description: state.service_description,
           title: state.title,
@@ -270,48 +334,50 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
           payment_type: state.payment_type,
           contractor: currentOrg?.spectrum_id,
           status: state.status,
-          photos: state.photos,
+          photos: allPhotos,
         })
+          .unwrap()
+          .then(() => {
+            console.log(`[Service Photo Upload] Service creation successful`)
+            setState({
+              service_name: "",
+              service_description: "",
+              title: "",
+              rush: false,
+              description: "",
+              type: "",
+              collateral: 0,
+              estimate: 0,
+              offer: 0,
+              payment_type: "one-time",
+              departure: null,
+              departureInput: "",
+              departChangeTimer: Date.now(),
+              destination: null,
+              destinationInput: "",
+              destChangeTimer: Date.now(),
+              status: "active",
+              photos: [],
+            })
+
+            // Clear uploaded files after successful submission
+            setUploadedFiles([])
+
+            issueAlert({
+              message: t("CreateServiceForm.alert.submitted"),
+              severity: "success",
+            })
+          })
+          .catch((err) => {
+            console.error(`[Service Photo Upload] Service creation failed:`, {
+              error: err,
+              error_message: (err as any)?.message || 'Unknown error',
+              error_status: (err as any)?.status || 'No status'
+            })
+            issueAlert(err)
+          })
       }
 
-      if (res?.data && !res?.error) {
-        setState({
-          service_name: "",
-          service_description: "",
-          title: "",
-          rush: false,
-          description: "",
-          type: "",
-          collateral: 0,
-          estimate: 0,
-          offer: 0,
-          payment_type: "one-time",
-          departure: null,
-          departureInput: "",
-          departChangeTimer: Date.now(),
-          destination: null,
-          destinationInput: "",
-          destChangeTimer: Date.now(),
-          status: "active",
-          photos: [],
-        })
-
-        issueAlert({
-          message: t("CreateServiceForm.alert.submitted"),
-          severity: "success",
-        })
-
-        if (props.service) {
-          navigate("/order/services")
-        }
-      } else {
-        issueAlert({
-          message: `${t("CreateServiceForm.alert.failed")} ${
-            res.error?.error || res.error?.data?.error || res.error
-          }`,
-          severity: "error",
-        })
-      }
       return false
     },
     [
@@ -331,6 +397,8 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
       state.service_name,
       state.title,
       state.type,
+      state.photos,
+      uploadedFiles,
       updateService,
       t, // add t to dependencies
     ],
@@ -407,6 +475,12 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
               setPhotos={(photos) =>
                 setState((state) => ({ ...state, photos }))
               }
+              onFileUpload={handleFileUpload}
+              showUploadButton={true}
+              pendingFiles={uploadedFiles}
+              onRemovePendingFile={(file) => {
+                setUploadedFiles(prev => prev.filter(f => f !== file))
+              }}
             />
           </Grid>
         </Grid>

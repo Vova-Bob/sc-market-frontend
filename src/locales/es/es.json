@@ -985,7 +985,13 @@
     "endTime": "End Time ({{tz}})",
     "submit": "Submit",
     "submitted": "Submitted!",
-    "failedSubmit": "Failed to submit!"
+    "failedSubmit": "Failed to submit!",
+    "photosUploaded": "¡Fotos subidas exitosamente!",
+    "photoUploadFailed": "Error al subir algunas fotos"
+  },
+  "SelectPhotosArea": {
+    "imageSearch": "Búsqueda de imágenes",
+    "upload": "Subir"
   },
   "AggregateMarketListingForm": {
     "about": "About",

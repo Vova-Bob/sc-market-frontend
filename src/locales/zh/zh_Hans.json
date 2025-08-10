@@ -987,7 +987,13 @@
     "endTime": "End Time ({{tz}})",
     "submit": "Submit",
     "submitted": "Submitted!",
-    "failedSubmit": "Failed to submit!"
+    "failedSubmit": "Failed to submit!",
+    "photosUploaded": "照片上传成功！",
+    "photoUploadFailed": "部分照片上传失败"
+  },
+  "SelectPhotosArea": {
+    "imageSearch": "图片搜索",
+    "upload": "上传"
   },
   "AggregateMarketListingForm": {
     "about": "About",

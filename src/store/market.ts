@@ -523,6 +523,35 @@ export const marketApi = serviceApi.injectEndpoints({
       query: (category) =>
         `${baseUrl}/category/${encodeURIComponent(category)}`,
     }),
+    marketUploadListingPhotos: builder.mutation<
+      { message: string; photo_urls: string[] },
+      {
+        listing_id: string
+        photos: File[]
+      }
+    >({
+      query: ({ listing_id, photos }) => {
+        const formData = new FormData()
+        photos.forEach((photo, index) => {
+          formData.append(`photos`, photo)
+        })
+        
+        return {
+          url: `${baseUrl}/listing/${listing_id}/photos`,
+          method: 'POST',
+          body: formData,
+          // Don't set Content-Type header, let the browser set it with boundary for multipart/form-data
+        }
+      },
+      invalidatesTags: (result, error, arg) => [
+        // Invalidate the specific listing by ID
+        { type: "Listing" as const, id: arg.listing_id },
+        // Invalidate general listing tags to ensure all listing queries are refreshed
+        { type: "Listing" as const },
+        // Invalidate all listings to ensure list views are updated
+        { type: "AllListings" as const },
+      ],
+    }),
   }),
 })
 
@@ -557,4 +586,5 @@ export const {
   useMarketUpdateListingMutation,
   useMarketCreateListingMutation,
   useMarketGetPublicQuery,
+  useMarketUploadListingPhotosMutation,
 } = marketApi

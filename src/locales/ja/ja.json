@@ -985,7 +985,13 @@
     "endTime": "End Time ({{tz}})",
     "submit": "Submit",
     "submitted": "Submitted!",
-    "failedSubmit": "Failed to submit!"
+    "failedSubmit": "Failed to submit!",
+    "photosUploaded": "写真が正常にアップロードされました！",
+    "photoUploadFailed": "一部の写真のアップロードに失敗しました"
+  },
+  "SelectPhotosArea": {
+    "imageSearch": "画像検索",
+    "upload": "アップロード"
   },
   "AggregateMarketListingForm": {
     "about": "About",

@@ -985,7 +985,13 @@
     "endTime": "",
     "submit": "",
     "submitted": "",
-    "failedSubmit": ""
+    "failedSubmit": "",
+    "photosUploaded": "照片上傳成功！",
+    "photoUploadFailed": "部分照片上傳失敗"
+  },
+  "SelectPhotosArea": {
+    "imageSearch": "圖片搜索",
+    "upload": "上傳"
   },
   "AggregateMarketListingForm": {
     "about": "",
