@@ -517,7 +517,7 @@ function FAQSection() {
   const theme = useTheme<ExtendedTheme>()
 
   return (
-    <Stack direction={"row"} sx={{ flexWrap: "wrap" }}>
+    <Stack direction={"row"} sx={{ flexWrap: "wrap" }} spacing={1}>
       <Typography
         variant={"h3"}
         color={"text.secondary"}
