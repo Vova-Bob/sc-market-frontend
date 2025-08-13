@@ -25,6 +25,7 @@ import { SelectPhotosArea } from "../../components/modal/SelectPhotosArea"
 import {
   useCreateServiceMutation,
   useUpdateServiceMutation,
+  useUploadServicePhotosMutation,
 } from "../../store/services"
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
@@ -219,9 +220,9 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
   const handleFileUpload = useCallback((files: File[]) => {
     console.log(`[Service Photo Upload] Files selected:`, {
       count: files.length,
-      files: files.map(f => ({ name: f.name, size: f.size, type: f.type }))
+      files: files.map((f) => ({ name: f.name, size: f.size, type: f.type })),
     })
-    setUploadedFiles(prev => [...prev, ...files])
+    setUploadedFiles((prev) => [...prev, ...files])
   }, [])
 
   useEffect(() => {
@@ -239,25 +240,37 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
     updateService, // This is the mutation trigger
   ] = useUpdateServiceMutation()
 
+  const [uploadServicePhotos, { isLoading: isUploadingPhotos }] =
+    useUploadServicePhotosMutation()
+
   const submitService = useCallback(
     async (event: any) => {
       // event.preventDefault();
-      
+
       // Combine existing photos with uploaded files
-      const allPhotos = [...state.photos, ...uploadedFiles.map(file => file.name)]
-      
-      console.log(`[Service Photo Upload] Submitting service with photos:`, {
+      const allPhotos = [...state.photos]
+
+      console.log(`[Service Photo Upload] Submitting service:`, {
         existing_photos: state.photos,
-        uploaded_files: uploadedFiles.map(f => ({ name: f.name, size: f.size, type: f.type })),
-        total_photos: allPhotos.length,
+        uploaded_files: uploadedFiles.map((f) => ({
+          name: f.name,
+          size: f.size,
+          type: f.type,
+        })),
+        photos_to_send: allPhotos, // Only normal photo URLs, not uploaded file names
         service_name: state.service_name,
-        service_type: props.service ? 'update' : 'create'
+        service_type: props.service ? "update" : "create",
       })
 
       if (props.service) {
-        console.log(`[Service Photo Upload] Updating service ${props.service.service_id}`)
+        console.log(
+          `[Service Photo Upload] Updating service ${props.service.service_id}`,
+        )
+
+        const serviceId = props.service.service_id // Store service ID for use in async callbacks
+
         updateService({
-          service_id: props.service.service_id,
+          service_id: serviceId,
           body: {
             service_name: state.service_name,
             service_description: state.service_description,
@@ -276,8 +289,40 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
           },
         })
           .unwrap()
-          .then(() => {
-            console.log(`[Service Photo Upload] Service update successful for ${props.service?.service_id}`)
+          .then(async () => {
+            console.log(
+              `[Service Photo Upload] Service update successful for ${serviceId}`,
+            )
+
+            // Upload any pending files if they exist
+            if (uploadedFiles.length > 0) {
+              console.log(
+                `[Service Photo Upload] Uploading photos for updated service ${serviceId}`,
+              )
+
+              try {
+                const uploadResult = await uploadServicePhotos({
+                  service_id: serviceId,
+                  photos: uploadedFiles,
+                }).unwrap()
+
+                console.log(
+                  `[Service Photo Upload] Photos uploaded successfully:`,
+                  {
+                    service_id: serviceId,
+                    result: uploadResult,
+                    photo_urls: uploadResult.photos,
+                  },
+                )
+              } catch (uploadError) {
+                console.error(
+                  `[Service Photo Upload] Photo upload failed:`,
+                  uploadError,
+                )
+                // Continue with redirect even if photo upload fails
+              }
+            }
+
             setState({
               service_name: "",
               service_description: "",
@@ -310,12 +355,15 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
             navigate("/order/services")
           })
           .catch((err) => {
-            console.error(`[Service Photo Upload] Service update failed for ${props.service?.service_id}:`, {
-              service_id: props.service?.service_id,
-              error: err,
-              error_message: (err as any)?.message || 'Unknown error',
-              error_status: (err as any)?.status || 'No status'
-            })
+            console.error(
+              `[Service Photo Upload] Service update failed for ${serviceId}:`,
+              {
+                service_id: serviceId,
+                error: err,
+                error_message: (err as any)?.message || "Unknown error",
+                error_status: (err as any)?.status || "No status",
+              },
+            )
             issueAlert(err)
           })
       } else {
@@ -337,8 +385,22 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
           photos: allPhotos,
         })
           .unwrap()
-          .then(() => {
+          .then(async () => {
             console.log(`[Service Photo Upload] Service creation successful`)
+
+            // Note: We cannot upload photos for new services because the createService
+            // endpoint doesn't return the service ID. Users will need to edit the service
+            // later to add photos.
+            if (uploadedFiles.length > 0) {
+              console.warn(
+                `[Service Photo Upload] Cannot upload photos for new service - service_id not available`,
+              )
+              issueAlert({
+                message: t("CreateServiceForm.alert.photosPending"),
+                severity: "info",
+              })
+            }
+
             setState({
               service_name: "",
               service_description: "",
@@ -371,8 +433,8 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
           .catch((err) => {
             console.error(`[Service Photo Upload] Service creation failed:`, {
               error: err,
-              error_message: (err as any)?.message || 'Unknown error',
-              error_status: (err as any)?.status || 'No status'
+              error_message: (err as any)?.message || "Unknown error",
+              error_status: (err as any)?.status || "No status",
             })
             issueAlert(err)
           })
@@ -400,6 +462,7 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
       state.photos,
       uploadedFiles,
       updateService,
+      uploadServicePhotos,
       t, // add t to dependencies
     ],
   )
@@ -479,9 +542,18 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
               showUploadButton={true}
               pendingFiles={uploadedFiles}
               onRemovePendingFile={(file) => {
-                setUploadedFiles(prev => prev.filter(f => f !== file))
+                setUploadedFiles((prev) => prev.filter((f) => f !== file))
               }}
             />
+            {!props.service && uploadedFiles.length > 0 && (
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ mt: 1, fontStyle: "italic" }}
+              >
+                {t("CreateServiceForm.photoUploadNote")}
+              </Typography>
+            )}
           </Grid>
         </Grid>
       </Section>
@@ -782,13 +854,14 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
           variant="contained"
           color={"secondary"}
           type="submit"
-          // component={Link}
-          // to={'/p/myoffers'}
+          disabled={isUploadingPhotos}
           onClick={submitService}
         >
-          {props.service
-            ? t("CreateServiceForm.update")
-            : t("CreateServiceForm.submit")}
+          {isUploadingPhotos
+            ? t("CreateServiceForm.uploadingPhotos")
+            : props.service
+              ? t("CreateServiceForm.update")
+              : t("CreateServiceForm.submit")}
         </Button>
       </Grid>
     </>

@@ -2,6 +2,15 @@ import { serviceApi } from "./service"
 import { Service, ServiceBody } from "../datatypes/Order"
 import { unwrapResponse } from "./orders"
 
+// Define the photo upload response type based on OpenAPI spec
+interface PhotoUploadResponse {
+  result: string
+  photos: Array<{
+    resource_id: string
+    url: string
+  }>
+}
+
 const servicesApi = serviceApi.injectEndpoints({
   overrideExisting: false,
   endpoints: (builder) => ({
@@ -54,6 +63,33 @@ const servicesApi = serviceApi.injectEndpoints({
       transformResponse: unwrapResponse,
       invalidatesTags: ["Service" as const, { type: "Service" as const }],
     }),
+    uploadServicePhotos: builder.mutation<
+      PhotoUploadResponse,
+      {
+        service_id: string
+        photos: File[]
+      }
+    >({
+      query: ({ service_id, photos }) => {
+        const formData = new FormData()
+        photos.forEach((photo, index) => {
+          formData.append(`photos`, photo)
+        })
+
+        return {
+          url: `/api/services/${service_id}/photos`,
+          method: "POST",
+          body: formData,
+          // Don't set Content-Type header, let the browser set it with boundary for multipart/form-data
+        }
+      },
+      invalidatesTags: (result, error, arg) => [
+        // Invalidate the specific service by ID
+        { type: "Service" as const, id: arg.service_id },
+        // Invalidate general service tags to ensure all service queries are refreshed
+        { type: "Service" as const },
+      ],
+    }),
   }),
 })
 
@@ -64,4 +100,5 @@ export const {
   useGetServicesQuery,
   useUpdateServiceMutation,
   useCreateServiceMutation,
+  useUploadServicePhotosMutation,
 } = servicesApi

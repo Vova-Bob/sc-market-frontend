@@ -1,6 +1,18 @@
 import { Stack } from "@mui/system"
-import { Avatar, Box, ButtonBase, Fab, Paper, Button, Typography } from "@mui/material"
-import { AddAPhotoRounded, CloseRounded, CloudUploadRounded } from "@mui/icons-material"
+import {
+  Avatar,
+  Box,
+  ButtonBase,
+  Fab,
+  Paper,
+  Button,
+  Typography,
+} from "@mui/material"
+import {
+  AddAPhotoRounded,
+  CloseRounded,
+  CloudUploadRounded,
+} from "@mui/icons-material"
 import React, { useState, useRef, useCallback } from "react"
 import { ImageSearch } from "../../views/market/ImageSearch"
 import { useTranslation } from "react-i18next"
@@ -75,13 +87,13 @@ export function SelectPhotosArea(props: {
   pendingFiles?: File[]
   onRemovePendingFile?: (file: File) => void
 }) {
-  const { 
-    photos, 
-    setPhotos, 
-    onFileUpload, 
-    showUploadButton = true, 
+  const {
+    photos,
+    setPhotos,
+    onFileUpload,
+    showUploadButton = true,
     pendingFiles = [],
-    onRemovePendingFile 
+    onRemovePendingFile,
   } = props
   const [photoOpen, setPhotoOpen] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -93,9 +105,13 @@ export function SelectPhotosArea(props: {
       if (files) {
         console.log(`[SelectPhotosArea] File upload initiated:`, {
           file_count: files.length,
-          files: Array.from(files).map(f => ({ name: f.name, size: f.size, type: f.type }))
+          files: Array.from(files).map((f) => ({
+            name: f.name,
+            size: f.size,
+            type: f.type,
+          })),
         })
-        
+
         const fileArray = Array.from(files)
         if (onFileUpload) {
           onFileUpload(fileArray)
@@ -111,7 +127,7 @@ export function SelectPhotosArea(props: {
     console.log(`[SelectPhotosArea] Removing pending file:`, {
       file_name: file.name,
       file_size: file.size,
-      file_type: file.type
+      file_type: file.type,
     })
     if (onRemovePendingFile) {
       onRemovePendingFile(file)
@@ -120,7 +136,7 @@ export function SelectPhotosArea(props: {
 
   const handleRemovePhoto = (photo: string) => {
     console.log(`[SelectPhotosArea] Removing existing photo:`, {
-      photo_url: photo
+      photo_url: photo,
     })
     setPhotos(photos.filter((p) => p !== photo))
   }
@@ -153,7 +169,10 @@ export function SelectPhotosArea(props: {
               }}
             >
               <AddAPhotoRounded />
-              <Typography variant="caption" sx={{ fontSize: "0.7rem", mt: 0.5 }}>
+              <Typography
+                variant="caption"
+                sx={{ fontSize: "0.7rem", mt: 0.5 }}
+              >
                 {t("SelectPhotosArea.imageSearch")}
               </Typography>
             </Box>
@@ -175,7 +194,10 @@ export function SelectPhotosArea(props: {
                 }}
               >
                 <CloudUploadRounded />
-                <Typography variant="caption" sx={{ fontSize: "0.7rem", mt: 0.5 }}>
+                <Typography
+                  variant="caption"
+                  sx={{ fontSize: "0.7rem", mt: 0.5 }}
+                >
                   {t("SelectPhotosArea.upload")}
                 </Typography>
               </Box>

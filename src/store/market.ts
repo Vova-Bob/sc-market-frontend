@@ -535,10 +535,10 @@ export const marketApi = serviceApi.injectEndpoints({
         photos.forEach((photo, index) => {
           formData.append(`photos`, photo)
         })
-        
+
         return {
           url: `${baseUrl}/listing/${listing_id}/photos`,
-          method: 'POST',
+          method: "POST",
           body: formData,
           // Don't set Content-Type header, let the browser set it with boundary for multipart/form-data
         }

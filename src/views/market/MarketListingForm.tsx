@@ -90,10 +90,8 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
     { isLoading }, // This is the destructured mutation result
   ] = useMarketCreateListingMutation()
 
-  const [
-    uploadPhotos,
-    { isLoading: isUploading },
-  ] = useMarketUploadListingPhotosMutation()
+  const [uploadPhotos, { isLoading: isUploading }] =
+    useMarketUploadListingPhotosMutation()
 
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
 
@@ -113,43 +111,56 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
         .then(async (res) => {
           // Upload photos if any files were selected
           if (uploadedFiles.length > 0) {
-            console.log(`[Photo Upload] Starting upload for listing ${res.listing_id}:`, {
-              listing_id: res.listing_id,
-              file_count: uploadedFiles.length,
-              files: uploadedFiles.map(f => ({ name: f.name, size: f.size, type: f.type }))
-            })
-            
+            console.log(
+              `[Photo Upload] Starting upload for listing ${res.listing_id}:`,
+              {
+                listing_id: res.listing_id,
+                file_count: uploadedFiles.length,
+                files: uploadedFiles.map((f) => ({
+                  name: f.name,
+                  size: f.size,
+                  type: f.type,
+                })),
+              },
+            )
+
             try {
               const uploadResult = await uploadPhotos({
                 listing_id: res.listing_id,
                 photos: uploadedFiles,
               }).unwrap()
-              
+
               console.log(`[Photo Upload] Upload successful:`, {
                 listing_id: res.listing_id,
                 result: uploadResult,
-                photo_urls: uploadResult.photo_urls
+                photo_urls: uploadResult.photo_urls,
               })
-              
+
               issueAlert({
                 message: t("MarketListingForm.photosUploaded"),
                 severity: "success",
               })
             } catch (uploadError) {
-              console.error(`[Photo Upload] Upload failed for listing ${res.listing_id}:`, {
-                listing_id: res.listing_id,
-                error: uploadError,
-                error_message: (uploadError as any)?.message || 'Unknown error',
-                error_status: (uploadError as any)?.status || 'No status'
-              })
-              
+              console.error(
+                `[Photo Upload] Upload failed for listing ${res.listing_id}:`,
+                {
+                  listing_id: res.listing_id,
+                  error: uploadError,
+                  error_message:
+                    (uploadError as any)?.message || "Unknown error",
+                  error_status: (uploadError as any)?.status || "No status",
+                },
+              )
+
               issueAlert({
                 message: t("MarketListingForm.photoUploadFailed"),
                 severity: "warning",
               })
             }
           } else {
-            console.log(`[Photo Upload] No photos to upload for listing ${res.listing_id}`)
+            console.log(
+              `[Photo Upload] No photos to upload for listing ${res.listing_id}`,
+            )
           }
 
           setState({
@@ -207,9 +218,9 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
   const handleFileUpload = useCallback((files: File[]) => {
     console.log(`[Photo Upload] Files selected:`, {
       count: files.length,
-      files: files.map(f => ({ name: f.name, size: f.size, type: f.type }))
+      files: files.map((f) => ({ name: f.name, size: f.size, type: f.type })),
     })
-    setUploadedFiles(prev => [...prev, ...files])
+    setUploadedFiles((prev) => [...prev, ...files])
   }, [])
 
   return (
@@ -289,7 +300,7 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
             onFileUpload={handleFileUpload}
             pendingFiles={uploadedFiles}
             onRemovePendingFile={(file) => {
-              setUploadedFiles(prev => prev.filter(f => f !== file))
+              setUploadedFiles((prev) => prev.filter((f) => f !== file))
             }}
           />
         </Grid>

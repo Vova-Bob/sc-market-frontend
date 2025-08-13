@@ -26,7 +26,10 @@ import {
 } from "@mui/icons-material"
 import { useGetContractorBySpectrumIDQuery } from "../../store/contractor"
 import { useCurrentMarketListing } from "../../hooks/market/CurrentMarketItem"
-import { useMarketUpdateListingMutation, useMarketUploadListingPhotosMutation } from "../../store/market"
+import {
+  useMarketUpdateListingMutation,
+  useMarketUploadListingPhotosMutation,
+} from "../../store/market"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { MarkdownEditor } from "../../components/markdown/Markdown"
 import { Navigate } from "react-router-dom"
@@ -85,10 +88,8 @@ export function MarketListingEditView() {
     { isLoading }, // This is the destructured mutation result
   ] = useMarketUpdateListingMutation()
 
-  const [
-    uploadPhotos,
-    { isLoading: isUploading },
-  ] = useMarketUploadListingPhotosMutation()
+  const [uploadPhotos, { isLoading: isUploading }] =
+    useMarketUploadListingPhotosMutation()
 
   const [quantity, setQuantity] = useState(listing.listing.quantity_available)
   const [price, setPrice] = useState(listing.listing.price)
@@ -114,14 +115,21 @@ export function MarketListingEditView() {
         // Clear pending files whenever the listing is updated
         // This ensures the UI shows the current server state instead of pending uploads
         if (pendingFiles.length > 0) {
-          console.log(`[Photo Upload] Clearing pending files after listing update for ${listing.listing.listing_id}:`, {
-            listing_id: listing.listing.listing_id,
-            cleared_files: pendingFiles.map(f => ({ name: f.name, size: f.size, type: f.type })),
-            update_body: body
-          })
+          console.log(
+            `[Photo Upload] Clearing pending files after listing update for ${listing.listing.listing_id}:`,
+            {
+              listing_id: listing.listing.listing_id,
+              cleared_files: pendingFiles.map((f) => ({
+                name: f.name,
+                size: f.size,
+                type: f.type,
+              })),
+              update_body: body,
+            },
+          )
           setPendingFiles([])
         }
-        
+
         issueAlert({
           message: t("MarketListingEditView.updated"),
           severity: "success",
@@ -138,70 +146,103 @@ export function MarketListingEditView() {
     [listing, issueAlert, updateListing, t, pendingFiles],
   )
 
-  const handleFileUpload = useCallback(async (files: File[]) => {
-    console.log(`[Photo Upload] Files selected for listing ${listing.listing.listing_id}:`, {
-      listing_id: listing.listing.listing_id,
-      count: files.length,
-      files: files.map(f => ({ name: f.name, size: f.size, type: f.type }))
-    })
-    // Store files locally instead of uploading immediately
-    setPendingFiles(prev => [...prev, ...files])
-  }, [listing.listing.listing_id])
+  const handleFileUpload = useCallback(
+    async (files: File[]) => {
+      console.log(
+        `[Photo Upload] Files selected for listing ${listing.listing.listing_id}:`,
+        {
+          listing_id: listing.listing.listing_id,
+          count: files.length,
+          files: files.map((f) => ({
+            name: f.name,
+            size: f.size,
+            type: f.type,
+          })),
+        },
+      )
+      // Store files locally instead of uploading immediately
+      setPendingFiles((prev) => [...prev, ...files])
+    },
+    [listing.listing.listing_id],
+  )
 
   const handlePhotosUpdate = useCallback(async () => {
     try {
       // First, update the listing with the current photos (hotlinked images)
-      console.log(`[Photo Upload] Updating listing with hotlinked images for ${listing.listing.listing_id}:`, {
-        listing_id: listing.listing.listing_id,
-        hotlinked_photos: photos,
-        hotlinked_count: photos.length
-      })
-      
+      console.log(
+        `[Photo Upload] Updating listing with hotlinked images for ${listing.listing.listing_id}:`,
+        {
+          listing_id: listing.listing.listing_id,
+          hotlinked_photos: photos,
+          hotlinked_count: photos.length,
+        },
+      )
+
       await updateListingCallback({ photos })
-      
+
       // Then, upload pending files and add them to the listing
       if (pendingFiles.length > 0) {
-        console.log(`[Photo Upload] Starting upload for listing ${listing.listing.listing_id}:`, {
-          listing_id: listing.listing.listing_id,
-          file_count: pendingFiles.length,
-          files: pendingFiles.map(f => ({ name: f.name, size: f.size, type: f.type }))
-        })
-        
+        console.log(
+          `[Photo Upload] Starting upload for listing ${listing.listing.listing_id}:`,
+          {
+            listing_id: listing.listing.listing_id,
+            file_count: pendingFiles.length,
+            files: pendingFiles.map((f) => ({
+              name: f.name,
+              size: f.size,
+              type: f.type,
+            })),
+          },
+        )
+
         const uploadResult = await uploadPhotos({
           listing_id: listing.listing.listing_id,
           photos: pendingFiles,
         }).unwrap()
-        
+
         console.log(`[Photo Upload] Upload successful:`, {
           listing_id: listing.listing.listing_id,
           result: uploadResult,
-          photo_urls: uploadResult.photo_urls
+          photo_urls: uploadResult.photo_urls,
         })
-        
+
         issueAlert({
           message: t("MarketListingForm.photosUploaded"),
           severity: "success",
         })
-        
+
         // Clear pending files after successful upload
         setPendingFiles([])
       } else {
-        console.log(`[Photo Upload] No pending files to upload for listing ${listing.listing.listing_id}`)
+        console.log(
+          `[Photo Upload] No pending files to upload for listing ${listing.listing.listing_id}`,
+        )
       }
     } catch (uploadError) {
-      console.error(`[Photo Upload] Operation failed for listing ${listing.listing.listing_id}:`, {
-        listing_id: listing.listing.listing_id,
-        error: uploadError,
-        error_message: (uploadError as any)?.message || 'Unknown error',
-        error_status: (uploadError as any)?.status || 'No status'
-      })
-      
+      console.error(
+        `[Photo Upload] Operation failed for listing ${listing.listing.listing_id}:`,
+        {
+          listing_id: listing.listing.listing_id,
+          error: uploadError,
+          error_message: (uploadError as any)?.message || "Unknown error",
+          error_status: (uploadError as any)?.status || "No status",
+        },
+      )
+
       issueAlert({
         message: t("MarketListingForm.photoUploadFailed"),
         severity: "warning",
       })
     }
-  }, [pendingFiles, uploadPhotos, listing.listing.listing_id, photos, updateListingCallback, issueAlert, t])
+  }, [
+    pendingFiles,
+    uploadPhotos,
+    listing.listing.listing_id,
+    photos,
+    updateListingCallback,
+    issueAlert,
+    t,
+  ])
 
   return (
     <>
@@ -507,20 +548,19 @@ export function MarketListingEditView() {
                     </>
                   )}
                   <Grid item xs={12}>
-                    <SelectPhotosArea 
-                      setPhotos={setPhotos} 
-                      photos={photos} 
+                    <SelectPhotosArea
+                      setPhotos={setPhotos}
+                      photos={photos}
                       onFileUpload={handleFileUpload}
                       showUploadButton={true}
                       pendingFiles={pendingFiles}
                       onRemovePendingFile={(file) => {
-                        setPendingFiles(prev => prev.filter(f => f !== file))
+                        setPendingFiles((prev) =>
+                          prev.filter((f) => f !== file),
+                        )
                       }}
                     />
-                    <Button
-                      onClick={handlePhotosUpdate}
-                      variant={"contained"}
-                    >
+                    <Button onClick={handlePhotosUpdate} variant={"contained"}>
                       {t("MarketListingEditView.updateBtn")}
                     </Button>
                   </Grid>
