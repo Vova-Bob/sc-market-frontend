@@ -1004,7 +1004,10 @@
   },
   "SelectPhotosArea": {
     "imageSearch": "Image Search",
-    "upload": "Upload"
+    "upload": "Upload",
+    "dropHere": "Drop Here",
+    "dragAndDropHint": "Drag and drop image files here",
+    "dragAndDropArea": "Photo upload area - drag and drop image files here or click to browse"
   },
   "AggregateMarketListingForm": {
     "about": "About",

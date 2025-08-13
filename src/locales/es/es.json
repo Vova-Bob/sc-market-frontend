@@ -991,7 +991,10 @@
   },
   "SelectPhotosArea": {
     "imageSearch": "Búsqueda de imágenes",
-    "upload": "Subir"
+    "upload": "Subir",
+    "dropHere": "Soltar aquí",
+    "dragAndDropHint": "Arrastra y suelta archivos de imagen aquí",
+    "dragAndDropArea": "Área de carga de fotos - arrastra y suelta archivos de imagen aquí o haz clic para explorar"
   },
   "AggregateMarketListingForm": {
     "about": "About",

@@ -7,6 +7,7 @@ import {
   Paper,
   Button,
   Typography,
+  useTheme,
 } from "@mui/material"
 import {
   AddAPhotoRounded,
@@ -96,8 +97,10 @@ export function SelectPhotosArea(props: {
     onRemovePendingFile,
   } = props
   const [photoOpen, setPhotoOpen] = useState(false)
+  const [isDragOver, setIsDragOver] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { t } = useTranslation()
+  const theme = useTheme()
 
   const handleFileUpload = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -122,6 +125,57 @@ export function SelectPhotosArea(props: {
     },
     [onFileUpload],
   )
+
+  const handleDragOver = useCallback((event: React.DragEvent) => {
+    event.preventDefault()
+    event.stopPropagation()
+    if (!isDragOver) {
+      console.log(`[SelectPhotosArea] Drag over started`)
+      setIsDragOver(true)
+    }
+  }, [isDragOver])
+
+  const handleDragLeave = useCallback((event: React.DragEvent) => {
+    event.preventDefault()
+    event.stopPropagation()
+    if (isDragOver) {
+      console.log(`[SelectPhotosArea] Drag over ended`)
+      setIsDragOver(false)
+    }
+  }, [isDragOver])
+
+  const handleDrop = useCallback((event: React.DragEvent) => {
+    event.preventDefault()
+    event.stopPropagation()
+    setIsDragOver(false)
+
+    const files = Array.from(event.dataTransfer.files)
+    const imageFiles = files.filter(file => file.type.startsWith('image/'))
+    
+    if (imageFiles.length > 0) {
+      console.log(`[SelectPhotosArea] Drag and drop file upload:`, {
+        file_count: imageFiles.length,
+        files: imageFiles.map((f) => ({
+          name: f.name,
+          size: f.size,
+          type: f.type,
+        })),
+      })
+
+      if (onFileUpload) {
+        onFileUpload(imageFiles)
+      }
+    } else if (files.length > 0) {
+      console.warn(`[SelectPhotosArea] Non-image files dropped, ignoring:`, {
+        file_count: files.length,
+        files: files.map((f) => ({
+          name: f.name,
+          size: f.size,
+          type: f.type,
+        })),
+      })
+    }
+  }, [onFileUpload])
 
   const handleRemovePendingFile = (file: File) => {
     console.log(`[SelectPhotosArea] Removing pending file:`, {
@@ -151,6 +205,52 @@ export function SelectPhotosArea(props: {
           "& > *": {
             margin: 0.5,
           },
+          border: isDragOver ? `2px dashed ${theme.palette.primary.main}` : "2px dashed transparent",
+          borderRadius: 2,
+          padding: isDragOver ? 1 : 0,
+          backgroundColor: isDragOver ? `${theme.palette.primary.main}08` : "transparent",
+          transition: "all 0.2s ease-in-out",
+          minHeight: 120,
+          position: "relative",
+          transform: isDragOver ? "scale(1.02)" : "scale(1)",
+          boxShadow: isDragOver ? `0 4px 20px ${theme.palette.primary.main}26` : "none",
+          "&::before": isDragOver ? {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: `${theme.palette.primary.main}04`,
+            borderRadius: 2,
+            zIndex: -1,
+          } : {},
+          "@keyframes pulse": {
+            "0%": {
+              transform: "scale(1)",
+              opacity: 1,
+            },
+            "50%": {
+              transform: "scale(1.05)",
+              opacity: 0.8,
+            },
+            "100%": {
+              transform: "scale(1)",
+              opacity: 1,
+            },
+          },
+        }}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        role="button"
+        tabIndex={0}
+        aria-label={t("SelectPhotosArea.dragAndDropArea")}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault()
+            fileInputRef.current?.click()
+          }
         }}
       >
         <Paper sx={{ width: 96, height: 96, bgcolor: "#00000099" }}>
@@ -230,7 +330,56 @@ export function SelectPhotosArea(props: {
             onClose={() => handleRemovePhoto(url)}
           />
         ))}
+
+        {/* Drag and drop indicator */}
+        {isDragOver && (
+          <Paper 
+            sx={{ 
+              width: 96, 
+              height: 96, 
+              bgcolor: `${theme.palette.primary.main}26`, 
+              border: `2px dashed ${theme.palette.primary.main}`,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "column",
+              animation: "pulse 1.5s ease-in-out infinite"
+            }}
+          >
+            <CloudUploadRounded sx={{ color: theme.palette.primary.main, fontSize: 32 }} />
+            <Typography
+              variant="caption"
+              sx={{ 
+                fontSize: "0.7rem", 
+                mt: 0.5, 
+                color: theme.palette.primary.main,
+                textAlign: "center",
+                fontWeight: "bold"
+              }}
+            >
+              {t("SelectPhotosArea.dropHere")}
+            </Typography>
+          </Paper>
+        )}
       </Stack>
+      
+      {/* Drag and drop hint */}
+      {onFileUpload && (
+        <Typography
+          variant="caption"
+          sx={{
+            display: "block",
+            textAlign: "center",
+            mt: 1,
+            color: theme.palette.text.secondary,
+            fontSize: "0.7rem",
+            fontStyle: "italic"
+          }}
+        >
+          {t("SelectPhotosArea.dragAndDropHint")}
+        </Typography>
+      )}
+      
       <ImageSearch
         open={photoOpen}
         setOpen={setPhotoOpen}

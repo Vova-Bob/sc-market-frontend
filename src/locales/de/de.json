@@ -991,7 +991,10 @@
   },
   "SelectPhotosArea": {
     "imageSearch": "Bildsuche",
-    "upload": "Hochladen"
+    "upload": "Hochladen",
+    "dropHere": "Hier ablegen",
+    "dragAndDropHint": "Bilddateien hierher ziehen und ablegen",
+    "dragAndDropArea": "Foto-Upload-Bereich - Bilddateien hierher ziehen und ablegen oder klicken zum Durchsuchen"
   },
   "AggregateMarketListingForm": {
     "about": "About",

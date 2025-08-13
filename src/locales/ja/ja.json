@@ -991,7 +991,10 @@
   },
   "SelectPhotosArea": {
     "imageSearch": "画像検索",
-    "upload": "アップロード"
+    "upload": "アップロード",
+    "dropHere": "ここにドロップ",
+    "dragAndDropHint": "画像ファイルをここにドラッグ＆ドロップ",
+    "dragAndDropArea": "写真アップロードエリア - 画像ファイルをここにドラッグ＆ドロップするか、クリックして参照"
   },
   "AggregateMarketListingForm": {
     "about": "About",

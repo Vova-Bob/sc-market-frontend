@@ -991,7 +991,10 @@
   },
   "SelectPhotosArea": {
     "imageSearch": "Recherche d'images",
-    "upload": "Télécharger"
+    "upload": "Télécharger",
+    "dropHere": "Déposer ici",
+    "dragAndDropHint": "Glissez et déposez des fichiers image ici",
+    "dragAndDropArea": "Zone de téléchargement de photos - glissez et déposez des fichiers image ici ou cliquez pour parcourir"
   },
   "AggregateMarketListingForm": {
     "about": "About",
