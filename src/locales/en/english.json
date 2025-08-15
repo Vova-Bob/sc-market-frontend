@@ -1,6 +1,9 @@
 {
   "admin": {
-    "orderStats": "Admin Order Stats"
+    "orderStats": "Admin Order Stats",
+    "moderation": "Admin Moderation",
+    "moderation.title": "Moderation Dashboard",
+    "moderation.description": "This page will contain moderation tools and reports."
   },
   "adminExpressVerify": {
     "title": "Express Verify User",
@@ -271,6 +274,9 @@
       "title": "Admin"
     },
     "users": "Users",
+    "moderation": {
+      "text": "Moderation"
+    },
     "sc_market": "SC Market",
     "sc_market_home": "SC Market Home",
     "toggle_drawer": "Toggle Drawer"

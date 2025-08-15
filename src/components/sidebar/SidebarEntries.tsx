@@ -322,6 +322,12 @@ export const all_sidebar_entries: SidebarSectionProps[] = [
         site_admin: true,
         to: "/admin/orders",
       },
+      {
+        text: "sidebar.moderation.text",
+        icon: <GavelIcon />,
+        site_admin: true,
+        to: "/admin/moderation",
+      },
     ],
   },
   {

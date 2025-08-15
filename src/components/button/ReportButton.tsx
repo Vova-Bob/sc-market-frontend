@@ -117,7 +117,11 @@ export function ReportButton({
 
   return (
     <>
-      <UnderlineLink onClick={handleOpen} component={'a'} href={"#"}>{children}</UnderlineLink>
+      <a href={"#"} style={{textDecoration: "none", color: "inherit"}}>
+      <UnderlineLink onClick={handleOpen}>
+        {children}
+      </UnderlineLink>
+      </a>
 
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
         <DialogTitle>
