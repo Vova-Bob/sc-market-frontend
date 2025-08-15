@@ -59,11 +59,11 @@
     "github": "Github",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service",
-    "copyright": "Copyright ©",
+    "copyright": "Copyright © ",
     "trademark": "Star Citizen®, Squadron 42®, Roberts Space Industries®, and Cloud Imperium® are registered trademarks of Cloud Imperium Rights LLC",
     "unofficial": "This is an unofficial Star Citizen fansite, not affiliated with the Cloud Imperium group of companies. All content on this site not authored by its host or users are property of their respective owners",
-    "acknowledgments": "Thank you to <ladyFleurLink>LadyFleur</ladyFleurLink> for the site logo, and to <starCitizenApiLink>StarCitizen-API</starCitizenApiLink>, <nexdLink>NEXD</nexdLink>, and <starCitizenWikiLink>Star Citizen Wiki</starCitizenWikiLink> for their APIs.",
-    "referralCode": "Use our referral code: {{code}}"
+    "acknowledgments": "Special thanks to {{ladyFleurLink}} for the amazing artwork, {{starCitizenApiLink}} for the API, {{nexdLink}} for the CDN, and {{starCitizenWikiLink}} for the wiki",
+    "referralCode": "Referral Code: {{code}}"
   },
   "listing": {
     "95PercentRating25PlusTransactions": "95%+ rating and 25+ transactions",
@@ -1008,6 +1008,30 @@
     "dropHere": "Drop Here",
     "dragAndDropHint": "Drag and drop image files here",
     "dragAndDropArea": "Photo upload area - drag and drop image files here or click to browse"
+  },
+  "ReportButton": {
+    "reportContent": "Report Content",
+    "reportDescription": "Help us keep the community safe by reporting content that violates our guidelines.",
+    "reportingUrl": "Reporting URL",
+    "reason": "Reason",
+    "additionalDetails": "Additional Details",
+    "detailsPlaceholder": "Please provide any additional context or details about this report...",
+    "detailsHelperText": "Optional: Provide more context to help moderators understand the issue (max 1000 characters)",
+    "cancel": "Cancel",
+    "submit": "Submit Report",
+    "submitting": "Submitting...",
+    "pleaseSelectReason": "Please select a reason for the report",
+    "reportSubmitted": "Report submitted successfully. Thank you for helping keep our community safe.",
+    "reportFailed": "Failed to submit report. Please try again.",
+    "reasons": {
+      "inappropriateContent": "Inappropriate Content",
+      "spam": "Spam",
+      "harassment": "Harassment",
+      "fakeListing": "Fake Listing",
+      "scam": "Scam",
+      "copyrightViolation": "Copyright Violation",
+      "other": "Other"
+    }
   },
   "AggregateMarketListingForm": {
     "about": "About",

@@ -30,6 +30,7 @@ import { contractorKindIcons } from "../contractor/ContractorList"
 import { has_permission } from "../contractor/OrgRoles"
 import { ListingSellerRating } from "../../components/rating/ListingRating"
 import { useTranslation } from "react-i18next"
+import { ReportButton } from "../../components/button/ReportButton"
 
 export function RecruitingPostView(props: { post: RecruitingPost }) {
   const { post } = props
@@ -116,6 +117,15 @@ export function RecruitingPostView(props: { post: RecruitingPost }) {
                 </Grid>
 
                 <ListingSellerRating contractor={contractor} />
+
+                <Typography
+                  color={"text.primary"}
+                  variant={'subtitle2'}
+                >
+                  <ReportButton
+                    reportedUrl={`/recruiting/post/${post.post_id}`}
+                  />
+                </Typography>
               </Box>
             }
             action={

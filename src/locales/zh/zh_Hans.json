@@ -998,6 +998,30 @@
     "dragAndDropHint": "拖放图片文件到这里",
     "dragAndDropArea": "照片上传区域 - 拖放图片文件到这里或点击浏览"
   },
+  "ReportButton": {
+    "reportContent": "举报内容",
+    "reportDescription": "通过举报违反我们指导原则的内容，帮助我们保持社区安全。",
+    "reportingUrl": "举报的URL",
+    "reason": "原因",
+    "additionalDetails": "附加详情",
+    "detailsPlaceholder": "请提供有关此举报的任何附加背景或详情...",
+    "detailsHelperText": "可选：提供更多背景信息以帮助版主理解问题（最多1000个字符）",
+    "cancel": "取消",
+    "submit": "提交举报",
+    "submitting": "提交中...",
+    "pleaseSelectReason": "请选择举报原因",
+    "reportSubmitted": "举报提交成功。感谢您帮助我们保持社区安全。",
+    "reportFailed": "举报提交失败。请重试。",
+    "reasons": {
+      "inappropriateContent": "不当内容",
+      "spam": "垃圾信息",
+      "harassment": "骚扰",
+      "fakeListing": "虚假列表",
+      "scam": "诈骗",
+      "copyrightViolation": "版权侵犯",
+      "other": "其他"
+    }
+  },
   "AggregateMarketListingForm": {
     "about": "About",
     "quantityAvailable": "Quantity Available",

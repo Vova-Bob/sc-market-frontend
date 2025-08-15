@@ -3,6 +3,7 @@ import { Divider, Grid, Link, Typography } from "@mui/material"
 import React from "react"
 import { DISCORD_INVITE } from "../../util/constants"
 import { Trans, useTranslation } from "react-i18next"
+import { ReportButton } from "../button/ReportButton"
 
 export function Footer() {
   const { t } = useTranslation()
@@ -104,6 +105,8 @@ export function Footer() {
                 {t("footer.termsOfService", "Terms of Service")}
               </UnderlineLink>
             </Link>
+            &nbsp;|&nbsp;
+            <ReportButton />
           </Typography>
           <br />
           <Typography variant="body2" color="textSecondary" align="center">

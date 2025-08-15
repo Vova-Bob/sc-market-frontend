@@ -25,6 +25,7 @@ import { statusColors } from "../orders/OrderList"
 import { ImagePreviewPaper } from "../../components/paper/ImagePreviewPaper"
 import { PAYMENT_TYPE_MAP } from "../../util/constants"
 import { useTranslation } from "react-i18next"
+import { ReportButton } from "../../components/button/ReportButton"
 
 export function ServiceView(props: { service: Service }) {
   const { service } = props
@@ -149,6 +150,14 @@ export function ServiceView(props: { service: Service }) {
                   >
                     {service.cost.toLocaleString(undefined)} aUEC{" "}
                     {paymentType ? t(paymentType) : ""}
+                  </Typography>
+                  <Typography
+                    display={"inline"}
+                    variant={"subtitle2"}
+                  >
+                    &nbsp;-&nbsp;<ReportButton
+                      reportedUrl={`/order/service/${service.service_id}`}
+                    />
                   </Typography>
                 </Box>
               }

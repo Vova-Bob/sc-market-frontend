@@ -28,6 +28,7 @@ import {
   GavelRounded,
   PersonRounded,
   RefreshRounded,
+  WarningRounded,
 } from "@mui/icons-material"
 import { useCurrentMarketListing } from "../../hooks/market/CurrentMarketItem"
 import { BaseListingType, UniqueListing } from "../../datatypes/MarketListing"
@@ -53,6 +54,7 @@ import { ImagePreviewPaper } from "../../components/paper/ImagePreviewPaper"
 import moment from "moment"
 import { ClockAlert } from "mdi-material-ui"
 import { useTranslation } from "react-i18next"
+import { ReportButton } from "../../components/button/ReportButton"
 
 export function ListingDetailItem(props: {
   icon: React.ReactNode
@@ -636,46 +638,52 @@ export function MarketListingView() {
                         </Stack>
                       }
                       subheader={
-                        <Stack direction={"column"} alignItems={"left"}>
-                          <ListingDetailItem
-                            icon={<PersonRounded fontSize={"inherit"} />}
-                          >
-                            <ListingNameAndRating
-                              user={listing.user_seller}
-                              contractor={listing.contractor_seller}
-                            />
-                          </ListingDetailItem>
+                        <Box>
+                          <Stack direction={"column"} alignItems={"left"}>
+                            <ListingDetailItem
+                              icon={<PersonRounded fontSize={"inherit"} />}
+                            >
+                              <ListingNameAndRating
+                                user={listing.user_seller}
+                                contractor={listing.contractor_seller}
+                              />
+                            </ListingDetailItem>
 
-                          <ListingDetailItem
-                            icon={<CreateRounded fontSize={"inherit"} />}
-                          >
-                            {t("MarketListingView.listed")}{" "}
-                            {getRelativeTime(new Date(listing.timestamp))}
-                          </ListingDetailItem>
+                            <ListingDetailItem
+                              icon={<CreateRounded fontSize={"inherit"} />}
+                            >
+                              {t("MarketListingView.listed")}{" "}
+                              {getRelativeTime(new Date(listing.timestamp))}
+                            </ListingDetailItem>
 
-                          <ListingDetailItem
-                            icon={<RefreshRounded fontSize={"inherit"} />}
-                          >
-                            {t("MarketListingView.updated")}{" "}
-                            {getRelativeTime(
-                              moment(listing.expiration)
-                                .subtract(30, "days")
-                                .toDate(),
-                            )}
-                          </ListingDetailItem>
+                            <ListingDetailItem
+                              icon={<RefreshRounded fontSize={"inherit"} />}
+                            >
+                              {t("MarketListingView.updated")}{" "}
+                              {getRelativeTime(
+                                moment(listing.expiration)
+                                  .subtract(30, "days")
+                                  .toDate(),
+                              )}
+                            </ListingDetailItem>
 
-                          <ListingDetailItem
-                            icon={<ClockAlert fontSize={"inherit"} />}
-                          >
-                            {t("MarketListingView.expires")}{" "}
-                            {getRelativeTime(new Date(listing.expiration))}
-                          </ListingDetailItem>
-                        </Stack>
+                            <ListingDetailItem
+                              icon={<ClockAlert fontSize={"inherit"} />}
+                            >
+                              {t("MarketListingView.expires")}{" "}
+                              {getRelativeTime(new Date(listing.expiration))}
+                            </ListingDetailItem>
+
+                            <ListingDetailItem icon={<WarningRounded fontSize={"inherit"}/>}>
+                              <ReportButton
+                                reportedUrl={`/market/${listing.listing_id}`}
+                              />
+                            </ListingDetailItem>
+                          </Stack>
+                        </Box>
                       }
                       action={
                         <Stack direction={"row"} spacing={1}>
-                          {/*<ReportListingButton />*/}
-
                           {amRelated &&
                           listing.status !== "archived" &&
                           listing.sale_type !== "auction" ? (

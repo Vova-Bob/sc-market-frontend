@@ -55,6 +55,7 @@ import { useRefetchContractorDetailsMutation } from "../../store/contractor"
 import { ListingSellerRating } from "../../components/rating/ListingRating"
 import { useGetServicesContractorQuery } from "../../store/services"
 import { useTranslation } from "react-i18next"
+import { ReportButton } from "../../components/button/ReportButton"
 
 const name_to_index = new Map([
   ["", 0],
@@ -183,14 +184,14 @@ export function OrgInfo(props: { contractor: Contractor }) {
                       />
                     </Grid>
                     <Grid item sm={8}>
-                      <Grid container spacing={1}>
+                      <Grid container spacing={0}>
                         <Grid item>
                           <Typography
                             color={"text.secondary"}
                             variant={"h6"}
                             fontWeight={600}
                           >
-                            {contractor.name}{" "}
+                            {contractor.name}
                             {!contractor.spectrum_id.startsWith("~") && (
                               <MaterialLink
                                 component={"a"}

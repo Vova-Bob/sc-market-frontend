@@ -996,6 +996,30 @@
     "dragAndDropHint": "画像ファイルをここにドラッグ＆ドロップ",
     "dragAndDropArea": "写真アップロードエリア - 画像ファイルをここにドラッグ＆ドロップするか、クリックして参照"
   },
+  "ReportButton": {
+    "reportContent": "コンテンツを報告",
+    "reportDescription": "コミュニティガイドラインに違反するコンテンツを報告して、コミュニティの安全を守るのを手伝ってください。",
+    "reportingUrl": "報告されたURL",
+    "reason": "理由",
+    "additionalDetails": "追加の詳細",
+    "detailsPlaceholder": "この報告に関する追加のコンテキストや詳細を提供してください...",
+    "detailsHelperText": "オプション：モデレーターが問題を理解するのを助けるために、より多くのコンテキストを提供してください（最大1000文字）",
+    "cancel": "キャンセル",
+    "submit": "報告を送信",
+    "submitting": "送信中...",
+    "pleaseSelectReason": "報告の理由を選択してください",
+    "reportSubmitted": "報告が正常に送信されました。コミュニティの安全を守るのを手伝っていただき、ありがとうございます。",
+    "reportFailed": "報告の送信に失敗しました。もう一度お試しください。",
+    "reasons": {
+      "inappropriateContent": "不適切なコンテンツ",
+      "spam": "スパム",
+      "harassment": "ハラスメント",
+      "fakeListing": "偽のリスト",
+      "scam": "詐欺",
+      "copyrightViolation": "著作権侵害",
+      "other": "その他"
+    }
+  },
   "AggregateMarketListingForm": {
     "about": "About",
     "quantityAvailable": "Quantity Available",

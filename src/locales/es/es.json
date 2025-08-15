@@ -996,6 +996,30 @@
     "dragAndDropHint": "Arrastra y suelta archivos de imagen aquí",
     "dragAndDropArea": "Área de carga de fotos - arrastra y suelta archivos de imagen aquí o haz clic para explorar"
   },
+  "ReportButton": {
+    "reportContent": "Reportar contenido",
+    "reportDescription": "Ayúdanos a mantener la comunidad segura reportando contenido que viola nuestras pautas.",
+    "reportingUrl": "URL reportada",
+    "reason": "Motivo",
+    "additionalDetails": "Detalles adicionales",
+    "detailsPlaceholder": "Por favor proporciona cualquier contexto adicional o detalles sobre este reporte...",
+    "detailsHelperText": "Opcional: Proporciona más contexto para ayudar a los moderadores a entender el problema (máx. 1000 caracteres)",
+    "cancel": "Cancelar",
+    "submit": "Enviar reporte",
+    "submitting": "Enviando...",
+    "pleaseSelectReason": "Por favor selecciona un motivo para el reporte",
+    "reportSubmitted": "Reporte enviado exitosamente. Gracias por ayudarnos a mantener nuestra comunidad segura.",
+    "reportFailed": "No se pudo enviar el reporte. Por favor intenta de nuevo.",
+    "reasons": {
+      "inappropriateContent": "Contenido inapropiado",
+      "spam": "Spam",
+      "harassment": "Acoso",
+      "fakeListing": "Listado falso",
+      "scam": "Estafa",
+      "copyrightViolation": "Violación de derechos de autor",
+      "other": "Otro"
+    }
+  },
   "AggregateMarketListingForm": {
     "about": "About",
     "quantityAvailable": "Quantity Available",
