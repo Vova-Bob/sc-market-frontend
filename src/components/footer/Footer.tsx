@@ -125,16 +125,15 @@ export function Footer() {
             <br />
             <Trans
               i18nKey="footer.acknowledgments"
-              t={t}
               components={{
                 ladyFleurLink: (
                   <Link
                     rel="noopener noreferrer"
                     target="_blank"
-                    href={"https://www.youtube.com/@robinerino"}
-                    aria-label={"LadyFleur"}
+                    href="https://www.youtube.com/@robinerino"
+                    aria-label="LadyFleur"
                   >
-                    <UnderlineLink color={"text.primary"} variant="body2">
+                    <UnderlineLink color="text.primary" variant="body2">
                       LadyFleur
                     </UnderlineLink>
                   </Link>
@@ -143,10 +142,10 @@ export function Footer() {
                   <Link
                     rel="noopener noreferrer"
                     target="_blank"
-                    href={"https://starcitizen-api.com/"}
-                    aria-label={"StarCitizen-API"}
+                    href="https://starcitizen-api.com/"
+                    aria-label="StarCitizen-API"
                   >
-                    <UnderlineLink color={"text.primary"} variant="body2">
+                    <UnderlineLink color="text.primary" variant="body2">
                       StarCitizen-API
                     </UnderlineLink>
                   </Link>
@@ -155,10 +154,10 @@ export function Footer() {
                   <Link
                     rel="noopener noreferrer"
                     target="_blank"
-                    href={"https://nexd.to/"}
-                    aria-label={"NEXD"}
+                    href="https://nexd.to/"
+                    aria-label="NEXD"
                   >
-                    <UnderlineLink color={"text.primary"} variant="body2">
+                    <UnderlineLink color="text.primary" variant="body2">
                       NEXD
                     </UnderlineLink>
                   </Link>
@@ -167,10 +166,10 @@ export function Footer() {
                   <Link
                     rel="noopener noreferrer"
                     target="_blank"
-                    href={"https://starcitizen.tools/"}
-                    aria-label={"Star Citizen Wiki"}
+                    href="https://starcitizen.tools/"
+                    aria-label="Star Citizen Wiki"
                   >
-                    <UnderlineLink color={"text.primary"} variant="body2">
+                    <UnderlineLink color="text.primary" variant="body2">
                       Star Citizen Wiki
                     </UnderlineLink>
                   </Link>

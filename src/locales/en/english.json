@@ -75,7 +75,7 @@
     "copyright": "Copyright © ",
     "trademark": "Star Citizen®, Squadron 42®, Roberts Space Industries®, and Cloud Imperium® are registered trademarks of Cloud Imperium Rights LLC",
     "unofficial": "This is an unofficial Star Citizen fansite, not affiliated with the Cloud Imperium group of companies. All content on this site not authored by its host or users are property of their respective owners",
-    "acknowledgments": "Special thanks to {{ladyFleurLink}} for the amazing artwork, {{starCitizenApiLink}} for the API, {{nexdLink}} for the CDN, and {{starCitizenWikiLink}} for the wiki",
+    "acknowledgments": "Special thanks to <ladyFleurLink>LadyFleur</ladyFleurLink> for the amazing artwork, <starCitizenApiLink>StarCitizen-API</starCitizenApiLink> for the API, <nexdLink>NEXD</nexdLink> for the CDN, and <starCitizenWikiLink>Star Citizen Wiki</starCitizenWikiLink> for the wiki",
     "referralCode": "Referral Code: {{code}}"
   },
   "listing": {
