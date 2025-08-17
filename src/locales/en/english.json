@@ -3,7 +3,17 @@
     "orderStats": "Admin Order Stats",
     "moderation": "Admin Moderation",
     "moderation.title": "Moderation Dashboard",
-    "moderation.description": "This page will contain moderation tools and reports."
+    "moderation.description": "This page will contain moderation tools and reports.",
+    "moderation.handleReport": "Handle Report",
+    "moderation.status": "Status",
+    "moderation.notes": "Notes",
+    "moderation.notesPlaceholder": "Enter moderation notes or action taken...",
+    "moderation.notesHelperText": "Optional notes about the moderation action (max 2000 characters)",
+    "moderation.updateReport": "Update Report",
+    "moderation.updating": "Updating...",
+    "moderation.reportUpdated": "Report updated successfully",
+    "moderation.updateFailed": "Failed to update report",
+    "moderation.actions": "Actions"
   },
   "adminExpressVerify": {
     "title": "Express Verify User",

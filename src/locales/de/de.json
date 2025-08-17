@@ -1,6 +1,19 @@
 {
   "admin": {
-    "orderStats": "Admin Order Stats"
+    "orderStats": "Admin-Bestellstatistiken",
+    "moderation": "Admin-Moderation",
+    "moderation.title": "Moderations-Dashboard",
+    "moderation.description": "Diese Seite wird Moderations-Tools und Berichte enthalten.",
+    "moderation.handleReport": "Bericht bearbeiten",
+    "moderation.status": "Status",
+    "moderation.notes": "Notizen",
+    "moderation.notesPlaceholder": "Geben Sie Moderationsnotizen oder durchgeführte Aktionen ein...",
+    "moderation.notesHelperText": "Optionale Notizen zur Moderationsaktion (max. 2000 Zeichen)",
+    "moderation.updateReport": "Bericht aktualisieren",
+    "moderation.updating": "Wird aktualisiert...",
+    "moderation.reportUpdated": "Bericht erfolgreich aktualisiert",
+    "moderation.updateFailed": "Fehler beim Aktualisieren des Berichts",
+    "moderation.actions": "Aktionen"
   },
   "adminExpressVerify": {
     "title": "Express Verify User",

@@ -1,6 +1,19 @@
 {
   "admin": {
-    "orderStats": "Admin Order Stats"
+    "orderStats": "管理员订单统计",
+    "moderation": "管理员审核",
+    "moderation.title": "审核仪表板",
+    "moderation.description": "此页面将包含审核工具和报告。",
+    "moderation.handleReport": "处理报告",
+    "moderation.status": "状态",
+    "moderation.notes": "备注",
+    "moderation.notesPlaceholder": "输入审核备注或采取的行动...",
+    "moderation.notesHelperText": "关于审核行动的可选备注（最多2000字符）",
+    "moderation.updateReport": "更新报告",
+    "moderation.updating": "更新中...",
+    "moderation.reportUpdated": "报告更新成功",
+    "moderation.updateFailed": "更新报告失败",
+    "moderation.actions": "操作"
   },
   "adminExpressVerify": {
     "title": "Express Verify User",

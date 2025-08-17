@@ -151,11 +151,9 @@ export function ServiceView(props: { service: Service }) {
                     {service.cost.toLocaleString(undefined)} aUEC{" "}
                     {paymentType ? t(paymentType) : ""}
                   </Typography>
-                  <Typography
-                    display={"inline"}
-                    variant={"subtitle2"}
-                  >
-                    &nbsp;-&nbsp;<ReportButton
+                  <Typography display={"inline"} variant={"subtitle2"}>
+                    &nbsp;-&nbsp;
+                    <ReportButton
                       reportedUrl={`/order/service/${service.service_id}`}
                     />
                   </Typography>

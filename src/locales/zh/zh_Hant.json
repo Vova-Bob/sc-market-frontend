@@ -1,6 +1,19 @@
 {
   "admin": {
-    "orderStats": "Admin Order Stats"
+    "orderStats": "管理員訂單統計",
+    "moderation": "管理員審核",
+    "moderation.title": "審核儀表板",
+    "moderation.description": "此頁面將包含審核工具和報告。",
+    "moderation.handleReport": "處理報告",
+    "moderation.status": "狀態",
+    "moderation.notes": "備註",
+    "moderation.notesPlaceholder": "輸入審核備註或採取的行動...",
+    "moderation.notesHelperText": "關於審核行動的可選備註（最多2000字符）",
+    "moderation.updateReport": "更新報告",
+    "moderation.updating": "更新中...",
+    "moderation.reportUpdated": "報告更新成功",
+    "moderation.updateFailed": "更新報告失敗",
+    "moderation.actions": "操作"
   },
   "adminExpressVerify": {
     "title": "Express Verify User",

@@ -1,6 +1,19 @@
 {
   "admin": {
-    "orderStats": "Адмін-статистика замовлень"
+    "orderStats": "Адмін Статистика Замовлень",
+    "moderation": "Адмін Модерація",
+    "moderation.title": "Панель Модерації",
+    "moderation.description": "Ця сторінка міститиме інструменти модерації та звіти.",
+    "moderation.handleReport": "Обробити Звіт",
+    "moderation.status": "Статус",
+    "moderation.notes": "Примітки",
+    "moderation.notesPlaceholder": "Введіть примітки модерації або дію, що була виконана...",
+    "moderation.notesHelperText": "Додаткові примітки про дію модерації (макс. 2000 символів)",
+    "moderation.updateReport": "Оновити Звіт",
+    "moderation.updating": "Оновлення...",
+    "moderation.reportUpdated": "Звіт успішно оновлено",
+    "moderation.updateFailed": "Не вдалося оновити звіт",
+    "moderation.actions": "Дії"
   },
   "adminExpressVerify": {
     "title": "Експрес-верифікація користувача",

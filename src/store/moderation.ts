@@ -67,6 +67,16 @@ export interface AdminReportsResponse {
   }
 }
 
+export interface UpdateReportRequest {
+  status: "pending" | "in_progress" | "resolved" | "dismissed"
+  notes?: string
+}
+
+export interface UpdateReportResponse {
+  result: string
+  report: ContentReport
+}
+
 // Define a service using a base URL and expected endpoints
 export const moderationApi = serviceApi.injectEndpoints({
   overrideExisting: false,
@@ -113,6 +123,18 @@ export const moderationApi = serviceApi.injectEndpoints({
       ],
       transformResponse: unwrapResponse,
     }),
+
+    updateReport: builder.mutation<
+      UpdateReportResponse,
+      { reportId: string; data: UpdateReportRequest }
+    >({
+      query: ({ reportId, data }) => ({
+        url: `${baseUrl}/admin/reports/${reportId}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["ModerationReports"],
+    }),
   }),
 })
 
@@ -122,4 +144,5 @@ export const {
   useReportContentMutation,
   useGetUserReportsQuery,
   useGetAdminReportsQuery,
+  useUpdateReportMutation,
 } = moderationApi

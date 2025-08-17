@@ -1,6 +1,19 @@
 {
   "admin": {
-    "orderStats": "Admin Order Stats"
+    "orderStats": "管理者注文統計",
+    "moderation": "管理者モデレーション",
+    "moderation.title": "モデレーションダッシュボード",
+    "moderation.description": "このページにはモデレーションツールとレポートが含まれます。",
+    "moderation.handleReport": "レポートを処理",
+    "moderation.status": "ステータス",
+    "moderation.notes": "メモ",
+    "moderation.notesPlaceholder": "モデレーションメモまたは実行されたアクションを入力...",
+    "moderation.notesHelperText": "モデレーションアクションに関するオプションメモ（最大2000文字）",
+    "moderation.updateReport": "レポートを更新",
+    "moderation.updating": "更新中...",
+    "moderation.reportUpdated": "レポートが正常に更新されました",
+    "moderation.updateFailed": "レポートの更新に失敗しました",
+    "moderation.actions": "アクション"
   },
   "adminExpressVerify": {
     "title": "Express Verify User",

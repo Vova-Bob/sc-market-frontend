@@ -118,10 +118,7 @@ export function RecruitingPostView(props: { post: RecruitingPost }) {
 
                 <ListingSellerRating contractor={contractor} />
 
-                <Typography
-                  color={"text.primary"}
-                  variant={'subtitle2'}
-                >
+                <Typography color={"text.primary"} variant={"subtitle2"}>
                   <ReportButton
                     reportedUrl={`/recruiting/post/${post.post_id}`}
                   />

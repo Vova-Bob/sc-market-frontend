@@ -117,10 +117,8 @@ export function ReportButton({
 
   return (
     <>
-      <a href={"#"} style={{textDecoration: "none", color: "inherit"}}>
-      <UnderlineLink onClick={handleOpen}>
-        {children}
-      </UnderlineLink>
+      <a href={"#"} style={{ textDecoration: "none", color: "inherit" }}>
+        <UnderlineLink onClick={handleOpen}>{children}</UnderlineLink>
       </a>
 
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>

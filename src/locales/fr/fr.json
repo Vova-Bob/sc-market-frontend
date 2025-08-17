@@ -1,6 +1,19 @@
 {
   "admin": {
-    "orderStats": "Admin Order Stats"
+    "orderStats": "Statistiques des Commandes Admin",
+    "moderation": "Modération Admin",
+    "moderation.title": "Tableau de Bord de Modération",
+    "moderation.description": "Cette page contiendra des outils de modération et des rapports.",
+    "moderation.handleReport": "Traiter le Rapport",
+    "moderation.status": "Statut",
+    "moderation.notes": "Notes",
+    "moderation.notesPlaceholder": "Entrez des notes de modération ou l'action effectuée...",
+    "moderation.notesHelperText": "Notes optionnelles sur l'action de modération (max 2000 caractères)",
+    "moderation.updateReport": "Mettre à Jour le Rapport",
+    "moderation.updating": "Mise à jour...",
+    "moderation.reportUpdated": "Rapport mis à jour avec succès",
+    "moderation.updateFailed": "Échec de la mise à jour du rapport",
+    "moderation.actions": "Actions"
   },
   "adminExpressVerify": {
     "title": "Express Verify User",

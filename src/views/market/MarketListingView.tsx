@@ -674,7 +674,9 @@ export function MarketListingView() {
                               {getRelativeTime(new Date(listing.expiration))}
                             </ListingDetailItem>
 
-                            <ListingDetailItem icon={<WarningRounded fontSize={"inherit"}/>}>
+                            <ListingDetailItem
+                              icon={<WarningRounded fontSize={"inherit"} />}
+                            >
                               <ReportButton
                                 reportedUrl={`/market/${listing.listing_id}`}
                               />
