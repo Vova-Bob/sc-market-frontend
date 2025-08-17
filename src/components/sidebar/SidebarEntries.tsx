@@ -324,7 +324,7 @@ export const all_sidebar_entries: SidebarSectionProps[] = [
       },
       {
         text: "sidebar.moderation.text",
-        icon: <GavelIcon />,
+        icon: <SecurityIcon />,
         site_admin: true,
         to: "/admin/moderation",
       },
