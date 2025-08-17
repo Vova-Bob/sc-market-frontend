@@ -1,19 +1,19 @@
 {
   "admin": {
-    "orderStats": "管理员订单统计",
-    "moderation": "管理员审核",
-    "moderation.title": "审核仪表板",
-    "moderation.description": "此页面将包含审核工具和报告。",
-    "moderation.handleReport": "处理报告",
-    "moderation.status": "状态",
-    "moderation.notes": "备注",
-    "moderation.notesPlaceholder": "输入审核备注或采取的行动...",
-    "moderation.notesHelperText": "关于审核行动的可选备注（最多2000字符）",
-    "moderation.updateReport": "更新报告",
-    "moderation.updating": "更新中...",
-    "moderation.reportUpdated": "报告更新成功",
-    "moderation.updateFailed": "更新报告失败",
-    "moderation.actions": "操作"
+    "orderStats": "Admin Order Stats",
+    "moderation": "Admin Moderation",
+    "moderation.title": "Moderation Dashboard",
+    "moderation.description": "This page will contain moderation tools and reports.",
+    "moderation.handleReport": "Handle Report",
+    "moderation.status": "Status",
+    "moderation.notes": "Notes",
+    "moderation.notesPlaceholder": "Enter moderation notes or action taken...",
+    "moderation.notesHelperText": "Optional notes about the moderation action (max 2000 characters)",
+    "moderation.updateReport": "Update Report",
+    "moderation.updating": "Updating...",
+    "moderation.reportUpdated": "Report updated successfully",
+    "moderation.updateFailed": "Failed to update report",
+    "moderation.actions": "Actions"
   },
   "adminExpressVerify": {
     "title": "Express Verify User",
@@ -35,7 +35,10 @@
     "submit": "提交",
     "loginWithDiscord": "用Discord登录",
     "accountLink": "账户链接",
-    "authenticateWithRSI": "用RSI验证"
+    "authenticateWithRSI": "用RSI验证",
+    "aria": {
+      "outlinedGroup": "outlined button group"
+    }
   },
   "availability": {
     "select_availability": "选择在线时间段",
@@ -73,7 +76,7 @@
     "trademark": "Star Citizen®（“星际公民”），Squadron 42®（“42中队”），Roberts Space Industries®（“罗伯茨太空工业”），以及Cloud Imperium®（“云间帝国”）均为Cloud Imperium Rights有限责任公司旗下的注册商标。",
     "unofficial": "这是一个非官方的星际公民玩家自制网站，不附属于云间帝国（Cloud Imperium）公司集团。所有这个网站上不为站长或用户群体所作的内容均为它们对应所属人的财产。",
     "referralCode": "使用我们的邀请码：{{code}}",
-    "acknowledgments": "特别感谢 <ladyFleurLink>LadyFleur</ladyFleurLink> 提供标志，以及 <starCitizenApiLink>StarCitizen-API</starCitizenApiLink>、<nexdLink>NEXD</nexdLink> 和 <starCitizenWikiLink>Star Citizen Wiki</starCitizenWikiLink> 提供的 API。"
+    "acknowledgments": "Special thanks to <ladyFleurLink>LadyFleur</ladyFleurLink> for the logo, and <starCitizenApiLink>StarCitizen-API</starCitizenApiLink>, <nexdLink>NEXD</nexdLink>, and <starCitizenWikiLink>Star Citizen Wiki</starCitizenWikiLink> for their APIs."
   },
   "listing": {
     "95PercentRating25PlusTransactions": "95%+ 好评率和25+ 成交记录",
@@ -140,7 +143,10 @@
     "ending_in": "Ending {{time}}",
     "expiration": "Expiration: {{time}}",
     "unit": "ea",
-    "available": "{{count}}在售"
+    "available": "{{count}}在售",
+    "aria": {
+      "listingTabs": "market listing tabs"
+    }
   },
   "marketActions": {
     "createListing": "创建商品页",
@@ -280,7 +286,10 @@
     "users": "用户",
     "sc_market": "SC市集",
     "sc_market_home": "SC市集主页",
-    "toggle_drawer": "Toggle Drawer"
+    "toggle_drawer": "Toggle Drawer",
+    "moderation": {
+      "text": "Moderation"
+    }
   },
   "sidebar_actor_select": {
     "select_role": "选择身份",
@@ -295,7 +304,6 @@
   "no_listings": "无可用的商品页",
   "displayed_rows": "{{from}}–{{to}}页，全{{count}}页",
   "all": "全部",
-  "contractors": "合约组织",
   "recruiting_orgs": "招募中的组织",
   "toggle_market_sidebar": "开关市集侧边栏",
   "update_post": "更新招募贴",
@@ -623,7 +631,10 @@
     "orderShort": "Order {{id}}",
     "offerShort": "Offer {{id}}",
     "createOrderTitle": "Create Order",
-    "viewOrder": "View Order"
+    "viewOrder": "View Order",
+    "aria": {
+      "orderTabs": "order tabs"
+    }
   },
   "orderDetailsArea": {
     "updated_status": "Updated status!",
@@ -1443,7 +1454,10 @@
     "dashboard": "Dashboard",
     "offer": "Offer",
     "receivedOffers": "Received Offers",
-    "counterOffer": "Counter Offer"
+    "counterOffer": "Counter Offer",
+    "aria": {
+      "offerTabs": "offer tabs"
+    }
   },
   "sendMoney": {
     "title": "Send Money",
@@ -1560,6 +1574,13 @@
       "invitedMessage": "You've been invited to",
       "accept": "Accept",
       "accepted": "Accepted invite!"
+    },
+    "settingsTab": "Settings",
+    "settings": {
+      "locale": {
+        "title": "Organization Language",
+        "select": "Select organization language"
+      }
     }
   },
   "dashboard": {
