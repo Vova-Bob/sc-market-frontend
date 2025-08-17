@@ -27,6 +27,7 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAltRounded"
 import React from "react"
 import { SidebarSectionProps } from "./Sidebar"
 import { Pistol } from "mdi-material-ui"
+import { ModerationSidebarEntry } from "./ModerationSidebarEntry"
 
 export const all_sidebar_entries: SidebarSectionProps[] = [
   {
@@ -325,7 +326,12 @@ export const all_sidebar_entries: SidebarSectionProps[] = [
       },
       {
         text: "sidebar.moderation.text",
-        icon: <SecurityRounded />,
+        icon: (
+          <ModerationSidebarEntry
+            text="sidebar.moderation.text"
+            to="/admin/moderation"
+          />
+        ),
         site_admin: true,
         to: "/admin/moderation",
       },
