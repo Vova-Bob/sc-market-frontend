@@ -106,7 +106,7 @@ export function MarketListingEditView() {
 
   const updateListingCallback = useCallback(
     (body: MarketListingUpdateBody) => {
-      updateListing({
+      return updateListing({
         listing_id: listing.listing.listing_id,
         body,
       })
@@ -173,62 +173,69 @@ export function MarketListingEditView() {
       },
     )
 
-    // Update the listing with hotlinked photos first
+    // Update the listing with hotlinked photos first, then proceed with photo uploads
     updateListingCallback({ photos })
-
-    // Then, upload pending files and add them to the listing
-    if (pendingFiles.length > 0) {
-      console.log(
-        `[Photo Upload] Starting upload for listing ${listing.listing.listing_id}:`,
-        {
-          listing_id: listing.listing.listing_id,
-          file_count: pendingFiles.length,
-          files: pendingFiles.map((f) => ({
-            name: f.name,
-            size: f.size,
-            type: f.type,
-          })),
-        },
-      )
-
-      uploadPhotos({
-        listing_id: listing.listing.listing_id,
-        photos: pendingFiles,
-      })
-        .unwrap()
-        .then((uploadResult) => {
-          console.log(`[Photo Upload] Upload successful:`, {
-            listing_id: listing.listing.listing_id,
-            result: uploadResult,
-            photo_urls: uploadResult.photo_urls,
-          })
-
-          issueAlert({
-            message: t("MarketListingForm.photosUploaded"),
-            severity: "success",
-          })
-
-          // Clear pending files after successful upload
-          setPendingFiles([])
-        })
-        .catch((uploadError) => {
-          console.error(
-            `[Photo Upload] Upload failed for listing ${listing.listing.listing_id}:`,
+      .then(() => {
+        if (pendingFiles.length > 0) {
+          console.log(
+            `[Photo Upload] Starting upload for listing ${listing.listing.listing_id}:`,
             {
               listing_id: listing.listing.listing_id,
-              error: uploadError,
-              error_message: uploadError?.message || "Unknown error",
-              error_status: uploadError?.status || "No status",
+              file_count: pendingFiles.length,
+              files: pendingFiles.map((f) => ({
+                name: f.name,
+                size: f.size,
+                type: f.type,
+              })),
             },
           )
 
-          issueAlert(uploadError)
-        })
-    } else {
-      console.log(
-        `[Photo Upload] No pending files to upload for listing ${listing.listing.listing_id}`,
-      )
-    }
+          uploadPhotos({
+            listing_id: listing.listing.listing_id,
+            photos: pendingFiles,
+          })
+            .unwrap()
+            .then((uploadResult) => {
+              console.log(`[Photo Upload] Upload successful:`, {
+                listing_id: listing.listing.listing_id,
+                result: uploadResult,
+                photo_urls: uploadResult.photo_urls,
+              })
+
+              issueAlert({
+                message: t("MarketListingForm.photosUploaded"),
+                severity: "success",
+              })
+
+              // Clear pending files after successful upload
+              setPendingFiles([])
+            })
+            .catch((uploadError) => {
+              console.error(
+                `[Photo Upload] Upload failed for listing ${listing.listing.listing_id}:`,
+                {
+                  listing_id: listing.listing.listing_id,
+                  error: uploadError,
+                  error_message: uploadError?.message || "Unknown error",
+                  error_status: uploadError?.status || "No status",
+                },
+              )
+
+              issueAlert(uploadError)
+            })
+        } else {
+          console.log(
+            `[Photo Upload] No pending files to upload for listing ${listing.listing.listing_id}`,
+          )
+        }
+      })
+      .catch((updateError) => {
+        console.error(
+          `[Photo Upload] Listing update failed for ${listing.listing.listing_id}:`,
+          updateError,
+        )
+        // Don't proceed with photo uploads if listing update fails
+      })
   }, [
     pendingFiles,
     uploadPhotos,
