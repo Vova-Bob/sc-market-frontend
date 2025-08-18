@@ -300,27 +300,30 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
                 `[Service Photo Upload] Uploading photos for updated service ${serviceId}`,
               )
 
-              try {
-                const uploadResult = await uploadServicePhotos({
-                  service_id: serviceId,
-                  photos: uploadedFiles,
-                }).unwrap()
-
-                console.log(
-                  `[Service Photo Upload] Photos uploaded successfully:`,
-                  {
-                    service_id: serviceId,
-                    result: uploadResult,
-                    photo_urls: uploadResult.photos,
-                  },
-                )
-              } catch (uploadError) {
-                console.error(
-                  `[Service Photo Upload] Photo upload failed:`,
-                  uploadError,
-                )
-                // Continue with redirect even if photo upload fails
-              }
+              uploadServicePhotos({
+                service_id: serviceId,
+                photos: uploadedFiles,
+              })
+                .unwrap()
+                .then((uploadResult) => {
+                  console.log(
+                    `[Service Photo Upload] Photos uploaded successfully:`,
+                    {
+                      service_id: serviceId,
+                      result: uploadResult,
+                      photo_urls: uploadResult.photos,
+                    },
+                  )
+                })
+                .catch((uploadError) => {
+                  console.error(
+                    `[Service Photo Upload] Photo upload failed:`,
+                    uploadError,
+                  )
+                  // Issue alert for failed photo upload
+                  issueAlert(uploadError)
+                  // Continue with redirect even if photo upload fails
+                })
             }
 
             setState({

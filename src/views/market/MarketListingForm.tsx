@@ -124,39 +124,36 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
               },
             )
 
-            try {
-              const uploadResult = await uploadPhotos({
-                listing_id: res.listing_id,
-                photos: uploadedFiles,
-              }).unwrap()
-
-              console.log(`[Photo Upload] Upload successful:`, {
-                listing_id: res.listing_id,
-                result: uploadResult,
-                photo_urls: uploadResult.photo_urls,
-              })
-
-              issueAlert({
-                message: t("MarketListingForm.photosUploaded"),
-                severity: "success",
-              })
-            } catch (uploadError) {
-              console.error(
-                `[Photo Upload] Upload failed for listing ${res.listing_id}:`,
-                {
+            uploadPhotos({
+              listing_id: res.listing_id,
+              photos: uploadedFiles,
+            })
+              .unwrap()
+              .then((uploadResult) => {
+                console.log(`[Photo Upload] Upload successful:`, {
                   listing_id: res.listing_id,
-                  error: uploadError,
-                  error_message:
-                    (uploadError as any)?.message || "Unknown error",
-                  error_status: (uploadError as any)?.status || "No status",
-                },
-              )
+                  result: uploadResult,
+                  photo_urls: uploadResult.photo_urls,
+                })
 
-              issueAlert({
-                message: t("MarketListingForm.photoUploadFailed"),
-                severity: "warning",
+                issueAlert({
+                  message: t("MarketListingForm.photosUploaded"),
+                  severity: "success",
+                })
               })
-            }
+              .catch((uploadError) => {
+                console.error(
+                  `[Photo Upload] Upload failed for listing ${res.listing_id}:`,
+                  {
+                    listing_id: res.listing_id,
+                    error: uploadError,
+                    error_message: uploadError?.message || "Unknown error",
+                    error_status: uploadError?.status || "No status",
+                  },
+                )
+
+                issueAlert(uploadError)
+              })
           } else {
             console.log(
               `[Photo Upload] No photos to upload for listing ${res.listing_id}`,
