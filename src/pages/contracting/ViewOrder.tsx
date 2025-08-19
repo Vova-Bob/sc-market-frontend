@@ -184,13 +184,10 @@ export function ViewOrder() {
 
         {order && (
           <>
-            {amCustomer &&
-              order.status === "fulfilled" &&
-              !order.customer_review && (
-                <OrderReviewArea asCustomer order={order} />
-              )}
+            {amCustomer && !order.customer_review && (
+              <OrderReviewArea asCustomer order={order} />
+            )}
             {(amContractorManager || amAssigned) &&
-              order.status === "fulfilled" &&
               !order.contractor_review && (
                 <OrderReviewArea asContractor order={order} />
               )}
