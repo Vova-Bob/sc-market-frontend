@@ -550,6 +550,9 @@ export const marketApi = serviceApi.injectEndpoints({
         { type: "Listing" as const },
         // Invalidate all listings to ensure list views are updated
         { type: "AllListings" as const },
+        // Invalidate any cached listing data that might include this listing
+        "Listing",
+        "AllListings",
       ],
     }),
   }),

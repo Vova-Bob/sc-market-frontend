@@ -154,6 +154,16 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
     }
   }, [props.service])
 
+  // Watch for photo updates and sync local state
+  useEffect(() => {
+    if (props.service?.photos) {
+      setState((prev) => ({
+        ...prev,
+        photos: props.service!.photos,
+      }))
+    }
+  }, [props.service?.photos])
+
   const issueAlert = useAlertHook()
 
   const [departSuggest, setDepartSuggest] = useState<StarmapObject[]>([])
@@ -314,6 +324,8 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
                       photo_urls: uploadResult.photos,
                     },
                   )
+                  // Clear uploaded files after successful photo upload
+                  setUploadedFiles([])
                 })
                 .catch((uploadError) => {
                   console.error(
@@ -346,9 +358,6 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
               status: "active",
               photos: [],
             })
-
-            // Clear uploaded files after successful submission
-            setUploadedFiles([])
 
             issueAlert({
               message: t("CreateServiceForm.alert.submitted"),

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react"
+import React, { useCallback, useMemo, useState, useEffect } from "react"
 import {
   Box,
   Button,
@@ -100,9 +100,13 @@ export function MarketListingEditView() {
   const [title, setTitle] = useState(listing.details.title)
   const [type, setType] = useState(listing.details.item_type)
   const [item, setItem] = useState(listing.details.item_name)
-  const [imageOpen, setImageOpen] = useState(false)
   const [photos, setPhotos] = useState(listing.photos)
   const [pendingFiles, setPendingFiles] = useState<File[]>([])
+
+  // Watch for photo updates and sync local state
+  useEffect(() => {
+    setPhotos(listing.photos)
+  }, [listing.photos])
 
   const updateListingCallback = useCallback(
     (body: MarketListingUpdateBody) => {
@@ -562,8 +566,14 @@ export function MarketListingEditView() {
                         )
                       }}
                     />
-                    <Button onClick={handlePhotosUpdate} variant={"contained"}>
-                      {t("MarketListingEditView.updateBtn")}
+                    <Button
+                      onClick={handlePhotosUpdate}
+                      variant={"contained"}
+                      disabled={isLoading || isUploading}
+                    >
+                      {isLoading || isUploading
+                        ? t("MarketListingEditView.updating", "Updating...")
+                        : t("MarketListingEditView.updateBtn")}
                     </Button>
                   </Grid>
                 </CardContent>

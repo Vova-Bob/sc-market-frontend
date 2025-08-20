@@ -140,6 +140,9 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
                   message: t("MarketListingForm.photosUploaded"),
                   severity: "success",
                 })
+
+                // Clear uploaded files after successful photo upload
+                setUploadedFiles([])
               })
               .catch((uploadError) => {
                 console.error(
@@ -176,8 +179,6 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
             end_time: null,
             item_name: null,
           })
-
-          setUploadedFiles([])
 
           issueAlert({
             message: t("MarketListingForm.submitted"),

@@ -88,6 +88,8 @@ const servicesApi = serviceApi.injectEndpoints({
         { type: "Service" as const, id: arg.service_id },
         // Invalidate general service tags to ensure all service queries are refreshed
         { type: "Service" as const },
+        // Invalidate any cached service data that might include this service
+        "Service",
       ],
     }),
   }),
