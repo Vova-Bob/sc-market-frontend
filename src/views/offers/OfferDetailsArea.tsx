@@ -59,19 +59,23 @@ export function OfferMessagesArea(props: { offer: OfferSession }) {
     skip: !offer,
   })
 
-  const { data: notifications } = useGetNotificationsQuery()
+  const { data: notificationsData } = useGetNotificationsQuery({
+    page: 0,
+    pageSize: 100,
+    action: "offer_message",
+    entityId: offer.id,
+  })
+
+  const notifications = notificationsData?.notifications || []
   const [deleteNotification] = useNotificationDeleteMutation()
 
   useEffect(() => {
-    for (const n of notifications || []) {
-      if (
-        n.action === "offer_message" &&
-        (n.entity as Order).order_id === offer.id
-      ) {
-        deleteNotification([n.notification_id])
-      }
+    // Since we're already filtering by action and entityId, we can delete all matching notifications
+    if (notifications && notifications.length > 0) {
+      const notificationIds = notifications.map((n) => n.notification_id)
+      deleteNotification(notificationIds)
     }
-  }, [notifications, deleteNotification, offer])
+  }, [notifications, deleteNotification])
 
   useEffect(() => {
     setCurrentChat(chatObj)

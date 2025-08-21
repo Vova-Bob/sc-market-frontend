@@ -11,6 +11,7 @@ import {
   ListItemIcon,
   ListItemText,
   Popover,
+  TablePagination,
   Tooltip,
   Typography,
 } from "@mui/material"
@@ -103,9 +104,10 @@ export function NotificationBase(props: {
   const [updateNotification] = useNotificationUpdateMutation()
 
   const defaultClick = useCallback(async () => {
-    await updateNotification([
-      { notification_id: notif.notification_id, read: true },
-    ])
+    await updateNotification({
+      notification_id: notif.notification_id,
+      read: true,
+    })
   }, [notif.notification_id, updateNotification])
 
   return (
@@ -466,10 +468,17 @@ export function NotificationsButton() {
   const notifOpen = Boolean(anchorEl)
   const theme = useTheme<ExtendedTheme>()
   const { t } = useTranslation()
+  const [page, setPage] = useState(0)
+  const [pageSize, setPageSize] = useState(5)
 
-  const { data: notifications } = useGetNotificationsQuery(undefined, {
-    pollingInterval: 60000,
+  const { data: notificationsData } = useGetNotificationsQuery({
+    page,
+    pageSize,
   })
+
+  const notifications = notificationsData?.notifications || []
+  const total = notificationsData?.pagination?.total || 0
+  const unreadCount = notificationsData?.unread_count || 0
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
@@ -484,11 +493,14 @@ export function NotificationsButton() {
 
   const markAllReadCallback = useCallback(async () => {
     if (notifications) {
-      await updateNotifications(
-        notifications.map((notif) => ({
-          notification_id: notif.notification_id,
-          read: true,
-        })),
+      // Update each notification individually since the API now requires single updates
+      await Promise.all(
+        notifications.map((notif) =>
+          updateNotifications({
+            notification_id: notif.notification_id,
+            read: true,
+          }),
+        ),
       )
     }
   }, [notifications, updateNotifications])
@@ -501,13 +513,22 @@ export function NotificationsButton() {
     }
   }, [deleteNotifications, notifications])
 
+  const handleChangePage = useCallback((event: unknown, newPage: number) => {
+    setPage(newPage)
+  }, [])
+
+  const handleChangeRowsPerPage = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setPageSize(parseInt(event.target.value, 10))
+      setPage(0)
+    },
+    [],
+  )
+
   return (
     <>
       <IconButton sx={{ marginRight: 2 }} onClick={handleClick}>
-        <Badge
-          badgeContent={(notifications || []).filter((n) => !n.read).length}
-          color={"primary"}
-        >
+        <Badge badgeContent={unreadCount} color={"primary"}>
           <NotificationsActiveRoundedIcon
             style={{ color: theme.palette.text.secondary }}
           />
@@ -582,6 +603,26 @@ export function NotificationsButton() {
               <NotificationEntry notif={notification} key={idx} />
             ))}
           </List>
+
+          {total > 5 && (
+            <TablePagination
+              labelRowsPerPage={t("rows_per_page")}
+              labelDisplayedRows={({ from, to, count }) =>
+                t("displayed_rows", { from, to, count })
+              }
+              rowsPerPageOptions={[5, 10, 20]}
+              component="div"
+              count={total}
+              rowsPerPage={pageSize}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              color={"primary"}
+              nextIconButtonProps={{ color: "primary" }}
+              backIconButtonProps={{ color: "primary" }}
+              size="small"
+            />
+          )}
         </Box>
       </Popover>
     </>

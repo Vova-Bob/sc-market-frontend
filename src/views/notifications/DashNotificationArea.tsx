@@ -1,6 +1,6 @@
 import { Section } from "../../components/paper/Section"
-import { Grid, List } from "@mui/material"
-import React from "react"
+import { Grid, List, TablePagination } from "@mui/material"
+import React, { useState, useCallback } from "react"
 import { NotificationEntry } from "../../components/navbar/NotificationsButton"
 import { useTheme } from "@mui/material/styles"
 import { ExtendedTheme } from "../../hooks/styles/Theme"
@@ -9,8 +9,28 @@ import { useTranslation } from "react-i18next"
 
 export function DashNotificationArea() {
   const theme = useTheme<ExtendedTheme>()
-  const { data: notifications } = useGetNotificationsQuery()
+  const [page, setPage] = useState(0)
+  const [pageSize, setPageSize] = useState(20)
+  const { data: notificationsData } = useGetNotificationsQuery({
+    page: page, // API uses 0-based indexing
+    pageSize: pageSize,
+  })
   const { t } = useTranslation()
+
+  const notifications = notificationsData?.notifications || []
+  const total = notificationsData?.pagination?.total || 0
+
+  const handleChangePage = useCallback((event: unknown, newPage: number) => {
+    setPage(newPage)
+  }, [])
+
+  const handleChangeRowsPerPage = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setPageSize(parseInt(event.target.value, 10))
+      setPage(0)
+    },
+    [],
+  )
 
   return (
     <Section
@@ -45,6 +65,25 @@ export function DashNotificationArea() {
             // </Fade>
           )}
         </List>
+      </Grid>
+
+      <Grid item xs={12}>
+        <TablePagination
+          labelRowsPerPage={t("rows_per_page")}
+          labelDisplayedRows={({ from, to, count }) =>
+            t("displayed_rows", { from, to, count })
+          }
+          rowsPerPageOptions={[10, 20, 50, 100]}
+          component="div"
+          count={total}
+          rowsPerPage={pageSize}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          color={"primary"}
+          nextIconButtonProps={{ color: "primary" }}
+          backIconButtonProps={{ color: "primary" }}
+        />
       </Grid>
 
       {/*</Box>*/}

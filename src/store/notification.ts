@@ -8,32 +8,56 @@ export const notificationApi = serviceApi.injectEndpoints({
   overrideExisting: false,
   endpoints: (builder) => ({
     notificationUpdate: builder.mutation<
-      void,
-      { notification_id: string; read: boolean }[]
+      { success: boolean; message: string },
+      { notification_id: string; read: boolean }
     >({
       query: (body) => ({
-        url: `${baseUrl}/update`,
-        method: "POST",
-        body: body,
+        url: `${baseUrl}/${body.notification_id}`,
+        method: "PATCH",
+        body: { read: body.read },
       }),
       invalidatesTags: [
         "Notifications" as const,
         { type: "Notifications" as const },
       ],
     }),
-    notificationDelete: builder.mutation<void, string[]>({
-      query: (body) => ({
-        url: `${baseUrl}/delete`,
-        method: "POST",
-        body,
+    notificationDelete: builder.mutation<
+      { success: boolean; message: string; deleted_count: number },
+      string[]
+    >({
+      query: (notificationIds) => ({
+        url: `${baseUrl}`,
+        method: "DELETE",
+        body: { notification_ids: notificationIds },
       }),
       invalidatesTags: [
         "Notifications" as const,
         { type: "Notifications" as const },
       ],
     }),
-    getNotifications: builder.query<Notification[], void>({
-      query: () => `${baseUrl}`,
+    getNotifications: builder.query<
+      {
+        notifications: Notification[]
+        pagination: {
+          total: number
+          currentPage: number
+          pageSize: number
+          totalPages: number
+          hasNextPage: boolean
+          hasPreviousPage: boolean
+        }
+        unread_count: number
+      },
+      { page?: number; pageSize?: number; action?: string; entityId?: string }
+    >({
+      query: (params) => ({
+        url: `${baseUrl}/${params.page || 0}`,
+        params: {
+          pageSize: params.pageSize || 20,
+          ...(params.action && { action: params.action }),
+          ...(params.entityId && { entityId: params.entityId }),
+        },
+      }),
       providesTags: (result, error, arg) => [
         "Notifications" as const,
         { type: "Notifications" as const },
