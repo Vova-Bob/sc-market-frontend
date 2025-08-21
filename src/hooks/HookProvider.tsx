@@ -34,7 +34,6 @@ import { getMuiLocales } from "../util/i18n"
 import { useTranslation } from "react-i18next"
 
 export function HookProvider(props: { children: React.ReactElement }) {
-  const drawerWidthState = useState(false)
   const [alert, issueAlert] = useState<AlertInterface | null>(null)
 
   const [cookies, setCookie] = useCookies(["theme"])
@@ -74,6 +73,9 @@ export function HookProvider(props: { children: React.ReactElement }) {
     i18n.on("languageChanged", handler)
     return () => i18n.off("languageChanged", handler)
   }, [])
+
+  const xs = useMediaQuery(localizedTheme.breakpoints.down("sm"))
+  const drawerWidthState = useState(!xs)
 
   return (
     <Provider store={store}>
