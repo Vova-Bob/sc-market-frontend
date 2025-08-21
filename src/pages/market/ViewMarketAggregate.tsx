@@ -13,6 +13,11 @@ import { MarketAggregateView } from "../../views/market/MarketAggregateView"
 import { BackArrow } from "../../components/button/BackArrow"
 import { CurrentMarketListingContext } from "../../hooks/market/CurrentMarketItem"
 import { useTranslation } from "react-i18next"
+import {
+  shouldRedirectTo404,
+  shouldShowErrorPage,
+} from "../../util/errorHandling"
+import { ErrorPage } from "../errors/ErrorPage"
 
 export function ViewMarketAggregate(props: {}) {
   const { id } = useParams<{ id: string }>()
@@ -55,7 +60,8 @@ export function ViewMarketAggregate(props: {}) {
           </Grid>
         </Grid>
 
-        {error ? <Navigate to={"/404"} /> : null}
+        {shouldRedirectTo404(error) ? <Navigate to={"/404"} /> : null}
+        {shouldShowErrorPage(error) ? <ErrorPage /> : null}
         {aggregate && (
           <CurrentMarketListingContext.Provider value={[aggregate!, refetch]}>
             <MarketAggregateView />
@@ -92,7 +98,8 @@ export function EditMarketAggregate(props: {}) {
           <BackArrow /> {t("market.editMarketListing")}
         </HeaderTitle>
 
-        {error ? <Navigate to={"/404"} /> : null}
+        {shouldRedirectTo404(error) ? <Navigate to={"/404"} /> : null}
+        {shouldShowErrorPage(error) ? <ErrorPage /> : null}
         {aggregate && (
           <CurrentMarketAggregateContext.Provider value={[aggregate!, refetch]}>
             <MarketAggregateEditView />

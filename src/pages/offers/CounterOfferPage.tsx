@@ -6,7 +6,7 @@ import {
   CounterOfferBody,
   useGetOfferSessionByIDQuery,
 } from "../../store/offer"
-import { Link, useParams } from "react-router-dom"
+import { Link, useParams, Navigate } from "react-router-dom"
 import {
   Breadcrumbs,
   Grid,
@@ -20,10 +20,15 @@ import { CounterOfferDetailsContext } from "../../hooks/offer/CounterOfferDetail
 import { OfferServiceEditArea } from "../../views/offers/OfferServiceEditArea"
 import { OfferMarketListingsEditArea } from "../../views/offers/OfferMarketListingsEditArea"
 import { useTranslation } from "react-i18next"
+import {
+  shouldRedirectTo404,
+  shouldShowErrorPage,
+} from "../../util/errorHandling"
+import { ErrorPage } from "../errors/ErrorPage"
 
 export function CounterOfferPage() {
   const { id } = useParams<{ id: string }>()
-  const { data: session } = useGetOfferSessionByIDQuery(id!)
+  const { data: session, error } = useGetOfferSessionByIDQuery(id!)
   const { t } = useTranslation()
 
   const [counterOffer, setCounterOffer] = useState<CounterOfferBody>({
@@ -95,6 +100,9 @@ export function CounterOfferPage() {
           <HeaderTitle lg={12} xl={12}>
             {t("offers.viewOffer")}
           </HeaderTitle>
+
+          {shouldRedirectTo404(error) ? <Navigate to={"/404"} /> : null}
+          {shouldShowErrorPage(error) ? <ErrorPage /> : null}
 
           {session ? (
             <OfferDetailsEditArea session={session} />

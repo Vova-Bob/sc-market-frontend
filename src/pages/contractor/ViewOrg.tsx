@@ -10,6 +10,11 @@ import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 import { Page } from "../../components/metadata/Page"
 import { BackArrow } from "../../components/button/BackArrow"
 import { useTranslation } from "react-i18next"
+import {
+  shouldRedirectTo404,
+  shouldShowErrorPage,
+} from "../../util/errorHandling"
+import { ErrorPage } from "../errors/ErrorPage"
 
 export function ViewOrg() {
   const { id } = useParams<{ id: string }>()
@@ -29,8 +34,10 @@ export function ViewOrg() {
         <ContainerGrid maxWidth={"lg"} sidebarOpen={true}>
           <OrgSectionSkeleton />
         </ContainerGrid>
-      ) : contractor.error ? (
+      ) : shouldRedirectTo404(contractor.error) ? (
         <Navigate to={"/404"} />
+      ) : shouldShowErrorPage(contractor.error) ? (
+        <ErrorPage />
       ) : (
         <OrgInfo contractor={contractor.data!} />
       )}

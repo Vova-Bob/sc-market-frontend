@@ -10,6 +10,11 @@ import { ServiceView } from "../../views/contracts/ServiceView"
 import { SentOffersArea } from "../../views/offers/ReceivedOffersArea"
 import { CreatePublicContract } from "../../views/contracts/CreatePublicContract"
 import { useTranslation } from "react-i18next"
+import {
+  shouldRedirectTo404,
+  shouldShowErrorPage,
+} from "../../util/errorHandling"
+import { ErrorPage } from "../errors/ErrorPage"
 
 export function CreateOrder(props: {}) {
   const { t } = useTranslation()
@@ -33,7 +38,7 @@ export function CreateOrder(props: {}) {
 export function ServiceCreateOrder() {
   const { t } = useTranslation()
   const { service_id } = useParams<{ service_id: string }>()
-  const { data: service, isError } = useGetServiceByIdQuery(service_id!)
+  const { data: service, error, isError } = useGetServiceByIdQuery(service_id!)
 
   return (
     <Page title={t("orders.createOrderTitle")}>
@@ -42,7 +47,8 @@ export function ServiceCreateOrder() {
         {/*    Orders*/}
         {/*</HeaderTitle>*/}
 
-        {isError && <Navigate to={"/404"} />}
+        {shouldRedirectTo404(error) && <Navigate to={"/404"} />}
+        {shouldShowErrorPage(error) && <ErrorPage />}
 
         {service && <ServiceView service={service} />}
         {service && (

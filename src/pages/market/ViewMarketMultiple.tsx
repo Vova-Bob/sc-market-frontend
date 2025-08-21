@@ -15,6 +15,11 @@ import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded"
 import { BackArrow } from "../../components/button/BackArrow"
 import { MarketMultipleView } from "../../views/market/MarketMultipleView"
 import { useTranslation } from "react-i18next"
+import {
+  shouldRedirectTo404,
+  shouldShowErrorPage,
+} from "../../util/errorHandling"
+import { ErrorPage } from "../errors/ErrorPage"
 
 export function ViewMarketMultiple(props: {}) {
   const { id } = useParams<{ id: string }>()
@@ -61,7 +66,8 @@ export function ViewMarketMultiple(props: {}) {
           </Grid>
         </Grid>
 
-        {error ? <Navigate to={"/404"} /> : null}
+        {shouldRedirectTo404(error) ? <Navigate to={"/404"} /> : null}
+        {shouldShowErrorPage(error) ? <ErrorPage /> : null}
         {listing && (
           <CurrentMarketListingContext.Provider value={[listing!, refetch]}>
             {(() => {
@@ -104,7 +110,8 @@ export function EditMarketMultiple(props: {}) {
           <BackArrow /> {t("market.editMarketListing")}
         </HeaderTitle>
 
-        {error ? <Navigate to={"/404"} /> : null}
+        {shouldRedirectTo404(error) ? <Navigate to={"/404"} /> : null}
+        {shouldShowErrorPage(error) ? <ErrorPage /> : null}
         {listing && (
           <CurrentMarketListingContext.Provider value={[listing!, refetch]}>
             {(() => {

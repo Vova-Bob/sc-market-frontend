@@ -3,7 +3,7 @@ import { ContainerGrid } from "../../components/layout/ContainerGrid"
 import { HeaderTitle } from "../../components/typography/HeaderTitle"
 import React, { useEffect } from "react"
 import { useGetOfferSessionByIDQuery } from "../../store/offer"
-import { Link, useParams, useNavigate } from "react-router-dom"
+import { Link, useParams, useNavigate, Navigate } from "react-router-dom"
 import {
   OfferDetailsArea,
   OfferMessagesArea,
@@ -17,10 +17,15 @@ import {
 import { OfferMarketListings } from "../../views/offers/OfferMarketListings"
 import { OfferServiceArea } from "../../views/offers/OfferServiceArea"
 import { useTranslation } from "react-i18next"
+import {
+  shouldRedirectTo404,
+  shouldShowErrorPage,
+} from "../../util/errorHandling"
+import { ErrorPage } from "../errors/ErrorPage"
 
 export function ViewOfferPage() {
   const { id } = useParams<{ id: string }>()
-  const { data: session } = useGetOfferSessionByIDQuery(id!)
+  const { data: session, error } = useGetOfferSessionByIDQuery(id!)
   const { t } = useTranslation()
   const navigate = useNavigate()
 
@@ -58,6 +63,9 @@ export function ViewOfferPage() {
         <HeaderTitle lg={12} xl={12}>
           {t("offers.viewOffer")}
         </HeaderTitle>
+
+        {shouldRedirectTo404(error) ? <Navigate to={"/404"} /> : null}
+        {shouldShowErrorPage(error) ? <ErrorPage /> : null}
 
         {session ? (
           <OfferDetailsArea session={session} />

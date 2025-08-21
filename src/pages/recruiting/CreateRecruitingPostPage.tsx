@@ -8,6 +8,11 @@ import { Navigate, useParams } from "react-router-dom"
 import { useRecruitingGetPostByIDQuery } from "../../store/recruiting"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 import { useTranslation } from "react-i18next"
+import {
+  shouldRedirectTo404,
+  shouldShowErrorPage,
+} from "../../util/errorHandling"
+import { ErrorPage } from "../errors/ErrorPage"
 
 export function CreateRecruitingPostPage() {
   const { t } = useTranslation()
@@ -31,12 +36,13 @@ export function UpdateRecruitingPostPage() {
   const { post_id } = useParams<{ post_id: string }>()
   const { t } = useTranslation()
 
-  const { data: post, isError } = useRecruitingGetPostByIDQuery(post_id!)
+  const { data: post, error, isError } = useRecruitingGetPostByIDQuery(post_id!)
   const [currentOrg] = useCurrentOrg()
 
   return (
     <Page title={t("recruiting_post.page.updatePost")}>
-      {isError && <Navigate to={"/404"} />}
+      {shouldRedirectTo404(error) && <Navigate to={"/404"} />}
+      {shouldShowErrorPage(error) && <ErrorPage />}
 
       <ContainerGrid maxWidth={"md"} sidebarOpen={true}>
         <HeaderTitle>{t("recruiting_post.page.updatePost")}</HeaderTitle>

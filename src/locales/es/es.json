@@ -1063,6 +1063,7 @@
     "activate": "Activate Listing",
     "archive": "Archive Listing",
     "updateBtn": "Update",
+    "updating": "Actualizando...",
     "title": "Title",
     "quantityAvailable": "Quantity Available",
     "price": "Price",

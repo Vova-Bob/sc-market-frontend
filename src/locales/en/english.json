@@ -1079,6 +1079,7 @@
     "activate": "Activate Listing",
     "archive": "Archive Listing",
     "updateBtn": "Update",
+    "updating": "Updating...",
     "title": "Title",
     "quantityAvailable": "Quantity Available",
     "price": "Price",
@@ -1547,6 +1548,13 @@
     "title": "404: Page Not Found",
     "subtitle": "I wonder how you got here...",
     "returnToDashboard": "Return to Dashboard"
+  },
+  "errorPage": {
+    "title": "Something went wrong",
+    "subtitle": "We encountered an error while loading this page. This could be due to a temporary server issue or network problem.",
+    "retry": "Try Again",
+    "path": "Page",
+    "pageTitle": "Error"
   },
   "frontendError": {
     "title": "An Error Occurred Loading the Page",

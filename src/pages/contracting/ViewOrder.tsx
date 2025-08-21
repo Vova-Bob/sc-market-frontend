@@ -26,6 +26,11 @@ import { useGetOfferSessionByIDQuery } from "../../store/offer"
 import { OfferMarketListings } from "../../views/offers/OfferMarketListings"
 import { OfferServiceArea } from "../../views/offers/OfferServiceArea"
 import { useTranslation } from "react-i18next"
+import {
+  shouldRedirectTo404,
+  shouldShowErrorPage,
+} from "../../util/errorHandling"
+import { ErrorPage } from "../errors/ErrorPage"
 
 export function ViewOrder() {
   const { t } = useTranslation()
@@ -144,7 +149,8 @@ export function ViewOrder() {
           {t("orders.viewOrder")}
         </HeaderTitle>
 
-        {error ? <Navigate to={"/404"} /> : null}
+        {shouldRedirectTo404(error) ? <Navigate to={"/404"} /> : null}
+        {shouldShowErrorPage(error) ? <ErrorPage /> : null}
 
         {order ? (
           <OrderDetailsArea order={order} />

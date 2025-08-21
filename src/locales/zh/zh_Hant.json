@@ -1035,17 +1035,18 @@
     "failedSubmit": ""
   },
   "MarketListingEditView": {
-    "deactivate": "",
-    "activate": "",
-    "archive": "",
-    "updateBtn": "",
-    "title": "",
-    "quantityAvailable": "",
-    "price": "",
-    "minBidIncrement": "",
-    "description": "",
-    "updated": "",
-    "updateError": ""
+    "deactivate": "Deactivate Listing",
+    "activate": "Activate Listing",
+    "archive": "Archive Listing",
+    "updateBtn": "Update",
+    "updating": "更新中...",
+    "title": "Title",
+    "quantityAvailable": "Quantity Available",
+    "price": "Price",
+    "minBidIncrement": "Minimum Bid Increment",
+    "description": "Description",
+    "updated": "Updated!",
+    "updateError": "Error while updating!"
   },
   "MarketEditTemplate": {
     "title": "",

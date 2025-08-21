@@ -16,6 +16,11 @@ import { BackArrow } from "../../components/button/BackArrow"
 import { MarketMultipleEditView } from "../../views/market/MarketMultipleEditView"
 import { formatMarketUrl } from "../../util/urls"
 import { useTranslation } from "react-i18next"
+import {
+  shouldRedirectTo404,
+  shouldShowErrorPage,
+} from "../../util/errorHandling"
+import { ErrorPage } from "../errors/ErrorPage"
 
 export function ViewMarketListing(props: {}) {
   const { id } = useParams<{ id: string }>()
@@ -66,7 +71,8 @@ export function ViewMarketListing(props: {}) {
           </Grid>
         </Grid>
 
-        {error ? <Navigate to={"/404"} /> : null}
+        {shouldRedirectTo404(error) ? <Navigate to={"/404"} /> : null}
+        {shouldShowErrorPage(error) ? <ErrorPage /> : null}
         {listing && (
           <CurrentMarketListingContext.Provider value={[listing!, refetch]}>
             {(() => {
@@ -108,7 +114,8 @@ export function EditMarketListing(props: {}) {
           <BackArrow /> {t("market.editMarketListing")}
         </HeaderTitle>
 
-        {error ? <Navigate to={"/404"} /> : null}
+        {shouldRedirectTo404(error) ? <Navigate to={"/404"} /> : null}
+        {shouldShowErrorPage(error) ? <ErrorPage /> : null}
         {listing && (
           <CurrentMarketListingContext.Provider value={[listing!, refetch]}>
             {(() => {
@@ -143,7 +150,8 @@ export function EditMultipleListing(props: {}) {
           <BackArrow /> {t("market.editMultipleListing")}
         </HeaderTitle>
 
-        {error ? <Navigate to={"/404"} /> : null}
+        {shouldRedirectTo404(error) ? <Navigate to={"/404"} /> : null}
+        {shouldShowErrorPage(error) ? <ErrorPage /> : null}
         {listing && (
           <CurrentMarketListingContext.Provider value={[listing!, refetch]}>
             {(() => {

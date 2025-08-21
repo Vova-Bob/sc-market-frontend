@@ -1076,6 +1076,7 @@
     "activate": "Activate Listing",
     "archive": "Archive Listing",
     "updateBtn": "Update",
+    "updating": "更新中...",
     "title": "Title",
     "quantityAvailable": "Quantity Available",
     "price": "Price",
