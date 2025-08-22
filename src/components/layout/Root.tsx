@@ -6,6 +6,7 @@ import { useDrawerOpen } from "../../hooks/layout/Drawer"
 import { PreferencesButton } from "../../views/settings/PreferencesButton"
 import { CookieConsent } from "../alert/CookieConsent"
 import { useRoutePrefetch } from "../../hooks/prefetch/RoutePrefetch"
+import { SkipNavigation } from "../accessibility/SkipNavigation"
 
 export function Root(props: { children: React.ReactNode }) {
   const theme: Theme = useTheme()
@@ -24,6 +25,7 @@ export function Root(props: { children: React.ReactNode }) {
         // backgroundSize: 'cover',
       }}
     >
+      <SkipNavigation />
       <CookieConsent />
       <Navbar />
       <Sidebar />

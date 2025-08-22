@@ -19,8 +19,16 @@ export function DiscordLoginButton() {
       color="secondary"
       variant="contained"
       startIcon={<Discord />}
+      aria-label={t("auth.loginWithDiscord", "Login with Discord")}
+      aria-describedby="discord-login-description"
     >
       {t("auth.loginWithDiscord", "Login with Discord")}
+      <span id="discord-login-description" className="sr-only">
+        {t(
+          "accessibility.loginWithDiscordDescription",
+          "Authenticate using your Discord account",
+        )}
+      </span>
     </Button>
   )
 }

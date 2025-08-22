@@ -265,13 +265,22 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
                 quantity_available: values.floatValue || 0,
               }))
             }}
-            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+            inputProps={{ 
+              inputMode: "numeric", 
+              pattern: "[0-9]*",
+              "aria-label": t("accessibility.quantityAvailableInput", "Enter quantity available"),
+              "aria-describedby": "quantity-available-help"
+            }}
             label={t("MarketListingForm.quantityAvailable")}
             id="quantity-available"
             value={state.quantity_available}
             defaultValue={1}
             color={"secondary"}
+            aria-required="true"
           />
+          <div id="quantity-available-help" className="sr-only">
+            {t("accessibility.quantityAvailableHelp", "Enter the number of items available for sale")}
+          </div>
         </Grid>
 
         <Grid item xs={12}>

@@ -117,12 +117,39 @@ export function ReportButton({
 
   return (
     <>
-      <a href={"#"} style={{ textDecoration: "none", color: "inherit" }}>
-        <UnderlineLink onClick={handleOpen}>{children}</UnderlineLink>
+      <a
+        href={"#"}
+        style={{ textDecoration: "none", color: "inherit" }}
+        onClick={handleOpen}
+        role="button"
+        tabIndex={0}
+        aria-label={t("accessibility.reportContent", "Report this content")}
+        aria-describedby="report-button-description"
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault()
+            handleOpen()
+          }
+        }}
+      >
+        <UnderlineLink>{children}</UnderlineLink>
+        <span id="report-button-description" className="sr-only">
+          {t(
+            "accessibility.reportContentDescription",
+            "Open report dialog to report inappropriate content",
+          )}
+        </span>
       </a>
 
-      <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-        <DialogTitle>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        maxWidth="sm"
+        fullWidth
+        aria-labelledby="report-dialog-title"
+        aria-describedby="report-dialog-description"
+      >
+        <DialogTitle id="report-dialog-title">
           <Box display="flex" alignItems="center" gap={1}>
             <ReportIcon color="error" />
             {t("ReportButton.reportContent")}
@@ -179,7 +206,11 @@ export function ReportButton({
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={handleClose} disabled={isSubmitting}>
+          <Button
+            onClick={handleClose}
+            disabled={isSubmitting}
+            aria-label={t("accessibility.cancelReport", "Cancel report")}
+          >
             {t("ReportButton.cancel")}
           </Button>
           <Button
@@ -188,10 +219,20 @@ export function ReportButton({
             color="error"
             disabled={isSubmitting || !reason}
             startIcon={isSubmitting ? undefined : <ReportIcon />}
+            aria-label={t("accessibility.submitReport", "Submit report")}
+            aria-describedby={isSubmitting ? "submitting-status" : undefined}
           >
             {isSubmitting
               ? t("ReportButton.submitting")
               : t("ReportButton.submit")}
+            {isSubmitting && (
+              <span id="submitting-status" className="sr-only">
+                {t(
+                  "accessibility.submittingReport",
+                  "Submitting report, please wait",
+                )}
+              </span>
+            )}
           </Button>
         </DialogActions>
       </Dialog>

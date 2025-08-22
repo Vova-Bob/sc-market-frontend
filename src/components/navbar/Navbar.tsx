@@ -21,6 +21,9 @@ export function Navbar(props: { children?: React.ReactNode }) {
     <AppBar
       elevation={0}
       position="absolute"
+      component="nav"
+      role="navigation"
+      aria-label={t("accessibility.mainNavigation", "Main navigation")}
       sx={{
         zIndex: props.children
           ? theme.zIndex.drawer - 2
@@ -81,6 +84,12 @@ export function Navbar(props: { children?: React.ReactNode }) {
               color={"secondary"}
               onClick={() => setDrawerOpen(true)}
               sx={{ marginLeft: 2 }}
+              aria-label={t(
+                "accessibility.toggleSidebar",
+                "Toggle sidebar menu",
+              )}
+              aria-expanded="false"
+              aria-controls="sidebar-drawer"
             >
               <MenuRounded />
             </IconButton>

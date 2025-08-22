@@ -36,8 +36,19 @@ export function MarketActions() {
                 "marketActions.createListingTooltip",
                 "Create a new listing",
               )}
+              aria-label={t(
+                "accessibility.createMarketListing",
+                "Create a new market listing",
+              )}
+              aria-describedby="create-listing-description"
             >
               {t("marketActions.createListing", "Create Listing")}
+              <span id="create-listing-description" className="sr-only">
+                {t(
+                  "accessibility.createListingDescription",
+                  "Navigate to the create listing page",
+                )}
+              </span>
             </Button>
           </Link>
         </Grid>
@@ -56,8 +67,19 @@ export function MarketActions() {
                 "marketActions.myCartTooltip",
                 "View your shopping cart",
               )}
+              aria-label={t(
+                "accessibility.viewShoppingCart",
+                "View your shopping cart",
+              )}
+              aria-describedby="view-cart-description"
             >
               {t("marketActions.myCart", "My Cart")}
+              <span id="view-cart-description" className="sr-only">
+                {t(
+                  "accessibility.viewCartDescription",
+                  "Navigate to your shopping cart",
+                )}
+              </span>
             </Button>
           </Link>
         </Grid>

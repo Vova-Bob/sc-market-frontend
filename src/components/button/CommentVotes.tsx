@@ -33,7 +33,12 @@ export function CommentVotes(props: {
   ] = useCommentsDownvoteMutation()
 
   return (
-    <ButtonGroup orientation={"vertical"} variant={"text"} size={"small"}>
+    <ButtonGroup
+      orientation={"vertical"}
+      variant={"text"}
+      size={"small"}
+      aria-label={t("accessibility.commentVoting", "Comment voting controls")}
+    >
       <Button
         color={"success"}
         startIcon={<KeyboardArrowUpRounded />}
@@ -41,7 +46,14 @@ export function CommentVotes(props: {
           doUpvote({ comment_id: comment.comment_id, post_id: post?.post_id })
         }
         title={t("commentVotes.upvoteTooltip", "Upvote this comment")}
+        aria-label={t("accessibility.upvoteComment", "Upvote this comment")}
+        aria-describedby={`upvote-count-${comment.comment_id}`}
       >
+        <span id={`upvote-count-${comment.comment_id}`} className="sr-only">
+          {t("accessibility.upvoteCount", "Upvotes: {{count}}", {
+            count: comment.upvotes,
+          })}
+        </span>
         {comment.upvotes}
       </Button>
       <Button
@@ -51,7 +63,14 @@ export function CommentVotes(props: {
           doDownvote({ comment_id: comment.comment_id, post_id: post?.post_id })
         }
         title={t("commentVotes.downvoteTooltip", "Downvote this comment")}
+        aria-label={t("accessibility.downvoteComment", "Downvote this comment")}
+        aria-describedby={`downvote-count-${comment.comment_id}`}
       >
+        <span id={`downvote-count-${comment.comment_id}`} className="sr-only">
+          {t("accessibility.downvoteCount", "Downvotes: {{count}}", {
+            count: comment.downvotes,
+          })}
+        </span>
         {comment.downvotes}
       </Button>
     </ButtonGroup>

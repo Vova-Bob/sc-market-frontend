@@ -43,7 +43,17 @@ export function RecruitmentVotes(props: { post: RecruitingPost }) {
       variant={"contained"}
       size={"small"}
       title={t("recruitmentVotes.upvoteButtonTooltip", "Upvote this post")}
+      aria-label={t(
+        "accessibility.upvoteRecruitmentPost",
+        "Upvote this recruitment post",
+      )}
+      aria-describedby={`recruitment-upvote-count-${post.post_id}`}
     >
+      <span id={`recruitment-upvote-count-${post.post_id}`} className="sr-only">
+        {t("accessibility.recruitmentUpvoteCount", "Upvotes: {{count}}", {
+          count: post.upvotes + pressed,
+        })}
+      </span>
       {post.upvotes + pressed}
     </Button>
   )

@@ -84,16 +84,20 @@ function EnhancedTableHead<T>(props: EnhancedTableProps<T>) {
     <TableHead>
       <TableRow>
         {disableSelect ? null : (
-          <TransparentHeaderCell padding="checkbox">
+          <TransparentHeaderCell padding="checkbox" scope="col">
             <Checkbox
               color="primary"
               indeterminate={numSelected > 0 && numSelected < rowCount}
               checked={rowCount > 0 && numSelected === rowCount}
               onChange={onSelectAllClick}
               inputProps={{
-                "aria-label": t("select_all"),
+                "aria-label": t("accessibility.selectAllRows", "Select all rows"),
+                "aria-describedby": "select-all-help",
               }}
             />
+            <div id="select-all-help" className="sr-only">
+              {t("accessibility.selectAllHelp", "Select or deselect all rows in the table")}
+            </div>
           </TransparentHeaderCell>
         )}
 
@@ -107,12 +111,25 @@ function EnhancedTableHead<T>(props: EnhancedTableProps<T>) {
               minWidth: headCell.minWidth,
               maxWidth: headCell.maxWidth,
             }}
+            scope="col"
+            aria-sort={
+              orderBy === headCell.id
+                ? order === "desc"
+                  ? "descending"
+                  : "ascending"
+                : "none"
+            }
           >
             {!headCell.noSort && (
               <TableSortLabel
                 active={orderBy === headCell.id}
                 direction={orderBy === headCell.id ? order : "asc"}
                 onClick={createSortHandler(headCell.id)}
+                aria-label={
+                  orderBy === headCell.id
+                    ? t("accessibility.sortByColumn", "Sort by {{column}}", { column: t(headCell.label) })
+                    : t("accessibility.sortColumn", "Sort by {{column}}", { column: t(headCell.label) })
+                }
               >
                 {t(headCell.label)}
                 {orderBy === headCell.id ? (
@@ -124,6 +141,7 @@ function EnhancedTableHead<T>(props: EnhancedTableProps<T>) {
                 ) : null}
               </TableSortLabel>
             )}
+            {headCell.noSort && t(headCell.label)}
           </TransparentHeaderCell>
         ))}
       </TableRow>
@@ -239,6 +257,9 @@ export function PaginatedTable<T>(props: {
         <Box ref={ref} sx={{ position: "absolute", top: -150 }} />
       </Box>
       <TableContainer sx={{ width: "100%" }}>
+        <div id="table-description" className="sr-only">
+          {t("accessibility.dataTableDescription", "Data table with {{count}} rows", { count: rows.length })}
+        </div>
         <Table
           sx={{
             borderRadius: 2,
@@ -247,8 +268,10 @@ export function PaginatedTable<T>(props: {
             },
           }}
           aria-labelledby="tableTitle"
+          aria-describedby="table-description"
           size={"medium"}
           stickyHeader
+          role="table"
         >
           <EnhancedTableHead
             numSelected={selected.length}
@@ -305,10 +328,17 @@ export function PaginatedTable<T>(props: {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
         color={"primary"}
-        nextIconButtonProps={{ color: "primary" }}
-        backIconButtonProps={{ color: "primary" }}
+        nextIconButtonProps={{ 
+          color: "primary",
+          "aria-label": t("accessibility.nextPage", "Go to next page")
+        }}
+        backIconButtonProps={{ 
+          color: "primary",
+          "aria-label": t("accessibility.previousPage", "Go to previous page")
+        }}
         SelectProps={{
           color: "primary",
+          "aria-label": t("accessibility.selectRowsPerPage", "Select number of rows per page")
         }}
         labelRowsPerPage={t("rows_per_page")}
         labelDisplayedRows={({ from, to, count }) =>
@@ -318,6 +348,7 @@ export function PaginatedTable<T>(props: {
             count: count,
           })
         }
+        aria-label={t("accessibility.tablePagination", "Table pagination controls")}
       />
     </Grid>
   )

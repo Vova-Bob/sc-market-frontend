@@ -10,8 +10,18 @@ export function BackArrow() {
 
   return (
     <Tooltip title={t("navigation.goBack", "Go Back")}>
-      <IconButton onClick={() => navigate(-1)}>
+      <IconButton
+        onClick={() => navigate(-1)}
+        aria-label={t(
+          "accessibility.goBackToPreviousPage",
+          "Go back to previous page",
+        )}
+        aria-describedby="back-button-description"
+      >
         <KeyboardArrowLeftRounded />
+        <span id="back-button-description" className="sr-only">
+          {t("navigation.goBack", "Go Back")}
+        </span>
       </IconButton>
     </Tooltip>
   )

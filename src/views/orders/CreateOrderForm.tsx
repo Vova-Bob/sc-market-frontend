@@ -221,18 +221,23 @@ export function CreateOrderForm(
                 color={"secondary"}
                 SelectProps={{
                   IconComponent: KeyboardArrowDownRoundedIcon,
+                  "aria-label": t("accessibility.selectService", "Select service"),
                 }}
+                aria-describedby="order-service-help"
               >
                 <MenuItem value={""}>{t("CreateOrderForm.noService")}</MenuItem>
                 {(services || []).map((t) => (
                   <MenuItem value={t.service_name} key={t.service_name}>
                     {t.service_name}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
+                                  </MenuItem>
+              ))}
+            </TextField>
+            <div id="order-service-help" className="sr-only">
+              {t("accessibility.selectServiceHelp", "Choose a service to base this order on, or select no service")}
+            </div>
           </Grid>
-        </Section>
+        </Grid>
+      </Section>
       )}
       <Section xs={12}>
         <Grid item xs={12} lg={4}>
@@ -256,7 +261,16 @@ export function CreateOrderForm(
                 setState({ ...state, title: event.target.value })
               }}
               color={"secondary"}
+              aria-required="true"
+              aria-describedby="order-title-help"
+              inputProps={{
+                "aria-label": t("accessibility.orderTitleInput", "Enter order title"),
+                maxLength: 100,
+              }}
             />
+            <div id="order-title-help" className="sr-only">
+              {t("accessibility.orderTitleHelp", "Enter a descriptive title for your order (required)")}
+            </div>
           </Grid>
 
           <Grid item xs={12} lg={10}>
@@ -270,8 +284,11 @@ export function CreateOrderForm(
                 setState({ ...state, type: event.target.value })
               }}
               color={"secondary"}
+              aria-required="true"
+              aria-describedby="order-type-help"
               SelectProps={{
                 IconComponent: KeyboardArrowDownRoundedIcon,
+                "aria-label": t("accessibility.selectOrderType", "Select order type"),
               }}
             >
               {Object.keys(orderIcons).map((k) => (
