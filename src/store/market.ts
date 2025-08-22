@@ -486,6 +486,8 @@ export const marketApi = serviceApi.injectEndpoints({
         url: `${baseUrl}/public/search`,
         params,
       }),
+      // Add better caching strategy
+      keepUnusedDataFor: 300, // Keep data for 5 minutes
       providesTags: (result, error, arg) => [{ type: "AllListings" as const }],
     }),
     marketGetAllListings: builder.query<SellerListingType[], void>({

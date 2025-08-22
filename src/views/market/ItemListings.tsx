@@ -1762,16 +1762,22 @@ export function ItemListings(props: {
   const [perPage, setPerPage] = useState(48)
   const [page, setPage] = useState(0)
 
-  const { data: results, isLoading } = useSearchMarketQuery({
-    rating: undefined,
-    seller_rating: 0,
-    contractor_seller: CURRENT_CUSTOM_ORG || org,
-    user_seller: user,
-    ...searchState,
-    index: page,
-    page_size: perPage,
-    listing_type: "not-aggregate",
-  })
+  // Memoize search query parameters to prevent unnecessary re-renders
+  const searchQueryParams = useMemo(
+    () => ({
+      rating: undefined,
+      seller_rating: 0,
+      contractor_seller: CURRENT_CUSTOM_ORG || org,
+      user_seller: user,
+      ...searchState,
+      index: page,
+      page_size: perPage,
+      listing_type: "not-aggregate",
+    }),
+    [org, user, searchState, page, perPage],
+  )
+
+  const { data: results, isLoading } = useSearchMarketQuery(searchQueryParams)
 
   const { total, listings } = useMemo(
     () => results || { total: 1, listings: [] },
@@ -1869,16 +1875,22 @@ export function BulkListingsRefactor(props: {
   const [perPage, setPerPage] = useState(48)
   const [page, setPage] = useState(0)
 
-  const { data: results, isLoading } = useSearchMarketQuery({
-    rating: undefined,
-    seller_rating: 0,
-    contractor_seller: CURRENT_CUSTOM_ORG || org,
-    user_seller: user,
-    ...searchState,
-    index: page,
-    page_size: perPage,
-    listing_type: "aggregate",
-  })
+  // Memoize search query parameters to prevent unnecessary re-renders
+  const searchQueryParams = useMemo(
+    () => ({
+      rating: undefined,
+      seller_rating: 0,
+      contractor_seller: CURRENT_CUSTOM_ORG || org,
+      user_seller: user,
+      ...searchState,
+      index: page,
+      page_size: perPage,
+      listing_type: "aggregate",
+    }),
+    [org, user, searchState, page, perPage],
+  )
+
+  const { data: results, isLoading } = useSearchMarketQuery(searchQueryParams)
 
   const { total, listings } = useMemo(
     () => results || { total: 1, listings: [] },
