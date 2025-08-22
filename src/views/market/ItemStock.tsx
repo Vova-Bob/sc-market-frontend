@@ -316,6 +316,9 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
           order_count: 0,
           view_count: 0,
         }),
+        // Access view_count from both locations for backward compatibility
+        view_count:
+          (listing as any).view_count || listing.stats?.view_count || 0,
         image_url: listing.photos[0],
       })),
     [filteredListings],
@@ -621,6 +624,25 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
             {(+params.row.order_count + +params.row.offer_count).toLocaleString(
               undefined,
             )}
+          </Typography>
+        )
+      },
+    },
+    {
+      field: "view_count",
+      headerName: t("ItemStock.views"),
+      width: 80,
+      display: "flex",
+      renderCell: (params: GridRenderCellParams) => {
+        const isNewRow = newRows.find((row) => row.id === params.id)
+
+        if (isNewRow) {
+          return "—" // New rows don't have views
+        }
+
+        return (
+          <Typography variant={"subtitle2"} color="text.secondary">
+            {params.value?.toLocaleString(undefined) || "0"}
           </Typography>
         )
       },

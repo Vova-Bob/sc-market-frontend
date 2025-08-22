@@ -83,6 +83,7 @@ export interface UniqueListing {
     offer_count: number
     view_count: number
   }
+  view_count?: number
 }
 
 export interface MinimalAggregate {

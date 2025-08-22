@@ -260,3 +260,46 @@ export interface OrderSearchQuery {
   page_size?: number
   reverse_sort?: boolean
 }
+
+export interface OrderAnalytics {
+  daily_totals: Array<{
+    date: string
+    total: number
+    in_progress: number
+    fulfilled: number
+    cancelled: number
+    not_started: number
+  }>
+  weekly_totals: Array<{
+    date: string
+    total: number
+    in_progress: number
+    fulfilled: number
+    cancelled: number
+    not_started: number
+  }>
+  monthly_totals: Array<{
+    date: string
+    total: number
+    in_progress: number
+    fulfilled: number
+    cancelled: number
+    not_started: number
+  }>
+  top_contractors: Array<{
+    name: string
+    fulfilled_orders: number
+    total_orders: number
+  }>
+  top_users: Array<{
+    username: string
+    fulfilled_orders: number
+    total_orders: number
+  }>
+  summary: {
+    total_orders: number
+    active_orders: number
+    completed_orders: number
+    total_value: number
+  }
+}

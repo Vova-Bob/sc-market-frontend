@@ -1202,7 +1202,8 @@
     "expires": "Expires",
     "description": "Description",
     "activeOrders": "Active Orders",
-    "previousOrders": "Previous Orders"
+    "previousOrders": "Previous Orders",
+    "views": "Views"
   },
   "MarketListingForm": {
     "about": "About",
@@ -1309,7 +1310,7 @@
     "sellerRating": "Seller Rating",
     "price": "Price",
     "quantityAvailable": "Quantity Available",
-    "buyer": "Buyer",
+    "viewCount": "Total Views",
     "quantity": "Quantity",
     "total": "Total",
     "description": "Description",
@@ -1394,7 +1395,8 @@
     "edit": "Edit",
     "save": "Save",
     "discard": "Discard",
-    "editListing": "Edit Listing"
+    "editListing": "Edit Listing",
+    "views": "Views"
   },
   "itemMarket": {
     "toggleSidebar": "Toggle market sidebar"

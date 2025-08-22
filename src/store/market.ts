@@ -557,6 +557,35 @@ export const marketApi = serviceApi.injectEndpoints({
         "AllListings",
       ],
     }),
+    marketTrackListingView: builder.mutation<
+      { message: string },
+      { listing_id: string }
+    >({
+      query: ({ listing_id }) => ({
+        url: `${baseUrl}/listing/${listing_id}/view`,
+        method: "POST",
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Listing" as const, id: arg.listing_id },
+        { type: "Listing" as const },
+      ],
+    }),
+    marketGetSellerAnalytics: builder.query<
+      {
+        market_listings: number
+        services: number
+        total_market_views: number
+        total_service_views: number
+        time_period: string
+      },
+      { period?: "7d" | "30d" | "90d" }
+    >({
+      query: ({ period = "30d" }) => ({
+        url: `${baseUrl}/seller/analytics?period=${period}`,
+        method: "GET",
+      }),
+      providesTags: ["SellerAnalytics"],
+    }),
   }),
 })
 
@@ -592,4 +621,6 @@ export const {
   useMarketCreateListingMutation,
   useMarketGetPublicQuery,
   useMarketUploadListingPhotosMutation,
+  useMarketTrackListingViewMutation,
+  useMarketGetSellerAnalyticsQuery,
 } = marketApi

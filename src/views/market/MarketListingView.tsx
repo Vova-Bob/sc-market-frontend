@@ -29,6 +29,7 @@ import {
   PersonRounded,
   RefreshRounded,
   WarningRounded,
+  VisibilityRounded,
 } from "@mui/icons-material"
 import { useCurrentMarketListing } from "../../hooks/market/CurrentMarketItem"
 import { BaseListingType, UniqueListing } from "../../datatypes/MarketListing"
@@ -36,6 +37,7 @@ import { UserList } from "../../components/list/UserList"
 import {
   useMarketBidMutation,
   useMarketPurchaseMutation,
+  useMarketTrackListingViewMutation,
 } from "../../store/market"
 import { OrderList } from "../../components/list/OrderList"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
@@ -406,6 +408,14 @@ export function MarketListingView() {
   const { listing, details, photos, auction_details } = complete
   const { data: profile } = useGetUserProfileQuery()
   const [currentOrg] = useCurrentOrg()
+  const [trackView] = useMarketTrackListingViewMutation()
+
+  // Track view when component mounts
+  useEffect(() => {
+    if (listing?.listing_id) {
+      trackView({ listing_id: listing.listing_id })
+    }
+  }, [listing?.listing_id]) // Removed trackView from dependencies to prevent duplicate calls
 
   const amContractor = useMemo(
     () =>
@@ -690,6 +700,13 @@ export function MarketListingView() {
                             >
                               {t("MarketListingView.expires")}{" "}
                               {getRelativeTime(new Date(listing.expiration))}
+                            </ListingDetailItem>
+
+                            <ListingDetailItem
+                              icon={<VisibilityRounded fontSize={"inherit"} />}
+                            >
+                              {t("MarketListingView.views")}{" "}
+                              {(complete.view_count || 0).toLocaleString()}
                             </ListingDetailItem>
 
                             <ListingDetailItem
