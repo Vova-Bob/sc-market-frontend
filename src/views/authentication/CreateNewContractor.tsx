@@ -112,17 +112,27 @@ export function CreateNewContractor() {
           aria-invalid={error ? !contractorName : false}
           aria-required="true"
           inputProps={{
-            "aria-label": t("accessibility.contractorNameInput", "Enter contractor name"),
+            "aria-label": t(
+              "accessibility.contractorNameInput",
+              "Enter contractor name",
+            ),
             maxLength: 50,
           }}
         />
         {error && !contractorName && (
-          <div id="contractor-name-error" className="sr-only" aria-live="polite">
+          <div
+            id="contractor-name-error"
+            className="sr-only"
+            aria-live="polite"
+          >
             {t("contractorCreate.error_name")}
           </div>
         )}
         <div id="contractor-name-help" className="sr-only">
-          {t("accessibility.contractorNameHelp", "Enter the name for your contractor organization (maximum 50 characters)")}
+          {t(
+            "accessibility.contractorNameHelp",
+            "Enter the name for your contractor organization (maximum 50 characters)",
+          )}
         </div>
       </Grid>
       <Grid item xs={12}>
@@ -158,18 +168,28 @@ export function CreateNewContractor() {
           aria-invalid={error ? !contractorName : false}
           aria-required="true"
           inputProps={{
-            "aria-label": t("accessibility.contractorIdentifierInput", "Enter contractor identifier"),
+            "aria-label": t(
+              "accessibility.contractorIdentifierInput",
+              "Enter contractor identifier",
+            ),
             maxLength: 30,
             pattern: "[A-Za-z0-9]*",
           }}
         />
         {error && !contractorName && (
-          <div id="contractor-identifier-error" className="sr-only" aria-live="polite">
+          <div
+            id="contractor-identifier-error"
+            className="sr-only"
+            aria-live="polite"
+          >
             {t("contractorCreate.error_identifier")}
           </div>
         )}
         <div id="contractor-identifier-help" className="sr-only">
-          {t("accessibility.contractorIdentifierHelp", "Enter a unique identifier for your contractor organization (alphanumeric characters only, maximum 30 characters)")}
+          {t(
+            "accessibility.contractorIdentifierHelp",
+            "Enter a unique identifier for your contractor organization (alphanumeric characters only, maximum 30 characters)",
+          )}
         </div>
       </Grid>
 

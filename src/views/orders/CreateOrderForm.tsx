@@ -332,14 +332,20 @@ export function CreateOrderForm(
                   }}
                   color={"secondary"}
                   name="Rush"
-                  aria-label={t("accessibility.rushOrderToggle", "Toggle rush order")}
+                  aria-label={t(
+                    "accessibility.rushOrderToggle",
+                    "Toggle rush order",
+                  )}
                   aria-describedby="rush-order-help"
                 />
               }
               label={t("CreateOrderForm.rush")}
             />
             <div id="rush-order-help" className="sr-only">
-              {t("accessibility.rushOrderHelp", "Check this box if you need this order completed urgently")}
+              {t(
+                "accessibility.rushOrderHelp",
+                "Check this box if you need this order completed urgently",
+              )}
             </div>
           </Grid>
 
@@ -416,12 +422,18 @@ export function CreateOrderForm(
               }}
               aria-describedby="collateral-help"
               inputProps={{
-                "aria-label": t("accessibility.collateralInput", "Enter collateral amount"),
+                "aria-label": t(
+                  "accessibility.collateralInput",
+                  "Enter collateral amount",
+                ),
                 pattern: "[0-9]*",
               }}
             />
             <div id="collateral-help" className="sr-only">
-              {t("accessibility.collateralHelp", "Enter the collateral amount in aUEC (optional)")}
+              {t(
+                "accessibility.collateralHelp",
+                "Enter the collateral amount in aUEC (optional)",
+              )}
             </div>
           </Grid>
 
@@ -466,12 +478,18 @@ export function CreateOrderForm(
               aria-required="true"
               aria-describedby="offer-help"
               inputProps={{
-                "aria-label": t("accessibility.offerInput", "Enter offer amount"),
+                "aria-label": t(
+                  "accessibility.offerInput",
+                  "Enter offer amount",
+                ),
                 pattern: "[0-9]*",
               }}
             />
             <div id="offer-help" className="sr-only">
-              {t("accessibility.offerHelp", "Enter your offer amount in aUEC (required)")}
+              {t(
+                "accessibility.offerHelp",
+                "Enter your offer amount in aUEC (required)",
+              )}
             </div>
           </Grid>
 
@@ -488,7 +506,10 @@ export function CreateOrderForm(
               aria-describedby="payment-type-help"
               SelectProps={{
                 IconComponent: KeyboardArrowDownRoundedIcon,
-                "aria-label": t("accessibility.selectPaymentType", "Select payment type"),
+                "aria-label": t(
+                  "accessibility.selectPaymentType",
+                  "Select payment type",
+                ),
               }}
             >
               {PAYMENT_TYPES.map((paymentType) => (
@@ -498,7 +519,10 @@ export function CreateOrderForm(
               ))}
             </TextField>
             <div id="payment-type-help" className="sr-only">
-              {t("accessibility.paymentTypeHelp", "Select how you want to handle payment for this order (required)")}
+              {t(
+                "accessibility.paymentTypeHelp",
+                "Select how you want to handle payment for this order (required)",
+              )}
             </div>
           </Grid>
         </Grid>
@@ -516,7 +540,10 @@ export function CreateOrderForm(
         >
           {t("CreateOrderForm.submit")}
           <span id="submit-order-help" className="sr-only">
-            {t("accessibility.submitOrderHelp", "Submit your order with the specified details and pricing")}
+            {t(
+              "accessibility.submitOrderHelp",
+              "Submit your order with the specified details and pricing",
+            )}
           </span>
         </LoadingButton>
       </Grid>

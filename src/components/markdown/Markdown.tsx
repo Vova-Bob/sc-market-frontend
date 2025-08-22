@@ -82,7 +82,12 @@ export function MarkdownRender(props: {
           }
 
           return plainText ? null : (
-            <img {...props} style={{ maxWidth: "100%" }} loading="lazy" />
+            <img
+              {...props}
+              style={{ maxWidth: "100%" }}
+              loading="lazy"
+              alt={props.alt || "Image from markdown content"}
+            />
           )
         },
         ...MarkdownProps?.components,

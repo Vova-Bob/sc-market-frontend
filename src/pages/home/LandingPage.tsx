@@ -51,6 +51,7 @@ const bg = "https://media.tenor.com/4LKXThFQuHMAAAAd/perseus-star-citizen.gif"
 function LandingSmallImage(props: { src: string; title: string }) {
   const { src, title } = props
   const theme = useTheme<Theme>()
+  const { t } = useTranslation()
 
   return (
     <Stack
@@ -280,7 +281,7 @@ export function LandingPage() {
                     },
                   }}
                   src={logo}
-                  alt={`SC Market Logo`}
+                  alt={t("accessibility.scMarketLogo", "SC Market logo")}
                 />
                 <Typography color="secondary" variant="h1">
                   <b>SC MARKET</b>
@@ -630,11 +631,20 @@ function SupportersSection() {
               justifyContent={"center"}
               alignItems={"center"}
             >
-              <ButtonBase sx={{ borderRadius: 1 }}>
+              <ButtonBase
+                sx={{ borderRadius: 1 }}
+                aria-label={t(
+                  "accessibility.viewSupporterWebsite",
+                  "Visit {{name}} website",
+                  { name: supporter.name },
+                )}
+              >
                 <img
                   src={supporter.avatar}
                   style={{ maxHeight: 128, maxWidth: "100%", borderRadius: 4 }}
-                  alt={`${supporter.name} logo`}
+                  alt={t("accessibility.supporterLogo", "{{name}} logo", {
+                    name: supporter.name,
+                  })}
                 />
               </ButtonBase>
 
