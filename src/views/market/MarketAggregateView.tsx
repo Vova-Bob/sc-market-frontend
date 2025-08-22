@@ -59,9 +59,11 @@ import { BuyOrderForm } from "./BuyOrderForm"
 import { Rating } from "../../datatypes/Contractor"
 import { Order } from "../../datatypes/Order"
 import { HeaderTitle } from "../../components/typography/HeaderTitle"
-import { dispose, init } from "klinecharts"
 import { Section } from "../../components/paper/Section"
-import Chart from "react-apexcharts"
+import {
+  DynamicApexChart,
+  DynamicKlineChart,
+} from "../../components/charts/DynamicCharts"
 import { NumericFormat } from "react-number-format"
 import { Stack } from "@mui/system"
 import { useTranslation } from "react-i18next" // Localization
@@ -758,26 +760,28 @@ export function AggregateChart(props: { aggregate: MarketAggregate }) {
     aggregate.details.game_item_id!,
   )
 
-  useEffect(() => {
-    // initialize the chart
-    const chart = init(`${aggregate.details.game_item_id}-chart`)!
-
-    // add data to the chart
-    chart.applyNewData(chartData || [])
-
-    return () => {
-      // destroy chart
-      dispose(`${aggregate.details.game_item_id}-chart`)
-    }
-  }, [aggregate.details.game_item_id, chartData])
-
   return (
     <Section xs={12}>
       <Grid item xs={12}>
-        <div
-          id={`${aggregate.details.game_item_id}-chart`}
-          style={{ width: "100%", height: 400 }}
-        />
+        <DynamicKlineChart
+          onInit={(kline) => {
+            // initialize the chart
+            const chart = kline.init(`${aggregate.details.game_item_id}-chart`)!
+            // add data to the chart
+            chart.applyNewData(chartData || [])
+          }}
+          onDispose={(kline) => {
+            // destroy chart
+            kline.dispose(`${aggregate.details.game_item_id}-chart`)
+          }}
+        >
+          {(kline, loading) => (
+            <div
+              id={`${aggregate.details.game_item_id}-chart`}
+              style={{ width: "100%", height: 400 }}
+            />
+          )}
+        </DynamicKlineChart>
       </Grid>
     </Section>
   )
@@ -856,20 +860,20 @@ export function AggregateBuySellWall(props: { aggregate: MarketAggregate }) {
     <Section xs={12}>
       <Grid item xs={12}>
         <Box>
-          <Chart
+          <DynamicApexChart
             width={"100%"}
             height={400}
             type={"area"}
             options={{
               tooltip: {
                 x: {
-                  formatter: (value) =>
+                  formatter: (value: number) =>
                     `${value.toLocaleString(undefined)} aUEC`,
                 },
                 y: {
                   formatter: (
-                    value,
-                    { series: _, seriesIndex, dataPointIndex, w },
+                    value: number,
+                    { series: _, seriesIndex, dataPointIndex, w }: any,
                   ) =>
                     `${value} ${
                       seriesIndex
@@ -884,13 +888,13 @@ export function AggregateBuySellWall(props: { aggregate: MarketAggregate }) {
                         ? t("MarketAggregateView.orLower")
                         : t("MarketAggregateView.orHigher"),
                     })}`,
-                  title: { formatter: (seriesName) => "" },
+                  title: { formatter: (seriesName: string) => "" },
                 },
               },
               xaxis: {
                 type: "numeric",
                 labels: {
-                  formatter: (value, timestamp, opts) =>
+                  formatter: (value: number, timestamp?: any, opts?: any) =>
                     `${(+value).toLocaleString()} aUEC`,
                 },
               },
@@ -899,7 +903,7 @@ export function AggregateBuySellWall(props: { aggregate: MarketAggregate }) {
                 min: 0,
                 max: yMax,
                 labels: {
-                  formatter: (value, opts) =>
+                  formatter: (value: number, opts?: any) =>
                     Math.floor(value).toLocaleString(undefined),
                 },
               },

@@ -15,7 +15,7 @@ import { styled } from "@mui/material/styles"
 import { HeadCell, PaginatedTable } from "../../components/table/PaginatedTable"
 import { UnderlineLink } from "../../components/typography/UnderlineLink"
 import { useProfileGetAllUsers } from "../../store/profile"
-import Chart from "react-apexcharts"
+import { DynamicApexChart } from "../../components/charts/DynamicCharts"
 import { useGetActivityAdminQuery } from "../../store/admin"
 import { useTranslation } from "react-i18next"
 
@@ -174,7 +174,7 @@ export function AdminUserList(props: {
       <Section xs={12} title={t("adminUsers.membership_count")}>
         <Grid item xs={12}>
           {/* @ts-ignore */}
-          <Chart
+          <DynamicApexChart
             width={"100%"}
             height={400}
             type={"area"}
@@ -233,7 +233,7 @@ export function AdminDailyActivity() {
     <>
       <Section xs={12} title={t("adminUsers.daily_activity")}>
         <Grid item xs={12}>
-          <Chart
+          <DynamicApexChart
             width={"100%"}
             height={400}
             type={"area"}
@@ -281,7 +281,7 @@ export function AdminDailyActivity() {
       </Section>
       <Section xs={12} title={t("adminUsers.weekly_activity")}>
         <Grid item xs={12}>
-          <Chart
+          <DynamicApexChart
             width={"100%"}
             height={400}
             type={"area"}
@@ -329,7 +329,7 @@ export function AdminDailyActivity() {
       </Section>
       <Section xs={12} title={t("adminUsers.monthly_activity")}>
         <Grid item xs={12}>
-          <Chart
+          <DynamicApexChart
             width={"100%"}
             height={400}
             type={"area"}

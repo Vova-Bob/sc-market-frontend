@@ -2,7 +2,7 @@ import { Section } from "../../components/paper/Section"
 import { OrderStub } from "../../datatypes/Order"
 import React, { useMemo } from "react"
 import { Grid, List, ListItem } from "@mui/material"
-import Chart from "react-apexcharts"
+import { DynamicApexChart } from "../../components/charts/DynamicCharts"
 import { useTranslation } from "react-i18next"
 import {
   useGetAllAssignedOrdersQuery,
@@ -97,7 +97,7 @@ export function OrderTrend(props: { orders: OrderStub[] }) {
       <Section xs={12} title={t("orderTrend.order_count_daily")}>
         <Grid item xs={12}>
           {/* @ts-ignore */}
-          <Chart
+          <DynamicApexChart
             width={"100%"}
             height={400}
             type={"area"}
@@ -156,7 +156,7 @@ export function OrderTrend(props: { orders: OrderStub[] }) {
       <Section xs={12} title={t("orderTrend.order_count_weekly")}>
         <Grid item xs={12}>
           {/* @ts-ignore */}
-          <Chart
+          <DynamicApexChart
             width={"100%"}
             height={400}
             type={"area"}
@@ -215,7 +215,7 @@ export function OrderTrend(props: { orders: OrderStub[] }) {
       <Section xs={12} title={t("orderTrend.order_count_monthly")}>
         <Grid item xs={12}>
           {/* @ts-ignore */}
-          <Chart
+          <DynamicApexChart
             width={"100%"}
             height={400}
             type={"area"}

@@ -68,6 +68,7 @@
     "eslint-plugin-react": "^7.37.5",
     "jest-environment-jsdom": "^29.7.0",
     "prettier": "^3.5.3",
+    "rollup-plugin-visualizer": "^6.0.3",
     "typescript-eslint": "^8.34.1",
     "vite": "^7.0.0-beta.2",
     "vite-plugin-svgr": "^4.3.0",
@@ -76,10 +77,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:analyze": "ANALYZE_BUNDLE=true vite build",
     "serve": "vite preview",
     "format": "prettier --write .",
     "check": "tsc --noEmit",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest --config ./jest.config.cjs --coverage"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --config ./jest.config.cjs --coverage",
+    "analyze": "yarn build:analyze && open dist/stats.html",
+    "analyze:detailed": "node scripts/analyze-bundle.js"
   },
   "webpackConfig": {
     "target": "web"
