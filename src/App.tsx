@@ -11,6 +11,7 @@ import {
 import { PageFallback } from "./components/metadata/Page"
 import { FrontendErrorElement } from "./pages/errors/FrontendError"
 import { startBackgroundPrefetch } from "./util/prefetch"
+import { SharedIntersectionObserver } from "./hooks/prefetch/usePrefetchOnVisible"
 
 import "./util/i18n.ts"
 
@@ -18,6 +19,12 @@ function App() {
   useEffect(() => {
     // Start background prefetching after the app loads
     startBackgroundPrefetch()
+
+    // Cleanup function to prevent memory leaks
+    return () => {
+      // Cleanup shared intersection observer
+      SharedIntersectionObserver.getInstance().cleanup()
+    }
   }, [])
 
   return <RouterProvider router={router} />
