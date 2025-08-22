@@ -5,10 +5,14 @@ import React from "react"
 import { useDrawerOpen } from "../../hooks/layout/Drawer"
 import { PreferencesButton } from "../../views/settings/PreferencesButton"
 import { CookieConsent } from "../alert/CookieConsent"
+import { useRoutePrefetch } from "../../hooks/prefetch/RoutePrefetch"
 
 export function Root(props: { children: React.ReactNode }) {
   const theme: Theme = useTheme()
   const [drawerOpen] = useDrawerOpen()
+
+  // Enable route-based prefetching
+  useRoutePrefetch()
 
   return (
     <Box

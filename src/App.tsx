@@ -1,4 +1,4 @@
-import React, { createElement, Suspense } from "react"
+import React, { createElement, Suspense, useEffect } from "react"
 
 import { HookProvider } from "./hooks/HookProvider"
 import { Root } from "./components/layout/Root"
@@ -10,10 +10,16 @@ import {
 } from "react-router-dom"
 import { PageFallback } from "./components/metadata/Page"
 import { FrontendErrorElement } from "./pages/errors/FrontendError"
+import { startBackgroundPrefetch } from "./util/prefetch"
 
 import "./util/i18n.ts"
 
 function App() {
+  useEffect(() => {
+    // Start background prefetching after the app loads
+    startBackgroundPrefetch()
+  }, [])
+
   return <RouterProvider router={router} />
 }
 

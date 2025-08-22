@@ -18,8 +18,44 @@ import {
 } from "@mui/material"
 import { matchPath, NavLink, useLocation } from "react-router-dom"
 import { ExtendedTheme } from "../../hooks/styles/Theme"
+import { prefetchModule } from "../../util/prefetch"
 
 import React, { useCallback, useEffect, useMemo, useState } from "react"
+
+// Route-based prefetch mapping for sidebar links
+const routePrefetchMap: Record<
+  string,
+  { importFn: () => Promise<any>; key: string }
+> = {
+  "/market": {
+    importFn: () => import("../../pages/market/MarketPage"),
+    key: "MarketPage",
+  },
+  "/contracts": {
+    importFn: () => import("../../pages/contracting/Contracts"),
+    key: "Contracts",
+  },
+  "/people": {
+    importFn: () => import("../../pages/people/People"),
+    key: "People",
+  },
+  "/recruiting": {
+    importFn: () => import("../../pages/recruiting/Recruiting"),
+    key: "Recruiting",
+  },
+  "/contractor": {
+    importFn: () => import("../../pages/contractor/Contractors"),
+    key: "Contractors",
+  },
+  "/messages": {
+    importFn: () => import("../../pages/messaging/Messages"),
+    key: "Messages",
+  },
+  "/fleet": {
+    importFn: () => import("../../pages/fleet/Fleet"),
+    key: "Fleet",
+  },
+}
 import ExpandMore from "@mui/icons-material/ExpandMore"
 import ExpandLess from "@mui/icons-material/ExpandLess"
 import IconButton from "@mui/material/IconButton"
@@ -216,6 +252,18 @@ export function SidebarLinkBody(props: SidebarItemProps & { to: string }) {
 }
 
 export function SidebarLink(props: SidebarItemProps & { to: string }) {
+  const handleMouseEnter = useCallback(() => {
+    // Find matching route for prefetching
+    const matchingRoute = Object.keys(routePrefetchMap).find((route) =>
+      props.to.startsWith(route),
+    )
+
+    if (matchingRoute) {
+      const { importFn, key } = routePrefetchMap[matchingRoute]
+      prefetchModule(importFn, key)
+    }
+  }, [props.to])
+
   return props.external ? (
     <a
       href={props.to}
@@ -223,6 +271,7 @@ export function SidebarLink(props: SidebarItemProps & { to: string }) {
         textDecoration: "none",
         color: "inherit",
       }}
+      onMouseEnter={handleMouseEnter}
     >
       <SidebarLinkBody {...props} />
     </a>
@@ -233,6 +282,7 @@ export function SidebarLink(props: SidebarItemProps & { to: string }) {
         textDecoration: "none",
         color: "inherit",
       }}
+      onMouseEnter={handleMouseEnter}
     >
       <SidebarLinkBody {...props} />
     </NavLink>
