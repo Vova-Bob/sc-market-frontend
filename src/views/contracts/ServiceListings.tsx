@@ -111,46 +111,11 @@ export function ServiceListingBase(props: { service: Service; index: number }) {
                     user={service.user}
                     contractor={service.contractor}
                   />
-                  {/*<Typography*/}
-                  {/*    display={'inline'}*/}
-                  {/*    color={"text.primary"}*/}
-                  {/*    variant={'subtitle2'}*/}
-                  {/*>*/}
-                  {/*    &nbsp;- {getRelativeTime(new Date(service.timestamp))} -&nbsp;*/}
-                  {/*</Typography>*/}
                   <Typography color={"primary"} variant={"subtitle2"}>
                     {service.cost.toLocaleString(undefined)} aUEC{" "}
                     {key ? t(key) : ""}
                   </Typography>
                 </Box>
-              }
-              action={
-                <>
-                  <Chip
-                    color={"primary"}
-                    label={t(`myServices.${service.kind}`, {
-                      defaultValue: service.kind,
-                    })}
-                    sx={{ marginRight: 1, marginBottom: 1, padding: 1 }}
-                    variant={"outlined"}
-                    icon={orderIcons[service.kind]}
-                    onClick={
-                      (event) => event.stopPropagation() // Don't highlight cell if button clicked
-                    }
-                  />
-                  {service.rush && (
-                    <Chip
-                      color={"warning"}
-                      label={t("serviceListings.rush")}
-                      sx={{ marginRight: 1, marginBottom: 1, padding: 1 }}
-                      variant={"outlined"}
-                      icon={<ElectricBoltRounded />}
-                      onClick={
-                        (event) => event.stopPropagation() // Don't highlight cell if button clicked
-                      }
-                    />
-                  )}
-                </>
               }
             />
             <CardContent sx={{ padding: 2, paddingTop: 0 }}>
@@ -190,6 +155,34 @@ export function ServiceListingBase(props: { service: Service; index: number }) {
                 )}
               </Stack>
             </CardContent>
+            <Box sx={{ padding: 2, paddingTop: 0 }}>
+              <Stack direction={"row"} spacing={1} flexWrap={"wrap"}>
+                <Chip
+                  color={"primary"}
+                  label={t(`myServices.${service.kind}`, {
+                    defaultValue: service.kind,
+                  })}
+                  sx={{ marginBottom: 1, padding: 1 }}
+                  variant={"outlined"}
+                  icon={orderIcons[service.kind]}
+                  onClick={
+                    (event) => event.stopPropagation() // Don't highlight cell if button clicked
+                  }
+                />
+                {service.rush && (
+                  <Chip
+                    color={"warning"}
+                    label={t("serviceListings.rush")}
+                    sx={{ marginBottom: 1, padding: 1 }}
+                    variant={"outlined"}
+                    icon={<ElectricBoltRounded />}
+                    onClick={
+                      (event) => event.stopPropagation() // Don't highlight cell if button clicked
+                    }
+                  />
+                )}
+              </Stack>
+            </Box>
           </Card>
         </CardActionArea>
       </Fade>
