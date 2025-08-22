@@ -4,45 +4,24 @@ import LanguageDetector from "i18next-browser-languagedetector"
 
 import moment from "moment"
 
+// Only import English as the fallback language
 import en from "../locales/en/english.json"
-import uk from "../locales/uk/ukrainian.json"
-import de from "../locales/de/de.json"
-import ja from "../locales/ja/ja.json"
-import es from "../locales/es/es.json"
-import fr from "../locales/fr/fr.json"
-import zhCN from "../locales/zh/zh_Hans.json"
-import zhTW from "../locales/zh/zh_Hant.json"
 import { useEffect, useState } from "react"
 
 // MUI locale bundles (centralized mapping here)
 import {
   enUS as coreEnUS,
-  deDE as coreDeDE,
-  esES as coreEsES,
-  frFR as coreFrFR,
-  jaJP as coreJaJP,
   zhCN as coreZhCN,
-  zhTW as coreZhTW,
   ukUA as coreUkUA,
 } from "@mui/material/locale"
 import {
   enUS as pickersEnUS,
-  deDE as pickersDeDE,
-  esES as pickersEsES,
-  frFR as pickersFrFR,
-  jaJP as pickersJaJP,
   zhCN as pickersZhCN,
-  zhTW as pickersZhTW,
   ukUA as pickersUkUA,
 } from "@mui/x-date-pickers/locales"
 import {
   enUS as gridEnUS,
-  deDE as gridDeDE,
-  esES as gridEsES,
-  frFR as gridFrFR,
-  jaJP as gridJaJP,
   zhCN as gridZhCN,
-  zhTW as gridZhTW,
   ukUA as gridUkUA,
 } from "@mui/x-data-grid/locales"
 
@@ -50,13 +29,51 @@ import {
 export const languages = [
   { code: "en", endonym: "English" },
   { code: "uk", endonym: "Українська" },
-  // { code: "es", endonym: "Español" },
-  // { code: "de", endonym: "Deutsch" },
-  // { code: "fr", endonym: "Français" },
-  // { code: "ja", endonym: "日本語" },
   { code: "zh-CN", endonym: "简体中文" },
-  // { code: "zh-TW", endonym: "繁體中文" }, // Not currently supported by API
 ]
+
+// Dynamic locale loading function
+export async function loadLocale(locale: string): Promise<void> {
+  // Skip if already loaded
+  if (i18n.hasResourceBundle(locale, "translation")) {
+    return
+  }
+
+  // Skip English as it's already loaded
+  if (locale === "en") {
+    return
+  }
+
+  try {
+    let translation: any
+
+    switch (locale) {
+      case "uk":
+        translation = (await import("../locales/uk/ukrainian.json")).default
+        break
+      case "zh-CN":
+        translation = (await import("../locales/zh/zh_Hans.json")).default
+        break
+      default:
+        return // Unknown locale
+    }
+
+    // Add the locale to i18n
+    i18n.addResourceBundle(locale, "translation", translation, true, true)
+
+    // Update moment locale
+    moment.locale(locale)
+  } catch (error) {
+    console.error(`Failed to load locale ${locale}:`, error)
+    // Fallback to English if locale loading fails
+    i18n.changeLanguage("en")
+  }
+}
+
+// Preload specific locales (useful for common languages)
+export async function preloadLocales(locales: string[]): Promise<void> {
+  await Promise.all(locales.map((locale) => loadLocale(locale)))
+}
 
 export function getMuiLocales(languageCode: string): {
   core: any
@@ -64,20 +81,10 @@ export function getMuiLocales(languageCode: string): {
   grid: any
 } {
   switch (languageCode) {
-    case "de":
-      return { core: coreDeDE, pickers: pickersDeDE, grid: gridDeDE }
-    case "es":
-      return { core: coreEsES, pickers: pickersEsES, grid: gridEsES }
-    case "fr":
-      return { core: coreFrFR, pickers: pickersFrFR, grid: gridFrFR }
-    case "ja":
-      return { core: coreJaJP, pickers: pickersJaJP, grid: gridJaJP }
     case "uk":
       return { core: coreUkUA, pickers: pickersUkUA, grid: gridUkUA }
     case "zh-CN":
       return { core: coreZhCN, pickers: pickersZhCN, grid: gridZhCN }
-    case "zh-TW":
-      return { core: coreZhTW, pickers: pickersZhTW, grid: gridZhTW }
     case "en":
     default:
       return { core: coreEnUS, pickers: pickersEnUS, grid: gridEnUS }
@@ -95,19 +102,60 @@ i18n
       escapeValue: false,
     },
     resources: {
-      en: { translation: en },
-      uk: { translation: uk },
-      // es: { translation: es },
-      // de: { translation: de },
-      // fr: { translation: fr },
-      // ja: { translation: ja },
-      "zh-CN": { translation: zhCN },
-      // "zh-TW": { translation: zhTW }, // Not currently supported by API
+      en: { translation: en }, // Only English is loaded initially
     },
   })
 
-i18n.on("languageChanged", (lng) => {
-  moment.locale(lng)
+// Language change handler that automatically loads locales
+i18n.on("languageChanged", async (lng) => {
+  // Load the locale if it's not already loaded
+  await loadLocale(lng)
 })
+
+// Preload common locales on app startup (optional)
+if (typeof window !== "undefined") {
+  // Preload the detected language and common fallbacks
+  const detectedLang = i18n.language || "en"
+  const commonLocales = ["uk", "zh-CN"] // Most commonly used after English
+
+  if (detectedLang !== "en") {
+    loadLocale(detectedLang)
+  }
+
+  // Preload common locales in the background
+  setTimeout(() => {
+    preloadLocales(commonLocales)
+  }, 1000)
+}
+
+// React hook for locale management
+export function useLocaleManager() {
+  const [isLoading, setIsLoading] = useState(false)
+  const [currentLocale, setCurrentLocale] = useState(i18n.language)
+
+  const changeLocale = async (locale: string) => {
+    setIsLoading(true)
+    try {
+      await loadLocale(locale)
+      await i18n.changeLanguage(locale)
+      setCurrentLocale(locale)
+    } catch (error) {
+      console.error("Failed to change locale:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const preloadLocale = async (locale: string) => {
+    await loadLocale(locale)
+  }
+
+  return {
+    currentLocale,
+    changeLocale,
+    preloadLocale,
+    isLoading,
+  }
+}
 
 export default i18n
