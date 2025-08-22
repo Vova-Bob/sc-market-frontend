@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useMemo, useState, Suspense } from "react"
 import { HeaderTitle } from "../../components/typography/HeaderTitle"
 import {
   Container,
@@ -8,11 +8,10 @@ import {
   Tab,
   Tabs,
   Typography,
+  CircularProgress,
+  Box,
 } from "@mui/material"
-import {
-  BulkListingsRefactor,
-  BuyOrders,
-} from "../../views/market/ItemListings"
+// Removed static imports - now using dynamic imports
 import {
   ContainerGrid,
   OpenLayout,
@@ -35,11 +34,49 @@ import {
 import { useMarketSearch } from "../../hooks/market/MarketSearch"
 import { Link, useLocation } from "react-router-dom"
 import { a11yProps, TabPanel } from "../../components/tabs/Tabs"
-import { ItemMarketView } from "../../views/market/ItemMarketView"
-import { ServiceMarketView } from "../../views/services/ServiceMarketView"
-import { ServiceActions } from "../../views/services/ServiceActions"
 import { Stack } from "@mui/system"
 import { useTranslation } from "react-i18next"
+
+// Dynamic imports for heavy components
+const ItemMarketView = React.lazy(() =>
+  import("../../views/market/ItemMarketView").then((module) => ({
+    default: module.ItemMarketView,
+  })),
+)
+const ServiceMarketView = React.lazy(() =>
+  import("../../views/services/ServiceMarketView").then((module) => ({
+    default: module.ServiceMarketView,
+  })),
+)
+const ServiceActions = React.lazy(() =>
+  import("../../views/services/ServiceActions").then((module) => ({
+    default: module.ServiceActions,
+  })),
+)
+const BulkListingsRefactor = React.lazy(() =>
+  import("../../views/market/ItemListings").then((module) => ({
+    default: module.BulkListingsRefactor,
+  })),
+)
+const BuyOrders = React.lazy(() =>
+  import("../../views/market/ItemListings").then((module) => ({
+    default: module.BuyOrders,
+  })),
+)
+
+// Loading component for market tabs
+function MarketTabLoader() {
+  return (
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      minHeight="400px"
+    >
+      <CircularProgress />
+    </Box>
+  )
+}
 
 export function MarketPage() {
   const { t } = useTranslation()
@@ -96,15 +133,25 @@ export function MarketPage() {
                 </Tabs>
               </Stack>
             </Grid>
-            {tabPage === 1 ? <MarketActions /> : <ServiceActions />}
+            {tabPage === 1 ? (
+              <MarketActions />
+            ) : (
+              <Suspense fallback={<CircularProgress size={24} />}>
+                <ServiceActions />
+              </Suspense>
+            )}
           </Grid>
         </Container>
 
         <TabPanel value={tabPage} index={1}>
-          <ItemMarketView />
+          <Suspense fallback={<MarketTabLoader />}>
+            <ItemMarketView />
+          </Suspense>
         </TabPanel>
         <TabPanel value={tabPage} index={0}>
-          <ServiceMarketView />
+          <Suspense fallback={<MarketTabLoader />}>
+            <ServiceMarketView />
+          </Suspense>
         </TabPanel>
       </OpenLayout>
     </Page>
@@ -182,7 +229,9 @@ export function BulkItems() {
             spacing={1.5}
             sx={{ transition: "0.3s" }}
           >
-            <BulkListingsRefactor />
+            <Suspense fallback={<MarketTabLoader />}>
+              <BulkListingsRefactor />
+            </Suspense>
           </Grid>
         </ContainerGrid>
       </MarketSidebarContext.Provider>
@@ -261,7 +310,9 @@ export function BuyOrderItems() {
             spacing={1.5}
             sx={{ transition: "0.3s" }}
           >
-            <BuyOrders />
+            <Suspense fallback={<MarketTabLoader />}>
+              <BuyOrders />
+            </Suspense>
           </Grid>
         </ContainerGrid>
       </MarketSidebarContext.Provider>
