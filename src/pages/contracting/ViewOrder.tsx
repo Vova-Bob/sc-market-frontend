@@ -1,6 +1,6 @@
 import { Link, Navigate, useParams } from "react-router-dom"
 import { ContainerGrid } from "../../components/layout/ContainerGrid"
-import React, { useMemo } from "react"
+import React, { useMemo, useEffect } from "react"
 import { HeaderTitle } from "../../components/typography/HeaderTitle"
 import { useGetOrderByIdQuery } from "../../store/orders"
 import { Page } from "../../components/metadata/Page"
@@ -31,6 +31,10 @@ import {
   shouldShowErrorPage,
 } from "../../util/errorHandling"
 import { ErrorPage } from "../errors/ErrorPage"
+import {
+  useGetNotificationsQuery,
+  useNotificationDeleteMutation,
+} from "../../store/notification"
 
 export function ViewOrder() {
   const { t } = useTranslation()
@@ -39,6 +43,24 @@ export function ViewOrder() {
   const { data: order, error } = useGetOrderByIdQuery(id!)
   const { data: profile } = useGetUserProfileQuery()
   const [currentOrg] = useCurrentOrg()
+
+  // Get and delete message notifications for this order
+  const { data: notificationsData } = useGetNotificationsQuery({
+    page: 0,
+    pageSize: 100,
+    action: "order_message",
+    entityId: id,
+  })
+  const notifications = notificationsData?.notifications || []
+  const [deleteNotification] = useNotificationDeleteMutation()
+
+  // Delete message notifications when the page is viewed
+  useEffect(() => {
+    if (notifications && notifications.length > 0) {
+      const notificationIds = notifications.map((n) => n.notification_id)
+      deleteNotification(notificationIds)
+    }
+  }, [notifications, deleteNotification])
 
   const amCustomer = useMemo(
     () => !!profile && order?.customer === profile?.username,
@@ -103,7 +125,11 @@ export function ViewOrder() {
   return (
     <Page
       title={
-        order?.title ? `${order?.title} - ${t("orders.orderTitle")}` : null
+        order?.title
+          ? order.title
+          : order?.order_id
+            ? `Order ${order.order_id.substring(0, 8).toUpperCase()}`
+            : "Order"
       }
     >
       <ContainerGrid sidebarOpen={true} maxWidth={"xl"}>
@@ -144,9 +170,10 @@ export function ViewOrder() {
             </MaterialLink>
           </Breadcrumbs>
         </Grid>
-        <HeaderTitle>
-          <BackArrow />
-          {t("orders.viewOrder")}
+
+        <HeaderTitle lg={12} xl={12}>
+          <BackArrow />{" "}
+          {order?.title || `Order ${id?.substring(0, 8).toUpperCase()}`}
         </HeaderTitle>
 
         {shouldRedirectTo404(error) ? <Navigate to={"/404"} /> : null}

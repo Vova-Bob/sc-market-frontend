@@ -3,6 +3,7 @@ import { serviceApi } from "./service"
 import { Notification } from "../hooks/login/UserProfile"
 
 const baseUrl = `${BACKEND_URL}/api/notification`
+
 // Define a service using a base URL and expected endpoints
 export const notificationApi = serviceApi.injectEndpoints({
   overrideExisting: false,
@@ -17,8 +18,8 @@ export const notificationApi = serviceApi.injectEndpoints({
         body: { read: body.read },
       }),
       invalidatesTags: [
+        // Invalidate all notification queries to refresh unread counts and lists
         "Notifications" as const,
-        { type: "Notifications" as const },
       ],
     }),
     notificationDelete: builder.mutation<
@@ -31,8 +32,8 @@ export const notificationApi = serviceApi.injectEndpoints({
         body: { notification_ids: notificationIds },
       }),
       invalidatesTags: [
+        // Invalidate all notification queries to refresh counts and lists
         "Notifications" as const,
-        { type: "Notifications" as const },
       ],
     }),
     getNotifications: builder.query<
@@ -59,8 +60,8 @@ export const notificationApi = serviceApi.injectEndpoints({
         },
       }),
       providesTags: (result, error, arg) => [
+        // Provide the general notifications tag
         "Notifications" as const,
-        { type: "Notifications" as const },
       ],
     }),
     notificationBulkUpdate: builder.mutation<
@@ -73,8 +74,8 @@ export const notificationApi = serviceApi.injectEndpoints({
         body,
       }),
       invalidatesTags: [
+        // Invalidate all notification queries since bulk operations affect all
         "Notifications" as const,
-        { type: "Notifications" as const },
       ],
     }),
     notificationBulkDelete: builder.mutation<
@@ -87,8 +88,8 @@ export const notificationApi = serviceApi.injectEndpoints({
         body,
       }),
       invalidatesTags: [
+        // Invalidate all notification queries since bulk operations affect all
         "Notifications" as const,
-        { type: "Notifications" as const },
       ],
     }),
   }),

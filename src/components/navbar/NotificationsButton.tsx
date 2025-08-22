@@ -71,6 +71,8 @@ export function NotificationEntry(props: { notif: Notification }) {
     case "offer_create":
     case "counter_offer_create":
       return <NotificationOfferCreate notif={notif} />
+    case "offer_message":
+      return <NotificationOfferMessage notif={notif} />
     case "contractor_invite":
       return <NotificationContractorInvite notif={notif} />
     case "order_assigned":
@@ -293,6 +295,32 @@ export function NotificationOfferCreate(props: { notif: Notification }) {
       {notif.action === "offer_create"
         ? t("notifications.new_offer_received_from")
         : t("notifications.counter_offer_received_from")}{" "}
+      <Link
+        to={`/user/${offer.customer.username}`}
+        style={{
+          textDecoration: "none",
+          color: theme.palette.secondary.main,
+        }}
+      >
+        <UnderlineLink>{offer.customer.display_name}</UnderlineLink>
+      </Link>
+    </NotificationBase>
+  )
+}
+
+export function NotificationOfferMessage(props: { notif: Notification }) {
+  const { notif } = props
+  const theme = useTheme<ExtendedTheme>()
+  const offer = useMemo(() => notif.entity as OfferSession, [notif.entity])
+  const { t } = useTranslation()
+
+  return (
+    <NotificationBase
+      icon={<CreateRoundedIcon />}
+      to={`/offer/${offer.id}`}
+      notif={notif}
+    >
+      {t("notifications.new_offer_message_from")}{" "}
       <Link
         to={`/user/${offer.customer.username}`}
         style={{

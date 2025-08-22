@@ -22,12 +22,34 @@ import {
   shouldShowErrorPage,
 } from "../../util/errorHandling"
 import { ErrorPage } from "../errors/ErrorPage"
+import {
+  useGetNotificationsQuery,
+  useNotificationDeleteMutation,
+} from "../../store/notification"
 
 export function ViewOfferPage() {
   const { id } = useParams<{ id: string }>()
   const { data: session, error } = useGetOfferSessionByIDQuery(id!)
   const { t } = useTranslation()
   const navigate = useNavigate()
+
+  // Get and delete message notifications for this offer
+  const { data: notificationsData } = useGetNotificationsQuery({
+    page: 0,
+    pageSize: 100,
+    action: "offer_message",
+    entityId: id,
+  })
+  const notifications = notificationsData?.notifications || []
+  const [deleteNotification] = useNotificationDeleteMutation()
+
+  // Delete message notifications when the page is viewed
+  useEffect(() => {
+    if (notifications && notifications.length > 0) {
+      const notificationIds = notifications.map((n) => n.notification_id)
+      deleteNotification(notificationIds)
+    }
+  }, [notifications, deleteNotification])
 
   // Redirect to order if offer has an associated order
   useEffect(() => {
