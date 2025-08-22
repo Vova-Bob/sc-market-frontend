@@ -42,6 +42,8 @@ import {
   useGetNotificationsQuery,
   useNotificationDeleteMutation,
   useNotificationUpdateMutation,
+  useNotificationBulkUpdateMutation,
+  useNotificationBulkDeleteMutation,
 } from "../../store/notification"
 import { MarketBid } from "../../datatypes/MarketListing"
 import { useMarketGetListingByIDQuery } from "../../store/market"
@@ -488,30 +490,43 @@ export function NotificationsButton() {
     setAnchorEl(null)
   }
 
-  const [updateNotifications] = useNotificationUpdateMutation()
-  const [deleteNotifications] = useNotificationDeleteMutation()
+  const [bulkUpdate] = useNotificationBulkUpdateMutation()
+  const [bulkDelete] = useNotificationBulkDeleteMutation()
+  const issueAlert = useAlertHook()
 
   const markAllReadCallback = useCallback(async () => {
-    if (notifications) {
-      // Update each notification individually since the API now requires single updates
-      await Promise.all(
-        notifications.map((notif) =>
-          updateNotifications({
-            notification_id: notif.notification_id,
-            read: true,
-          }),
-        ),
-      )
+    try {
+      const result = await bulkUpdate({ read: true }).unwrap()
+      issueAlert({
+        severity: "success",
+        message: t("notifications.marked_all_read", {
+          count: result.affected_count,
+        }),
+      })
+    } catch (error) {
+      issueAlert({
+        severity: "error",
+        message: t("notifications.mark_all_read_failed"),
+      })
     }
-  }, [notifications, updateNotifications])
+  }, [bulkUpdate, issueAlert, t])
 
   const deleteAllCallback = useCallback(async () => {
-    if (notifications) {
-      await deleteNotifications(
-        notifications.map((notif) => notif.notification_id),
-      )
+    try {
+      const result = await bulkDelete({}).unwrap()
+      issueAlert({
+        severity: "success",
+        message: t("notifications.cleared_all", {
+          count: result.affected_count,
+        }),
+      })
+    } catch (error) {
+      issueAlert({
+        severity: "error",
+        message: t("notifications.clear_all_failed"),
+      })
     }
-  }, [deleteNotifications, notifications])
+  }, [bulkDelete, issueAlert, t])
 
   const handleChangePage = useCallback((event: unknown, newPage: number) => {
     setPage(newPage)

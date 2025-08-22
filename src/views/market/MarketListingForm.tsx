@@ -300,6 +300,7 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
             onRemovePendingFile={(file) => {
               setUploadedFiles((prev) => prev.filter((f) => f !== file))
             }}
+            onAlert={(severity, message) => issueAlert({ severity, message })}
           />
         </Grid>
       </FormPaper>

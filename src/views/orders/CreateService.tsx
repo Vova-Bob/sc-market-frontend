@@ -556,6 +556,7 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
               onRemovePendingFile={(file) => {
                 setUploadedFiles((prev) => prev.filter((f) => f !== file))
               }}
+              onAlert={(severity, message) => issueAlert({ severity, message })}
             />
             {!props.service && uploadedFiles.length > 0 && (
               <Typography

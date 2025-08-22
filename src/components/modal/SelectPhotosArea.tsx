@@ -87,6 +87,7 @@ export function SelectPhotosArea(props: {
   showUploadButton?: boolean
   pendingFiles?: File[]
   onRemovePendingFile?: (file: File) => void
+  onAlert?: (severity: "warning" | "error", message: string) => void
 }) {
   const {
     photos,
@@ -95,6 +96,7 @@ export function SelectPhotosArea(props: {
     showUploadButton = true,
     pendingFiles = [],
     onRemovePendingFile,
+    onAlert,
   } = props
   const [photoOpen, setPhotoOpen] = useState(false)
   const [isDragOver, setIsDragOver] = useState(false)
@@ -116,14 +118,34 @@ export function SelectPhotosArea(props: {
         })
 
         const fileArray = Array.from(files)
-        if (onFileUpload) {
-          onFileUpload(fileArray)
+        const maxSize = 2 * 1024 * 1024 // 2MB in bytes
+        const validFiles = fileArray.filter((file) => file.size <= maxSize)
+        const oversizedFiles = fileArray.filter((file) => file.size > maxSize)
+
+        if (oversizedFiles.length > 0) {
+          console.warn(`[SelectPhotosArea] Files too large, skipping:`, {
+            count: oversizedFiles.length,
+            files: oversizedFiles.map((f) => ({ name: f.name, size: f.size })),
+          })
+
+          // Show warning for oversized files
+          if (onAlert) {
+            if (oversizedFiles.length === 1) {
+              onAlert("warning", t("SelectPhotosArea.fileTooLarge"))
+            } else {
+              onAlert("warning", t("SelectPhotosArea.someFilesTooLarge"))
+            }
+          }
+        }
+
+        if (validFiles.length > 0 && onFileUpload) {
+          onFileUpload(validFiles)
         }
       }
       // Reset the input value so the same file can be selected again
       event.target.value = ""
     },
-    [onFileUpload],
+    [onFileUpload, t, onAlert],
   )
 
   const handleDragOver = useCallback(
@@ -158,11 +180,35 @@ export function SelectPhotosArea(props: {
 
       const files = Array.from(event.dataTransfer.files)
       const imageFiles = files.filter((file) => file.type.startsWith("image/"))
+      const maxSize = 2 * 1024 * 1024 // 2MB in bytes
+      const validImageFiles = imageFiles.filter((file) => file.size <= maxSize)
+      const oversizedImageFiles = imageFiles.filter(
+        (file) => file.size > maxSize,
+      )
 
-      if (imageFiles.length > 0) {
+      if (oversizedImageFiles.length > 0) {
+        console.warn(`[SelectPhotosArea] Image files too large, skipping:`, {
+          count: oversizedImageFiles.length,
+          files: oversizedImageFiles.map((f) => ({
+            name: f.name,
+            size: f.size,
+          })),
+        })
+
+        // Show warning for oversized files
+        if (onAlert) {
+          if (oversizedImageFiles.length === 1) {
+            onAlert("warning", t("SelectPhotosArea.fileTooLarge"))
+          } else {
+            onAlert("warning", t("SelectPhotosArea.someFilesTooLarge"))
+          }
+        }
+      }
+
+      if (validImageFiles.length > 0) {
         console.log(`[SelectPhotosArea] Drag and drop file upload:`, {
-          file_count: imageFiles.length,
-          files: imageFiles.map((f) => ({
+          file_count: validImageFiles.length,
+          files: validImageFiles.map((f) => ({
             name: f.name,
             size: f.size,
             type: f.type,
@@ -170,7 +216,7 @@ export function SelectPhotosArea(props: {
         })
 
         if (onFileUpload) {
-          onFileUpload(imageFiles)
+          onFileUpload(validImageFiles)
         }
       } else if (files.length > 0) {
         console.warn(`[SelectPhotosArea] Non-image files dropped, ignoring:`, {
@@ -183,7 +229,7 @@ export function SelectPhotosArea(props: {
         })
       }
     },
-    [onFileUpload],
+    [onFileUpload, onAlert, t],
   )
 
   const handleRemovePendingFile = (file: File) => {

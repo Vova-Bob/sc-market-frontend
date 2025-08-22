@@ -63,6 +63,34 @@ export const notificationApi = serviceApi.injectEndpoints({
         { type: "Notifications" as const },
       ],
     }),
+    notificationBulkUpdate: builder.mutation<
+      { success: boolean; message: string; affected_count: number },
+      { read: boolean }
+    >({
+      query: (body) => ({
+        url: `${baseUrl}`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: [
+        "Notifications" as const,
+        { type: "Notifications" as const },
+      ],
+    }),
+    notificationBulkDelete: builder.mutation<
+      { success: boolean; message: string; affected_count: number },
+      { notification_ids?: string[] }
+    >({
+      query: (body) => ({
+        url: `${baseUrl}`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: [
+        "Notifications" as const,
+        { type: "Notifications" as const },
+      ],
+    }),
   }),
 })
 
@@ -72,4 +100,6 @@ export const {
   useNotificationUpdateMutation,
   useGetNotificationsQuery,
   useNotificationDeleteMutation,
+  useNotificationBulkUpdateMutation,
+  useNotificationBulkDeleteMutation,
 } = notificationApi

@@ -565,6 +565,9 @@ export function MarketListingEditView() {
                           prev.filter((f) => f !== file),
                         )
                       }}
+                      onAlert={(severity, message) =>
+                        issueAlert({ severity, message })
+                      }
                     />
                     <Button
                       onClick={handlePhotosUpdate}

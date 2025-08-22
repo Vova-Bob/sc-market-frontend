@@ -368,9 +368,11 @@ export function Sidebar() {
 
           boxSizing: "border-box",
           backgroundColor: theme.palette.background.sidebar,
-          overflow: "scroll",
+          overflow: "hidden",
           borderColor: theme.palette.outline.main,
           scrollPadding: 0,
+          display: "flex",
+          flexDirection: "column",
 
           transition: theme.transitions.create("width", {
             easing: theme.transitions.easing.easeOut,
@@ -446,7 +448,7 @@ export function Sidebar() {
         sx={{
           // backgroundColor: 'rgb(0,0,0,.6)',
           width: "100%",
-          height: "100%",
+          flex: 1,
           // justifyContent: 'space-between',
           display: "flex",
           // borderRight: 0,
@@ -454,6 +456,7 @@ export function Sidebar() {
           borderTop: 1,
           padding: 1,
           borderColor: theme.palette.outline.main,
+          overflow: "auto",
         }}
       >
         {all_sidebar_entries
