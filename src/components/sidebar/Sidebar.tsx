@@ -345,7 +345,10 @@ export function Sidebar() {
     (item: SidebarItemProps) => {
       if (item.hidden) {
         return false
-      } else if (item.logged_in && profile_error) {
+      } else if (
+        (item.logged_in || item.org || item.org_admin || item.site_admin) &&
+        (profile_error || !profile)
+      ) {
         return false
       } else if (
         item.org === false &&
@@ -378,7 +381,7 @@ export function Sidebar() {
 
       return true
     },
-    [currentOrgObj, profile?.role, profile?.username, profile_error],
+    [currentOrgObj, profile?.role, profile?.username, profile_error, profile],
   )
 
   const xs = useMediaQuery(theme.breakpoints.down("sm"))
