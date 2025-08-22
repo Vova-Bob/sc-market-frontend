@@ -112,6 +112,11 @@ export function ManageStockArea(props: {
           pattern: "[0-9]*",
           type: "numeric",
           size: "small",
+          "aria-label": t(
+            "accessibility.updateAmountInput",
+            "Enter amount to update stock",
+          ),
+          "aria-describedby": "update-amount-help",
         }}
         sx={{
           minWidth: 200,
@@ -120,7 +125,14 @@ export function ManageStockArea(props: {
         label={t("ItemStockRework.updateAmount")}
         value={quantity}
         color={"secondary"}
+        id="update-amount"
       />
+      <div id="update-amount-help" className="sr-only">
+        {t(
+          "accessibility.updateAmountHelp",
+          "Enter the amount to add, subtract, or set for selected stock items",
+        )}
+      </div>
 
       <ButtonGroup size={"small"}>
         <Button
@@ -130,16 +142,32 @@ export function ManageStockArea(props: {
           }
           color={"success"}
           startIcon={<AddRounded />}
+          aria-label={t("accessibility.addToStock", "Add to stock")}
+          aria-describedby="add-stock-help"
         >
           {t("ItemStockRework.add")}
+          <span id="add-stock-help" className="sr-only">
+            {t(
+              "accessibility.addToStockHelp",
+              "Add the specified amount to selected stock items",
+            )}
+          </span>
         </Button>
 
         <Button
           variant={"contained"}
           onClick={() => updateSelectedRows(() => 0)}
           color={"warning"}
+          aria-label={t("accessibility.zeroStock", "Set stock to zero")}
+          aria-describedby="zero-stock-help"
         >
           {t("ItemStockRework.zero")}
+          <span id="zero-stock-help" className="sr-only">
+            {t(
+              "accessibility.zeroStockHelp",
+              "Set the quantity of selected stock items to zero",
+            )}
+          </span>
         </Button>
         <Button
           variant={"contained"}
@@ -148,8 +176,19 @@ export function ManageStockArea(props: {
           }
           color={"error"}
           startIcon={<RemoveRounded />}
+          aria-label={t(
+            "accessibility.subtractFromStock",
+            "Subtract from stock",
+          )}
+          aria-describedby="subtract-stock-help"
         >
           {t("ItemStockRework.sub")}
+          <span id="subtract-stock-help" className="sr-only">
+            {t(
+              "accessibility.subtractFromStockHelp",
+              "Subtract the specified amount from selected stock items",
+            )}
+          </span>
         </Button>
       </ButtonGroup>
     </Stack>
@@ -368,41 +407,55 @@ export function ItemStockRework() {
           const currentQuantity = editingRow?.quantity_available ?? params.value
 
           return (
-            <NumericFormat
-              decimalScale={0}
-              allowNegative={false}
-              customInput={TextField}
-              thousandSeparator
-              onValueChange={async (values) => {
-                // Update editing state instead of immediately updating rows
-                setEditingRows((prev) => {
-                  const newState = {
-                    ...prev,
-                    [params.id]: {
-                      ...prev[params.id],
-                      quantity_available: +values.floatValue! || 1,
-                    },
-                  }
-                  console.log(
-                    "Quantity editing state updated:",
-                    params.id,
-                    newState[params.id],
-                  )
-                  return newState
-                })
-              }}
-              inputProps={{
-                inputMode: "numeric",
-                pattern: "[0-9]*",
-              }}
-              InputProps={{
-                inputMode: "numeric",
-              }}
-              size="small"
-              label={t("ItemStockRework.qty")}
-              value={currentQuantity}
-              color={"secondary"}
-            />
+            <React.Fragment>
+              <NumericFormat
+                decimalScale={0}
+                allowNegative={false}
+                customInput={TextField}
+                thousandSeparator
+                onValueChange={async (values) => {
+                  // Update editing state instead of immediately updating rows
+                  setEditingRows((prev) => {
+                    const newState = {
+                      ...prev,
+                      [params.id]: {
+                        ...prev[params.id],
+                        quantity_available: +values.floatValue! || 1,
+                      },
+                    }
+                    console.log(
+                      "Quantity editing state updated:",
+                      params.id,
+                      newState[params.id],
+                    )
+                    return newState
+                  })
+                }}
+                inputProps={{
+                  inputMode: "numeric",
+                  pattern: "[0-9]*",
+                  "aria-label": t(
+                    "accessibility.editQuantityInput",
+                    "Edit quantity available",
+                  ),
+                  "aria-describedby": "edit-quantity-help",
+                }}
+                InputProps={{
+                  inputMode: "numeric",
+                }}
+                size="small"
+                label={t("ItemStockRework.qty")}
+                value={currentQuantity}
+                color={"secondary"}
+                id={`quantity-edit-${params.id}`}
+              />
+              <div id="edit-quantity-help" className="sr-only">
+                {t(
+                  "accessibility.editQuantityHelp",
+                  "Edit the quantity available for this stock item",
+                )}
+              </div>
+            </React.Fragment>
           )
         } else {
           // Show formatted value when not editing

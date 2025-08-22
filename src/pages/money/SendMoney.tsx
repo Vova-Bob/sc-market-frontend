@@ -152,6 +152,14 @@ export function SendMoney(props: { org?: boolean }) {
                   SelectProps={{
                     IconComponent: KeyboardArrowDownRoundedIcon,
                   }}
+                  aria-describedby="recipient-help"
+                  inputProps={{
+                    ...params.inputProps,
+                    "aria-label": t(
+                      "accessibility.selectRecipient",
+                      "Select recipient to send money to",
+                    ),
+                  }}
                 />
               )}
               value={targetObject}
@@ -162,7 +170,18 @@ export function SendMoney(props: { org?: boolean }) {
               onInputChange={(event, newInputValue) => {
                 setTarget(newInputValue)
               }}
+              aria-label={t(
+                "accessibility.recipientSelector",
+                "Recipient selector",
+              )}
+              aria-describedby="recipient-help"
             />
+            <div id="recipient-help" className="sr-only">
+              {t(
+                "accessibility.recipientHelp",
+                "Search and select a user or contractor to send money to",
+              )}
+            </div>
           </Grid>
           <Grid item lg={3} xs={12}>
             <Select
@@ -172,12 +191,23 @@ export function SendMoney(props: { org?: boolean }) {
                 setRecipientType(event.target.value)
               }}
               fullWidth
+              aria-label={t(
+                "accessibility.selectRecipientType",
+                "Select recipient type",
+              )}
+              aria-describedby="recipient-type-help"
             >
               <MenuItem value={"user"}>{t("sendMoney.user")}</MenuItem>
               <MenuItem value={"contractor"}>
                 {t("sendMoney.contractor")}
               </MenuItem>
             </Select>
+            <div id="recipient-type-help" className="sr-only">
+              {t(
+                "accessibility.recipientTypeHelp",
+                "Choose whether to send money to a user or contractor",
+              )}
+            </div>
           </Grid>
           <Grid item xs={12}>
             <Button
@@ -185,8 +215,16 @@ export function SendMoney(props: { org?: boolean }) {
               color={"secondary"}
               disabled={!(target && !error && targetObject)}
               onClick={() => setNext(true)}
+              aria-label={t("accessibility.nextStep", "Continue to next step")}
+              aria-describedby="next-step-help"
             >
               {t("sendMoney.next")}
+              <span id="next-step-help" className="sr-only">
+                {t(
+                  "accessibility.nextStepHelp",
+                  "Continue to enter amount and note",
+                )}
+              </span>
             </Button>
           </Grid>
         </Section>
@@ -231,7 +269,23 @@ export function SendMoney(props: { org?: boolean }) {
                 amount === "" ? t("sendMoney.errors.enterAmount") : ""
               }
               color={!isNaN(Number.parseInt(amount)) ? "success" : "primary"}
+              aria-required="true"
+              aria-describedby="amount-help"
+              inputProps={{
+                "aria-label": t(
+                  "accessibility.enterAmount",
+                  "Enter amount to send",
+                ),
+                pattern: "[0-9]*",
+                min: "1",
+              }}
             />
+            <div id="amount-help" className="sr-only">
+              {t(
+                "accessibility.amountHelp",
+                "Enter the amount of money you want to send (required)",
+              )}
+            </div>
           </Grid>
           <Grid item xs={12}>
             <TextField
@@ -241,7 +295,21 @@ export function SendMoney(props: { org?: boolean }) {
               onChange={(event: React.ChangeEvent<{ value: string }>) => {
                 setNote(event.target.value)
               }}
+              aria-describedby="note-help"
+              inputProps={{
+                "aria-label": t(
+                  "accessibility.enterNote",
+                  "Enter note for the transaction",
+                ),
+                maxLength: 200,
+              }}
             />
+            <div id="note-help" className="sr-only">
+              {t(
+                "accessibility.noteHelp",
+                "Add an optional note to describe this transaction",
+              )}
+            </div>
           </Grid>
 
           <Grid item xs={6}>
@@ -249,8 +317,19 @@ export function SendMoney(props: { org?: boolean }) {
               variant={"contained"}
               color={"secondary"}
               onClick={() => setNext(false)}
+              aria-label={t(
+                "accessibility.goBack",
+                "Go back to recipient selection",
+              )}
+              aria-describedby="go-back-help"
             >
               {t("sendMoney.back")}
+              <span id="go-back-help" className="sr-only">
+                {t(
+                  "accessibility.goBackHelp",
+                  "Return to recipient selection step",
+                )}
+              </span>
             </Button>
           </Grid>
           <Grid item xs={6} justifyContent={"right"} container>
@@ -259,8 +338,16 @@ export function SendMoney(props: { org?: boolean }) {
                 variant={"contained"}
                 color={"primary"}
                 onClick={initiateSend}
+                aria-label={t("accessibility.sendMoney", "Send money")}
+                aria-describedby="send-money-help"
               >
                 {t("sendMoney.send")}
+                <span id="send-money-help" className="sr-only">
+                  {t(
+                    "accessibility.sendMoneyHelp",
+                    "Complete the money transfer to the selected recipient",
+                  )}
+                </span>
               </Button>
             </Grid>
           </Grid>

@@ -202,7 +202,18 @@ export function OrgDetailEditForm(props: { contractor: Contractor }) {
                         !!newAvatarURL &&
                         !newAvatarURL.match(external_resource_regex)
                       }
+                      aria-label={t(
+                        "accessibility.avatarUrlInput",
+                        "Enter avatar image URL",
+                      )}
+                      aria-describedby="avatar-url-help"
                     />
+                    <div id="avatar-url-help" className="sr-only">
+                      {t(
+                        "accessibility.avatarUrlHelp",
+                        "Enter the URL for your organization's avatar image",
+                      )}
+                    </div>
 
                     <Button
                       onClick={async () => {
@@ -211,8 +222,16 @@ export function OrgDetailEditForm(props: { contractor: Contractor }) {
                         }
                         setAvatarEntryOpen(false)
                       }}
+                      aria-label={t("accessibility.saveAvatar", "Save avatar")}
+                      aria-describedby="save-avatar-help"
                     >
                       {t("orgDetailEdit.save")}
+                      <span id="save-avatar-help" className="sr-only">
+                        {t(
+                          "accessibility.saveAvatarHelp",
+                          "Save the new avatar image URL",
+                        )}
+                      </span>
                     </Button>
                   </Box>
                 </Collapse>
@@ -234,7 +253,19 @@ export function OrgDetailEditForm(props: { contractor: Contractor }) {
                       onChange={(event: any) => {
                         setNewName(event.target.value)
                       }}
+                      aria-label={t(
+                        "accessibility.orgNameInput",
+                        "Enter organization name",
+                      )}
+                      aria-describedby="org-name-help"
+                      aria-required="true"
                     />
+                    <div id="org-name-help" className="sr-only">
+                      {t(
+                        "accessibility.orgNameHelp",
+                        "Enter the name for your organization",
+                      )}
+                    </div>
                   </Grid>
                   <Grid item xs={12} lg={1}>
                     <Button
@@ -246,8 +277,19 @@ export function OrgDetailEditForm(props: { contractor: Contractor }) {
                         }
                         setEditingName((v) => !v)
                       }}
+                      aria-label={t(
+                        "accessibility.saveOrgName",
+                        "Save organization name",
+                      )}
+                      aria-describedby="save-org-name-help"
                     >
                       {t("orgDetailEdit.save")}
+                      <span id="save-org-name-help" className="sr-only">
+                        {t(
+                          "accessibility.saveOrgNameHelp",
+                          "Save the new organization name",
+                        )}
+                      </span>
                     </Button>
                   </Grid>
                 </Grid>
@@ -332,6 +374,11 @@ export function OrgDetailEditForm(props: { contractor: Contractor }) {
                     SelectProps={{
                       IconComponent: KeyboardArrowDownRoundedIcon,
                     }}
+                    aria-label={t(
+                      "accessibility.orgTagsInput",
+                      "Select organization tags",
+                    )}
+                    aria-describedby="org-tags-help"
                   />
                 )}
                 renderTags={(tagValue, getTagProps) =>
@@ -357,8 +404,19 @@ export function OrgDetailEditForm(props: { contractor: Contractor }) {
                   }
                   setEditingTags((v) => !v)
                 }}
+                aria-label={t(
+                  "accessibility.saveOrgTags",
+                  "Save organization tags",
+                )}
+                aria-describedby="save-org-tags-help"
               >
                 {t("orgDetailEdit.save")}
+                <span id="save-org-tags-help" className="sr-only">
+                  {t(
+                    "accessibility.saveOrgTagsHelp",
+                    "Save the new organization tags",
+                  )}
+                </span>
               </Button>
             </CardContent>
           ) : (
@@ -414,8 +472,19 @@ export function OrgDetailEditForm(props: { contractor: Contractor }) {
                       }
                       setEditingDesc((v) => !v)
                     }}
+                    aria-label={t(
+                      "accessibility.saveOrgDescription",
+                      "Save organization description",
+                    )}
+                    aria-describedby="save-org-description-help"
                   >
                     {t("orgDetailEdit.save")}
+                    <span id="save-org-description-help" className="sr-only">
+                      {t(
+                        "accessibility.saveOrgDescriptionHelp",
+                        "Save the new organization description",
+                      )}
+                    </span>
                   </Button>
                 </Box>
               </>
@@ -479,7 +548,18 @@ export function OrgDetailEditForm(props: { contractor: Contractor }) {
                         !!newBannerURL &&
                         !newBannerURL.match(external_resource_regex)
                       }
+                      aria-label={t(
+                        "accessibility.bannerUrlInput",
+                        "Enter banner image URL",
+                      )}
+                      aria-describedby="banner-url-help"
                     />
+                    <div id="banner-url-help" className="sr-only">
+                      {t(
+                        "accessibility.bannerUrlHelp",
+                        "Enter the URL for your organization's banner image",
+                      )}
+                    </div>
                   </Box>
                 </Collapse>
 

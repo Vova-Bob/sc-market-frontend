@@ -498,13 +498,28 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
             <TextField
               fullWidth
               label={t("CreateServiceForm.serviceName") + "*"}
-              id="order-title"
+              id="service-name"
               value={state.service_name}
               onChange={(event: React.ChangeEvent<{ value: string }>) => {
                 setState({ ...state, service_name: event.target.value })
               }}
               color={"secondary"}
+              aria-required="true"
+              aria-describedby="service-name-help"
+              inputProps={{
+                "aria-label": t(
+                  "accessibility.serviceNameInput",
+                  "Enter service name",
+                ),
+                maxLength: 100,
+              }}
             />
+            <div id="service-name-help" className="sr-only">
+              {t(
+                "accessibility.serviceNameHelp",
+                "Enter a descriptive name for your service (required)",
+              )}
+            </div>
           </Grid>
 
           <Grid item xs={12}>
@@ -519,6 +534,11 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
                       })
                     }}
                     checked={state.status === "active"}
+                    aria-label={t(
+                      "accessibility.serviceStatusToggle",
+                      "Toggle service status",
+                    )}
+                    aria-describedby="service-status-help"
                   />
                 }
                 label={
@@ -527,6 +547,12 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
                     : t("CreateServiceForm.serviceInactive")
                 }
               />
+              <div id="service-status-help" className="sr-only">
+                {t(
+                  "accessibility.serviceStatusHelp",
+                  "Toggle to activate or deactivate your service",
+                )}
+              </div>
             </FormGroup>
           </Grid>
 
@@ -537,11 +563,24 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
               TextFieldProps={{
                 label: t("CreateServiceForm.serviceDescription"),
                 helperText: t("CreateServiceForm.serviceDescriptionHelper"),
+                "aria-describedby": "service-description-help",
+                inputProps: {
+                  "aria-label": t(
+                    "accessibility.serviceDescriptionInput",
+                    "Enter service description",
+                  ),
+                },
               }}
               onChange={(value) =>
                 setState({ ...state, service_description: value })
               }
             />
+            <div id="service-description-help" className="sr-only">
+              {t(
+                "accessibility.serviceDescriptionHelp",
+                "Provide a detailed description of your service",
+              )}
+            </div>
           </Grid>
 
           <Grid item xs={12}>
@@ -592,7 +631,22 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
                 setState({ ...state, title: event.target.value })
               }}
               color={"secondary"}
+              aria-required="true"
+              aria-describedby="order-title-help"
+              inputProps={{
+                "aria-label": t(
+                  "accessibility.orderTitleInput",
+                  "Enter order title",
+                ),
+                maxLength: 100,
+              }}
             />
+            <div id="order-title-help" className="sr-only">
+              {t(
+                "accessibility.orderTitleHelp",
+                "Enter a descriptive title for your order (required)",
+              )}
+            </div>
           </Grid>
 
           <Grid item xs={12} lg={10}>
@@ -606,8 +660,13 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
                 setState({ ...state, type: event.target.value })
               }}
               color={"secondary"}
+              aria-describedby="order-type-help"
               SelectProps={{
                 IconComponent: KeyboardArrowDownRoundedIcon,
+                "aria-label": t(
+                  "accessibility.selectOrderType",
+                  "Select order type",
+                ),
               }}
             >
               {Object.keys(orderIcons).map((k) => (
@@ -616,6 +675,12 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
                 </MenuItem>
               ))}
             </TextField>
+            <div id="order-type-help" className="sr-only">
+              {t(
+                "accessibility.orderTypeOptionalHelp",
+                "Select the type of order (optional)",
+              )}
+            </div>
           </Grid>
 
           <Grid item xs={2} container alignItems={"center"}>
@@ -630,10 +695,21 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
                   }}
                   color={"secondary"}
                   name="Rush"
+                  aria-label={t(
+                    "accessibility.rushOrderToggle",
+                    "Toggle rush order",
+                  )}
+                  aria-describedby="rush-order-help"
                 />
               }
               label={t("CreateServiceForm.rush")}
             />
+            <div id="rush-order-help" className="sr-only">
+              {t(
+                "accessibility.rushOrderHelp",
+                "Check this box if you need this order completed urgently",
+              )}
+            </div>
           </Grid>
 
           <Grid item xs={12}>
@@ -650,8 +726,21 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
               minRows={4}
               maxRows={4}
               color={"secondary"}
-              // InputProps={{sx: {color: 'inherit'}}}
+              aria-describedby="description-help"
+              inputProps={{
+                "aria-label": t(
+                  "accessibility.orderDescriptionInput",
+                  "Enter order description",
+                ),
+                maxLength: 1000,
+              }}
             />
+            <div id="description-help" className="sr-only">
+              {t(
+                "accessibility.orderDescriptionHelp",
+                "Provide a detailed description of what you need",
+              )}
+            </div>
           </Grid>
         </Grid>
       </Section>
@@ -797,7 +886,21 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
                 ),
                 inputMode: "numeric",
               }}
+              aria-describedby="collateral-help"
+              inputProps={{
+                "aria-label": t(
+                  "accessibility.collateralInput",
+                  "Enter collateral amount",
+                ),
+                pattern: "[0-9]*",
+              }}
             />
+            <div id="collateral-help" className="sr-only">
+              {t(
+                "accessibility.collateralHelp",
+                "Enter the collateral amount in aUEC (optional)",
+              )}
+            </div>
           </Grid>
 
           {/*<Grid item xs={12}>*/}
@@ -837,7 +940,22 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
                 ),
                 inputMode: "numeric",
               }}
+              aria-required="true"
+              aria-describedby="offer-help"
+              inputProps={{
+                "aria-label": t(
+                  "accessibility.offerInput",
+                  "Enter offer amount",
+                ),
+                pattern: "[0-9]*",
+              }}
             />
+            <div id="offer-help" className="sr-only">
+              {t(
+                "accessibility.offerHelp",
+                "Enter your offer amount in aUEC (required)",
+              )}
+            </div>
           </Grid>
           <Grid item xs={12}>
             <TextField
@@ -848,8 +966,14 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
                 setState({ ...state, payment_type: event.target.value })
               }}
               fullWidth
+              aria-required="true"
+              aria-describedby="payment-type-help"
               SelectProps={{
                 IconComponent: KeyboardArrowDownRoundedIcon,
+                "aria-label": t(
+                  "accessibility.selectPaymentType",
+                  "Select payment type",
+                ),
               }}
             >
               {PAYMENT_TYPES.map((paymentType) => (
@@ -858,6 +982,12 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
                 </MenuItem>
               ))}
             </TextField>
+            <div id="payment-type-help" className="sr-only">
+              {t(
+                "accessibility.paymentTypeHelp",
+                "Select how you want to handle payment for this service (required)",
+              )}
+            </div>
           </Grid>
         </Grid>
       </Section>
@@ -869,12 +999,20 @@ export function CreateServiceForm(props: GridProps & { service?: Service }) {
           type="submit"
           disabled={isUploadingPhotos}
           onClick={submitService}
+          aria-label={t("accessibility.submitService", "Submit service")}
+          aria-describedby="submit-service-help"
         >
           {isUploadingPhotos
             ? t("CreateServiceForm.uploadingPhotos")
             : props.service
               ? t("CreateServiceForm.update")
               : t("CreateServiceForm.submit")}
+          <span id="submit-service-help" className="sr-only">
+            {t(
+              "accessibility.submitServiceHelp",
+              "Submit your service with the specified details and pricing",
+            )}
+          </span>
         </Button>
       </Grid>
     </>

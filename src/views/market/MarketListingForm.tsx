@@ -235,7 +235,22 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
               setState((state) => ({ ...state, title: event.target.value }))
             }}
             color={"secondary"}
+            aria-required="true"
+            aria-describedby="listing-title-help"
+            inputProps={{
+              "aria-label": t(
+                "accessibility.listingTitleInput",
+                "Enter listing title",
+              ),
+              maxLength: 100,
+            }}
           />
+          <div id="listing-title-help" className="sr-only">
+            {t(
+              "accessibility.listingTitleHelp",
+              "Enter a descriptive title for your market listing (required)",
+            )}
+          </div>
         </Grid>
 
         <SelectGameItemStack
@@ -265,11 +280,14 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
                 quantity_available: values.floatValue || 0,
               }))
             }}
-            inputProps={{ 
-              inputMode: "numeric", 
+            inputProps={{
+              inputMode: "numeric",
               pattern: "[0-9]*",
-              "aria-label": t("accessibility.quantityAvailableInput", "Enter quantity available"),
-              "aria-describedby": "quantity-available-help"
+              "aria-label": t(
+                "accessibility.quantityAvailableInput",
+                "Enter quantity available",
+              ),
+              "aria-describedby": "quantity-available-help",
             }}
             label={t("MarketListingForm.quantityAvailable")}
             id="quantity-available"
@@ -279,7 +297,10 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
             aria-required="true"
           />
           <div id="quantity-available-help" className="sr-only">
-            {t("accessibility.quantityAvailableHelp", "Enter the number of items available for sale")}
+            {t(
+              "accessibility.quantityAvailableHelp",
+              "Enter the number of items available for sale",
+            )}
           </div>
         </Grid>
 
@@ -292,9 +313,20 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
             TextFieldProps={{
               label: t("MarketListingForm.description"),
               helperText: t("MarketListingForm.descriptionHelp"),
+              "aria-label": t(
+                "accessibility.listingDescriptionInput",
+                "Enter listing description",
+              ),
+              "aria-describedby": "listing-description-help",
             }}
             variant={"vertical"}
           />
+          <div id="listing-description-help" className="sr-only">
+            {t(
+              "accessibility.listingDescriptionHelp",
+              "Provide a detailed description of your market listing",
+            )}
+          </div>
         </Grid>
 
         <Grid item xs={12}>
@@ -352,10 +384,21 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
                       status: event.target.checked ? "active" : "inactive",
                     }))
                   }
+                  aria-label={t(
+                    "accessibility.listingStatusToggle",
+                    "Toggle listing status",
+                  )}
+                  aria-describedby="listing-status-help"
                 />
               }
               label={t("MarketListingForm.active")}
             />
+            <div id="listing-status-help" className="sr-only">
+              {t(
+                "accessibility.listingStatusHelp",
+                "Toggle to activate or deactivate this market listing",
+              )}
+            </div>
             {currentOrg && (
               <FormControlLabel
                 control={
@@ -367,11 +410,22 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
                         internal: event.target.checked,
                       })
                     }
+                    aria-label={t(
+                      "accessibility.internalListingToggle",
+                      "Toggle internal listing",
+                    )}
+                    aria-describedby="internal-listing-help"
                   />
                 }
                 label={t("MarketListingForm.orgInternal")}
               />
             )}
+            <div id="internal-listing-help" className="sr-only">
+              {t(
+                "accessibility.internalListingHelp",
+                "Toggle to make this listing visible only to your organization",
+              )}
+            </div>
           </FormGroup>
         </Grid>
       </FormPaper>
@@ -405,7 +459,19 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
               inputMode: "numeric",
             }}
             type={"tel"}
+            aria-required="true"
+            aria-describedby="price-help"
+            inputProps={{
+              "aria-label": t(
+                "accessibility.priceInput",
+                "Enter price per unit",
+              ),
+              pattern: "[0-9]*",
+            }}
           />
+          <div id="price-help" className="sr-only">
+            {t("accessibility.priceHelp", "Enter the price per unit in aUEC")}
+          </div>
         </Grid>
         {state.sale_type === "auction" ? (
           <>
@@ -433,7 +499,22 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
                   inputMode: "numeric",
                 }}
                 type={"tel"}
+                aria-required="true"
+                aria-describedby="min-bid-increment-help"
+                inputProps={{
+                  "aria-label": t(
+                    "accessibility.minBidIncrementInput",
+                    "Enter minimum bid increment",
+                  ),
+                  pattern: "[0-9]*",
+                }}
               />
+              <div id="min-bid-increment-help" className="sr-only">
+                {t(
+                  "accessibility.minBidIncrementHelp",
+                  "Enter the minimum amount by which bids must increase",
+                )}
+              </div>
             </Grid>
             <Grid item>
               <DateTimePicker
@@ -444,7 +525,22 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
                 onChange={(newValue) =>
                   setState((state) => ({ ...state, end_time: newValue }))
                 }
+                slotProps={{
+                  textField: {
+                    "aria-label": t(
+                      "accessibility.endTimeInput",
+                      "Select auction end time",
+                    ),
+                    "aria-describedby": "end-time-help",
+                  },
+                }}
               />
+              <div id="end-time-help" className="sr-only">
+                {t(
+                  "accessibility.endTimeHelp",
+                  "Select when this auction should end",
+                )}
+              </div>
             </Grid>
           </>
         ) : null}
@@ -459,8 +555,19 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
           // to={'/p/myoffers'}
           onClick={submitMarketListing}
           loading={isLoading || isUploading}
+          aria-label={t(
+            "accessibility.submitMarketListing",
+            "Submit market listing",
+          )}
+          aria-describedby="submit-listing-help"
         >
           {t("MarketListingForm.submit")}
+          <span id="submit-listing-help" className="sr-only">
+            {t(
+              "accessibility.submitMarketListingHelp",
+              "Submit your market listing with the specified details and pricing",
+            )}
+          </span>
         </LoadingButton>
       </Grid>
     </>
@@ -594,14 +701,29 @@ export function AggregateMarketListingForm() {
                 quantity_available: values.floatValue || 0,
               })
             }}
-            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+            inputProps={{
+              inputMode: "numeric",
+              pattern: "[0-9]*",
+              "aria-label": t(
+                "accessibility.quantityAvailableInput",
+                "Enter quantity available",
+              ),
+              "aria-describedby": "quantity-available-help",
+            }}
             label={t("AggregateMarketListingForm.quantityAvailable")}
             id="quantity-available"
             value={state.quantity_available}
             defaultValue={1}
             fullWidth
             color={"secondary"}
+            aria-required="true"
           />
+          <div id="quantity-available-help" className="sr-only">
+            {t(
+              "accessibility.quantityAvailableHelp",
+              "Enter the number of items available for sale",
+            )}
+          </div>
         </Grid>
 
         <Grid item xs={12}>
@@ -657,10 +779,21 @@ export function AggregateMarketListingForm() {
                       status: event.target.checked ? "active" : "inactive",
                     })
                   }}
+                  aria-label={t(
+                    "accessibility.listingStatusToggle",
+                    "Toggle listing status",
+                  )}
+                  aria-describedby="listing-status-help"
                 />
               }
               label={t("AggregateMarketListingForm.active")}
             />
+            <div id="listing-status-help" className="sr-only">
+              {t(
+                "accessibility.listingStatusHelp",
+                "Toggle to activate or deactivate this market listing",
+              )}
+            </div>
             {currentOrg && (
               <FormControlLabel
                 control={
@@ -672,11 +805,22 @@ export function AggregateMarketListingForm() {
                         internal: event.target.checked,
                       })
                     }
+                    aria-label={t(
+                      "accessibility.internalListingToggle",
+                      "Toggle internal listing",
+                    )}
+                    aria-describedby="internal-listing-help"
                   />
                 }
                 label={t("AggregateMarketListingForm.orgInternal")}
               />
             )}
+            <div id="internal-listing-help" className="sr-only">
+              {t(
+                "accessibility.internalListingHelp",
+                "Toggle to make this listing visible only to your organization",
+              )}
+            </div>
           </FormGroup>
         </Grid>
       </FormPaper>
@@ -704,7 +848,19 @@ export function AggregateMarketListingForm() {
                 <InputAdornment position="start">{`aUEC`}</InputAdornment>
               ),
             }}
+            aria-required="true"
+            aria-describedby="price-help"
+            inputProps={{
+              "aria-label": t(
+                "accessibility.priceInput",
+                "Enter price per unit",
+              ),
+              pattern: "[0-9]*",
+            }}
           />
+          <div id="price-help" className="sr-only">
+            {t("accessibility.priceHelp", "Enter the price per unit in aUEC")}
+          </div>
         </Grid>
       </FormPaper>
       <Grid item xs={12} container justifyContent={"right"}>
@@ -717,8 +873,19 @@ export function AggregateMarketListingForm() {
           // to={'/p/myoffers'}
           onClick={submitMarketListing}
           loading={isLoading}
+          aria-label={t(
+            "accessibility.submitMarketListing",
+            "Submit market listing",
+          )}
+          aria-describedby="submit-listing-help"
         >
           {t("AggregateMarketListingForm.submit")}
+          <span id="submit-listing-help" className="sr-only">
+            {t(
+              "accessibility.submitMarketListingHelp",
+              "Submit your market listing with the specified details and pricing",
+            )}
+          </span>
         </LoadingButton>
       </Grid>
     </>
@@ -809,7 +976,22 @@ export function MarketMultipleForm() {
               setState({ ...state, title: event.target.value })
             }}
             color={"secondary"}
+            aria-required="true"
+            aria-describedby="multiple-title-help"
+            inputProps={{
+              "aria-label": t(
+                "accessibility.multipleTitleInput",
+                "Enter multiple listing title",
+              ),
+              maxLength: 100,
+            }}
           />
+          <div id="multiple-title-help" className="sr-only">
+            {t(
+              "accessibility.multipleTitleHelp",
+              "Enter a descriptive title for your multiple market listing (required)",
+            )}
+          </div>
         </Grid>
 
         <Grid item xs={12} lg={12}>
@@ -833,9 +1015,20 @@ export function MarketMultipleForm() {
             TextFieldProps={{
               label: t("MarketMultipleForm.description"),
               helperText: t("MarketMultipleForm.helperText"),
+              "aria-label": t(
+                "accessibility.multipleDescriptionInput",
+                "Enter multiple listing description",
+              ),
+              "aria-describedby": "multiple-description-help",
             }}
             variant={"vertical"}
           />
+          <div id="multiple-description-help" className="sr-only">
+            {t(
+              "accessibility.multipleDescriptionHelp",
+              "Provide a detailed description of your multiple market listing",
+            )}
+          </div>
         </Grid>
       </FormPaper>
 
@@ -850,6 +1043,11 @@ export function MarketMultipleForm() {
               <TextField
                 {...params}
                 label={t("MarketMultipleForm.defaultListing")}
+                aria-label={t(
+                  "accessibility.defaultListingInput",
+                  "Select default listing",
+                )}
+                aria-describedby="default-listing-help"
               />
             )}
             onChange={(event, value) =>
@@ -879,7 +1077,18 @@ export function MarketMultipleForm() {
               ) || null
             }
             color={"secondary"}
+            aria-label={t(
+              "accessibility.defaultListingSelector",
+              "Default listing selector",
+            )}
+            aria-describedby="default-listing-help"
           />
+          <div id="default-listing-help" className="sr-only">
+            {t(
+              "accessibility.defaultListingHelp",
+              "Select the default listing to display for this multiple listing",
+            )}
+          </div>
         </Grid>
         <Grid item xs={12}>
           <Autocomplete
@@ -891,6 +1100,11 @@ export function MarketMultipleForm() {
               <TextField
                 {...params}
                 label={t("MarketMultipleForm.listingsToInclude")}
+                aria-label={t(
+                  "accessibility.listingsToIncludeInput",
+                  "Select listings to include",
+                )}
+                aria-describedby="listings-include-help"
               />
             )}
             onChange={(event, value) =>
@@ -905,7 +1119,18 @@ export function MarketMultipleForm() {
               )
               .filter((l) => l)}
             color={"secondary"}
+            aria-label={t(
+              "accessibility.listingsToIncludeSelector",
+              "Listings to include selector",
+            )}
+            aria-describedby="listings-include-help"
           />
+          <div id="listings-include-help" className="sr-only">
+            {t(
+              "accessibility.listingsIncludeHelp",
+              "Select which individual listings to include in this multiple listing",
+            )}
+          </div>
         </Grid>
       </FormPaper>
       <Grid item xs={12} container justifyContent={"right"}>
@@ -916,8 +1141,19 @@ export function MarketMultipleForm() {
           type="submit"
           onClick={submitMarketListing}
           loading={isLoading}
+          aria-label={t(
+            "accessibility.submitMultipleListing",
+            "Submit multiple listing",
+          )}
+          aria-describedby="submit-multiple-help"
         >
           {t("MarketMultipleForm.submit")}
+          <span id="submit-multiple-help" className="sr-only">
+            {t(
+              "accessibility.submitMultipleHelp",
+              "Submit your multiple market listing with the specified details",
+            )}
+          </span>
         </LoadingButton>
       </Grid>
     </>

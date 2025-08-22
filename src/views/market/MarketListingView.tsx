@@ -346,6 +346,8 @@ function BidArea(props: { listing: UniqueListing }) {
           inputProps={{
             inputMode: "numeric",
             pattern: "[0-9]*",
+            "aria-label": t("accessibility.bidAmountInput", "Enter bid amount"),
+            "aria-describedby": "bid-amount-help",
           }}
           InputProps={{
             endAdornment: (
@@ -358,7 +360,15 @@ function BidArea(props: { listing: UniqueListing }) {
           value={bid}
           color={"secondary"}
           disabled={listing.listing.status === "archived"}
+          id="bid-amount"
+          aria-required="true"
         />
+        <div id="bid-amount-help" className="sr-only">
+          {t(
+            "accessibility.bidAmountHelp",
+            "Enter your bid amount in aUEC. Must be higher than current bid plus minimum increment.",
+          )}
+        </div>
       </Box>
       <Box>
         <LoadingButton
@@ -374,8 +384,16 @@ function BidArea(props: { listing: UniqueListing }) {
           }
           onClick={handleBid}
           loading={isLoading}
+          aria-label={t("accessibility.placeBid", "Place bid")}
+          aria-describedby="place-bid-help"
         >
           {t("MarketListingView.placeBid")}
+          <span id="place-bid-help" className="sr-only">
+            {t(
+              "accessibility.placeBidHelp",
+              "Submit your bid for this auction item",
+            )}
+          </span>
         </LoadingButton>
       </Box>
     </Box>

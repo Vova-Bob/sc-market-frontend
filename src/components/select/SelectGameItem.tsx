@@ -59,13 +59,16 @@ export function SelectGameItemStack(props: SelectGameItemProps) {
           groupBy={(o) => o.category}
           color={"secondary"}
           renderInput={(params) => (
-            <TextField 
-              {...params} 
+            <TextField
+              {...params}
               label={t("market.item_type", "Item Type")}
               aria-describedby="item-type-help"
               inputProps={{
                 ...params.inputProps,
-                "aria-label": t("accessibility.selectItemType", "Select item type"),
+                "aria-label": t(
+                  "accessibility.selectItemType",
+                  "Select item type",
+                ),
               }}
             />
           )}
@@ -73,7 +76,10 @@ export function SelectGameItemStack(props: SelectGameItemProps) {
           aria-label={t("accessibility.itemTypeSelector", "Item type selector")}
         />
         <div id="item-type-help" className="sr-only">
-          {t("accessibility.itemTypeHelp", "Select the category of item you want to list")}
+          {t(
+            "accessibility.itemTypeHelp",
+            "Select the category of item you want to list",
+          )}
         </div>
       </Grid>
       <Grid item xs={12} lg={12}>
@@ -94,7 +100,10 @@ export function SelectGameItemStack(props: SelectGameItemProps) {
               aria-describedby="item-name-help"
               inputProps={{
                 ...params.inputProps,
-                "aria-label": t("accessibility.selectItemName", "Select item name"),
+                "aria-label": t(
+                  "accessibility.selectItemName",
+                  "Select item name",
+                ),
               }}
             />
           )}
@@ -103,17 +112,21 @@ export function SelectGameItemStack(props: SelectGameItemProps) {
           loading={itemsLoading}
           aria-label={t("accessibility.itemNameSelector", "Item name selector")}
           aria-describedby={
-            !props.item_type 
-              ? "item-name-disabled-help"
-              : "item-name-help"
+            !props.item_type ? "item-name-disabled-help" : "item-name-help"
           }
         />
         <div id="item-name-help" className="sr-only">
-          {t("accessibility.itemNameHelp", "Select the specific item you want to list")}
+          {t(
+            "accessibility.itemNameHelp",
+            "Select the specific item you want to list",
+          )}
         </div>
         {!props.item_type && (
           <div id="item-name-disabled-help" className="sr-only">
-            {t("accessibility.itemNameDisabledHelp", "Please select an item type first")}
+            {t(
+              "accessibility.itemNameDisabledHelp",
+              "Please select an item type first",
+            )}
           </div>
         )}
       </Grid>
@@ -169,10 +182,26 @@ export function SelectGameItem(props: SelectGameItemProps) {
             {...params}
             label={t("market.item_type", "Item Type")}
             {...props.TextfieldProps}
+            aria-describedby="item-type-help"
+            inputProps={{
+              ...params.inputProps,
+              "aria-label": t(
+                "accessibility.selectItemType",
+                "Select item type",
+              ),
+            }}
           />
         )}
         getOptionLabel={(option) => option.subcategory}
+        aria-label={t("accessibility.itemTypeSelector", "Item type selector")}
+        aria-describedby="item-type-help"
       />
+      <div id="item-type-help" className="sr-only">
+        {t(
+          "accessibility.itemTypeHelp",
+          "Select the category of item you want to list",
+        )}
+      </div>
       <Autocomplete
         // fullWidth
         options={props.item_type ? items || [] : []}
@@ -187,12 +216,40 @@ export function SelectGameItem(props: SelectGameItemProps) {
             {...params}
             label={t("market.item_name", "Item Name")}
             {...props.TextfieldProps}
+            aria-describedby={
+              !props.item_type ? "item-name-disabled-help" : "item-name-help"
+            }
+            inputProps={{
+              ...params.inputProps,
+              "aria-label": t(
+                "accessibility.selectItemName",
+                "Select item name",
+              ),
+            }}
           />
         )}
         getOptionLabel={(option) => option.name}
         disabled={!props.item_type || !items || items.length === 0}
         loading={itemsLoading}
+        aria-label={t("accessibility.itemNameSelector", "Item name selector")}
+        aria-describedby={
+          !props.item_type ? "item-name-disabled-help" : "item-name-help"
+        }
       />
+      <div id="item-name-help" className="sr-only">
+        {t(
+          "accessibility.itemNameHelp",
+          "Select the specific item you want to list",
+        )}
+      </div>
+      {!props.item_type && (
+        <div id="item-name-disabled-help" className="sr-only">
+          {t(
+            "accessibility.itemNameDisabledHelp",
+            "Please select an item type first",
+          )}
+        </div>
+      )}
     </>
   )
 }

@@ -141,7 +141,22 @@ export function ContractOfferForm(props: { contract: PublicContract }) {
                 setTitle(event.target.value)
               }}
               color={"secondary"}
+              aria-required="true"
+              aria-describedby="order-title-help"
+              inputProps={{
+                "aria-label": t(
+                  "accessibility.orderTitleInput",
+                  "Enter order title",
+                ),
+                maxLength: 100,
+              }}
             />
+            <div id="order-title-help" className="sr-only">
+              {t(
+                "accessibility.orderTitleHelp",
+                "Enter a descriptive title for your order (required)",
+              )}
+            </div>
           </Grid>
 
           <Grid item xs={12} lg={10}>
@@ -155,8 +170,14 @@ export function ContractOfferForm(props: { contract: PublicContract }) {
                 setKind(event.target.value as OrderKind)
               }}
               color={"secondary"}
+              aria-required="true"
+              aria-describedby="order-type-help"
               SelectProps={{
                 IconComponent: KeyboardArrowDownRoundedIcon,
+                "aria-label": t(
+                  "accessibility.selectOrderType",
+                  "Select order type",
+                ),
               }}
             >
               {Object.keys(orderIcons).map((k) => (
@@ -165,6 +186,12 @@ export function ContractOfferForm(props: { contract: PublicContract }) {
                 </MenuItem>
               ))}
             </TextField>
+            <div id="order-type-help" className="sr-only">
+              {t(
+                "accessibility.orderTypeHelp",
+                "Select the type of order you want to create (required)",
+              )}
+            </div>
           </Grid>
 
           <Grid item xs={12}>
@@ -181,7 +208,22 @@ export function ContractOfferForm(props: { contract: PublicContract }) {
               minRows={4}
               maxRows={4}
               color={"secondary"}
+              aria-required="true"
+              aria-describedby="description-help"
+              inputProps={{
+                "aria-label": t(
+                  "accessibility.orderDescriptionInput",
+                  "Enter order description",
+                ),
+                maxLength: 1000,
+              }}
             />
+            <div id="description-help" className="sr-only">
+              {t(
+                "accessibility.orderDescriptionHelp",
+                "Provide a detailed description of what you need (required)",
+              )}
+            </div>
           </Grid>
         </Grid>
       </Section>
@@ -219,7 +261,21 @@ export function ContractOfferForm(props: { contract: PublicContract }) {
                 ),
                 inputMode: "numeric",
               }}
+              aria-describedby="collateral-help"
+              inputProps={{
+                "aria-label": t(
+                  "accessibility.collateralInput",
+                  "Enter collateral amount",
+                ),
+                pattern: "[0-9]*",
+              }}
             />
+            <div id="collateral-help" className="sr-only">
+              {t(
+                "accessibility.collateralHelp",
+                "Enter the collateral amount in aUEC (optional)",
+              )}
+            </div>
           </Grid>
 
           <Grid item xs={12}>
@@ -245,7 +301,22 @@ export function ContractOfferForm(props: { contract: PublicContract }) {
                 ),
                 inputMode: "numeric",
               }}
+              aria-required="true"
+              aria-describedby="offer-help"
+              inputProps={{
+                "aria-label": t(
+                  "accessibility.offerInput",
+                  "Enter offer amount",
+                ),
+                pattern: "[0-9]*",
+              }}
             />
+            <div id="offer-help" className="sr-only">
+              {t(
+                "accessibility.offerHelp",
+                "Enter your offer amount in aUEC (required)",
+              )}
+            </div>
           </Grid>
 
           <Grid item xs={12}>
@@ -257,16 +328,28 @@ export function ContractOfferForm(props: { contract: PublicContract }) {
                 setPaymentType(event.target.value)
               }}
               fullWidth
+              aria-required="true"
+              aria-describedby="payment-type-help"
               SelectProps={{
                 IconComponent: KeyboardArrowDownRoundedIcon,
+                "aria-label": t(
+                  "accessibility.selectPaymentType",
+                  "Select payment type",
+                ),
               }}
             >
               {PAYMENT_TYPES.map((paymentType) => (
-                <MenuItem key={paymentType.value} value={paymentType.value}>
+                <MenuItem value={paymentType.value} key={paymentType.value}>
                   {t(paymentType.translationKey)}
                 </MenuItem>
               ))}
             </TextField>
+            <div id="payment-type-help" className="sr-only">
+              {t(
+                "accessibility.paymentTypeHelp",
+                "Select how you want to handle payment for this contract (required)",
+              )}
+            </div>
           </Grid>
         </Grid>
       </Section>
@@ -278,8 +361,19 @@ export function ContractOfferForm(props: { contract: PublicContract }) {
           color={"secondary"}
           type="submit"
           onClick={submitContractOffer}
+          aria-label={t(
+            "accessibility.submitContractOffer",
+            "Submit contract offer",
+          )}
+          aria-describedby="submit-contract-help"
         >
           {t("createPublicContract.submit")}
+          <span id="submit-contract-help" className="sr-only">
+            {t(
+              "accessibility.submitContractHelp",
+              "Submit your contract offer with the specified terms and conditions",
+            )}
+          </span>
         </LoadingButton>
       </Grid>
     </>

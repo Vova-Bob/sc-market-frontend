@@ -79,16 +79,36 @@ export function ImportFleetForm() {
                     const file = (event.target.files || [])[0]
                     setSelectedFile(file || null)
                   }}
+                  aria-label={t(
+                    "accessibility.selectFleetFile",
+                    "Select fleet file to import",
+                  )}
+                  aria-describedby="file-upload-help"
                 />
               </Button>
+              <div id="file-upload-help" className="sr-only">
+                {t(
+                  "accessibility.fileUploadHelp",
+                  "Select a JSON file containing fleet data to import",
+                )}
+              </div>
             </Grid>
             <Grid item xs={12}>
               <Button
                 variant="contained"
                 color={"primary"}
                 onClick={onFileUpload}
+                disabled={!selectedFile}
+                aria-label={t("accessibility.importFleet", "Import fleet")}
+                aria-describedby="import-fleet-help"
               >
                 {t("ships.import.submit")}
+                <span id="import-fleet-help" className="sr-only">
+                  {t(
+                    "accessibility.importFleetHelp",
+                    "Import the selected fleet file",
+                  )}
+                </span>
               </Button>
             </Grid>
           </Grid>

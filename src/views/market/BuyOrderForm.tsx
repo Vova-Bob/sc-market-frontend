@@ -120,7 +120,7 @@ export function BuyOrderForm(props: { aggregate: MarketAggregate }) {
                 }}
                 fullWidth
                 label={t("buyorder.price_per_unit")}
-                id="price"
+                id="price-per-unit"
                 color={"secondary"}
                 value={state.price}
                 InputProps={{
@@ -130,7 +130,22 @@ export function BuyOrderForm(props: { aggregate: MarketAggregate }) {
                   inputMode: "numeric",
                 }}
                 type={"tel"}
+                aria-required="true"
+                aria-describedby="price-per-unit-help"
+                inputProps={{
+                  "aria-label": t(
+                    "accessibility.pricePerUnitInput",
+                    "Enter price per unit",
+                  ),
+                  pattern: "[0-9]*",
+                }}
               />
+              <div id="price-per-unit-help" className="sr-only">
+                {t(
+                  "accessibility.pricePerUnitHelp",
+                  "Enter the price you are willing to pay per unit in aUEC",
+                )}
+              </div>
             </Grid>
             <Grid item xs={12} display={"flex"} justifyContent={"right"}>
               <NumericFormat
@@ -150,7 +165,22 @@ export function BuyOrderForm(props: { aggregate: MarketAggregate }) {
                 color={"secondary"}
                 value={state.quantity}
                 type={"tel"}
+                aria-required="true"
+                aria-describedby="quantity-help"
+                inputProps={{
+                  "aria-label": t(
+                    "accessibility.quantityInput",
+                    "Enter quantity to purchase",
+                  ),
+                  pattern: "[0-9]*",
+                }}
               />
+              <div id="quantity-help" className="sr-only">
+                {t(
+                  "accessibility.quantityHelp",
+                  "Enter the number of units you want to purchase",
+                )}
+              </div>
             </Grid>
             <Grid item xs={12} display={"flex"} justifyContent={"right"}>
               <NumericFormat
@@ -160,7 +190,7 @@ export function BuyOrderForm(props: { aggregate: MarketAggregate }) {
                 thousandSeparator
                 fullWidth
                 label={t("buyorder.total_price")}
-                id="price-per-unit"
+                id="total-price"
                 color={"secondary"}
                 variant={"standard"}
                 value={Math.ceil(state.price * state.quantity)}
@@ -172,7 +202,21 @@ export function BuyOrderForm(props: { aggregate: MarketAggregate }) {
                   inputMode: "numeric",
                 }}
                 type={"tel"}
+                aria-describedby="total-price-help"
+                inputProps={{
+                  "aria-label": t(
+                    "accessibility.totalPriceDisplay",
+                    "Total price calculation",
+                  ),
+                  "aria-readonly": "true",
+                }}
               />
+              <div id="total-price-help" className="sr-only">
+                {t(
+                  "accessibility.totalPriceHelp",
+                  "Total price is automatically calculated based on price per unit and quantity",
+                )}
+              </div>
             </Grid>
             <Grid item xs={12}>
               <Divider />
@@ -189,7 +233,24 @@ export function BuyOrderForm(props: { aggregate: MarketAggregate }) {
                     expiry: newValue || moment().add(3, "days").endOf("day"),
                   })
                 }
+                slotProps={{
+                  textField: {
+                    id: "expiry-date",
+                    "aria-label": t(
+                      "accessibility.expiryDateInput",
+                      "Select expiration date and time",
+                    ),
+                    "aria-describedby": "expiry-date-help",
+                    "aria-required": "true",
+                  },
+                }}
               />
+              <div id="expiry-date-help" className="sr-only">
+                {t(
+                  "accessibility.expiryDateHelp",
+                  "Select when this buy order should expire. Default is 3 days from now.",
+                )}
+              </div>
             </Grid>
             <Grid item xs={12}>
               <Divider />
@@ -199,8 +260,19 @@ export function BuyOrderForm(props: { aggregate: MarketAggregate }) {
                 variant={"contained"}
                 loading={isLoading}
                 onClick={callback}
+                aria-label={t(
+                  "accessibility.submitBuyOrder",
+                  "Submit buy order",
+                )}
+                aria-describedby="submit-buy-order-help"
               >
                 {t("buyorder.submit")}
+                <span id="submit-buy-order-help" className="sr-only">
+                  {t(
+                    "accessibility.submitBuyOrderHelp",
+                    "Submit your buy order with the specified price and quantity",
+                  )}
+                </span>
               </LoadingButton>
             </Grid>
           </FlatSection>

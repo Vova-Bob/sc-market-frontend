@@ -91,12 +91,18 @@ function EnhancedTableHead<T>(props: EnhancedTableProps<T>) {
               checked={rowCount > 0 && numSelected === rowCount}
               onChange={onSelectAllClick}
               inputProps={{
-                "aria-label": t("accessibility.selectAllRows", "Select all rows"),
+                "aria-label": t(
+                  "accessibility.selectAllRows",
+                  "Select all rows",
+                ),
                 "aria-describedby": "select-all-help",
               }}
             />
             <div id="select-all-help" className="sr-only">
-              {t("accessibility.selectAllHelp", "Select or deselect all rows in the table")}
+              {t(
+                "accessibility.selectAllHelp",
+                "Select or deselect all rows in the table",
+              )}
             </div>
           </TransparentHeaderCell>
         )}
@@ -127,8 +133,12 @@ function EnhancedTableHead<T>(props: EnhancedTableProps<T>) {
                 onClick={createSortHandler(headCell.id)}
                 aria-label={
                   orderBy === headCell.id
-                    ? t("accessibility.sortByColumn", "Sort by {{column}}", { column: t(headCell.label) })
-                    : t("accessibility.sortColumn", "Sort by {{column}}", { column: t(headCell.label) })
+                    ? t("accessibility.sortByColumn", "Sort by {{column}}", {
+                        column: t(headCell.label),
+                      })
+                    : t("accessibility.sortColumn", "Sort by {{column}}", {
+                        column: t(headCell.label),
+                      })
                 }
               >
                 {t(headCell.label)}
@@ -258,7 +268,11 @@ export function PaginatedTable<T>(props: {
       </Box>
       <TableContainer sx={{ width: "100%" }}>
         <div id="table-description" className="sr-only">
-          {t("accessibility.dataTableDescription", "Data table with {{count}} rows", { count: rows.length })}
+          {t(
+            "accessibility.dataTableDescription",
+            "Data table with {{count}} rows",
+            { count: rows.length },
+          )}
         </div>
         <Table
           sx={{
@@ -328,17 +342,20 @@ export function PaginatedTable<T>(props: {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
         color={"primary"}
-        nextIconButtonProps={{ 
+        nextIconButtonProps={{
           color: "primary",
-          "aria-label": t("accessibility.nextPage", "Go to next page")
+          "aria-label": t("accessibility.nextPage", "Go to next page"),
         }}
-        backIconButtonProps={{ 
+        backIconButtonProps={{
           color: "primary",
-          "aria-label": t("accessibility.previousPage", "Go to previous page")
+          "aria-label": t("accessibility.previousPage", "Go to previous page"),
         }}
         SelectProps={{
           color: "primary",
-          "aria-label": t("accessibility.selectRowsPerPage", "Select number of rows per page")
+          "aria-label": t(
+            "accessibility.selectRowsPerPage",
+            "Select number of rows per page",
+          ),
         }}
         labelRowsPerPage={t("rows_per_page")}
         labelDisplayedRows={({ from, to, count }) =>
@@ -348,7 +365,10 @@ export function PaginatedTable<T>(props: {
             count: count,
           })
         }
-        aria-label={t("accessibility.tablePagination", "Table pagination controls")}
+        aria-label={t(
+          "accessibility.tablePagination",
+          "Table pagination controls",
+        )}
       />
     </Grid>
   )
