@@ -55,6 +55,7 @@ export function DashNotificationArea() {
             maxHeight: 400,
             overflowY: "scroll",
             width: "100%",
+            maxWidth: "100%",
           }}
         >
           {(notifications || []).map(

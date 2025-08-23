@@ -136,9 +136,11 @@ export function NotificationBase(props: {
         sx={{
           maxWidth: 300,
           color: "text.secondary",
+          wordWrap: "break-word",
+          overflowWrap: "break-word",
         }}
       >
-        <Typography>{props.children}</Typography>
+        <Typography sx={{ wordBreak: "break-word" }}>{props.children}</Typography>
         <Typography variant={"subtitle2"} color={"text.primary"}>
           {getRelativeTime(new Date(notif.timestamp))}
         </Typography>
@@ -594,6 +596,8 @@ export function NotificationsButton() {
           sx: {
             borderRadius: 3,
             borderColor: theme.palette.outline.main,
+            maxWidth: 400,
+            width: "100%",
           },
         }}
       >
@@ -607,7 +611,7 @@ export function NotificationsButton() {
             alignItems: "center",
           }}
         >
-          <Typography variant={"h6"} fontWeight={600}>
+          <Typography variant={"h6"} sx={{ fontWeight: 600 }}>
             {t("notifications.notifications")}
           </Typography>
           <Box>

@@ -14,6 +14,11 @@ import {
   MenuItem,
   Chip,
   Box,
+  Table,
+  TableBody,
+  TableContainer,
+  TableHead,
+  TablePagination,
 } from "@mui/material"
 import { AdminUser } from "../../datatypes/User"
 import { Link } from "react-router-dom"
@@ -74,7 +79,7 @@ function PeopleRow(props: {
               <UnderlineLink
                 color={"text.secondary"}
                 variant={"subtitle1"}
-                fontWeight={"bold"}
+                sx={{ fontWeight: "bold" }}
               >
                 {row.username}
               </UnderlineLink>
@@ -160,6 +165,8 @@ export function AdminUserList(props: {
   customers?: boolean
 }): JSX.Element {
   const { t } = useTranslation()
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(20)
   const [roleFilter, setRoleFilter] = useState<"user" | "admin" | undefined>(
     undefined,
   )
@@ -169,11 +176,11 @@ export function AdminUserList(props: {
   const [rsiFilter, setRsiFilter] = useState<boolean | undefined>(undefined)
 
   const { data: usersResponse, isLoading } = useGetAdminUsersQuery({
-    page: 1,
-    page_size: 20,
-    role: roleFilter,
-    banned: bannedFilter,
-    rsi_confirmed: rsiFilter,
+    page,
+    page_size: pageSize,
+    ...(roleFilter && { role: roleFilter }),
+    ...(bannedFilter !== undefined && { banned: bannedFilter }),
+    ...(rsiFilter !== undefined && { rsi_confirmed: rsiFilter }),
   })
 
   const users = usersResponse?.users || []
@@ -181,7 +188,7 @@ export function AdminUserList(props: {
 
   return (
     <>
-      <Section xs={12} title={t("adminUsers.users")} disablePadding>
+      <Section xs={12} title={t("adminUsers.users")}>
         {/* Filters */}
         <Box
           sx={{
@@ -200,6 +207,7 @@ export function AdminUserList(props: {
               label={t("adminUsers.role")}
               onChange={(e) => {
                 setRoleFilter(e.target.value as "user" | "admin" | undefined)
+                setPage(1) // Reset to first page when filtering
               }}
             >
               <MenuItem value="">{t("adminUsers.all_roles")}</MenuItem>
@@ -217,6 +225,7 @@ export function AdminUserList(props: {
                 setBannedFilter(
                   e.target.value === "" ? undefined : e.target.value === "true",
                 )
+                setPage(1) // Reset to first page when filtering
               }}
             >
               <MenuItem value="">{t("adminUsers.all_users")}</MenuItem>
@@ -234,6 +243,7 @@ export function AdminUserList(props: {
                 setRsiFilter(
                   e.target.value === "" ? undefined : e.target.value === "true",
                 )
+                setPage(1) // Reset to first page when filtering
               }}
             >
               <MenuItem value="">{t("adminUsers.all_verification")}</MenuItem>
@@ -244,17 +254,65 @@ export function AdminUserList(props: {
         </Box>
 
         {isLoading ? null : (
-          <PaginatedTable
-            rows={users}
-            initialSort={"username"}
-            generateRow={PeopleRow}
-            keyAttr={"username"}
-            headCells={headCells.map((cell) => ({
-              ...cell,
-              label: t(cell.label),
-            }))}
-            disableSelect
-          />
+          <>
+            {/* Custom Table with API Pagination */}
+            <Box sx={{ width: "100%" }}>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      {headCells.map((cell) => (
+                        <TableCell
+                          key={cell.id as string}
+                          align={cell.numeric ? "right" : "left"}
+                          padding={cell.disablePadding ? "none" : "normal"}
+                          sx={{
+                            minWidth: cell.minWidth,
+                            maxWidth: cell.maxWidth,
+                          }}
+                        >
+                          {t(cell.label)}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {users.map((user, index) => (
+                      <PeopleRow
+                        key={user.username}
+                        row={user}
+                        index={index}
+                        onClick={() => {}}
+                        isItemSelected={false}
+                        labelId={`user-${index}`}
+                      />
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+
+              {/* Custom Pagination Controls */}
+              {pagination && (
+                <TablePagination
+                  component="div"
+                  count={pagination.total_users}
+                  page={page - 1} // MUI uses 0-based indexing
+                  rowsPerPage={pageSize}
+                  onPageChange={(_, newPage) => setPage(newPage + 1)}
+                  onRowsPerPageChange={(event) => {
+                    const newPageSize = parseInt(event.target.value, 10)
+                    setPageSize(newPageSize)
+                    setPage(1) // Reset to first page when changing page size
+                  }}
+                  rowsPerPageOptions={[10, 20, 50, 100]}
+                  labelRowsPerPage={t("rows_per_page")}
+                  labelDisplayedRows={({ from, to, count }) =>
+                    t("displayed_rows", { from, to, count })
+                  }
+                />
+              )}
+            </Box>
+          </>
         )}
       </Section>
     </>
