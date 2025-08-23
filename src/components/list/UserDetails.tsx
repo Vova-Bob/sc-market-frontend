@@ -6,6 +6,7 @@ import { MinimalContractor } from "../../datatypes/Contractor"
 import { UniqueListing } from "../../datatypes/MarketListing"
 import { Link } from "react-router-dom"
 import { formatMarketUrl } from "../../util/urls"
+import { FALLBACK_IMAGE_URL } from "../../util/constants"
 
 export function UserDetails(props: { user: MinimalUser }) {
   const { user } = props
@@ -64,7 +65,16 @@ export function MarketListingDetails(props: { listing: UniqueListing }) {
 
   return (
     <Stack direction={"row"} spacing={1} alignItems={"center"}>
-      <Avatar src={listing.photos[0]} variant={"rounded"} />
+      <Avatar
+        src={listing.photos[0] || FALLBACK_IMAGE_URL}
+        variant={"rounded"}
+        imgProps={{
+          onError: ({ currentTarget }) => {
+            currentTarget.onerror = null
+            currentTarget.src = FALLBACK_IMAGE_URL
+          },
+        }}
+      />
       <Stack direction={"column"} justifyContent={"left"}>
         <MaterialLink
           component={Link}

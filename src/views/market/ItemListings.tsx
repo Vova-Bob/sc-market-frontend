@@ -92,7 +92,8 @@ import { useGetUserProfileQuery } from "../../store/profile"
 import { RefreshRounded } from "@mui/icons-material"
 import moment from "moment/moment"
 import { Stack } from "@mui/system"
-import { formatMarketMultipleUrl, formatMarketUrl } from "../../util/urls" // const listingIcons = {
+import { formatMarketMultipleUrl, formatMarketUrl } from "../../util/urls"
+import { FALLBACK_IMAGE_URL } from "../../util/constants" // const listingIcons = {
 
 // const listingIcons = {
 //     "auction": <GavelIcon/>,
@@ -242,11 +243,10 @@ export function ItemListingBase(props: {
             <CardMedia
               component="img"
               loading="lazy"
-              image={photos[0]}
+              image={photos[0] || FALLBACK_IMAGE_URL}
               onError={({ currentTarget }) => {
                 currentTarget.onerror = null
-                currentTarget.src =
-                  "https://cdn.robertsspaceindustries.com/static/images/Temp/default-image.png"
+                currentTarget.src = FALLBACK_IMAGE_URL
               }}
               sx={{
                 ...(theme.palette.mode === "dark"
@@ -507,14 +507,10 @@ export function AggregateListingBase(props: {
             <CardMedia
               component="img"
               loading="lazy"
-              image={
-                photos[0] ||
-                "https://cdn.robertsspaceindustries.com/static/images/Temp/default-image.png"
-              }
+              image={photos[0] || FALLBACK_IMAGE_URL}
               onError={({ currentTarget }) => {
                 currentTarget.onerror = null
-                currentTarget.src =
-                  "https://cdn.robertsspaceindustries.com/static/images/Temp/default-image.png"
+                currentTarget.src = FALLBACK_IMAGE_URL
               }}
               sx={{
                 ...(theme.palette.mode === "dark"
@@ -680,14 +676,10 @@ export function AggregateBuyOrderListingBase(props: {
             <CardMedia
               component="img"
               loading="lazy"
-              image={
-                photos[0] ||
-                "https://cdn.robertsspaceindustries.com/static/images/Temp/default-image.png"
-              }
+              image={photos[0] || FALLBACK_IMAGE_URL}
               onError={({ currentTarget }) => {
                 currentTarget.onerror = null
-                currentTarget.src =
-                  "https://cdn.robertsspaceindustries.com/static/images/Temp/default-image.png"
+                currentTarget.src = FALLBACK_IMAGE_URL
               }}
               sx={{
                 ...(theme.palette.mode === "dark"
@@ -872,14 +864,10 @@ export function MultipleListingBase(props: {
             <CardMedia
               component="img"
               loading="lazy"
-              image={
-                photos[0] ||
-                "https://cdn.robertsspaceindustries.com/static/images/Temp/default-image.png"
-              }
+              image={photos[0] || FALLBACK_IMAGE_URL}
               onError={({ currentTarget }) => {
                 currentTarget.onerror = null
-                currentTarget.src =
-                  "https://cdn.robertsspaceindustries.com/static/images/Temp/default-image.png"
+                currentTarget.src = FALLBACK_IMAGE_URL
               }}
               sx={{
                 ...(theme.palette.mode === "dark"

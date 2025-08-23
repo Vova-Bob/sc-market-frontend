@@ -32,6 +32,7 @@ import { MarkdownEditor } from "../../components/markdown/Markdown"
 import { MarketAggregateListingComposite } from "../../datatypes/MarketListing"
 import { NumericFormat } from "react-number-format"
 import { formatMarketUrl } from "../../util/urls"
+import { FALLBACK_IMAGE_URL } from "../../util/constants"
 import { useTranslation } from "react-i18next"
 
 export function CartItemEntry(props: {
@@ -63,13 +64,17 @@ export function CartItemEntry(props: {
           <img
             height={128}
             width={128}
-            src={(listing?.photos || [])[0]}
+            src={(listing?.photos || [])[0] || FALLBACK_IMAGE_URL}
             alt={listing?.details?.description}
             style={{
               borderRadius: 3,
               objectFit: "cover",
             }}
             loading="lazy"
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = null
+              currentTarget.src = FALLBACK_IMAGE_URL
+            }}
           />
         </Grid>
         <Grid item sx={{ "& > *": { marginBottom: 1 } }}>

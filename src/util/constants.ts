@@ -6,6 +6,9 @@ export const WS_URL = import.meta.env.VITE_WS_URL || "ws://localhost"
 
 export const defaultAvatar = SCMarketLogo
 
+export const FALLBACK_IMAGE_URL =
+  "https://cdn.robertsspaceindustries.com/static/images/Temp/default-image.png"
+
 export const DISCORD_INVITE = "https://discord.com/invite/N4Gy8py8J4"
 
 export const PAYMENT_TYPES = [
