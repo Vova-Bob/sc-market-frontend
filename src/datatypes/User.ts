@@ -31,3 +31,42 @@ export interface MinimalUser {
     username: string
   }
 }
+
+export interface AdminUser {
+  discord_id: string
+  user_id: string
+  display_name: string
+  profile_description: string
+  role: "user" | "admin"
+  banned: boolean
+  username: string
+  avatar: string
+  banner: string
+  balance: string
+  created_at: string
+  locale: string
+  rsi_confirmed: boolean
+  official_server_id: string | null
+  discord_thread_channel_id: string | null
+  market_order_template: string
+}
+
+export interface AdminUsersResponse {
+  users: AdminUser[]
+  pagination: {
+    page: number
+    page_size: number
+    total_users: number
+    total_pages: number
+    has_next: boolean
+    has_prev: boolean
+  }
+}
+
+export interface AdminUsersQuery {
+  page?: number
+  page_size?: number
+  role?: "user" | "admin"
+  banned?: boolean
+  rsi_confirmed?: boolean
+}

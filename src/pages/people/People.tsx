@@ -3,7 +3,11 @@ import React from "react"
 import { CustomerList } from "../../views/people/Customers"
 import { ContainerGrid } from "../../components/layout/ContainerGrid"
 import { Page } from "../../components/metadata/Page"
-import { AdminDailyActivity, AdminUserList } from "../../views/people/AllUsers"
+import {
+  AdminDailyActivity,
+  AdminMembershipAnalytics,
+  AdminUserList,
+} from "../../views/people/AllUsers"
 import { AdminExpressVerify } from "../../views/authentication/AdminExpressVerify"
 import { useTranslation } from "react-i18next"
 
@@ -35,6 +39,7 @@ export function AdminUserListPage() {
         <HeaderTitle>{t("people.title")}</HeaderTitle>
 
         <AdminDailyActivity />
+        <AdminMembershipAnalytics />
         <AdminUserList />
         <AdminExpressVerify />
       </ContainerGrid>

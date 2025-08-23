@@ -655,8 +655,22 @@
     "username": "Username",
     "date_joined": "Date Joined",
     "role": "Role",
+    "status": "Status",
     "active_users": "Active Users",
-    "verified_users": "Verified Users"
+    "verified_users": "Verified Users",
+    "all_roles": "All Roles",
+    "user": "User",
+    "admin": "Admin",
+    "banned_status": "Banned Status",
+    "all_users": "All Users",
+    "active_users": "Active Users",
+    "banned_users": "Banned Users",
+    "verification": "Verification Status",
+    "all_verification": "All Verification",
+    "verified": "Verified",
+    "unverified": "Unverified",
+    "showing_users": "Showing {{start}}-{{end}} of {{total}} users",
+    "page_info": "Page {{current}} of {{total}}"
   },
   "customerList": {
     "customers": "Customers",
