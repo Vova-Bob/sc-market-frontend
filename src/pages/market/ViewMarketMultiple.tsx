@@ -14,6 +14,7 @@ import { Button, Grid } from "@mui/material"
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded"
 import { BackArrow } from "../../components/button/BackArrow"
 import { MarketMultipleView } from "../../views/market/MarketMultipleView"
+import { MarketListingViewSkeleton } from "../../views/market/MarketListingView"
 import { useTranslation } from "react-i18next"
 import {
   shouldRedirectTo404,
@@ -33,7 +34,7 @@ export function ViewMarketMultiple(props: {}) {
    */
   const { t } = useTranslation()
 
-  const { data: listing, error, refetch } = useMarketGetMultipleByIDQuery(id!)
+  const { data: listing, error, refetch, isLoading } = useMarketGetMultipleByIDQuery(id!)
 
   return (
     <Page title={listing?.details?.title}>
@@ -68,7 +69,9 @@ export function ViewMarketMultiple(props: {}) {
 
         {shouldRedirectTo404(error) ? <Navigate to={"/404"} /> : null}
         {shouldShowErrorPage(error) ? <ErrorPage /> : null}
-        {listing && (
+        {isLoading ? (
+          <MarketListingViewSkeleton />
+        ) : listing ? (
           <CurrentMarketListingContext.Provider value={[listing!, refetch]}>
             {(() => {
               return <MarketMultipleView />
@@ -82,8 +85,7 @@ export function ViewMarketMultiple(props: {}) {
               // }
             })()}
           </CurrentMarketListingContext.Provider>
-        )}
-        {/* TODO: Add a skeleton to this section */}
+        ) : null}
       </ContainerGrid>
     </Page>
   )
@@ -101,7 +103,7 @@ export function EditMarketMultiple(props: {}) {
    */
   const { t } = useTranslation()
 
-  const { data: listing, error, refetch } = useMarketGetListingByIDQuery(id!)
+  const { data: listing, error, refetch, isLoading } = useMarketGetListingByIDQuery(id!)
 
   return (
     <Page title={listing?.details?.title}>
@@ -112,7 +114,9 @@ export function EditMarketMultiple(props: {}) {
 
         {shouldRedirectTo404(error) ? <Navigate to={"/404"} /> : null}
         {shouldShowErrorPage(error) ? <ErrorPage /> : null}
-        {listing && (
+        {isLoading ? (
+          <MarketListingViewSkeleton />
+        ) : listing ? (
           <CurrentMarketListingContext.Provider value={[listing!, refetch]}>
             {(() => {
               return <MarketListingEditView />
@@ -126,8 +130,7 @@ export function EditMarketMultiple(props: {}) {
               // }
             })()}
           </CurrentMarketListingContext.Provider>
-        )}
-        {/* TODO: Add a skeleton to this section */}
+        ) : null}
       </ContainerGrid>
     </Page>
   )

@@ -15,6 +15,7 @@ import {
   Link as MaterialLink,
   TextField,
   Typography,
+  Skeleton,
 } from "@mui/material"
 import LoadingButton from "@mui/lab/LoadingButton"
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom"
@@ -399,6 +400,77 @@ function BidArea(props: { listing: UniqueListing }) {
         </LoadingButton>
       </Box>
     </Box>
+  )
+}
+
+// Skeleton component for market listing view
+export function MarketListingViewSkeleton() {
+  return (
+    <Grid item xs={12} lg={12}>
+      <Grid container spacing={2}>
+        {/* Left column - Image and user info */}
+        <Grid item xs={12} lg={4}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} lg={12}>
+              {/* Image skeleton */}
+              <Skeleton
+                variant="rectangular"
+                height={400}
+                width="100%"
+                sx={{ borderRadius: 3 }}
+              />
+            </Grid>
+            
+            {/* User info skeleton */}
+            <Grid item lg={12} xs={12}>
+              <Box sx={{ mt: 2 }}>
+                <Skeleton variant="text" width="60%" height={32} />
+                <Skeleton variant="text" width="40%" height={24} sx={{ mt: 1 }} />
+              </Box>
+            </Grid>
+          </Grid>
+        </Grid>
+
+        {/* Right column - Main content */}
+        <Grid item xs={12} lg={8}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Card sx={{ borderRadius: 3, minHeight: 400 }}>
+                <CardHeader
+                  sx={{ padding: 3, paddingBottom: 1 }}
+                  title={
+                    <Box>
+                      {/* Breadcrumbs skeleton */}
+                      <Skeleton variant="text" width="80%" height={24} />
+                      {/* Title skeleton */}
+                      <Skeleton variant="text" width="70%" height={40} sx={{ mt: 1 }} />
+                      {/* Meta info skeleton */}
+                      <Skeleton variant="text" width="50%" height={24} sx={{ mt: 1 }} />
+                    </Box>
+                  }
+                  subheader={
+                    <Box sx={{ mt: 2 }}>
+                      {[1, 2, 3, 4].map((i) => (
+                        <Skeleton key={i} variant="text" width="60%" height={20} sx={{ mt: 0.5 }} />
+                      ))}
+                    </Box>
+                  }
+                />
+                <CardContent sx={{ padding: 3, paddingTop: 0 }}>
+                  {/* Action area skeleton */}
+                  <Skeleton variant="rectangular" height={80} width="100%" sx={{ mb: 2 }} />
+                  {/* Description skeleton */}
+                  <Skeleton variant="text" width="100%" height={20} />
+                  <Skeleton variant="text" width="90%" height={20} />
+                  <Skeleton variant="text" width="85%" height={20} />
+                  <Skeleton variant="text" width="70%" height={20} />
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
   )
 }
 

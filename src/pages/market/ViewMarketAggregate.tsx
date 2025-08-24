@@ -10,6 +10,7 @@ import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded"
 import { CurrentMarketAggregateContext } from "../../hooks/market/CurrentMarketAggregate"
 import { MarketAggregateEditView } from "../../views/market/MarketAggregateEditView"
 import { MarketAggregateView } from "../../views/market/MarketAggregateView"
+import { MarketListingViewSkeleton } from "../../views/market/MarketListingView"
 import { BackArrow } from "../../components/button/BackArrow"
 import { CurrentMarketListingContext } from "../../hooks/market/CurrentMarketItem"
 import { useTranslation } from "react-i18next"
@@ -27,6 +28,7 @@ export function ViewMarketAggregate(props: {}) {
     data: aggregate,
     error,
     refetch,
+    isLoading,
   } = useMarketGetAggregateByIDQuery(id!)
 
   return (
@@ -62,12 +64,13 @@ export function ViewMarketAggregate(props: {}) {
 
         {shouldRedirectTo404(error) ? <Navigate to={"/404"} /> : null}
         {shouldShowErrorPage(error) ? <ErrorPage /> : null}
-        {aggregate && (
+        {isLoading ? (
+          <MarketListingViewSkeleton />
+        ) : aggregate ? (
           <CurrentMarketListingContext.Provider value={[aggregate!, refetch]}>
             <MarketAggregateView />
           </CurrentMarketListingContext.Provider>
-        )}
-        {/* TODO: Add a skeleton to this section */}
+        ) : null}
       </ContainerGrid>
     </Page>
   )
@@ -89,6 +92,7 @@ export function EditMarketAggregate(props: {}) {
     data: aggregate,
     error,
     refetch,
+    isLoading,
   } = useMarketGetAggregateByIDQuery(id!)
 
   return (
@@ -100,12 +104,13 @@ export function EditMarketAggregate(props: {}) {
 
         {shouldRedirectTo404(error) ? <Navigate to={"/404"} /> : null}
         {shouldShowErrorPage(error) ? <ErrorPage /> : null}
-        {aggregate && (
+        {isLoading ? (
+          <MarketListingViewSkeleton />
+        ) : aggregate ? (
           <CurrentMarketAggregateContext.Provider value={[aggregate!, refetch]}>
             <MarketAggregateEditView />
           </CurrentMarketAggregateContext.Provider>
-        )}
-        {/* TODO: Add a skeleton to this section */}
+        ) : null}
       </ContainerGrid>
     </Page>
   )

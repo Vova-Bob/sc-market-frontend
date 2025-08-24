@@ -98,11 +98,11 @@ export function SelectPhotosArea(props: {
     onRemovePendingFile,
     onAlert,
   } = props
-  const [photoOpen, setPhotoOpen] = useState(false)
   const [isDragOver, setIsDragOver] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { t } = useTranslation()
   const theme = useTheme()
+  const [photoOpen, setPhotoOpen] = useState(false)
 
   const handleFileUpload = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -316,7 +316,8 @@ export function SelectPhotosArea(props: {
           }
         }}
       >
-        <Paper sx={{ width: 96, height: 96, bgcolor: "#00000099" }}>
+        {/* Image search button - temporarily hidden */}
+        {/* <Paper sx={{ width: 96, height: 96, bgcolor: "#00000099" }}>
           <ButtonBase
             sx={{ width: "100%", height: "100%" }}
             onClick={() => {
@@ -340,7 +341,7 @@ export function SelectPhotosArea(props: {
               </Typography>
             </Box>
           </ButtonBase>
-        </Paper>
+        </Paper> */}
 
         {showUploadButton && onFileUpload && (
           <Paper sx={{ width: 96, height: 96, bgcolor: "#00000099" }}>
@@ -445,6 +446,7 @@ export function SelectPhotosArea(props: {
         </Typography>
       )}
 
+      {/* ImageSearch component - temporarily disabled */}
       <ImageSearch
         open={photoOpen}
         setOpen={setPhotoOpen}

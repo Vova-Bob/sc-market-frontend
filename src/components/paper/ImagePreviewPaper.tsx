@@ -98,6 +98,7 @@ export function ImagePreviewPaper(props: { photos: string[] }) {
             maxHeight: "100%",
             maxWidth: "100%",
             margin: "auto",
+            objectFit: "contain",
           }}
           src={
             photos[imageIndex] ||
@@ -111,6 +112,7 @@ export function ImagePreviewPaper(props: { photos: string[] }) {
               total: photos.length,
             },
           )}
+          loading="eager"
           onError={({ currentTarget }) => {
             currentTarget.onerror = null
             currentTarget.src =
