@@ -3,28 +3,22 @@ import InfoIcon from "@mui/icons-material/Info"
 import { a11yProps, TabPanel } from "../../components/tabs/Tabs"
 import { ContainerGrid } from "../../components/layout/ContainerGrid"
 import React from "react"
-import { useGetUserProfileQuery } from "../../store/profile"
-import { HeaderTitle } from "../../components/typography/HeaderTitle"
-import { AuthenticateRSI } from "../../views/authentication/AuthenticateRSI"
-import { MyWebhooks } from "../../views/notifications/ListNotificationWebhooks"
 import { Page } from "../../components/metadata/Page"
-import { AddNotificationWebhook } from "../../views/notifications/AddNotificationWebhook"
 import {
   PeopleAltRounded,
   PrivacyTipRounded,
   StoreRounded,
 } from "@mui/icons-material"
 import { PrivacySettings } from "../../views/settings/PrivacySettings"
-import { DiscordBotDetails } from "../../views/settings/DiscordBotDetails"
 import { Discord } from "../../components/icon/DiscordIcon"
-import { ConfigureDiscord } from "../../views/notifications/ConfigureDiscord"
-import { MarketEditTemplate } from "../../views/market/MarketEditTemplate"
-import { SettingsManageContractors } from "../../views/contractor/SettingsManageContractors"
+import { ProfileSettings } from "../../views/settings/ProfileSettings"
+import { DiscordIntegrationSettings } from "../../views/settings/DiscordIntegrationSettings"
+import { MarketSettings } from "../../views/settings/MarketSettings"
+import { ContractorsSettings } from "../../views/settings/ContractorsSettings"
 
 import { useTranslation } from "react-i18next"
 
 export function SettingsPage() {
-  const { data: profile } = useGetUserProfileQuery()
   const { t } = useTranslation()
 
   const [page, setPage] = React.useState(0)
@@ -80,38 +74,20 @@ export function SettingsPage() {
 
         <Grid item xs={12}>
           <TabPanel value={page} index={0}>
-            <Grid container spacing={4} alignItems={"flex-start"}>
-              <HeaderTitle>
-                {profile?.rsi_confirmed
-                  ? t("settings.profile.updateAndVerify")
-                  : t("settings.profile.authenticateWithRSI")}
-              </HeaderTitle>
-              <AuthenticateRSI />
-            </Grid>
+            <ProfileSettings />
           </TabPanel>
           <TabPanel value={page} index={1}>
-            <Grid container spacing={4} alignItems={"flex-start"}>
-              <PrivacySettings />
-              {/*<AvailabilitySelector/>*/}
-            </Grid>
+            <PrivacySettings />
+            {/*<AvailabilitySelector/>*/}
           </TabPanel>
           <TabPanel value={page} index={2}>
-            <Grid container spacing={4} alignItems={"flex-start"}>
-              <DiscordBotDetails />
-              <ConfigureDiscord />
-              <AddNotificationWebhook />
-              <MyWebhooks />
-            </Grid>
+            <DiscordIntegrationSettings />
           </TabPanel>
           <TabPanel value={page} index={3}>
-            <Grid container spacing={4} alignItems={"flex-start"}>
-              <MarketEditTemplate />
-            </Grid>
+            <MarketSettings />
           </TabPanel>
           <TabPanel value={page} index={4}>
-            <Grid container spacing={4}>
-              <SettingsManageContractors />
-            </Grid>
+            <ContractorsSettings />
           </TabPanel>
         </Grid>
       </ContainerGrid>

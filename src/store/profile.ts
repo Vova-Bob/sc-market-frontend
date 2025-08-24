@@ -173,6 +173,13 @@ export const userApi = serviceApi.injectEndpoints({
         { type: "Contractor", id: arg },
       ],
     }),
+    profileSyncHandle: builder.mutation<UserProfileState, void>({
+      query: () => ({
+        url: `${baseUrl}/auth/sync-handle`,
+        method: "POST",
+      }),
+      invalidatesTags: [{ type: "MyProfile" as const }, "MyProfile" as const],
+    }),
   }),
 })
 
@@ -209,4 +216,5 @@ export const {
   useProfileRefetchMutation,
   useProfileGetDiscordSettingsQuery,
   useProfileUseOfficialDiscordSettingsMutation,
+  useProfileSyncHandleMutation,
 } = userApi

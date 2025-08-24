@@ -430,7 +430,12 @@
     "profile": {
       "updateAndVerify": "Update Username and Re-Verify Account",
       "authenticateWithRSI": "Authenticate with RSI",
-      "viewUserProfile": "View User Profile"
+      "viewUserProfile": "View User Profile",
+      "reVerifyTitle": "Re-verify Profile",
+      "reVerifyDescription": "Update your profile username to match your current Spectrum handle. This will only update your username.",
+      "reVerifyButton": "Re-verify Profile",
+      "reVerifySuccess": "Profile successfully re-verified! Your username has been updated.",
+      "reVerifyError": "Failed to re-verify profile. Please try again later."
     }
   },
   "sidebar": {
