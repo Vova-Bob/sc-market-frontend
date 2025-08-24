@@ -5,9 +5,42 @@ import { OrderAnalytics } from "../datatypes/Order"
 import { AdminUsersResponse, AdminUsersQuery } from "../datatypes/User"
 
 export interface MembershipAnalytics {
-  daily: Array<{ date: string; count: number }>
-  weekly: Array<{ date: string; count: number }>
-  monthly: Array<{ date: string; count: number }>
+  daily_totals: Array<{
+    date: string
+    new_members: string
+    new_members_rsi_verified: string
+    new_members_rsi_unverified: string
+    cumulative_members: string
+    cumulative_members_rsi_verified: string
+    cumulative_members_rsi_unverified: string
+  }>
+  weekly_totals: Array<{
+    date: string
+    new_members: string
+    new_members_rsi_verified: string
+    new_members_rsi_unverified: string
+    cumulative_members: string
+    cumulative_members_rsi_verified: string
+    cumulative_members_rsi_unverified: string
+  }>
+  monthly_totals: Array<{
+    date: string
+    new_members: string
+    new_members_rsi_verified: string
+    new_members_rsi_unverified: string
+    cumulative_members: string
+    cumulative_members_rsi_verified: string
+    cumulative_members_rsi_unverified: string
+  }>
+  summary: {
+    total_members: string
+    admin_members: string
+    regular_members: string
+    rsi_confirmed_members: string
+    banned_members: string
+    new_members_30d: string
+    new_members_7d: string
+  }
 }
 
 const baseUrl = `/api/admin`

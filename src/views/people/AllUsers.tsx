@@ -19,6 +19,7 @@ import {
   TableContainer,
   TableHead,
   TablePagination,
+  TableSortLabel,
 } from "@mui/material"
 import { AdminUser } from "../../datatypes/User"
 import { Link } from "react-router-dom"
@@ -166,7 +167,9 @@ export function AdminUserList(props: {
 }): JSX.Element {
   const { t } = useTranslation()
   const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(20)
+  const [pageSize, setPageSize] = useState(5)
+  const [order, setOrder] = useState<"asc" | "desc">("asc")
+  const [orderBy, setOrderBy] = useState<keyof AdminUser>("username")
   const [roleFilter, setRoleFilter] = useState<"user" | "admin" | undefined>(
     undefined,
   )
@@ -182,6 +185,12 @@ export function AdminUserList(props: {
     ...(bannedFilter !== undefined && { banned: bannedFilter }),
     ...(rsiFilter !== undefined && { rsi_confirmed: rsiFilter }),
   })
+
+  const handleRequestSort = (property: keyof AdminUser) => {
+    const isAsc = orderBy === property && order === "asc"
+    setOrder(isAsc ? "desc" : "asc")
+    setOrderBy(property)
+  }
 
   const users = usersResponse?.users || []
   const pagination = usersResponse?.pagination
@@ -266,12 +275,23 @@ export function AdminUserList(props: {
                           key={cell.id as string}
                           align={cell.numeric ? "right" : "left"}
                           padding={cell.disablePadding ? "none" : "normal"}
+                          sortDirection={orderBy === cell.id ? order : false}
                           sx={{
                             minWidth: cell.minWidth,
                             maxWidth: cell.maxWidth,
                           }}
                         >
-                          {t(cell.label)}
+                          {!cell.noSort ? (
+                            <TableSortLabel
+                              active={orderBy === cell.id}
+                              direction={orderBy === cell.id ? order : "asc"}
+                              onClick={() => handleRequestSort(cell.id)}
+                            >
+                              {t(cell.label)}
+                            </TableSortLabel>
+                          ) : (
+                            t(cell.label)
+                          )}
                         </TableCell>
                       ))}
                     </TableRow>
@@ -304,7 +324,7 @@ export function AdminUserList(props: {
                     setPageSize(newPageSize)
                     setPage(1) // Reset to first page when changing page size
                   }}
-                  rowsPerPageOptions={[10, 20, 50, 100]}
+                  rowsPerPageOptions={[5, 10, 20, 50, 100]}
                   labelRowsPerPage={t("rows_per_page")}
                   labelDisplayedRows={({ from, to, count }) =>
                     t("displayed_rows", { from, to, count })
@@ -497,7 +517,7 @@ export function AdminMembershipAnalytics() {
     )
   }
 
-  if (!data || !data.daily || data.daily.length === 0) {
+  if (!data || !data.daily_totals || data.daily_totals.length === 0) {
     return (
       <Section xs={12} title={t("adminUsers.membership_count")}>
         <Grid item xs={12}>
@@ -509,6 +529,49 @@ export function AdminMembershipAnalytics() {
 
   return (
     <Section xs={12} title={t("adminUsers.membership_count")}>
+      {/* Summary Statistics */}
+      <Grid item xs={12} md={6} lg={3}>
+        <Box sx={{ p: 2, textAlign: "center" }}>
+          <Typography variant="h4" color="primary">
+            {data.summary?.total_members || "0"}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Total Members
+          </Typography>
+        </Box>
+      </Grid>
+      <Grid item xs={12} md={6} lg={3}>
+        <Box sx={{ p: 2, textAlign: "center" }}>
+          <Typography variant="h4" color="success.main">
+            {data.summary?.rsi_confirmed_members || "0"}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            RSI Verified
+          </Typography>
+        </Box>
+      </Grid>
+      <Grid item xs={12} md={6} lg={3}>
+        <Box sx={{ p: 2, textAlign: "center" }}>
+          <Typography variant="h4" color="warning.main">
+            {data.summary?.new_members_30d || "0"}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            New (30 days)
+          </Typography>
+        </Box>
+      </Grid>
+      <Grid item xs={12} md={6} lg={3}>
+        <Box sx={{ p: 2, textAlign: "center" }}>
+          <Typography variant="h4" color="info.main">
+            {data.summary?.new_members_7d || "0"}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            New (7 days)
+          </Typography>
+        </Box>
+      </Grid>
+
+      {/* Daily Membership Chart */}
       <Grid item xs={12}>
         <DynamicApexChart
           width={"100%"}
@@ -539,11 +602,31 @@ export function AdminMembershipAnalytics() {
                 format: "dd/MM/yy",
               },
             },
+            legend: {
+              position: "top",
+            },
           }}
           series={[
             {
-              name: t("adminUsers.active_users"),
-              data: data.daily.map((u) => [+new Date(u.date), u.count]),
+              name: "Total Members",
+              data: data.daily_totals.map((u) => [
+                +new Date(u.date),
+                parseInt(u.cumulative_members),
+              ]),
+            },
+            {
+              name: "RSI Verified",
+              data: data.daily_totals.map((u) => [
+                +new Date(u.date),
+                parseInt(u.cumulative_members_rsi_verified),
+              ]),
+            },
+            {
+              name: "New Members",
+              data: data.daily_totals.map((u) => [
+                +new Date(u.date),
+                parseInt(u.new_members),
+              ]),
             },
           ]}
         />

@@ -140,7 +140,9 @@ export function NotificationBase(props: {
           overflowWrap: "break-word",
         }}
       >
-        <Typography sx={{ wordBreak: "break-word" }}>{props.children}</Typography>
+        <Typography sx={{ wordBreak: "break-word" }}>
+          {props.children}
+        </Typography>
         <Typography variant={"subtitle2"} color={"text.primary"}>
           {getRelativeTime(new Date(notif.timestamp))}
         </Typography>
