@@ -14,6 +14,7 @@ import {
   InputAdornment,
   Link as MaterialLink,
   TextField,
+  Rating,
   Typography,
   Skeleton,
 } from "@mui/material"
@@ -31,6 +32,7 @@ import {
   RefreshRounded,
   WarningRounded,
   VisibilityRounded,
+  StarRounded,
 } from "@mui/icons-material"
 import { useCurrentMarketListing } from "../../hooks/market/CurrentMarketItem"
 import { BaseListingType, UniqueListing } from "../../datatypes/MarketListing"
@@ -58,6 +60,268 @@ import moment from "moment"
 import { ClockAlert } from "mdi-material-ui"
 import { useTranslation } from "react-i18next"
 import { ReportButton } from "../../components/button/ReportButton"
+import {
+  DisplayListingsHorizontal,
+  convertToLegacy,
+} from "./ItemListings"
+import { useSearchMarketQuery } from "../../store/market"
+import { useGetUserOrderReviews } from "../../store/profile"
+import { useGetContractorReviewsQuery } from "../../store/contractor"
+import { OrderReview } from "../../datatypes/Order"
+
+export function SellerOtherListings(props: {
+  userSeller?: { username: string } | null
+  contractorSeller?: { spectrum_id: string } | null
+  currentListingId: string
+}) {
+  const { t } = useTranslation()
+  const { userSeller, contractorSeller, currentListingId } = props
+
+  // Get other listings from the same seller
+  const searchParams = useMemo(() => {
+    if (!userSeller && !contractorSeller) return null
+    
+    return {
+      index: 0,
+      page_size: 8, // Get a few more than we need in case current listing is included
+      quantityAvailable: 1,
+      sort: "date-new",
+      listing_type: "not-aggregate",
+      user_seller: userSeller?.username || "",
+      contractor_seller: contractorSeller?.spectrum_id || "",
+    }
+  }, [userSeller?.username, contractorSeller?.spectrum_id])
+
+  const { data: results, isLoading } = useSearchMarketQuery(searchParams!, {
+    skip: !searchParams,
+  })
+
+  // Filter out the current listing and convert to legacy format
+  const otherListings = useMemo(() => {
+    if (!results?.listings) return []
+    
+    return results.listings
+      .filter(l => l.listing_id !== currentListingId) // Exclude current listing
+      .slice(0, 6) // Show max 6 other listings
+      .map(l => convertToLegacy(l))
+  }, [results?.listings, currentListingId])
+
+  // Don't show section if no other listings or still loading
+  if (isLoading || !otherListings.length) return null
+
+  const sellerName = userSeller?.username || contractorSeller?.spectrum_id || ""
+
+  return (
+    <Grid item xs={12}>
+      <Box sx={{ mb: 2 }}>
+        <Typography
+          variant="h6"
+          color="text.secondary"
+          fontWeight="bold"
+          gutterBottom
+        >
+          {t("MarketListingView.otherListingsFrom", {
+            seller: sellerName,
+            defaultValue: `Other listings from ${sellerName}`,
+          })}
+        </Typography>
+        <Box
+          sx={{
+            maxWidth: "100%",
+            overflowX: "scroll",
+            pb: 1, // Add some padding for scrollbar
+          }}
+        >
+          <DisplayListingsHorizontal listings={otherListings} />
+        </Box>
+      </Box>
+    </Grid>
+  )
+}
+
+export function SellerReviews(props: {
+  userSeller?: { username: string } | null
+  contractorSeller?: { spectrum_id: string } | null
+}) {
+  const { t } = useTranslation()
+  const { userSeller, contractorSeller } = props
+
+  // Get reviews for user or contractor
+  const { data: userReviews, isLoading: userReviewsLoading } = useGetUserOrderReviews(
+    userSeller?.username || "",
+    { skip: !userSeller?.username }
+  )
+  
+  const { data: contractorReviews, isLoading: contractorReviewsLoading } = useGetContractorReviewsQuery(
+    contractorSeller?.spectrum_id || "",
+    { skip: !contractorSeller?.spectrum_id }
+  )
+
+  const reviews = useMemo(() => {
+    const allReviews = userReviews || contractorReviews || []
+    return allReviews.slice(0, 3) // Show max 3 recent reviews
+  }, [userReviews, contractorReviews])
+
+  const isLoading = userReviewsLoading || contractorReviewsLoading
+  const sellerName = userSeller?.username || contractorSeller?.spectrum_id || ""
+  const totalReviews = userReviews?.length || contractorReviews?.length || 0
+
+  // Don't show section if no seller info, still loading, or no reviews
+  if (!sellerName || isLoading || !reviews.length) return null
+
+  return (
+    <Grid item xs={12}>
+      <Box sx={{ mb: 3 }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+          <Typography
+            variant="h6"
+            color="text.secondary"
+            fontWeight="bold"
+          >
+            {t("MarketListingView.sellerReviews", {
+              seller: sellerName,
+              defaultValue: `Reviews for ${sellerName}`,
+            })}
+          </Typography>
+          {totalReviews > 3 && (
+            <MaterialLink
+              component={Link}
+              to={
+                userSeller
+                  ? `/user/${userSeller.username}/reviews`
+                  : `/contractor/${contractorSeller?.spectrum_id}/reviews`
+              }
+              underline="hover"
+              color="primary"
+              variant="body2"
+            >
+              {t("MarketListingView.viewAllReviews", "View all {{count}} reviews", { count: totalReviews })}
+            </MaterialLink>
+          )}
+        </Box>
+        <Grid container spacing={2}>
+          {reviews.map((review: OrderReview) => (
+            <Grid item xs={12} md={4} key={review.review_id}>
+              <Box
+                sx={{
+                  p: 2,
+                  border: 1,
+                  borderColor: "divider",
+                  borderRadius: 2,
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  transition: "border-color 0.2s",
+                  "&:hover": {
+                    borderColor: "primary.main",
+                  },
+                }}
+              >
+                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 1 }}>
+                  <Rating
+                    value={review.rating}
+                    max={5}
+                    readOnly
+                    size="small"
+                    icon={<StarRounded fontSize="inherit" />}
+                  />
+                  <Typography variant="caption" color="text.secondary">
+                    {getRelativeTime(new Date(review.timestamp))}
+                  </Typography>
+                </Box>
+                <Typography 
+                  variant="body2" 
+                  color="text.primary"
+                  sx={{
+                    flexGrow: 1,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    display: "-webkit-box",
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: "vertical",
+                    mb: 1,
+                  }}
+                >
+                  {review.content || t("MarketListingView.noReviewContent", "No review content")}
+                </Typography>
+                <Divider light sx={{ mb: 1 }} />
+                <Typography variant="caption" color="text.secondary">
+                  {t("MarketListingView.reviewBy", "by")} {
+                    review.user_author?.display_name || 
+                    review.contractor_author?.name ||
+                    t("MarketListingView.anonymousReviewer", "Anonymous")
+                  }
+                </Typography>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+    </Grid>
+  )
+}
+
+export function RelatedListings(props: {
+  itemType: string
+  currentListingId: string
+}) {
+  const { t } = useTranslation()
+  const { itemType, currentListingId } = props
+
+  // Get related listings from the same item type/category
+  const searchParams = useMemo(() => ({
+    index: 0,
+    page_size: 8, // Get a few more than we need in case current listing is included
+    quantityAvailable: 1,
+    sort: "date-new",
+    listing_type: "not-aggregate",
+    item_type: itemType,
+    user_seller: "",
+    contractor_seller: "",
+  }), [itemType])
+
+  const { data: results, isLoading } = useSearchMarketQuery(searchParams)
+
+  // Filter out the current listing and convert to legacy format
+  const relatedListings = useMemo(() => {
+    if (!results?.listings) return []
+    
+    return results.listings
+      .filter(l => l.listing_id !== currentListingId) // Exclude current listing
+      .slice(0, 6) // Show max 6 related listings
+      .map(l => convertToLegacy(l))
+  }, [results?.listings, currentListingId])
+
+  // Don't show section if no related listings or still loading
+  if (isLoading || !relatedListings.length) return null
+
+  return (
+    <Grid item xs={12}>
+      <Box sx={{ mb: 2 }}>
+        <Typography
+          variant="h6"
+          color="text.secondary"
+          fontWeight="bold"
+          gutterBottom
+        >
+          {t("MarketListingView.relatedListings", {
+            category: itemType,
+            defaultValue: `Related ${itemType} listings`,
+          })}
+        </Typography>
+        <Box
+          sx={{
+            maxWidth: "100%",
+            overflowX: "scroll",
+            pb: 1, // Add some padding for scrollbar
+          }}
+        >
+          <DisplayListingsHorizontal listings={relatedListings} />
+        </Box>
+      </Box>
+    </Grid>
+  )
+}
 
 export function ListingDetailItem(props: {
   icon: React.ReactNode
@@ -595,42 +859,7 @@ export function MarketListingView() {
                 </Helmet>
               </Grid>
 
-              {amRelated && (
-                <Grid item lg={12} xs={12}>
-                  <Grid container spacing={2}>
-                    <Section
-                      disablePadding
-                      xs={12}
-                      title={t("MarketListingView.people")}
-                      innerJustify={"flex-start"}
-                    >
-                      <Grid
-                        item
-                        xs={12}
-                        sx={{
-                          paddingTop: 2,
-                          paddingBottom: 2,
-                          boxSizing: "border-box",
-                        }}
-                      >
-                        <UserList
-                          users={[
-                            listing.user_seller || listing.contractor_seller,
-                          ]}
-                          title={t("MarketListingView.seller")}
-                        />
-                        {/*{*/}
-                        {/*    amRelated &&*/}
-                        {/*    (*/}
-                        {/*        <UserList users={[]}*/}
-                        {/*                  title={listing.sale_type === 'sale' ? 'Customers' : 'Bidders'}/>*/}
-                        {/*    )*/}
-                        {/*}*/}
-                      </Grid>
-                    </Section>
-                  </Grid>
-                </Grid>
-              )}
+
             </Grid>
           </Grid>
 
@@ -905,6 +1134,25 @@ export function MarketListingView() {
             </Grid>
           </Grid>
         </Grid>
+
+        {/* Seller Reviews Section - Full Width */}
+        <SellerReviews
+          userSeller={listing.user_seller}
+          contractorSeller={listing.contractor_seller}
+        />
+
+        {/* Seller's Other Listings Section - Full Width */}
+        <SellerOtherListings
+          userSeller={listing.user_seller}
+          contractorSeller={listing.contractor_seller}
+          currentListingId={listing.listing_id}
+        />
+
+        {/* Related Listings Section - Full Width */}
+        <RelatedListings
+          itemType={details.item_type}
+          currentListingId={listing.listing_id}
+        />
       </Grid>
     </>
   )

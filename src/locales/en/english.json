@@ -1222,7 +1222,14 @@
     "description": "Description",
     "activeOrders": "Active Orders",
     "previousOrders": "Previous Orders",
-    "views": "Views"
+    "views": "Views",
+    "otherListingsFrom": "Other listings from {{seller}}",
+    "relatedListings": "Related {{category}} listings",
+    "sellerReviews": "Reviews for {{seller}}",
+    "noReviewContent": "No review content",
+    "reviewBy": "by",
+    "anonymousReviewer": "Anonymous",
+    "viewAllReviews": "View all {{count}} reviews"
   },
   "MarketListingForm": {
     "about": "About",
