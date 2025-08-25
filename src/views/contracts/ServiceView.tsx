@@ -252,27 +252,47 @@ export function ServiceSellerOtherServices(props: {
                 >
                   <Card
                     sx={{
-                      height: "100%",
+                      height: 200, // Fixed height for consistent appearance
                       width: "100%",
+                      display: "flex",
+                      flexDirection: "column",
                     }}
                   >
                     <CardHeader
+                      sx={{ pb: 1 }}
                       title={
                         <Typography
                           variant="subtitle1"
                           fontWeight="bold"
-                          noWrap
+                          sx={{
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            display: "-webkit-box",
+                            WebkitLineClamp: 1,
+                            WebkitBoxOrient: "vertical",
+                            wordBreak: "break-word",
+                          }}
                         >
                           {service.service_name}
                         </Typography>
                       }
                       subheader={
-                        <Typography variant="body2" color="primary">
+                        <Typography
+                          variant="body2"
+                          color="primary"
+                          sx={{
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
                           {service.cost.toLocaleString()} aUEC
                         </Typography>
                       }
                     />
-                    <CardContent sx={{ pt: 0 }}>
+                    <CardContent
+                      sx={{ pt: 0, pb: 2, flexGrow: 1, overflow: "hidden" }}
+                    >
                       <Typography
                         variant="body2"
                         color="text.secondary"
@@ -282,6 +302,8 @@ export function ServiceSellerOtherServices(props: {
                           display: "-webkit-box",
                           WebkitLineClamp: 3,
                           WebkitBoxOrient: "vertical",
+                          wordBreak: "break-word",
+                          lineHeight: 1.4,
                         }}
                       >
                         {service.service_description}
@@ -363,16 +385,26 @@ export function RelatedServicesByCategory(props: {
                 >
                   <Card
                     sx={{
-                      height: "100%",
+                      height: 200, // Fixed height for consistent appearance
                       width: "100%",
+                      display: "flex",
+                      flexDirection: "column",
                     }}
                   >
                     <CardHeader
+                      sx={{ pb: 1 }}
                       title={
                         <Typography
                           variant="subtitle1"
                           fontWeight="bold"
-                          noWrap
+                          sx={{
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            display: "-webkit-box",
+                            WebkitLineClamp: 1,
+                            WebkitBoxOrient: "vertical",
+                            wordBreak: "break-word",
+                          }}
                         >
                           {service.service_name}
                         </Typography>
@@ -382,7 +414,18 @@ export function RelatedServicesByCategory(props: {
                           <Typography variant="body2" color="primary">
                             {service.cost.toLocaleString()} aUEC
                           </Typography>
-                          <Typography variant="caption" color="text.secondary">
+                          <Typography
+                            variant="caption"
+                            color="text.secondary"
+                            sx={{
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              display: "-webkit-box",
+                              WebkitLineClamp: 1,
+                              WebkitBoxOrient: "vertical",
+                              wordBreak: "break-word",
+                            }}
+                          >
                             by{" "}
                             {service.user?.display_name ||
                               service.contractor?.name}
@@ -390,7 +433,9 @@ export function RelatedServicesByCategory(props: {
                         </Box>
                       }
                     />
-                    <CardContent sx={{ pt: 0 }}>
+                    <CardContent
+                      sx={{ pt: 0, pb: 2, flexGrow: 1, overflow: "hidden" }}
+                    >
                       <Typography
                         variant="body2"
                         color="text.secondary"
@@ -400,6 +445,8 @@ export function RelatedServicesByCategory(props: {
                           display: "-webkit-box",
                           WebkitLineClamp: 3,
                           WebkitBoxOrient: "vertical",
+                          wordBreak: "break-word",
+                          lineHeight: 1.4,
                         }}
                       >
                         {service.service_description}
@@ -449,16 +496,19 @@ export function ServiceView(props: {
     if (props.orderFormRef?.current && mainRef.current) {
       const formElement = props.orderFormRef.current
       const scrollContainer = mainRef.current
-      
+
       const formRect = formElement.getBoundingClientRect()
       const containerRect = scrollContainer.getBoundingClientRect()
-      
+
       const headerOffset = 80
-      const targetPosition = scrollContainer.scrollTop + (formRect.top - containerRect.top) - headerOffset
-      
+      const targetPosition =
+        scrollContainer.scrollTop +
+        (formRect.top - containerRect.top) -
+        headerOffset
+
       scrollContainer.scrollTo({
         top: targetPosition,
-        behavior: 'smooth'
+        behavior: "smooth",
       })
     }
   }, [props.orderFormRef, mainRef])

@@ -36,7 +36,12 @@ export function ViewMarketListing(props: {}) {
 
   const { t } = useTranslation()
 
-  const { data: listing, error, refetch, isLoading } = useMarketGetListingByIDQuery(id!)
+  const {
+    data: listing,
+    error,
+    refetch,
+    isLoading,
+  } = useMarketGetListingByIDQuery(id!)
 
   return (
     <Page
@@ -107,7 +112,12 @@ export function EditMarketListing(props: {}) {
   const { id } = useParams<{ id: string }>()
   const { t } = useTranslation()
 
-  const { data: listing, error, refetch, isLoading } = useMarketGetListingByIDQuery(id!)
+  const {
+    data: listing,
+    error,
+    refetch,
+    isLoading,
+  } = useMarketGetListingByIDQuery(id!)
 
   return (
     <Page title={listing?.details?.title}>
@@ -144,7 +154,12 @@ export function EditMultipleListing(props: {}) {
   const { id } = useParams<{ id: string }>()
   const { t } = useTranslation()
 
-  const { data: listing, error, refetch, isLoading } = useMarketGetMultipleByIDQuery(id!)
+  const {
+    data: listing,
+    error,
+    refetch,
+    isLoading,
+  } = useMarketGetMultipleByIDQuery(id!)
 
   return (
     <Page title={listing?.details?.title}>

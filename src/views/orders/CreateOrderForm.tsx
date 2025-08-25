@@ -553,6 +553,6 @@ const CreateOrderFormComponent = React.forwardRef<
   )
 })
 
-CreateOrderFormComponent.displayName = 'CreateOrderForm'
+CreateOrderFormComponent.displayName = "CreateOrderForm"
 
 export { CreateOrderFormComponent as CreateOrderForm }

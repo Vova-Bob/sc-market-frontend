@@ -60,10 +60,7 @@ import moment from "moment"
 import { ClockAlert } from "mdi-material-ui"
 import { useTranslation } from "react-i18next"
 import { ReportButton } from "../../components/button/ReportButton"
-import {
-  DisplayListingsHorizontal,
-  convertToLegacy,
-} from "./ItemListings"
+import { DisplayListingsHorizontal, convertToLegacy } from "./ItemListings"
 import { useSearchMarketQuery } from "../../store/market"
 import { useGetUserOrderReviews } from "../../store/profile"
 import { useGetContractorReviewsQuery } from "../../store/contractor"
@@ -80,7 +77,7 @@ export function SellerOtherListings(props: {
   // Get other listings from the same seller
   const searchParams = useMemo(() => {
     if (!userSeller && !contractorSeller) return null
-    
+
     return {
       index: 0,
       page_size: 8, // Get a few more than we need in case current listing is included
@@ -99,11 +96,11 @@ export function SellerOtherListings(props: {
   // Filter out the current listing and convert to legacy format
   const otherListings = useMemo(() => {
     if (!results?.listings) return []
-    
+
     return results.listings
-      .filter(l => l.listing_id !== currentListingId) // Exclude current listing
+      .filter((l) => l.listing_id !== currentListingId) // Exclude current listing
       .slice(0, 6) // Show max 6 other listings
-      .map(l => convertToLegacy(l))
+      .map((l) => convertToLegacy(l))
   }, [results?.listings, currentListingId])
 
   // Don't show section if no other listings or still loading
@@ -147,15 +144,15 @@ export function SellerReviews(props: {
   const { userSeller, contractorSeller } = props
 
   // Get reviews for user or contractor
-  const { data: userReviews, isLoading: userReviewsLoading } = useGetUserOrderReviews(
-    userSeller?.username || "",
-    { skip: !userSeller?.username }
-  )
-  
-  const { data: contractorReviews, isLoading: contractorReviewsLoading } = useGetContractorReviewsQuery(
-    contractorSeller?.spectrum_id || "",
-    { skip: !contractorSeller?.spectrum_id }
-  )
+  const { data: userReviews, isLoading: userReviewsLoading } =
+    useGetUserOrderReviews(userSeller?.username || "", {
+      skip: !userSeller?.username,
+    })
+
+  const { data: contractorReviews, isLoading: contractorReviewsLoading } =
+    useGetContractorReviewsQuery(contractorSeller?.spectrum_id || "", {
+      skip: !contractorSeller?.spectrum_id,
+    })
 
   const reviews = useMemo(() => {
     const allReviews = userReviews || contractorReviews || []
@@ -172,12 +169,15 @@ export function SellerReviews(props: {
   return (
     <Grid item xs={12}>
       <Box sx={{ mb: 3 }}>
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-          <Typography
-            variant="h6"
-            color="text.secondary"
-            fontWeight="bold"
-          >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 2,
+          }}
+        >
+          <Typography variant="h6" color="text.secondary" fontWeight="bold">
             {t("MarketListingView.sellerReviews", {
               seller: sellerName,
               defaultValue: `Reviews for ${sellerName}`,
@@ -195,7 +195,11 @@ export function SellerReviews(props: {
               color="primary"
               variant="body2"
             >
-              {t("MarketListingView.viewAllReviews", "View all {{count}} reviews", { count: totalReviews })}
+              {t(
+                "MarketListingView.viewAllReviews",
+                "View all {{count}} reviews",
+                { count: totalReviews },
+              )}
             </MaterialLink>
           )}
         </Box>
@@ -217,7 +221,14 @@ export function SellerReviews(props: {
                   },
                 }}
               >
-                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 1 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    mb: 1,
+                  }}
+                >
                   <Rating
                     value={review.rating}
                     max={5}
@@ -229,8 +240,8 @@ export function SellerReviews(props: {
                     {getRelativeTime(new Date(review.timestamp))}
                   </Typography>
                 </Box>
-                <Typography 
-                  variant="body2" 
+                <Typography
+                  variant="body2"
                   color="text.primary"
                   sx={{
                     flexGrow: 1,
@@ -242,15 +253,15 @@ export function SellerReviews(props: {
                     mb: 1,
                   }}
                 >
-                  {review.content || t("MarketListingView.noReviewContent", "No review content")}
+                  {review.content ||
+                    t("MarketListingView.noReviewContent", "No review content")}
                 </Typography>
                 <Divider light sx={{ mb: 1 }} />
                 <Typography variant="caption" color="text.secondary">
-                  {t("MarketListingView.reviewBy", "by")} {
-                    review.user_author?.display_name || 
+                  {t("MarketListingView.reviewBy", "by")}{" "}
+                  {review.user_author?.display_name ||
                     review.contractor_author?.name ||
-                    t("MarketListingView.anonymousReviewer", "Anonymous")
-                  }
+                    t("MarketListingView.anonymousReviewer", "Anonymous")}
                 </Typography>
               </Box>
             </Grid>
@@ -269,27 +280,30 @@ export function RelatedListings(props: {
   const { itemType, currentListingId } = props
 
   // Get related listings from the same item type/category
-  const searchParams = useMemo(() => ({
-    index: 0,
-    page_size: 8, // Get a few more than we need in case current listing is included
-    quantityAvailable: 1,
-    sort: "date-new",
-    listing_type: "not-aggregate",
-    item_type: itemType,
-    user_seller: "",
-    contractor_seller: "",
-  }), [itemType])
+  const searchParams = useMemo(
+    () => ({
+      index: 0,
+      page_size: 8, // Get a few more than we need in case current listing is included
+      quantityAvailable: 1,
+      sort: "date-new",
+      listing_type: "not-aggregate",
+      item_type: itemType,
+      user_seller: "",
+      contractor_seller: "",
+    }),
+    [itemType],
+  )
 
   const { data: results, isLoading } = useSearchMarketQuery(searchParams)
 
   // Filter out the current listing and convert to legacy format
   const relatedListings = useMemo(() => {
     if (!results?.listings) return []
-    
+
     return results.listings
-      .filter(l => l.listing_id !== currentListingId) // Exclude current listing
+      .filter((l) => l.listing_id !== currentListingId) // Exclude current listing
       .slice(0, 6) // Show max 6 related listings
-      .map(l => convertToLegacy(l))
+      .map((l) => convertToLegacy(l))
   }, [results?.listings, currentListingId])
 
   // Don't show section if no related listings or still loading
@@ -684,12 +698,17 @@ export function MarketListingViewSkeleton() {
                 sx={{ borderRadius: 3 }}
               />
             </Grid>
-            
+
             {/* User info skeleton */}
             <Grid item lg={12} xs={12}>
               <Box sx={{ mt: 2 }}>
                 <Skeleton variant="text" width="60%" height={32} />
-                <Skeleton variant="text" width="40%" height={24} sx={{ mt: 1 }} />
+                <Skeleton
+                  variant="text"
+                  width="40%"
+                  height={24}
+                  sx={{ mt: 1 }}
+                />
               </Box>
             </Grid>
           </Grid>
@@ -707,22 +726,43 @@ export function MarketListingViewSkeleton() {
                       {/* Breadcrumbs skeleton */}
                       <Skeleton variant="text" width="80%" height={24} />
                       {/* Title skeleton */}
-                      <Skeleton variant="text" width="70%" height={40} sx={{ mt: 1 }} />
+                      <Skeleton
+                        variant="text"
+                        width="70%"
+                        height={40}
+                        sx={{ mt: 1 }}
+                      />
                       {/* Meta info skeleton */}
-                      <Skeleton variant="text" width="50%" height={24} sx={{ mt: 1 }} />
+                      <Skeleton
+                        variant="text"
+                        width="50%"
+                        height={24}
+                        sx={{ mt: 1 }}
+                      />
                     </Box>
                   }
                   subheader={
                     <Box sx={{ mt: 2 }}>
                       {[1, 2, 3, 4].map((i) => (
-                        <Skeleton key={i} variant="text" width="60%" height={20} sx={{ mt: 0.5 }} />
+                        <Skeleton
+                          key={i}
+                          variant="text"
+                          width="60%"
+                          height={20}
+                          sx={{ mt: 0.5 }}
+                        />
                       ))}
                     </Box>
                   }
                 />
                 <CardContent sx={{ padding: 3, paddingTop: 0 }}>
                   {/* Action area skeleton */}
-                  <Skeleton variant="rectangular" height={80} width="100%" sx={{ mb: 2 }} />
+                  <Skeleton
+                    variant="rectangular"
+                    height={80}
+                    width="100%"
+                    sx={{ mb: 2 }}
+                  />
                   {/* Description skeleton */}
                   <Skeleton variant="text" width="100%" height={20} />
                   <Skeleton variant="text" width="90%" height={20} />
@@ -858,8 +898,6 @@ export function MarketListingView() {
                   </script>
                 </Helmet>
               </Grid>
-
-
             </Grid>
           </Grid>
 

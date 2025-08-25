@@ -16,7 +16,6 @@ import {
 } from "../../util/errorHandling"
 import { ErrorPage } from "../errors/ErrorPage"
 
-
 export function CreateOrder(props: {}) {
   const { t } = useTranslation()
   return (
@@ -55,13 +54,13 @@ export function ServiceCreateOrder() {
         {service && (
           <ServiceView service={service} orderFormRef={orderHeaderRef} />
         )}
-        
+
         {service && (
           <HeaderTitle ref={orderHeaderRef} center>
             {t("serviceView.placeOrder", "Place Order")}
           </HeaderTitle>
         )}
-        
+
         {service && (
           <CreateOrderForm
             service={service}

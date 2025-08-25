@@ -34,7 +34,12 @@ export function ViewMarketMultiple(props: {}) {
    */
   const { t } = useTranslation()
 
-  const { data: listing, error, refetch, isLoading } = useMarketGetMultipleByIDQuery(id!)
+  const {
+    data: listing,
+    error,
+    refetch,
+    isLoading,
+  } = useMarketGetMultipleByIDQuery(id!)
 
   return (
     <Page title={listing?.details?.title}>
@@ -103,7 +108,12 @@ export function EditMarketMultiple(props: {}) {
    */
   const { t } = useTranslation()
 
-  const { data: listing, error, refetch, isLoading } = useMarketGetListingByIDQuery(id!)
+  const {
+    data: listing,
+    error,
+    refetch,
+    isLoading,
+  } = useMarketGetListingByIDQuery(id!)
 
   return (
     <Page title={listing?.details?.title}>

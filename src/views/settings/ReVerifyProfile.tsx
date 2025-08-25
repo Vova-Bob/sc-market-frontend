@@ -48,7 +48,10 @@ export function ReVerifyProfile() {
             {t("settings.profile.reVerifyError")}
             {error && (
               <Typography variant="body2" sx={{ mt: 1 }}>
-                {"data" in error && typeof error.data === "object" && error.data && "message" in error.data
+                {"data" in error &&
+                typeof error.data === "object" &&
+                error.data &&
+                "message" in error.data
                   ? String(error.data.message)
                   : "Unknown error occurred"}
               </Typography>

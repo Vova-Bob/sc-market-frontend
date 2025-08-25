@@ -86,7 +86,7 @@ export const Section = React.forwardRef<
   )
 })
 
-Section.displayName = 'Section'
+Section.displayName = "Section"
 
 export function FlatSection(props: {
   title: React.ReactNode
