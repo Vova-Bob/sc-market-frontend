@@ -237,6 +237,7 @@ export function ServiceSellerOtherServices(props: {
                 key={service.service_id}
                 sx={{
                   minWidth: 280,
+                  maxWidth: 320,
                   flexShrink: 0,
                 }}
               >
@@ -370,6 +371,7 @@ export function RelatedServicesByCategory(props: {
                 key={service.service_id}
                 sx={{
                   minWidth: 280,
+                  maxWidth: 320,
                   flexShrink: 0,
                 }}
               >
