@@ -3,8 +3,9 @@ import { ExtendedTheme } from "../../hooks/styles/Theme"
 import React from "react"
 import { useTheme } from "@mui/material/styles"
 
-export function Section(
-  props: {
+export const Section = React.forwardRef<
+  HTMLDivElement,
+  {
     children: React.ReactNode
     fill?: boolean
     h?: number
@@ -15,8 +16,8 @@ export function Section(
     subtitle?: React.ReactElement
     disablePadding?: boolean
     innerJustify?: string
-  } & GridProps,
-) {
+  } & GridProps
+>((props, ref) => {
   const theme: ExtendedTheme = useTheme()
 
   const {
@@ -34,7 +35,7 @@ export function Section(
   } = props
 
   return (
-    <Grid item {...gridprops}>
+    <Grid item {...gridprops} ref={ref}>
       <Paper
         sx={{
           height: fill ? "100%" : h,
@@ -83,7 +84,9 @@ export function Section(
       </Paper>
     </Grid>
   )
-}
+})
+
+Section.displayName = 'Section'
 
 export function FlatSection(props: {
   title: React.ReactNode

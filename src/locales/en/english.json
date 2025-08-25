@@ -1231,6 +1231,16 @@
     "anonymousReviewer": "Anonymous",
     "viewAllReviews": "View all {{count}} reviews"
   },
+  "serviceView": {
+    "sellerReviews": "Reviews for {{seller}}",
+    "viewAllReviews": "View all {{count}} reviews",
+    "noReviewContent": "No review content",
+    "reviewBy": "by",
+    "anonymousReviewer": "Anonymous",
+    "otherServicesFrom": "Other services from {{seller}}",
+    "relatedServices": "Related {{category}} services",
+    "placeOrder": "Place Order"
+  },
   "MarketListingForm": {
     "about": "About",
     "title": "Title",

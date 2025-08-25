@@ -38,13 +38,14 @@ interface WorkRequestState {
   payment_type: PaymentType
 }
 
-export function CreateOrderForm(
-  props: GridProps & {
+const CreateOrderFormComponent = React.forwardRef<
+  HTMLDivElement,
+  GridProps & {
     contractor_id?: string | null
     assigned_to?: string | null
     service?: Service
-  },
-) {
+  }
+>((props, ref) => {
   const { t } = useTranslation()
   const [state, setState] = React.useState<WorkRequestState>({
     title: "",
@@ -245,7 +246,7 @@ export function CreateOrderForm(
           </Grid>
         </Section>
       )}
-      <Section xs={12}>
+      <Section xs={12} ref={ref}>
         <Grid item xs={12} lg={4}>
           <Typography
             variant={"h6"}
@@ -550,4 +551,8 @@ export function CreateOrderForm(
     </>
     // </FormControl>
   )
-}
+})
+
+CreateOrderFormComponent.displayName = 'CreateOrderForm'
+
+export { CreateOrderFormComponent as CreateOrderForm }

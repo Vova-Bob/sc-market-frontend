@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useRef } from "react"
 import { HeaderTitle } from "../../components/typography/HeaderTitle"
 import { CreateOrderForm } from "../../views/orders/CreateOrderForm"
 import { MyOrders } from "../../views/orders/MyOrders"
@@ -15,6 +15,7 @@ import {
   shouldShowErrorPage,
 } from "../../util/errorHandling"
 import { ErrorPage } from "../errors/ErrorPage"
+
 
 export function CreateOrder(props: {}) {
   const { t } = useTranslation()
@@ -39,6 +40,7 @@ export function ServiceCreateOrder() {
   const { t } = useTranslation()
   const { service_id } = useParams<{ service_id: string }>()
   const { data: service, error, isError } = useGetServiceByIdQuery(service_id!)
+  const orderHeaderRef = useRef<HTMLDivElement>(null)
 
   return (
     <Page title={t("orders.createOrderTitle")}>
@@ -50,7 +52,16 @@ export function ServiceCreateOrder() {
         {shouldRedirectTo404(error) && <Navigate to={"/404"} />}
         {shouldShowErrorPage(error) && <ErrorPage />}
 
-        {service && <ServiceView service={service} />}
+        {service && (
+          <ServiceView service={service} orderFormRef={orderHeaderRef} />
+        )}
+        
+        {service && (
+          <HeaderTitle ref={orderHeaderRef} center>
+            {t("serviceView.placeOrder", "Place Order")}
+          </HeaderTitle>
+        )}
+        
         {service && (
           <CreateOrderForm
             service={service}

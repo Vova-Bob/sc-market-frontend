@@ -1,15 +1,16 @@
 import { Grid, Typography, TypographyProps } from "@mui/material"
 import React from "react"
 
-export function HeaderTitle(
-  props: {
+export const HeaderTitle = React.forwardRef<
+  HTMLDivElement,
+  {
     lg?: number
     xl?: number
     xs?: number
     md?: number
     center?: boolean
-  } & TypographyProps,
-) {
+  } & TypographyProps
+>((props, ref) => {
   const { xs, lg, xl, md, center, ...rest } = props
   return (
     <Grid
@@ -19,6 +20,7 @@ export function HeaderTitle(
       xl={props.xl}
       md={props.md}
       justifyContent={props.center ? "center" : "left"}
+      ref={ref}
     >
       <Typography
         variant={"h4"}
@@ -28,4 +30,4 @@ export function HeaderTitle(
       />
     </Grid>
   )
-}
+})
