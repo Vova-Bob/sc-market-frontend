@@ -1005,6 +1005,11 @@
   "SelectPhotosArea": {
     "imageSearch": "画像検索",
     "upload": "アップロード",
+    "addUrl": "URL追加",
+    "enterImageUrl": "画像URLを入力:",
+    "urlModalTitle": "画像URLを追加",
+    "imageUrl": "画像URL",
+    "imageUrlHelp": "画像への直接URLを入力してください（Imgur、RSI、またはstarcitizen.toolsから）",
     "dropHere": "ここにドロップ",
     "dragAndDropHint": "画像ファイルをここにドラッグ＆ドロップ",
     "dragAndDropArea": "写真アップロードエリア - 画像ファイルをここにドラッグ＆ドロップするか、クリックして参照"

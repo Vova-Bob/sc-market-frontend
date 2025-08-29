@@ -1005,6 +1005,11 @@
   "SelectPhotosArea": {
     "imageSearch": "Búsqueda de imágenes",
     "upload": "Subir",
+    "addUrl": "Agregar URL",
+    "enterImageUrl": "Ingresa la URL de la imagen:",
+    "urlModalTitle": "Agregar URL de imagen",
+    "imageUrl": "URL de imagen",
+    "imageUrlHelp": "Ingresa una URL directa a una imagen (desde Imgur, RSI o starcitizen.tools)",
     "dropHere": "Soltar aquí",
     "dragAndDropHint": "Arrastra y suelta archivos de imagen aquí",
     "dragAndDropArea": "Área de carga de fotos - arrastra y suelta archivos de imagen aquí o haz clic para explorar"

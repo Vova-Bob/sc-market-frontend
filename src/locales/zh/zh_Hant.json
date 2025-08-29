@@ -1005,6 +1005,11 @@
   "SelectPhotosArea": {
     "imageSearch": "圖片搜索",
     "upload": "上傳",
+    "addUrl": "添加URL",
+    "enterImageUrl": "輸入圖片URL:",
+    "urlModalTitle": "添加圖片URL",
+    "imageUrl": "圖片URL",
+    "imageUrlHelp": "輸入圖片的直接URL（來自Imgur、RSI或starcitizen.tools）",
     "dropHere": "拖放到這裡",
     "dragAndDropHint": "拖放圖片文件到這裡",
     "dragAndDropArea": "照片上傳區域 - 拖放圖片文件到這裡或點擊瀏覽"

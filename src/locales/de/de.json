@@ -1005,6 +1005,11 @@
   "SelectPhotosArea": {
     "imageSearch": "Bildsuche",
     "upload": "Hochladen",
+    "addUrl": "URL hinzufügen",
+    "enterImageUrl": "Bild-URL eingeben:",
+    "urlModalTitle": "Bild-URL hinzufügen",
+    "imageUrl": "Bild-URL",
+    "imageUrlHelp": "Geben Sie eine direkte URL zu einem Bild ein (von Imgur, RSI oder starcitizen.tools)",
     "dropHere": "Hier ablegen",
     "dragAndDropHint": "Bilddateien hierher ziehen und ablegen",
     "dragAndDropArea": "Foto-Upload-Bereich - Bilddateien hierher ziehen und ablegen oder klicken zum Durchsuchen"

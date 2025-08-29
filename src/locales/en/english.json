@@ -1266,6 +1266,11 @@
   "SelectPhotosArea": {
     "imageSearch": "Image Search",
     "upload": "Upload",
+    "addUrl": "Add URL",
+    "enterImageUrl": "Enter image URL:",
+    "urlModalTitle": "Add Image URL",
+    "imageUrl": "Image URL",
+    "imageUrlHelp": "Enter a direct URL to an image (from Imgur, RSI, or starcitizen.tools)",
     "dropHere": "Drop Here",
     "dragAndDropHint": "Drag and drop image files here",
     "dragAndDropArea": "Photo upload area - drag and drop image files here or click to browse",

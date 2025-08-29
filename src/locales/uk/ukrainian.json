@@ -1607,6 +1607,11 @@
   "SelectPhotosArea": {
     "imageSearch": "Пошук зображень",
     "upload": "Завантажити",
+    "addUrl": "Додати URL",
+    "enterImageUrl": "Введіть URL зображення:",
+    "urlModalTitle": "Додати URL зображення",
+    "imageUrl": "URL зображення",
+    "imageUrlHelp": "Введіть прямий URL до зображення (з Imgur, RSI або starcitizen.tools)",
     "dropHere": "Перетягнути сюди",
     "dragAndDropHint": "Перетягніть файли зображень сюди",
     "dragAndDropArea": "Область завантаження фотографій - перетягніть файли зображень сюди або натисніть для перегляду"

@@ -4,8 +4,8 @@ import {
   ButtonBase,
   CardMedia,
   Grid,
-  ImageListItem,
-  imageListItemClasses,
+  // ImageListItem,
+  // imageListItemClasses,
   Modal,
   Paper,
   TextField,
@@ -15,9 +15,9 @@ import { Section } from "../../components/paper/Section"
 import { ContainerGrid } from "../../components/layout/ContainerGrid"
 import { external_resource_regex } from "../people/ViewProfile"
 import { ExtendedTheme, MISSING_IMAGE_URL } from "../../hooks/styles/Theme"
-import { store } from "../../store/store"
-import throttle from "lodash/throttle"
-import { transformSearchResults, wikiRestApi } from "../../store/wiki"
+// import { store } from "../../store/store"
+// import throttle from "lodash/throttle"
+// import { transformSearchResults, wikiRestApi } from "../../store/wiki"
 import { useTheme } from "@mui/material/styles"
 import { useTranslation } from "react-i18next"
 
@@ -28,38 +28,39 @@ export function ImageSearch(props: {
 }) {
   const { callback, open, setOpen } = props
   const [image, setImage] = useState<string | null>(null)
-  const [query, setQuery] = useState<string | null>(null)
-  const [options, setOptions] = useState<string[]>([])
+  // const [query, setQuery] = useState<string | null>(null)
+  // const [options, setOptions] = useState<string[]>([])
   const theme = useTheme<ExtendedTheme>()
   const { t } = useTranslation()
 
-  const fetchOptions = useCallback(
-    async (query: string) => {
-      if (query.length < 3) {
-        return
-      }
+  // Wiki image search functionality temporarily disabled
+  // const fetchOptions = useCallback(
+  //   async (query: string) => {
+  //     if (query.length < 3) {
+  //       return
+  //     }
 
-      const { status, data, error } = await store.dispatch(
-        wikiRestApi.endpoints.searchImages.initiate(query),
-      )
+  //     const { status, data, error } = await store.dispatch(
+  //       wikiRestApi.endpoints.searchImages.initiate(query),
+  //     )
 
-      setOptions(data ? transformSearchResults(data) : [])
-    },
-    [setOptions],
-  )
+  //     setOptions(data ? transformSearchResults(data) : [])
+  //   },
+  //   [setOptions],
+  // )
 
-  const retrieve = React.useMemo(
-    () => throttle((query: string) => fetchOptions(query), 800),
-    [fetchOptions],
-  )
+  // const retrieve = React.useMemo(
+  //   () => throttle((query: string) => fetchOptions(query), 800),
+  //   [fetchOptions],
+  // )
 
-  useEffect(() => {
-    if (query) {
-      retrieve(query)
-    } else {
-      setOptions([])
-    }
-  }, [query, retrieve])
+  // useEffect(() => {
+  //   if (query) {
+  //     retrieve(query)
+  //   } else {
+  //     setOptions([])
+  //   }
+  // }, [query, retrieve])
 
   return (
     <Modal open={open} onClose={() => callback(image)}>
@@ -102,7 +103,8 @@ export function ImageSearch(props: {
                 error={!!image && !image.match(external_resource_regex)}
               />
             </Box>
-            <Box>
+            {/* Wiki image search temporarily disabled */}
+            {/* <Box>
               <TextField
                 variant={"outlined"}
                 label={t("ui.dialog.selectImage.imageSearch.label")}
@@ -115,9 +117,10 @@ export function ImageSearch(props: {
                 }}
                 value={query}
               />
-            </Box>
+            </Box> */}
           </Grid>
-          <Grid item xs={12}>
+          {/* Search results display temporarily disabled */}
+          {/* <Grid item xs={12}>
             <Paper
               variant={"outlined"}
               sx={{ border: "2px solid", color: theme.palette.secondary.main }}
@@ -161,7 +164,7 @@ export function ImageSearch(props: {
                 ))}
               </Box>
             </Paper>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12}>
             <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
               <Button
