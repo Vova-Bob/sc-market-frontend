@@ -43,7 +43,7 @@ import AnimatedNumbers from "react-animated-numbers"
 import { Stack } from "@mui/system"
 import CharLogo from "../../assets/CharHoldings_Logo.png"
 import UNNLogo from "../../assets/UNN_Traders_Logo.jpg"
-import BirdIncLogo from "../../assets/birdinc.png"
+import BirdIncLogo from "../../assets/birdinc.jpg"
 import { useTranslation } from "react-i18next"
 
 const bg = "https://media.tenor.com/4LKXThFQuHMAAAAd/perseus-star-citizen.gif"
@@ -565,9 +565,9 @@ function SupportersSection() {
   const { t } = useTranslation()
   const supporters = [
     {
-      avatar: CharLogo,
-      url: "https://robertsspaceindustries.com/orgs/CHAR",
-      name: "Char Holdings",
+      avatar: BirdIncLogo,
+      url: "https://robertsspaceindustries.com/en/orgs/BIRDINC",
+      name: "BIRD Inc",
     },
     {
       avatar: UNNLogo,
@@ -575,9 +575,9 @@ function SupportersSection() {
       name: "The Unnamed",
     },
     {
-      avatar: BirdIncLogo,
-      url: "https://robertsspaceindustries.com/en/orgs/BIRDINC",
-      name: "BIRD Inc",
+      avatar: CharLogo,
+      url: "https://robertsspaceindustries.com/orgs/CHAR",
+      name: "Char Holdings",
     },
   ]
 
