@@ -3,6 +3,7 @@ import {
   ContractorInviteCode,
   DiscordSettings,
   OrderWebhook,
+  MinimalContractor,
 } from "../datatypes/Contractor"
 import { MinimalUser, User } from "../datatypes/User"
 import { OrderReview } from "../datatypes/Order"
@@ -425,6 +426,11 @@ export const contractorsApi = serviceApi.injectEndpoints({
       query: (params) => ({ url: `/api/contractors`, params }),
       transformResponse: unwrapResponse,
     }),
+    searchContractors: builder.query<MinimalContractor[], string>({
+      query: (query) => `/api/contractors/search/${query}`,
+      transformResponse: (response: { data: MinimalContractor[] }) =>
+        response.data,
+    }),
   }),
 })
 
@@ -457,5 +463,6 @@ export const {
   useCreateContractorInviteMutation,
   useDeleteContractorInviteMutation,
   useGetContractorsQuery,
+  useSearchContractorsQuery,
   useLeaveContractorMutation,
 } = contractorsApi

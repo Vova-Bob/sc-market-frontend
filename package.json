@@ -41,6 +41,8 @@
     "react-transition-group": "^4.4.5",
     "react-youtube": "^10.1.0",
     "regexify-string": "^1.0.19",
+    "rehype-raw": "^7.0.0",
+    "rehype-sanitize": "^6.0.0",
     "remark-gfm": "^4.0.1",
     "simplebar-react": "^3.3.1",
     "socket.io-client": "^4.8.1",

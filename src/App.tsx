@@ -450,6 +450,13 @@ const router = createBrowserRouter([
                     .AdminModeration,
                 }),
               },
+              {
+                path: "/admin/alerts",
+                lazy: async () => ({
+                  Component: (await import("./pages/admin/AdminAlerts"))
+                    .AdminAlerts,
+                }),
+              },
             ],
           },
           {

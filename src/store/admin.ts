@@ -3,6 +3,13 @@ import { serviceApi } from "./service"
 import { unwrapResponse } from "./orders"
 import { OrderAnalytics } from "../datatypes/Order"
 import { AdminUsersResponse, AdminUsersQuery } from "../datatypes/User"
+import {
+  AdminAlert,
+  AdminAlertCreate,
+  AdminAlertUpdate,
+  AdminAlertsResponse,
+  AdminAlertsQuery,
+} from "../datatypes/AdminAlert"
 
 export interface MembershipAnalytics {
   daily_totals: Array<{
@@ -77,6 +84,46 @@ export const adminApi = serviceApi.injectEndpoints({
       providesTags: ["Profile" as const],
       transformResponse: unwrapResponse,
     }),
+    getAdminAlerts: builder.query<AdminAlertsResponse, AdminAlertsQuery>({
+      query: (params) => ({
+        url: `${baseUrl}/alerts/`,
+        params,
+      }),
+      providesTags: ["AdminAlerts" as const],
+      transformResponse: unwrapResponse,
+    }),
+    createAdminAlert: builder.mutation<{ data: AdminAlert }, AdminAlertCreate>({
+      query: (body) => ({
+        url: `${baseUrl}/alerts/`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["AdminAlerts" as const],
+      transformResponse: unwrapResponse,
+    }),
+    updateAdminAlert: builder.mutation<
+      { data: AdminAlert },
+      { alertId: string; data: AdminAlertUpdate }
+    >({
+      query: ({ alertId, data }) => ({
+        url: `${baseUrl}/alerts/${alertId}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["AdminAlerts" as const],
+      transformResponse: unwrapResponse,
+    }),
+    deleteAdminAlert: builder.mutation<
+      { data: { success: boolean; message: string } },
+      string
+    >({
+      query: (alertId) => ({
+        url: `${baseUrl}/alerts/${alertId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["AdminAlerts" as const],
+      transformResponse: unwrapResponse,
+    }),
   }),
 })
 
@@ -87,4 +134,8 @@ export const {
   useGetOrderAnalyticsQuery,
   useGetAdminUsersQuery,
   useGetMembershipAnalyticsQuery,
+  useGetAdminAlertsQuery,
+  useCreateAdminAlertMutation,
+  useUpdateAdminAlertMutation,
+  useDeleteAdminAlertMutation,
 } = adminApi

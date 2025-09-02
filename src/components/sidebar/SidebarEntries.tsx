@@ -24,6 +24,7 @@ import SettingsIcon from "@mui/icons-material/SettingsRounded"
 import AttachMoneyRoundedIcon from "@mui/icons-material/AttachMoneyRounded"
 import FolderOpenIcon from "@mui/icons-material/FolderOpenRounded"
 import PeopleAltIcon from "@mui/icons-material/PeopleAltRounded"
+import NotificationsIcon from "@mui/icons-material/NotificationsRounded"
 import React from "react"
 import { SidebarSectionProps } from "./Sidebar"
 import { Pistol } from "mdi-material-ui"
@@ -334,6 +335,12 @@ export const all_sidebar_entries: SidebarSectionProps[] = [
         ),
         site_admin: true,
         to: "/admin/moderation",
+      },
+      {
+        text: "sidebar.alerts.text",
+        icon: <NotificationsIcon />,
+        site_admin: true,
+        to: "/admin/alerts",
       },
     ],
   },
