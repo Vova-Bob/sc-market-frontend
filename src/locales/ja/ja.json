@@ -216,7 +216,12 @@
     "profile": {
       "updateAndVerify": "Update Username and Re-Verify Account",
       "authenticateWithRSI": "Authenticate with RSI",
-      "viewUserProfile": "View User Profile"
+      "viewUserProfile": "View User Profile",
+      "reVerifyTitle": "プロフィールの再認証",
+      "reVerifyDescription": "プロフィールのユーザー名を現在のSpectrumハンドルに合わせて更新してください。これによりユーザー名のみが更新されます。",
+      "reVerifyButton": "プロフィールを再認証",
+      "reVerifySuccess": "プロフィールの再認証が成功しました！ユーザー名が更新されました。",
+      "reVerifyError": "プロフィールの再認証に失敗しました。後でもう一度お試しください。"
     }
   },
   "sidebar": {

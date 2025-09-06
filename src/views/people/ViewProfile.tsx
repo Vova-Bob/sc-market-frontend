@@ -47,6 +47,8 @@ import {
   MarkdownEditor,
   MarkdownRender,
 } from "../../components/markdown/Markdown"
+
+import { UserActionsDropdown } from "../../components/profile/UserActionsDropdown"
 import { Helmet } from "react-helmet"
 import {
   ServiceListings,
@@ -493,18 +495,10 @@ export function ViewProfile(props: { profile: User }) {
                         color={"text.secondary"}
                         variant={"h6"}
                         fontWeight={600}
+                        sx={{ display: "flex", alignItems: "center" }}
                       >
                         {props.profile?.username}{" "}
-                        <MaterialLink
-                          component={"a"}
-                          href={`https://robertsspaceindustries.com/citizens/${props.profile?.username}`}
-                          target="_blank"
-                          style={{ textDecoration: "none", color: "inherit" }}
-                        >
-                          <IconButton color={"primary"}>
-                            <LinkRounded />
-                          </IconButton>
-                        </MaterialLink>
+                        <UserActionsDropdown user={props.profile} />
                       </Typography>
                       {props.profile?.discord_profile && (
                         <MaterialLink

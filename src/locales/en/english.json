@@ -455,26 +455,6 @@
   "selectMarketListing": {
     "label": "Select Market Listing"
   },
-  "settings": {
-    "title": "Settings",
-    "tabs": {
-      "profile": "Profile",
-      "privacy": "Privacy",
-      "discordIntegration": "Discord Integration",
-      "market": "Market",
-      "contractors": "Contractors"
-    },
-    "profile": {
-      "updateAndVerify": "Update Username and Re-Verify Account",
-      "authenticateWithRSI": "Authenticate with RSI",
-      "viewUserProfile": "View User Profile",
-      "reVerifyTitle": "Re-verify Profile",
-      "reVerifyDescription": "Update your profile username to match your current Spectrum handle. This will only update your username.",
-      "reVerifyButton": "Re-verify Profile",
-      "reVerifySuccess": "Profile successfully re-verified! Your username has been updated.",
-      "reVerifyError": "Failed to re-verify profile. Please try again later."
-    }
-  },
   "sidebar": {
     "dashboard": {
       "title": "Dashboard",
@@ -1594,6 +1574,7 @@
       "manage_market": "Manage Market",
       "manage_recruiting": "Manage Recruiting",
       "manage_webhooks": "Manage Webhooks",
+      "manage_blocklist": "Manage Blocklist",
       "kick_members": "Kick Members"
     },
     "headCells": {
@@ -1873,12 +1854,7 @@
     "discordTab": "Discord Integration",
     "marketTab": "Market",
     "settingsTab": "Settings",
-    "settings": {
-      "locale": {
-        "title": "Organization Language",
-        "select": "Select organization language"
-      }
-    },
+    "blocklistTab": "Blocked Users",
     "invite": {
       "acceptInviteTitle": "Accept Invite",
       "acceptContractorInvite": "Accept Contractor Invite",
@@ -1944,6 +1920,105 @@
       "noResults": "No results",
       "rowsPerPage": "Rows per page:",
       "displayedRows": "{{from}}-{{to}} of {{count}}"
+    }
+  },
+  "blockUser": {
+    "button": "Block User",
+    "dialogTitle": "Block {{username}}",
+    "dialogDescription": "Blocking this user will prevent them from creating orders or offers with you. They will not be notified of this action.",
+    "reasonLabel": "Reason (optional)",
+    "reasonPlaceholder": "Enter a reason for blocking this user...",
+    "confirm": "Block User",
+    "success": "Successfully blocked {{username}}",
+    "error": "Failed to block user"
+  },
+  "unblockUser": {
+    "button": "Unblock User",
+    "dialogTitle": "Unblock {{username}}",
+    "dialogDescription": "Are you sure you want to unblock this user? They will be able to create orders and offers with you again.",
+    "confirm": "Unblock User",
+    "success": "Successfully unblocked {{username}}",
+    "error": "Failed to unblock user"
+  },
+  "common": {
+    "cancel": "Cancel"
+  },
+  "userActions": {
+    "menu": "User actions menu",
+    "viewRSIPage": "View RSI Page",
+    "blockPersonally": "Block {{username}} as {{myUsername}}",
+    "blockForOrg": "Block {{username}} for {{orgName}}"
+  },
+  "userSearch": {
+    "placeholder": "Search for users...",
+    "typeToSearch": "Type to search for users",
+    "noResults": "No users found"
+  },
+  "blocklist": {
+    "title": "Blocked Users",
+    "description": "Manage users you have blocked from creating orders or offers with you",
+    "addUser": "Block User",
+    "empty": "You haven't blocked any users yet",
+    "searchPlaceholder": "Search for users to block...",
+    "selectedUser": "Selected User",
+    "blockUser": "Block User",
+    "blockedUsers": "Blocked Users",
+    "error": "Failed to load blocklist",
+    "blockedOn": "Blocked {{date}}",
+    "addUserDialog": {
+      "title": "Block User",
+      "description": "Enter the username of the user you want to block",
+      "usernameLabel": "Username",
+      "usernamePlaceholder": "Enter username...",
+      "reasonLabel": "Reason (optional)",
+      "reasonPlaceholder": "Enter a reason for blocking this user...",
+      "confirm": "Block User"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "tabs": {
+      "profile": "Profile",
+      "privacy": "Privacy",
+      "discordIntegration": "Discord Integration",
+      "market": "Market",
+      "contractors": "Contractors",
+      "blocklist": "Blocked Users"
+    },
+    "profile": {
+      "updateAndVerify": "Update Username and Re-Verify Account",
+      "authenticateWithRSI": "Authenticate with RSI",
+      "viewUserProfile": "View User Profile",
+      "reVerifyTitle": "Re-verify Profile",
+      "reVerifyDescription": "Update your profile username to match your current Spectrum handle. This will only update your username.",
+      "reVerifyButton": "Re-verify Profile",
+      "reVerifySuccess": "Profile successfully re-verified! Your username has been updated.",
+      "reVerifyError": "Failed to re-verify profile. Please try again later."
+    },
+    "locale": {
+      "title": "Organization Language",
+      "select": "Select organization language"
+    }
+  },
+  "orgBlocklist": {
+    "title": "Blocked Users",
+    "description": "Manage users your organization has blocked from creating orders or offers",
+    "addUser": "Block User",
+    "empty": "Your organization hasn't blocked any users yet",
+    "searchPlaceholder": "Search for users to block...",
+    "selectedUser": "Selected User",
+    "blockUser": "Block User",
+    "blockedUsers": "Blocked Users",
+    "error": "Failed to load organization blocklist",
+    "blockedOn": "Blocked {{date}}",
+    "addUserDialog": {
+      "title": "Block User",
+      "description": "Enter the username of the user you want to block for your organization",
+      "usernameLabel": "Username",
+      "usernamePlaceholder": "Enter username...",
+      "reasonLabel": "Reason (optional)",
+      "reasonPlaceholder": "Enter a reason for blocking this user...",
+      "confirm": "Block User"
     }
   }
 }

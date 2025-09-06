@@ -32,6 +32,76 @@ import { ModerationSidebarEntry } from "./ModerationSidebarEntry"
 
 export const all_sidebar_entries: SidebarSectionProps[] = [
   {
+    title: "sidebar.market.title",
+    items: [
+      {
+        text: "sidebar.player_market",
+        icon: <StoreRounded />,
+        children: [
+          {
+            to: "/market",
+            text: "sidebar.everything",
+            icon: <HomeRounded />,
+          },
+          {
+            to: "/market/category/weapon",
+            params: "type=weapon",
+            text: "sidebar.weapons",
+            icon: <Pistol />,
+          },
+          {
+            to: "/market/category/armor",
+            text: "sidebar.armor",
+            params: "type=armor",
+            icon: <ShieldRounded />,
+          },
+          {
+            to: "/market/category/component",
+            text: "sidebar.components",
+            params: "type=component",
+            icon: <CableRounded />,
+          },
+          {
+            to: "/bulk",
+            text: "sidebar.bulk_items",
+            icon: <GavelIcon />,
+          },
+          {
+            to: "/buyorders",
+            text: "sidebar.buy_orders",
+            icon: <RequestQuoteRounded />,
+          },
+        ],
+      },
+
+      {
+        to: "/market/services",
+        text: "sidebar.contractor_services",
+        icon: <DesignServicesRounded />,
+      },
+      // {
+      //   to: "/market/me",
+      //   text: "sidebar.my_listings",
+      //   icon: <ManageAccountsRounded />,
+      //   logged_in: true,
+      //   org: false,
+      // },
+      {
+        to: "/market/me",
+        text: "sidebar.my_org_listings",
+        icon: <ManageAccountsRounded />,
+        org: true,
+      },
+      {
+        to: "/sell",
+        text: "sidebar.sell_materials",
+        icon: <PaidIcon />,
+        hidden: true,
+        logged_in: true,
+      },
+    ],
+  },
+  {
     title: "sidebar.dashboard.title",
     items: [
       {
@@ -175,77 +245,6 @@ export const all_sidebar_entries: SidebarSectionProps[] = [
             hidden: true,
           },
         ],
-      },
-    ],
-  },
-
-  {
-    title: "sidebar.market.title",
-    items: [
-      {
-        text: "sidebar.player_market",
-        icon: <StoreRounded />,
-        children: [
-          {
-            to: "/market",
-            text: "sidebar.everything",
-            icon: <HomeRounded />,
-          },
-          {
-            to: "/market/category/weapon",
-            params: "type=weapon",
-            text: "sidebar.weapons",
-            icon: <Pistol />,
-          },
-          {
-            to: "/market/category/armor",
-            text: "sidebar.armor",
-            params: "type=armor",
-            icon: <ShieldRounded />,
-          },
-          {
-            to: "/market/category/component",
-            text: "sidebar.components",
-            params: "type=component",
-            icon: <CableRounded />,
-          },
-          {
-            to: "/bulk",
-            text: "sidebar.bulk_items",
-            icon: <GavelIcon />,
-          },
-          {
-            to: "/buyorders",
-            text: "sidebar.buy_orders",
-            icon: <RequestQuoteRounded />,
-          },
-        ],
-      },
-
-      {
-        to: "/market/services",
-        text: "sidebar.contractor_services",
-        icon: <DesignServicesRounded />,
-      },
-      // {
-      //   to: "/market/me",
-      //   text: "sidebar.my_listings",
-      //   icon: <ManageAccountsRounded />,
-      //   logged_in: true,
-      //   org: false,
-      // },
-      {
-        to: "/market/me",
-        text: "sidebar.my_org_listings",
-        icon: <ManageAccountsRounded />,
-        org: true,
-      },
-      {
-        to: "/sell",
-        text: "sidebar.sell_materials",
-        icon: <PaidIcon />,
-        hidden: true,
-        logged_in: true,
       },
     ],
   },

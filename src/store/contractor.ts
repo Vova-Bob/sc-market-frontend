@@ -10,6 +10,7 @@ import { OrderReview } from "../datatypes/Order"
 import { serviceApi } from "./service"
 import { ContractorSearchState } from "../hooks/contractor/ContractorSearch"
 import { unwrapResponse } from "./orders"
+import { BlocklistEntry } from "./profile"
 
 export const contractorsApi = serviceApi.injectEndpoints({
   overrideExisting: false,
@@ -431,6 +432,45 @@ export const contractorsApi = serviceApi.injectEndpoints({
       transformResponse: (response: { data: MinimalContractor[] }) =>
         response.data,
     }),
+    // Organization blocklist endpoints
+    getOrgBlocklist: builder.query<BlocklistEntry[], string>({
+      query: (spectrum_id) => `/api/contractors/${spectrum_id}/blocklist`,
+      providesTags: ["OrgBlocklist" as const],
+      transformResponse: unwrapResponse,
+    }),
+    blockUserForOrg: builder.mutation<
+      void,
+      { spectrum_id: string; username: string; reason?: string }
+    >({
+      query: ({ spectrum_id, username, reason }) => ({
+        url: `/api/contractors/${spectrum_id}/blocklist/block`,
+        method: "POST",
+        body: { username, reason },
+      }),
+      transformResponse: unwrapResponse,
+      invalidatesTags: [
+        "OrgBlocklist" as const,
+        { type: "Profile" as const, id: "LIST" },
+        { type: "MyProfile" as const },
+        "MyProfile" as const,
+      ],
+    }),
+    unblockUserForOrg: builder.mutation<
+      void,
+      { spectrum_id: string; username: string }
+    >({
+      query: ({ spectrum_id, username }) => ({
+        url: `/api/contractors/${spectrum_id}/blocklist/unblock/${username}`,
+        method: "DELETE",
+      }),
+      transformResponse: unwrapResponse,
+      invalidatesTags: [
+        "OrgBlocklist" as const,
+        { type: "Profile" as const, id: "LIST" },
+        { type: "MyProfile" as const },
+        "MyProfile" as const,
+      ],
+    }),
   }),
 })
 
@@ -465,4 +505,7 @@ export const {
   useGetContractorsQuery,
   useSearchContractorsQuery,
   useLeaveContractorMutation,
+  useGetOrgBlocklistQuery,
+  useBlockUserForOrgMutation,
+  useUnblockUserForOrgMutation,
 } = contractorsApi

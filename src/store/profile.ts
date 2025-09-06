@@ -8,11 +8,24 @@ import {
 } from "../hooks/login/UserProfile"
 import { OrderReview } from "../datatypes/Order"
 import { serviceApi } from "./service"
-import { DiscordSettings, OrderWebhook } from "../datatypes/Contractor"
+import { DiscordSettings, OrderWebhook, Rating } from "../datatypes/Contractor"
 import { unwrapResponse } from "./orders"
 
 export interface SerializedError {
   error?: string
+}
+
+export interface BlocklistEntry {
+  id: string
+  blocked_username: string | null
+  created_at: string
+  reason: string
+  blocked_user: {
+    username: string
+    display_name: string
+    avatar: string
+    rating: Rating
+  } | null
 }
 
 const baseUrl = `${BACKEND_URL}/api/profile`
@@ -180,6 +193,42 @@ export const userApi = serviceApi.injectEndpoints({
       }),
       invalidatesTags: [{ type: "MyProfile" as const }, "MyProfile" as const],
     }),
+    // Blocklist endpoints
+    profileGetBlocklist: builder.query<BlocklistEntry[], void>({
+      query: () => `${baseUrl}/blocklist`,
+      providesTags: ["Blocklist" as const],
+      transformResponse: unwrapResponse,
+    }),
+    profileBlockUser: builder.mutation<
+      void,
+      { username: string; reason?: string }
+    >({
+      query: (body) => ({
+        url: `${baseUrl}/blocklist/block`,
+        method: "POST",
+        body,
+      }),
+      transformResponse: unwrapResponse,
+      invalidatesTags: [
+        "Blocklist" as const,
+        { type: "Profile" as const, id: "LIST" },
+        { type: "MyProfile" as const },
+        "MyProfile" as const,
+      ],
+    }),
+    profileUnblockUser: builder.mutation<void, string>({
+      query: (username) => ({
+        url: `${baseUrl}/blocklist/unblock/${username}`,
+        method: "DELETE",
+      }),
+      transformResponse: unwrapResponse,
+      invalidatesTags: [
+        "Blocklist" as const,
+        { type: "Profile" as const, id: "LIST" },
+        { type: "MyProfile" as const },
+        "MyProfile" as const,
+      ],
+    }),
   }),
 })
 
@@ -217,4 +266,7 @@ export const {
   useProfileGetDiscordSettingsQuery,
   useProfileUseOfficialDiscordSettingsMutation,
   useProfileSyncHandleMutation,
+  useProfileGetBlocklistQuery,
+  useProfileBlockUserMutation,
+  useProfileUnblockUserMutation,
 } = userApi

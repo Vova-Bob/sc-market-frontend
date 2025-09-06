@@ -222,7 +222,16 @@
     "profile": {
       "updateAndVerify": "更新用户名并重新验证账户",
       "authenticateWithRSI": "用RSI验证",
-      "viewUserProfile": "查看用户资料"
+      "viewUserProfile": "查看用户资料",
+      "reVerifyTitle": "重新验证资料",
+      "reVerifyDescription": "更新您的资料用户名以匹配您当前的Spectrum句柄。这只会更新您的用户名。",
+      "reVerifyButton": "重新验证资料",
+      "reVerifySuccess": "资料重新验证成功！您的用户名已更新。",
+      "reVerifyError": "重新验证资料失败。请稍后再试。"
+    },
+    "locale": {
+      "title": "Organization Language",
+      "select": "Select organization language"
     }
   },
   "sidebar": {
@@ -1581,13 +1590,7 @@
       "accept": "Accept",
       "accepted": "Accepted invite!"
     },
-    "settingsTab": "Settings",
-    "settings": {
-      "locale": {
-        "title": "Organization Language",
-        "select": "Select organization language"
-      }
-    }
+    "settingsTab": "Settings"
   },
   "dashboard": {
     "title": "Dashboard"

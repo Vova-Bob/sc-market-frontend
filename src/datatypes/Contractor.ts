@@ -98,4 +98,5 @@ export interface ContractorRole {
   manage_market: boolean
   manage_recruiting: boolean
   manage_webhooks: boolean
+  manage_blocklist: boolean
 }

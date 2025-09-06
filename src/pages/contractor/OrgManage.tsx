@@ -13,6 +13,7 @@ import {
   PersonAddRounded,
   StoreRounded,
   SettingsRounded,
+  Block,
 } from "@mui/icons-material"
 import { a11yProps, TabPanel } from "../../components/tabs/Tabs"
 import { CreateOrgInviteCode } from "../../views/contractor/CreateOrgInviteCode"
@@ -32,6 +33,7 @@ import { ConfigureDiscord } from "../../views/notifications/ConfigureDiscord"
 import { MarketEditTemplate } from "../../views/market/MarketEditTemplate"
 import { useTranslation } from "react-i18next"
 import { OrgSettings } from "../../views/contractor/OrgSettings"
+import { OrgBlocklistSettings } from "../../views/contractor/OrgBlocklistSettings"
 
 export function OrgManage() {
   const { t } = useTranslation()
@@ -52,6 +54,10 @@ export function OrgManage() {
   )
   const canManageWebhooks = useMemo(
     () => has_permission(contractor!, profile!, "manage_invites"),
+    [contractor, profile],
+  )
+  const canManageOrders = useMemo(
+    () => has_permission(contractor!, profile!, "manage_blocklist"),
     [contractor, profile],
   )
 
@@ -117,6 +123,13 @@ export function OrgManage() {
                   {...a11yProps(5)}
                 />
               )}
+              {canManageOrders && (
+                <Tab
+                  label={t("org.blocklistTab")}
+                  icon={<Block />}
+                  {...a11yProps(6)}
+                />
+              )}
               {/*<Tab*/}
               {/*    label="Customers"*/}
               {/*    icon={*/}
@@ -164,6 +177,9 @@ export function OrgManage() {
             <OrgSettings />
           </TabPanel>
           <TabPanel value={page} index={6}>
+            <OrgBlocklistSettings />
+          </TabPanel>
+          <TabPanel value={page} index={7}>
             <Grid container spacing={2}>
               <CustomerList />
             </Grid>

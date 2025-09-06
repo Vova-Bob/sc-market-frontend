@@ -36,5 +36,7 @@ export const serviceApi = createApi({
     "ModerationReports",
     "SellerAnalytics",
     "AdminAlerts",
+    "Blocklist",
+    "OrgBlocklist",
   ],
 })

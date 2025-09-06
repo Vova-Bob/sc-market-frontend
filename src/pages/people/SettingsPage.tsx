@@ -8,6 +8,7 @@ import {
   PeopleAltRounded,
   PrivacyTipRounded,
   StoreRounded,
+  Block,
 } from "@mui/icons-material"
 import { PrivacySettings } from "../../views/settings/PrivacySettings"
 import { Discord } from "../../components/icon/DiscordIcon"
@@ -15,6 +16,7 @@ import { ProfileSettings } from "../../views/settings/ProfileSettings"
 import { DiscordIntegrationSettings } from "../../views/settings/DiscordIntegrationSettings"
 import { MarketSettings } from "../../views/settings/MarketSettings"
 import { ContractorsSettings } from "../../views/settings/ContractorsSettings"
+import { BlocklistSettings } from "../../views/settings/BlocklistSettings"
 
 import { useTranslation } from "react-i18next"
 
@@ -69,6 +71,12 @@ export function SettingsPage() {
               {...a11yProps(4)}
               value={4}
             />
+            <Tab
+              label={t("settings.tabs.blocklist")}
+              icon={<Block />}
+              {...a11yProps(5)}
+              value={5}
+            />
           </Tabs>
         </Grid>
 
@@ -88,6 +96,9 @@ export function SettingsPage() {
           </TabPanel>
           <TabPanel value={page} index={4}>
             <ContractorsSettings />
+          </TabPanel>
+          <TabPanel value={page} index={5}>
+            <BlocklistSettings />
           </TabPanel>
         </Grid>
       </ContainerGrid>
