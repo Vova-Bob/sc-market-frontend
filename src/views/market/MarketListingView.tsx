@@ -374,7 +374,7 @@ export function PurchaseArea(props: { listing: BaseListingType }) {
   const location = useLocation()
 
   const [cookies, setCookie] = useCookies(["market_cart"])
-  const [cartRedirect, setCartRedirect] = useState(false)
+  const [justAddedToCart, setJustAddedToCart] = useState(false)
 
   const addToCart = useCallback(async () => {
     if (!profile) {
@@ -452,7 +452,7 @@ export function PurchaseArea(props: { listing: BaseListingType }) {
       message: t("MarketListingView.addedToCart"),
       severity: "success",
     })
-    setCartRedirect(true)
+    setJustAddedToCart(true)
   }, [
     cookies.market_cart,
     listing.listing.contractor_seller?.spectrum_id,
@@ -475,7 +475,6 @@ export function PurchaseArea(props: { listing: BaseListingType }) {
         position: "relative",
       }}
     >
-      {cartRedirect && <Navigate to={"/market/cart"} />}
       <Stack direction={"row"} justifyContent={"space-between"} padding={2}>
         <Stack
           spacing={1}
@@ -507,6 +506,7 @@ export function PurchaseArea(props: { listing: BaseListingType }) {
             thousandSeparator
             onValueChange={async (values, sourceInfo) => {
               setQuantity(values.floatValue || 0)
+              setJustAddedToCart(false)
             }}
             inputProps={{
               inputMode: "numeric",
@@ -534,19 +534,36 @@ export function PurchaseArea(props: { listing: BaseListingType }) {
           justifyContent={"space-between"}
         >
           <Box />
-          <Button
-            variant={"contained"}
-            color={"primary"}
-            startIcon={<AddShoppingCartRounded />}
-            size={"large"}
-            onClick={addToCart}
-            sx={{
-              display: purchaseOpen || offerOpen ? "none" : undefined,
-              marginBottom: 1,
-            }}
-          >
-            {t("MarketListingView.addToCart")}
-          </Button>
+          {justAddedToCart ? (
+            <Button
+              component={Link}
+              to="/market/cart"
+              variant={"contained"}
+              color={"secondary"}
+              startIcon={<VisibilityRounded />}
+              size={"large"}
+              sx={{
+                display: purchaseOpen || offerOpen ? "none" : undefined,
+                marginBottom: 1,
+              }}
+            >
+              {t("MarketListingView.viewInCart")}
+            </Button>
+          ) : (
+            <Button
+              variant={"contained"}
+              color={"primary"}
+              startIcon={<AddShoppingCartRounded />}
+              size={"large"}
+              onClick={addToCart}
+              sx={{
+                display: purchaseOpen || offerOpen ? "none" : undefined,
+                marginBottom: 1,
+              }}
+            >
+              {t("MarketListingView.addToCart")}
+            </Button>
+          )}
         </Stack>
       </Stack>
     </Box>

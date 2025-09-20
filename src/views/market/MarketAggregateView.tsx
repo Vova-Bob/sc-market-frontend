@@ -30,6 +30,7 @@ import { useGetUserProfileQuery } from "../../store/profile"
 import {
   AddShoppingCartRounded,
   EditRounded,
+  VisibilityRounded,
   ZoomInRounded,
 } from "@mui/icons-material"
 import {
@@ -441,7 +442,7 @@ export function AggregateRow(props: {
   const [quantity, setQuantity] = useState(1)
   const issueAlert = useAlertHook()
   const [cookies, setCookie] = useCookies(["market_cart"])
-  const [cartRedirect, setCartRedirect] = useState(false)
+  const [justAddedToCart, setJustAddedToCart] = useState(false)
 
   const addToCart = useCallback(async () => {
     const cart: Cart = cookies.market_cart || []
@@ -494,7 +495,7 @@ export function AggregateRow(props: {
       message: t("MarketAggregateView.addedToCart"),
       severity: "success",
     })
-    setCartRedirect(true)
+    setJustAddedToCart(true)
   }, [cookies.market_cart, listing, quantity, setCookie, t, issueAlert])
 
   return (
@@ -515,7 +516,6 @@ export function AggregateRow(props: {
         [`& .${tableCellClasses.root}`]: {},
       }}
     >
-      {cartRedirect && <Navigate to={"/market/cart"} />}
       <TableCell align={"left"}>
         <Box
           sx={{
@@ -554,6 +554,7 @@ export function AggregateRow(props: {
           thousandSeparator
           onValueChange={async (values, sourceInfo) => {
             setQuantity(values.floatValue || 0)
+            setJustAddedToCart(false)
           }}
           inputProps={{
             inputMode: "numeric",
@@ -582,14 +583,26 @@ export function AggregateRow(props: {
           event.stopPropagation()
         }}
       >
-        <Button
-          variant={"contained"}
-          color={"primary"}
-          size={"large"}
-          onClick={addToCart}
-        >
-          <AddShoppingCartRounded />
-        </Button>
+        {justAddedToCart ? (
+          <Button
+            component={Link}
+            to="/market/cart"
+            variant={"contained"}
+            color={"secondary"}
+            size={"large"}
+          >
+            <VisibilityRounded />
+          </Button>
+        ) : (
+          <Button
+            variant={"contained"}
+            color={"primary"}
+            size={"large"}
+            onClick={addToCart}
+          >
+            <AddShoppingCartRounded />
+          </Button>
+        )}
       </TableCell>
     </TableRow>
   )

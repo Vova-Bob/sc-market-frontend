@@ -1221,6 +1221,7 @@
   },
   "MarketListingView": {
     "addedToCart": "Added to cart!",
+    "viewInCart": "View in Cart",
     "price": "Price",
     "ofAvailable": "of {{count}} available",
     "quantity": "Quantity",

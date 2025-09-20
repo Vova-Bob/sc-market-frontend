@@ -226,7 +226,6 @@ export function OrgBlocklistSettings() {
     )
   }
 
-
   return (
     <FlatSection title={t("orgBlocklist.title")}>
       <Grid item xs={12}>

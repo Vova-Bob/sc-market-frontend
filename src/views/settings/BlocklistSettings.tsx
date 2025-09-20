@@ -220,7 +220,6 @@ export function BlocklistSettings() {
     )
   }
 
-
   return (
     <FlatSection title={t("blocklist.title")}>
       <Grid item xs={12}>
