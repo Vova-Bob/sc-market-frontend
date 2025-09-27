@@ -1079,6 +1079,8 @@
     "price": "Price",
     "minBidIncrement": "Minimum Bid Increment",
     "description": "Description",
+    "internalListing": "Annonce Interne",
+    "publicListing": "Annonce Publique",
     "updated": "Updated!",
     "updateError": "Error while updating!"
   },

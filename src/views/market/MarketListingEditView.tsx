@@ -102,6 +102,7 @@ export function MarketListingEditView() {
   const [item, setItem] = useState(listing.details.item_name)
   const [photos, setPhotos] = useState(listing.photos)
   const [pendingFiles, setPendingFiles] = useState<File[]>([])
+  const [internal, setInternal] = useState(listing.listing.internal)
 
   // Watch for photo updates and sync local state
   useEffect(() => {
@@ -550,6 +551,49 @@ export function MarketListingEditView() {
                           }
                           variant={"vertical"}
                         />
+                      </Box>
+                    </>
+                  )}
+                  {amContractorManager && (
+                    <>
+                      <Divider light />
+                      <Box
+                        sx={{
+                          paddingBottom: 2,
+                          display: "flex",
+                          alignItems: "center",
+                          "& > *": { marginRight: 2 },
+                        }}
+                      >
+                        <TextField
+                          select
+                          size="small"
+                          label={t("MarketListingEditView.internalListing")}
+                          value={internal ? "true" : "false"}
+                          onChange={(event) => {
+                            setInternal(event.target.value === "true")
+                          }}
+                          sx={{
+                            marginRight: 2,
+                            minWidth: 200,
+                          }}
+                          color={"secondary"}
+                        >
+                          <MenuItem value="false">
+                            {t("MarketListingEditView.publicListing")}
+                          </MenuItem>
+                          <MenuItem value="true">
+                            {t("MarketListingEditView.internalListing")}
+                          </MenuItem>
+                        </TextField>
+                        <Button
+                          onClick={() =>
+                            updateListingCallback({ internal })
+                          }
+                          variant={"contained"}
+                        >
+                          {t("MarketListingEditView.updateBtn")}
+                        </Button>
                       </Box>
                     </>
                   )}

@@ -494,16 +494,6 @@ export const marketApi = serviceApi.injectEndpoints({
       query: () => `${baseUrl}/all_listings`,
       providesTags: (result, error, arg) => [{ type: "AllListings" as const }],
     }),
-    marketGetListingsByContractor: builder.query<SellerListingType[], string>({
-      query: (spectrum_id) => `${baseUrl}/contractor/${spectrum_id}`,
-      providesTags: (result, error, arg) => [
-        {
-          type: "ContractorListings",
-          id: arg,
-        },
-        { type: "AllListings" as const },
-      ],
-    }),
     marketStats: builder.query<
       {
         total_orders: number
@@ -614,7 +604,6 @@ export const {
   useMarketPurchaseMutation,
   useMarketGetListingByIDQuery,
   useMarketGetGameItemByNameQuery,
-  useMarketGetListingsByContractorQuery,
   useMarketBidMutation,
   useMarketAcceptBidMutation,
   useMarketUpdateListingMutation,

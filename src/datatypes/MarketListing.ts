@@ -62,6 +62,7 @@ export interface MarketListing {
   contractor_seller?: MinimalContractor | null
   orders?: Order[] | null
   expiration: string
+  internal: boolean
 }
 
 export interface UniqueListing {
@@ -255,6 +256,7 @@ export interface MarketListingUpdateBody {
   quantity_available?: number
   photos?: string[]
   minimum_bid_increment?: number
+  internal?: boolean
 }
 
 export interface AggregateListingUpdateBody {

@@ -18,9 +18,10 @@ import { PaginatedTable } from "../../components/table/PaginatedTable"
 import React, { useMemo, useState } from "react"
 import { MarketListingDetails } from "../../components/list/UserDetails"
 import {
-  useMarketGetListingsByContractorQuery,
+  useSearchMarketQuery,
   useMarketGetListingByUserQuery,
 } from "../../store/market"
+import { convertToLegacy } from "../market/ItemListings"
 import { useCounterOffer } from "../../hooks/offer/CounterOfferDetails"
 import { UniqueListing } from "../../datatypes/MarketListing"
 import { marketListingHeadCells } from "./OfferMarketListings"
@@ -144,10 +145,21 @@ export function OfferMarketListingsEditArea(props: { offer: OfferSession }) {
       skip: !session.assigned_to?.username,
     },
   )
-  const { data: contractorListings } = useMarketGetListingsByContractorQuery(
-    session.contractor?.spectrum_id!,
+  const { data: contractorSearchResults } = useSearchMarketQuery(
+    {
+      contractor_seller: session.contractor?.spectrum_id!,
+      quantityAvailable: 1,
+      index: 0,
+      page_size: 1000,
+      listing_type: undefined,
+    },
     { skip: !session.contractor?.spectrum_id },
   )
+  
+  const contractorListings = useMemo(() => {
+    if (!contractorSearchResults?.listings) return []
+    return contractorSearchResults.listings.map(convertToLegacy)
+  }, [contractorSearchResults])
   const listings = useMemo(
     () =>
       ((session.assigned_to

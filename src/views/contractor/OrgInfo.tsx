@@ -42,7 +42,8 @@ import {
   ServiceListings,
 } from "../contracts/ServiceListings"
 import { Section } from "../../components/paper/Section"
-import { useMarketGetListingsByContractorQuery } from "../../store/market"
+import { useSearchMarketQuery } from "../../store/market"
+import { convertToLegacy } from "../market/ItemListings"
 import { RecruitingPostArea } from "../../pages/recruiting/RecruitingPostPage"
 import { useRecruitingGetPostByOrgQuery } from "../../store/recruiting"
 import {
@@ -69,7 +70,18 @@ const name_to_index = new Map([
 export function OrgRelevantListingsArea(props: { org: string }) {
   const { org } = props
 
-  const { data: listings } = useMarketGetListingsByContractorQuery(org)
+  const { data: searchResults } = useSearchMarketQuery({
+    contractor_seller: org,
+    quantityAvailable: 1,
+    index: 0,
+    page_size: 1000, // Large page size to get all listings
+    listing_type: undefined,
+  })
+  
+  const listings = useMemo(() => {
+    if (!searchResults?.listings) return []
+    return searchResults.listings.map(convertToLegacy)
+  }, [searchResults])
   const { data: services } = useGetServicesContractorQuery(org)
 
   const order = useMemo(

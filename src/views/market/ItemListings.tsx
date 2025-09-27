@@ -68,7 +68,6 @@ import {
 } from "../../hooks/market/MarketSearch"
 import {
   MarketSearchResult,
-  useMarketGetListingsByContractorQuery,
   useMarketGetPublicQuery,
   useMarketGetAllListingsQuery,
   useMarketGetBuyOrderListingsQuery,
@@ -1416,8 +1415,7 @@ export function DisplayListings(props: {
 }
 
 export function convertToLegacy(l: MarketSearchResult): MarketListingType {
-  {
-    if (l.listing_type === "unique") {
+  if (l.listing_type === "unique") {
       return {
         accept_offers: false,
         details: {
@@ -1471,6 +1469,7 @@ export function convertToLegacy(l: MarketSearchResult): MarketListingType {
                 },
               }
             : null,
+          internal: false, // Default to false for search results
         },
         photos: [l.photo],
         type: "unique",
@@ -1522,6 +1521,7 @@ export function convertToLegacy(l: MarketSearchResult): MarketListingType {
             quantity_available: +l.quantity_available,
             status: l.status,
             expiration: new Date().toString(),
+            internal: false, // Default to false for search results
           },
           photos: [l.photo],
         },
@@ -1536,6 +1536,7 @@ export function convertToLegacy(l: MarketSearchResult): MarketListingType {
               quantity_available: +l.quantity_available,
               status: l.status,
               expiration: new Date().toString(),
+              internal: false, // Default to false for search results
             },
             details: {
               details_id: "",
@@ -1594,7 +1595,6 @@ export function convertToLegacy(l: MarketSearchResult): MarketListingType {
         type: "aggregate",
       }
     }
-  }
 }
 
 export function DisplayListingsMin(props: {
@@ -1987,11 +1987,23 @@ export function BuyOrders() {
 
 export function OrgListings(props: { org: string }) {
   const { org } = props
-  const { data: listings, isLoading } =
-    useMarketGetListingsByContractorQuery(org)
-  const filteredListings = useMemo(() => listings || [], [listings, org])
-
   const [searchState, setSearchState] = useMarketSearch()
+  
+  // Use search endpoint with contractor filter
+  const { data: searchResults, isLoading } = useSearchMarketQuery({
+    contractor_seller: org,
+    quantityAvailable: 1,
+    index: 0,
+    page_size: 1000, // Large page size to get all listings
+    listing_type: undefined,
+    ...searchState,
+  })
+
+  const filteredListings = useMemo(() => {
+    if (!searchResults?.listings) return []
+    return searchResults.listings.map(convertToLegacy)
+  }, [searchResults])
+
   useEffect(() => {
     setSearchState({
       ...searchState,
@@ -2009,16 +2021,24 @@ export function OrgListings(props: { org: string }) {
 
 export function OrgRecentListings(props: { org: string }) {
   const { org } = props
-  const { data: listings } = useMarketGetListingsByContractorQuery(org)
+  const { data: searchResults } = useSearchMarketQuery({
+    contractor_seller: org,
+    quantityAvailable: 1,
+    index: 0,
+    page_size: 1000, // Large page size to get all listings
+    listing_type: undefined,
+  })
 
   const filteredListings = useMemo(() => {
-    return [...(listings || [])]
+    if (!searchResults?.listings) return []
+    const legacyListings = searchResults.listings.map(convertToLegacy)
+    return [...legacyListings]
       .filter((item) => getCompareQuantity(item))
       .sort((a, b) => getCompareTimestamp(b) - getCompareTimestamp(a))
       .slice(0, 25)
-  }, [listings])
+  }, [searchResults])
 
-  return listings ? (
+  return searchResults ? (
     <DisplayListingsHorizontal listings={filteredListings || []} />
   ) : (
     <RecentListingsSkeleton />
