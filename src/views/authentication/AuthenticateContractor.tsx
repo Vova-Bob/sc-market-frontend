@@ -36,23 +36,19 @@ export function AuthenticateContractor(props: {}) {
         setError(true)
         return
       }
-      // event.preventDefault();
-      const res: { data?: any; error?: any } = await activateContractorLink({
+
+      activateContractorLink({
         contractor: orgName,
       })
-
-      if (res?.data && !res?.error) {
-        navigate("/")
-        window.location.reload()
-      } else {
-        issueAlert({
-          message: t("authenticateContractor.failed_auth", {
-            reason:
-              res.error?.error || res.error?.data?.error || res.error || "",
-          }),
-          severity: "error",
+        .unwrap()
+        .then((result) => {
+          navigate("/")
+          window.location.reload()
         })
-      }
+        .catch((error) => {
+          issueAlert(error)
+        })
+
       return false
     },
     [activateContractorLink, orgName, issueAlert, t, navigate],
