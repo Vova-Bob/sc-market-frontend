@@ -51,10 +51,10 @@ import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 import {
   useMarketCreateListingMutation,
   useMarketGetGameItemByNameQuery,
-  useMarketGetMyListingsQuery,
   useMarketRefreshListingMutation,
   useMarketUpdateListingMutation,
   useMarketUpdateListingQuantityMutation,
+  useSearchMarketQuery,
 } from "../../store/market"
 import { Stack } from "@mui/system"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
@@ -66,6 +66,7 @@ import { ThemedDataGrid } from "../../components/grid/ThemedDataGrid"
 import { SelectGameItemStack } from "../../components/select/SelectGameItem"
 import { useGetUserProfileQuery } from "../../store/profile"
 import { useTranslation } from "react-i18next" // Added for i18n
+import { convertToLegacy } from "./ItemListings"
 
 export const ItemStockContext = React.createContext<
   | [UniqueListing[], React.Dispatch<React.SetStateAction<UniqueListing[]>>]
@@ -284,7 +285,21 @@ function ItemStockToolbar(props: {
   )
 }
 
-export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
+export function DisplayStock({ 
+  listings, 
+  total,
+  page,
+  perPage,
+  onPageChange,
+  onRowsPerPageChange
+}: { 
+  listings: UniqueListing[]
+  total?: number
+  page?: number
+  perPage?: number
+  onPageChange?: (event: unknown, newPage: number) => void
+  onRowsPerPageChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
+}) {
   const [searchState] = useMarketSearch()
   const [, setSelectedListings] = useContext(ItemStockContext)!
   const [refresh] = useMarketRefreshListingMutation()
@@ -892,6 +907,16 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
           ),
         }}
         showToolbar
+        paginationMode={total ? "server" : "client"}
+        rowCount={total || allRows.length}
+        paginationModel={{ page: page || 0, pageSize: perPage || 48 }}
+        onPaginationModelChange={(model) => {
+          if (onPageChange) onPageChange(null, model.page)
+          if (onRowsPerPageChange && model.pageSize !== perPage) {
+            onRowsPerPageChange({ target: { value: model.pageSize.toString() } } as React.ChangeEvent<HTMLInputElement>)
+          }
+        }}
+        pageSizeOptions={[24, 48, 96, 192]}
       />
     </Box>
   )
@@ -899,16 +924,73 @@ export function DisplayStock({ listings }: { listings: UniqueListing[] }) {
 
 export function MyItemStock() {
   const [currentOrg] = useCurrentOrg()
-  const { data: listings } = useMarketGetMyListingsQuery(
-    currentOrg?.spectrum_id,
-  )
-  const filteredListings = useMemo(
-    () =>
-      (listings || []).filter(
-        (l) => l.type !== "multiple" && l.listing.status !== "archived",
-      ) as UniqueListing[],
-    [listings],
-  )
+  const { data: profile, isLoading: profileLoading } = useGetUserProfileQuery()
+  const [page, setPage] = useState(0)
+  const [perPage, setPerPage] = useState(48)
+  
+  // Determine if we should search by contractor or user
+  const searchByContractor = currentOrg?.spectrum_id
+  const searchByUser = currentOrg === null && profile?.username && !profileLoading
+  
+  // Build search query parameters
+  const searchQueryParams = useMemo(() => {
+    const baseParams = {
+      page_size: perPage,
+      index: page,
+      quantityAvailable: 1,
+      query: "",
+      sort: "activity",
+    }
+    
+    // Add contractor or user filter
+    if (searchByContractor) {
+      return {
+        ...baseParams,
+        contractor_seller: searchByContractor,
+      }
+    } else if (searchByUser && profile?.username) {
+      return {
+        ...baseParams,
+        user_seller: profile.username,
+      }
+    }
+    
+    return baseParams
+  }, [searchByContractor, searchByUser, profile?.username, perPage, page])
 
-  return <DisplayStock listings={filteredListings} />
+  const { data: searchResults, isLoading } = useSearchMarketQuery(searchQueryParams)
+
+  const filteredListings = useMemo(() => {
+    if (!searchResults?.listings) return []
+    return searchResults.listings
+      .map(convertToLegacy)
+      .filter((l) => {
+        if (l.type === "unique") {
+          return l.listing.status !== "archived"
+        }
+        return false // Only show unique listings for stock management
+      }) as UniqueListing[]
+  }, [searchResults])
+
+  const handleChangePage = useCallback((event: unknown, newPage: number) => {
+    setPage(newPage)
+  }, [])
+
+  const handleChangeRowsPerPage = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setPerPage(parseInt(event.target.value, 10))
+    setPage(0)
+  }, [])
+
+  return (
+    <>
+      <DisplayStock 
+        listings={filteredListings} 
+        total={searchResults?.total}
+        page={page}
+        perPage={perPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </>
+  )
 }

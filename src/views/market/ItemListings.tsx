@@ -75,6 +75,7 @@ import {
   useMarketGetMyListingsQuery,
   useMarketRefreshListingMutation,
   useSearchMarketQuery,
+  MarketSearchQuery,
 } from "../../store/market"
 import { Link } from "react-router-dom"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
@@ -234,6 +235,20 @@ export function ItemListingBase(props: {
                   position: "absolute",
                   top: 8,
                   left: 8,
+                  textTransform: "uppercase",
+                  fontWeight: "bold",
+                }}
+              />
+            )}
+            {listing.internal && (
+              <Chip
+                label={t("market.internalListing")}
+                color={"warning"}
+                size="small"
+                sx={{
+                  position: "absolute",
+                  top: 8,
+                  right: 8,
                   textTransform: "uppercase",
                   fontWeight: "bold",
                 }}
@@ -1313,13 +1328,14 @@ export function Listing(props: {
 export function DisplayListings(props: {
   listings: (MarketListingType | SellerListingType)[]
   loading?: boolean
+  total?: number
 }) {
   const { t } = useTranslation()
   const [searchState] = useMarketSearch()
   const [perPage, setPerPage] = useState(48)
   const [page, setPage] = useState(0)
 
-  const { listings, loading } = props
+  const { listings, loading, total } = props
 
   const filteredListings = useMemo(
     () => filterListings(listings, searchState),
@@ -1400,7 +1416,7 @@ export function DisplayListings(props: {
           }}
           rowsPerPageOptions={[12, 24, 48, 96]}
           component="div"
-          count={filteredListings.length}
+          count={total ?? filteredListings.length}
           rowsPerPage={perPage}
           page={page}
           onPageChange={handleChangePage}
@@ -1442,7 +1458,7 @@ export function convertToLegacy(l: MarketSearchResult): MarketListingType {
           timestamp: l.timestamp,
           quantity_available: +l.quantity_available,
           status: l.status,
-          expiration: new Date().toString(),
+          expiration: l.expiration,
           user_seller: l.user_seller
             ? {
                 username: l.user_seller,
@@ -1520,7 +1536,7 @@ export function convertToLegacy(l: MarketSearchResult): MarketListingType {
             timestamp: l.timestamp,
             quantity_available: +l.quantity_available,
             status: l.status,
-            expiration: new Date().toString(),
+            expiration: l.expiration,
             internal: false, // Default to false for search results
           },
           photos: [l.photo],
@@ -1535,7 +1551,7 @@ export function convertToLegacy(l: MarketSearchResult): MarketListingType {
               timestamp: l.timestamp,
               quantity_available: +l.quantity_available,
               status: l.status,
-              expiration: new Date().toString(),
+              expiration: l.expiration,
               internal: false, // Default to false for search results
             },
             details: {
@@ -2063,38 +2079,143 @@ export function UserRecentListings(props: { user: string }) {
   )
 }
 
-export function MyItemListings(props: { status?: string }) {
+export function MyItemListings(props: { status?: string; showInternal?: boolean | "all" }) {
+  const { t } = useTranslation()
   const [currentOrg] = useCurrentOrg()
-  const { data: listings, isLoading } = useMarketGetMyListingsQuery(
-    currentOrg?.spectrum_id,
+  const { data: profile, isLoading: profileLoading } = useGetUserProfileQuery()
+  const [perPage, setPerPage] = useState(48)
+  const [page, setPage] = useState(0)
+  const ref = useRef<HTMLDivElement>(null)
+  
+  const handleChangePage = useCallback(
+    (event: unknown, newPage: number) => {
+      setPage(newPage)
+      if (ref.current) {
+        ref.current.scrollIntoView({
+          block: "end",
+          behavior: "smooth",
+        })
+      }
+    },
+    [],
   )
 
-  const { status } = props
-  const filteredListings = useMemo(
-    () =>
-      (listings || []).filter((listing) => {
-        if (!status) {
-          return true
-        }
-
-        const unique = listing as UniqueListing
-        if (unique.listing) {
-          return status === unique.listing.status
-        } else {
-          const multiple = listing as MarketMultiple
-          return multiple.listings.find((l) => l.listing.status === status)
-        }
-      }),
-    [listings, status],
+  const handleChangeRowsPerPage = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setPerPage(parseInt(event.target.value, 10))
+      setPage(0)
+    },
+    [],
   )
+  
+  // Determine if we should search by contractor or user
+  const searchByContractor = currentOrg?.spectrum_id
+  const searchByUser = currentOrg === null && profile?.username && !profileLoading
+  
+  
+  // Build search query parameters
+  const searchQueryParams = useMemo(() => {
+    const baseParams = {
+      page_size: perPage,
+      index: page,
+      quantityAvailable: 1,
+      query: "",
+    }
+    
+    // Add contractor or user filter
+    if (searchByContractor) {
+      return {
+        ...baseParams,
+        contractor_seller: searchByContractor,
+      }
+    } else if (searchByUser && profile?.username) {
+      return {
+        ...baseParams,
+        user_seller: profile.username,
+      }
+    }
+    
+    return baseParams
+  }, [searchByContractor, searchByUser, perPage, page])
+
+  // Add status filter if provided
+  const finalSearchParams = useMemo(() => {
+    const params: any = { 
+      ...searchQueryParams,
+      sort: "activity", // Use valid default sort value
+    }
+    
+    if (props.status) {
+      params.status = props.status
+    }
+    
+    // Add internal filter
+    if (props.showInternal === false) {
+      params.internal = "false"
+    } else if (props.showInternal === true) {
+      params.internal = "true"
+    }
+    // If showInternal is "all" or undefined, don't add internal filter (show all)
+    
+    return params
+  }, [searchQueryParams, props.status, props.showInternal])
+
+  
+  const { data: searchResults, isLoading } = useSearchMarketQuery(finalSearchParams)
+
+  const filteredListings = useMemo(() => {
+    if (!searchResults?.listings) return []
+    return searchResults.listings.map(convertToLegacy)
+  }, [searchResults])
 
   const [, setSearchState] = useMarketSearch()
   useEffect(() => {
-    setSearchState({ query: "", quantityAvailable: 0 })
+    setSearchState({ query: "", quantityAvailable: 1 })
   }, [])
 
   return (
-    <DisplayListings listings={[...filteredListings]} loading={isLoading} />
+    <>
+      <Grid item xs={12}>
+        <div ref={ref} />
+      </Grid>
+      <DisplayListingsMin 
+        listings={searchResults?.listings || []} 
+        loading={isLoading}
+      />
+
+      <Grid item xs={12}>
+        <Divider light />
+      </Grid>
+
+      <Grid item xs={12}>
+        <TablePagination
+          labelRowsPerPage={t("rows_per_page")}
+          labelDisplayedRows={({ from, to, count }) => (
+            <>
+              {t("displayed_rows", {
+                from: from.toLocaleString(undefined),
+                to: to.toLocaleString(undefined),
+                count: count,
+              })}
+            </>
+          )}
+          SelectProps={{
+            "aria-label": t("select_rows_per_page"),
+            color: "primary",
+          }}
+          rowsPerPageOptions={[12, 24, 48, 96]}
+          component="div"
+          count={searchResults?.total || 0}
+          rowsPerPage={perPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          color={"primary"}
+          nextIconButtonProps={{ color: "primary" }}
+          backIconButtonProps={{ color: "primary" }}
+        />
+      </Grid>
+    </>
   )
 }
 

@@ -39,6 +39,8 @@ export interface MarketSearchQuery {
   contractor_seller: string
   user_seller: string
   listing_type?: string | null
+  status?: string
+  internal?: string
 }
 
 export interface MarketSearchResult {
@@ -65,6 +67,7 @@ export interface MarketSearchResult {
   photo: string
   timestamp: number
   auction_end_time: number
+  expiration: string
 }
 
 const baseUrl = `${BACKEND_URL}/api/market`

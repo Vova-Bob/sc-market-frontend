@@ -383,7 +383,10 @@
     "ending_in": "Ending {{time}}",
     "expiration": "Expiration: {{time}}",
     "unit": "ea",
-    "available": "{{count}} available"
+    "available": "{{count}} available",
+    "allListings": "All Listings",
+    "publicListings": "Public Listings",
+    "internalListings": "Internal Listings"
   },
   "marketActions": {
     "createListing": "Create Listing",
