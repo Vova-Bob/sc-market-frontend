@@ -78,6 +78,7 @@
   "listing": {
     "95PercentRating25PlusTransactions": "95%+ rating and 25+ transactions",
     "90PercentRating25PlusTransactions": "90%+ rating and 25+ transactions",
+    "responsiveBadge": "24時間以内に注文の90%に応答",
     "tenPlusFiveStarStreak": "10+ 5 star streak",
     "fivePlusFiveStarStreak": "5+ 5 star streak"
   },
@@ -487,16 +488,18 @@
     "title": "Recent Orders"
   },
   "orderTrend": {
-    "order_count_daily": "Order Count Daily",
-    "order_count_weekly": "Order Count Weekly",
-    "order_count_monthly": "Order Count Monthly",
-    "orders_daily": "Orders Daily",
-    "orders_weekly": "Orders Weekly",
-    "orders_monthly": "Orders Monthly",
-    "in_progress": "In Progress",
-    "fulfilled": "Fulfilled",
-    "cancelled": "Cancelled",
-    "not_started": "Not Started"
+    "order_count_daily": "日次注文数",
+    "order_count_weekly": "週次注文数",
+    "order_count_monthly": "月次注文数",
+    "order_value_daily": "日次注文価値",
+    "orders_daily": "日次注文",
+    "orders_weekly": "週次注文",
+    "orders_monthly": "月次注文",
+    "status_trends": "ステータストレンド",
+    "in_progress": "進行中",
+    "fulfilled": "完了",
+    "cancelled": "キャンセル",
+    "not_started": "未開始"
   },
   "orderServiceArea": {
     "associated_services": "Associated Services",
@@ -580,10 +583,26 @@
     }
   },
   "orderMetrics": {
-    "activeOrders": "Active Orders",
-    "allOrders": "All Orders",
-    "activeOrderValue": "Active Order Value",
-    "completedOrderValue": "Completed Order Value"
+    "activeOrders": "アクティブな注文",
+    "allOrders": "すべての注文",
+    "activeOrderValue": "アクティブな注文の価値",
+    "completedOrderValue": "完了した注文の価値",
+    "completedOrders": "完了した注文",
+    "totalValue": "総価値",
+    "recentActivity": "最近の活動",
+    "ordersLast7Days": "過去7日間の注文",
+    "ordersLast30Days": "過去30日間の注文",
+    "valueLast7Days": "過去7日間の価値",
+    "valueLast30Days": "過去30日間の価値",
+    "statusBreakdown": "ステータス内訳",
+    "notStarted": "未開始",
+    "inProgress": "進行中",
+    "fulfilled": "完了",
+    "cancelled": "キャンセル",
+    "topCustomers": "トップ顧客",
+    "orders": "注文",
+    "failedToLoad": "読み込み失敗",
+    "noData": "データなし"
   },
   "marketListings": {
     "associatedListings": "Associated Market Listings",
@@ -1593,5 +1612,10 @@
     "title": "Login",
     "accountLink": "Account Link",
     "authenticateWithRSI": "Authenticate with RSI"
+  },
+  "common": {
+    "cancel": "キャンセル",
+    "loading": "読み込み中",
+    "error": "エラー"
   }
 }

@@ -81,6 +81,7 @@
   "listing": {
     "95PercentRating25PlusTransactions": "95%+ рейтинг і 25+ транзакцій",
     "90PercentRating25PlusTransactions": "90%+ рейтинг і 25+ транзакцій",
+    "responsiveBadge": "Відповідає на 90% замовлень протягом 24 годин",
     "tenPlusFiveStarStreak": "10+ п'ятизіркових оцінок поспіль",
     "fivePlusFiveStarStreak": "5+ п'ятизіркових оцінок поспіль"
   },
@@ -498,9 +499,11 @@
     "order_count_daily": "Кількість замовлень (щодня)",
     "order_count_weekly": "Кількість замовлень (щотижня)",
     "order_count_monthly": "Кількість замовлень (щомісяця)",
+    "order_value_daily": "Вартість замовлень (щодня)",
     "orders_daily": "Замовлення щодня",
     "orders_weekly": "Замовлення щотижня",
     "orders_monthly": "Замовлення щомісяця",
+    "status_trends": "Тренди статусу",
     "in_progress": "В процесі",
     "fulfilled": "Виконано",
     "cancelled": "Скасовано",
@@ -591,7 +594,23 @@
     "activeOrders": "Активні замовлення",
     "allOrders": "Усі замовлення",
     "activeOrderValue": "Вартість активних замовлень",
-    "completedOrderValue": "Вартість виконаних замовлень"
+    "completedOrderValue": "Вартість виконаних замовлень",
+    "completedOrders": "Виконані замовлення",
+    "totalValue": "Загальна вартість",
+    "recentActivity": "Остання активність",
+    "ordersLast7Days": "Замовлення за останні 7 днів",
+    "ordersLast30Days": "Замовлення за останні 30 днів",
+    "valueLast7Days": "Вартість за останні 7 днів",
+    "valueLast30Days": "Вартість за останні 30 днів",
+    "statusBreakdown": "Розподіл за статусами",
+    "notStarted": "Не розпочато",
+    "inProgress": "В процесі",
+    "fulfilled": "Виконано",
+    "cancelled": "Скасовано",
+    "topCustomers": "Топ клієнти",
+    "orders": "Замовлення",
+    "failedToLoad": "Помилка завантаження",
+    "noData": "Немає даних"
   },
   "marketListings": {
     "associatedListings": "Пов'язані товарні пропозиції",
@@ -1644,5 +1663,10 @@
       "copyrightViolation": "Порушення авторських прав",
       "other": "Інше"
     }
+  },
+  "common": {
+    "cancel": "Скасувати",
+    "loading": "Завантаження",
+    "error": "Помилка"
   }
 }

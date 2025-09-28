@@ -1469,6 +1469,9 @@ export function convertToLegacy(l: MarketSearchResult): MarketListingType {
                 rating_count: +l.rating_count,
                 streak: +l.rating_streak,
                 total_orders: +l.total_orders,
+                // Add responsive badge data
+                total_assignments: l.total_assignments || 0,
+                response_rate: l.response_rate || 0,
               },
             }
           : null,
@@ -1482,6 +1485,9 @@ export function convertToLegacy(l: MarketSearchResult): MarketListingType {
                 rating_count: l.rating_count,
                 streak: l.rating_streak,
                 total_orders: l.total_orders,
+                // Add responsive badge data
+                total_assignments: l.total_assignments || 0,
+                response_rate: l.response_rate || 0,
               },
             }
           : null,
@@ -1502,6 +1508,9 @@ export function convertToLegacy(l: MarketSearchResult): MarketListingType {
               rating_count: +l.rating_count,
               streak: +l.rating_streak,
               total_orders: +l.total_orders,
+              // Add responsive badge data
+              total_assignments: l.total_assignments || 0,
+              response_rate: l.response_rate || 0,
             },
           }
         : null,
@@ -1515,6 +1524,9 @@ export function convertToLegacy(l: MarketSearchResult): MarketListingType {
               rating_count: +l.rating_count,
               streak: +l.rating_streak,
               total_orders: +l.total_orders,
+              // Add responsive badge data
+              total_assignments: l.total_assignments || 0,
+              response_rate: l.response_rate || 0,
             },
           }
         : null,

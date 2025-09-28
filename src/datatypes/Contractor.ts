@@ -14,6 +14,8 @@ export interface Rating {
   rating_count: number
   streak: number
   total_orders: number
+  response_rate?: number
+  total_assignments?: number
 }
 
 export interface Contractor {

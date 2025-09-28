@@ -291,3 +291,81 @@ export const {
   useCreateOrderThreadMutation,
   useSearchOrdersQuery,
 } = ordersApi
+
+// Add contractor metrics interface
+export interface ContractorOrderMetrics {
+  total_orders: number;
+  total_value: number;
+  active_value: number;  // Sum of costs for active orders (not-started + in-progress)
+  completed_value: number;  // Sum of costs for fulfilled orders
+  status_counts: {
+    "not-started": number;
+    "in-progress": number;
+    "fulfilled": number;
+    "cancelled": number;
+  };
+  recent_activity: {
+    orders_last_7_days: number;
+    orders_last_30_days: number;
+    value_last_7_days: number;
+    value_last_30_days: number;
+  };
+  top_customers: Array<{
+    username: string;
+    order_count: number;
+    total_value: number;
+  }>;
+  // Add trend data for charts
+  trend_data?: {
+    daily_orders: Array<{ date: string; count: number }>;
+    daily_value: Array<{ date: string; value: number }>;
+    status_trends: {
+      "not-started": Array<{ date: string; count: number }>;
+      "in-progress": Array<{ date: string; count: number }>;
+      "fulfilled": Array<{ date: string; count: number }>;
+      "cancelled": Array<{ date: string; count: number }>;
+    };
+  };
+}
+
+// New interface for comprehensive contractor data
+export interface ContractorOrderData {
+  metrics: ContractorOrderMetrics;
+  // Include minimal order data for any remaining use cases
+  recent_orders?: Array<{
+    order_id: string;
+    timestamp: string;
+    status: string;
+    cost: number;
+    title: string;
+  }>;
+}
+
+// Add the new metrics endpoints
+const ordersApiWithMetrics = serviceApi.injectEndpoints({
+  overrideExisting: false,
+  endpoints: (builder) => ({
+    getContractorOrderMetrics: builder.query<ContractorOrderMetrics, string>({
+      query: (spectrum_id) => `/api/orders/contractor/${spectrum_id}/metrics`,
+      providesTags: ["Order" as const, { type: "Order" as const }],
+      transformResponse: unwrapResponse,
+    }),
+    // New comprehensive endpoint that replaces getOrdersByContractor and getAssignedOrdersByContractor
+    getContractorOrderData: builder.query<ContractorOrderData, { spectrum_id: string; include_trends?: boolean; assigned_only?: boolean }>({
+      query: ({ spectrum_id, include_trends = true, assigned_only = false }) => {
+        const params = new URLSearchParams();
+        if (include_trends) params.append('include_trends', 'true');
+        if (assigned_only) params.append('assigned_only', 'true');
+        
+        return `/api/orders/contractor/${spectrum_id}/data?${params.toString()}`;
+      },
+      providesTags: ["Order" as const, { type: "Order" as const }],
+      transformResponse: unwrapResponse,
+    }),
+  }),
+});
+
+export const {
+  useGetContractorOrderMetricsQuery,
+  useGetContractorOrderDataQuery,
+} = ordersApiWithMetrics;

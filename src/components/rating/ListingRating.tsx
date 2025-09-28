@@ -1,6 +1,7 @@
 import { MinimalUser } from "../../datatypes/User"
 import { MinimalContractor } from "../../datatypes/Contractor"
 import {
+  AccessTimeRounded,
   AutoAwesomeRounded,
   AutoGraphOutlined,
   StarRounded,
@@ -138,6 +139,14 @@ export function SellerRatingCount(props: {
           </Tooltip>
         ) : null
       ) : null}
+      
+      {/* Responsive Badge */}
+      {(rating.total_assignments || 0) >= 10 && (rating.response_rate || 0) >= 90 ? (
+        <Tooltip title={t("listing.responsiveBadge")}>
+          <AccessTimeRounded color={"success"} />
+        </Tooltip>
+      ) : null}
+      
       {rating.streak >= 10 ? (
         <Tooltip title={t("listing.tenPlusFiveStarStreak")}>
           <Box>

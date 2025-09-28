@@ -1,24 +1,33 @@
 import { Section } from "../../components/paper/Section"
 import { OrderStub } from "../../datatypes/Order"
 import React, { useMemo } from "react"
-import { Grid, List, ListItem } from "@mui/material"
+import { Grid, List, ListItem, Typography } from "@mui/material"
 import { DynamicApexChart } from "../../components/charts/DynamicCharts"
 import { useTranslation } from "react-i18next"
 import {
   useGetAllAssignedOrdersQuery,
-  useGetAssignedOrdersByContractorQuery,
-  useGetOrdersByContractorQuery,
+  useGetContractorOrderDataQuery,
+  ContractorOrderData,
 } from "../../store/orders"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 import { UnderlineLink } from "../../components/typography/UnderlineLink"
 import { Link } from "react-router-dom"
+
+// Minimal interface for trend data
+interface TrendOrder {
+  order_id: string
+  timestamp: string
+  status: string
+  cost: number
+  title: string
+}
 
 function round(n: number, increment: number, offset: number) {
   return Math.ceil((n - offset) / increment) * increment + offset
 }
 
 function getTotalInInterval(
-  orders: OrderStub[],
+  orders: OrderStub[] | TrendOrder[],
   interval: number,
   first: Date,
 ) {
@@ -40,7 +49,143 @@ function getTotalInInterval(
     .map((entry) => ({ x: new Date(entry[0]).toISOString(), y: entry[1] }))
 }
 
-export function OrderTrend(props: { orders: OrderStub[] }) {
+// New component that works with pre-computed metrics data
+export function OrderTrendFromMetrics(props: { data: ContractorOrderData }) {
+  const { data } = props
+  const { t } = useTranslation()
+
+  if (!data.metrics.trend_data) {
+    return <div>No trend data available</div>
+  }
+
+  const { trend_data } = data.metrics
+
+  // Convert trend data to chart format
+  const dailyOrdersData = trend_data.daily_orders.map(item => ({
+    x: item.date,
+    y: item.count
+  }))
+
+  const dailyValueData = trend_data.daily_value.map(item => ({
+    x: item.date,
+    y: item.value
+  }))
+
+  const statusTrendsData = Object.entries(trend_data.status_trends).map(([status, data]) => ({
+    name: status,
+    data: data.map(item => ({ x: item.date, y: item.count }))
+  }))
+
+  return (
+    <>
+      <Section xs={12}>
+        <Grid item xs={12}>
+          <Typography
+            variant={"subtitle1"}
+            color={"text.primary"}
+            fontWeight={"bold"}
+          >
+            {t("orderTrend.order_count_daily")}
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <DynamicApexChart
+            type="line"
+            series={[
+              {
+                name: t("orderTrend.orders_daily"),
+                data: dailyOrdersData,
+              },
+            ]}
+            options={{
+              chart: {
+                type: "line",
+                toolbar: { show: false },
+              },
+              xaxis: {
+                type: "datetime",
+              },
+              yaxis: {
+                title: { text: t("orderTrend.orders_daily") },
+              },
+              stroke: { curve: "smooth" },
+            }}
+          />
+        </Grid>
+      </Section>
+
+      <Section xs={12}>
+        <Grid item xs={12}>
+          <Typography
+            variant={"subtitle1"}
+            color={"text.primary"}
+            fontWeight={"bold"}
+          >
+            {t("orderTrend.order_value_daily")}
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <DynamicApexChart
+            type="line"
+            series={[
+              {
+                name: "Value (aUEC)",
+                data: dailyValueData,
+              },
+            ]}
+            options={{
+              chart: {
+                type: "line",
+                toolbar: { show: false },
+              },
+              xaxis: {
+                type: "datetime",
+              },
+              yaxis: {
+                title: { text: "Value (aUEC)" },
+              },
+              stroke: { curve: "smooth" },
+            }}
+          />
+        </Grid>
+      </Section>
+
+      <Section xs={12}>
+        <Grid item xs={12}>
+          <Typography
+            variant={"subtitle1"}
+            color={"text.primary"}
+            fontWeight={"bold"}
+          >
+            {t("orderTrend.status_trends")}
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <DynamicApexChart
+            type="line"
+            series={statusTrendsData}
+            options={{
+              chart: {
+                type: "line",
+                toolbar: { show: false },
+              },
+              xaxis: {
+                type: "datetime",
+              },
+              yaxis: {
+                title: { text: "Order Count" },
+              },
+              stroke: { curve: "smooth" },
+            }}
+          />
+        </Grid>
+      </Section>
+    </>
+  )
+}
+
+// Component that works with minimal trend order data
+export function OrderTrendFromOrders(props: { orders: TrendOrder[] }) {
   const { orders } = props
   const { t } = useTranslation()
 
@@ -276,28 +421,61 @@ export function OrderTrend(props: { orders: OrderStub[] }) {
 
 export function OrgOrderTrend() {
   const [contractor] = useCurrentOrg()
-  const { data: orders } = useGetOrdersByContractorQuery(
-    contractor?.spectrum_id!,
+  const { data: orderData } = useGetContractorOrderDataQuery(
+    { 
+      spectrum_id: contractor?.spectrum_id!,
+      include_trends: true,
+      assigned_only: false 
+    },
     {
       skip: !contractor?.spectrum_id,
     },
   )
 
-  return <OrderTrend orders={orders || []} />
+  // Use metrics trend data if available, otherwise fall back to recent orders
+  if (orderData?.metrics?.trend_data) {
+    return <OrderTrendFromMetrics data={orderData} />
+  }
+
+  // Fallback to original implementation with recent orders
+  return <OrderTrendFromOrders orders={orderData?.recent_orders || []} />
 }
 
 export function UserOrderTrend() {
   const [contractor] = useCurrentOrg()
 
-  const { data: orders } = useGetAssignedOrdersByContractorQuery(
-    contractor?.spectrum_id!,
-    { skip: !contractor?.spectrum_id },
+  const { data: orderData } = useGetContractorOrderDataQuery(
+    { 
+      spectrum_id: contractor?.spectrum_id!,
+      include_trends: true,
+      assigned_only: true 
+    },
+    {
+      skip: !contractor?.spectrum_id,
+    },
   )
+
   const { data: allOrders } = useGetAllAssignedOrdersQuery(undefined, {
-    skip: !!contractor,
+    skip: !!contractor?.spectrum_id,
   })
 
-  return <OrderTrend orders={[...(orders || []), ...(allOrders || [])]} />
+  // Use metrics trend data if available, otherwise fall back to recent orders
+  if (orderData?.metrics?.trend_data) {
+    return <OrderTrendFromMetrics data={orderData} />
+  }
+
+  // Fallback to original implementation with recent orders
+  const trendOrders = [
+    ...(orderData?.recent_orders || []),
+    ...(allOrders || []).map(order => ({
+      order_id: order.order_id,
+      timestamp: order.timestamp,
+      status: order.status,
+      cost: parseFloat(order.cost),
+      title: order.title
+    }))
+  ]
+  return <OrderTrendFromOrders orders={trendOrders} />
 }
 
 export function TopContractors(props: { orders: OrderStub[] }) {

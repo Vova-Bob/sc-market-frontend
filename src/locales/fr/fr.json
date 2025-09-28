@@ -78,6 +78,7 @@
   "listing": {
     "95PercentRating25PlusTransactions": "95%+ rating and 25+ transactions",
     "90PercentRating25PlusTransactions": "90%+ rating and 25+ transactions",
+    "responsiveBadge": "Répond à 90% des commandes dans les 24 heures",
     "tenPlusFiveStarStreak": "10+ 5 star streak",
     "fivePlusFiveStarStreak": "5+ 5 star streak"
   },
@@ -487,16 +488,18 @@
     "title": "Recent Orders"
   },
   "orderTrend": {
-    "order_count_daily": "Order Count Daily",
-    "order_count_weekly": "Order Count Weekly",
-    "order_count_monthly": "Order Count Monthly",
-    "orders_daily": "Orders Daily",
-    "orders_weekly": "Orders Weekly",
-    "orders_monthly": "Orders Monthly",
-    "in_progress": "In Progress",
-    "fulfilled": "Fulfilled",
-    "cancelled": "Cancelled",
-    "not_started": "Not Started"
+    "order_count_daily": "Nombre de Commandes Quotidien",
+    "order_count_weekly": "Nombre de Commandes Hebdomadaire",
+    "order_count_monthly": "Nombre de Commandes Mensuel",
+    "order_value_daily": "Valeur des Commandes Quotidienne",
+    "orders_daily": "Commandes Quotidiennes",
+    "orders_weekly": "Commandes Hebdomadaires",
+    "orders_monthly": "Commandes Mensuelles",
+    "status_trends": "Tendances de Statut",
+    "in_progress": "En Cours",
+    "fulfilled": "Rempli",
+    "cancelled": "Annulé",
+    "not_started": "Non Commencé"
   },
   "orderServiceArea": {
     "associated_services": "Associated Services",
@@ -580,10 +583,26 @@
     }
   },
   "orderMetrics": {
-    "activeOrders": "Active Orders",
-    "allOrders": "All Orders",
-    "activeOrderValue": "Active Order Value",
-    "completedOrderValue": "Completed Order Value"
+    "activeOrders": "Commandes Actives",
+    "allOrders": "Toutes les Commandes",
+    "activeOrderValue": "Valeur des Commandes Actives",
+    "completedOrderValue": "Valeur des Commandes Terminées",
+    "completedOrders": "Commandes Terminées",
+    "totalValue": "Valeur Totale",
+    "recentActivity": "Activité Récente",
+    "ordersLast7Days": "Commandes 7 Derniers Jours",
+    "ordersLast30Days": "Commandes 30 Derniers Jours",
+    "valueLast7Days": "Valeur 7 Derniers Jours",
+    "valueLast30Days": "Valeur 30 Derniers Jours",
+    "statusBreakdown": "Répartition des Statuts",
+    "notStarted": "Non Commencé",
+    "inProgress": "En Cours",
+    "fulfilled": "Exécuté",
+    "cancelled": "Annulé",
+    "topCustomers": "Meilleurs Clients",
+    "orders": "Commandes",
+    "failedToLoad": "Échec du Chargement",
+    "noData": "Aucune Donnée"
   },
   "marketListings": {
     "associatedListings": "Associated Market Listings",
@@ -1595,5 +1614,10 @@
     "title": "Login",
     "accountLink": "Account Link",
     "authenticateWithRSI": "Authenticate with RSI"
+  },
+  "common": {
+    "cancel": "Annuler",
+    "loading": "Chargement",
+    "error": "Erreur"
   }
 }

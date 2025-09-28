@@ -63,6 +63,9 @@ export interface MarketSearchResult {
   rating_count: number
   rating_streak: number
   total_orders: number
+  // Add responsive badge data
+  total_assignments: number | null
+  response_rate: number | null
   title: string
   photo: string
   timestamp: number

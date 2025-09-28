@@ -318,6 +318,7 @@
   "listing": {
     "95PercentRating25PlusTransactions": "95%+ rating and 25+ transactions",
     "90PercentRating25PlusTransactions": "90%+ rating and 25+ transactions",
+    "responsiveBadge": "Responds to 90% of orders within 24 hours",
     "tenPlusFiveStarStreak": "10+ 5 star streak",
     "fivePlusFiveStarStreak": "5+ 5 star streak"
   },
@@ -746,9 +747,11 @@
     "order_count_daily": "Order Count Daily",
     "order_count_weekly": "Order Count Weekly",
     "order_count_monthly": "Order Count Monthly",
+    "order_value_daily": "Order Value Daily",
     "orders_daily": "Orders Daily",
     "orders_weekly": "Orders Weekly",
     "orders_monthly": "Orders Monthly",
+    "status_trends": "Status Trends",
     "in_progress": "In Progress",
     "fulfilled": "Fulfilled",
     "cancelled": "Cancelled",
@@ -839,7 +842,23 @@
     "activeOrders": "Active Orders",
     "allOrders": "All Orders",
     "activeOrderValue": "Active Order Value",
-    "completedOrderValue": "Completed Order Value"
+    "completedOrderValue": "Completed Order Value",
+    "completedOrders": "Completed Orders",
+    "totalValue": "Total Value",
+    "recentActivity": "Recent Activity",
+    "ordersLast7Days": "Orders Last 7 Days",
+    "ordersLast30Days": "Orders Last 30 Days",
+    "valueLast7Days": "Value Last 7 Days",
+    "valueLast30Days": "Value Last 30 Days",
+    "statusBreakdown": "Status Breakdown",
+    "notStarted": "Not Started",
+    "inProgress": "In Progress",
+    "fulfilled": "Fulfilled",
+    "cancelled": "Cancelled",
+    "topCustomers": "Top Customers",
+    "orders": "Orders",
+    "failedToLoad": "Failed to Load",
+    "noData": "No Data"
   },
   "marketListings": {
     "associatedListings": "Associated Market Listings",
@@ -1948,7 +1967,9 @@
     "error": "Failed to unblock user"
   },
   "common": {
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "loading": "Loading",
+    "error": "Error"
   },
   "userActions": {
     "menu": "User actions menu",

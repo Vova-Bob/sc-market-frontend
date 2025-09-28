@@ -78,6 +78,7 @@
   "listing": {
     "95PercentRating25PlusTransactions": "95%+ 好评率和25+ 成交记录",
     "90PercentRating25PlusTransactions": "90%+ 好评率和25+ 成交记录",
+    "responsiveBadge": "24小時內回覆90%的訂單",
     "tenPlusFiveStarStreak": "10+ 连续五星好评",
     "fivePlusFiveStarStreak": "5+ 连续五星好评"
   },
@@ -482,16 +483,18 @@
     "title": ""
   },
   "orderTrend": {
-    "order_count_daily": "",
-    "order_count_weekly": "",
-    "order_count_monthly": "",
-    "orders_daily": "",
-    "orders_weekly": "",
-    "orders_monthly": "",
-    "in_progress": "",
-    "fulfilled": "",
-    "cancelled": "",
-    "not_started": ""
+    "order_count_daily": "每日訂單數量",
+    "order_count_weekly": "每週訂單數量",
+    "order_count_monthly": "每月訂單數量",
+    "order_value_daily": "每日訂單價值",
+    "orders_daily": "每日訂單",
+    "orders_weekly": "每週訂單",
+    "orders_monthly": "每月訂單",
+    "status_trends": "狀態趨勢",
+    "in_progress": "進行中",
+    "fulfilled": "已完成",
+    "cancelled": "已取消",
+    "not_started": "未開始"
   },
   "orderServiceArea": {
     "associated_services": "",
@@ -575,10 +578,26 @@
     }
   },
   "orderMetrics": {
-    "activeOrders": "",
-    "allOrders": "",
-    "activeOrderValue": "",
-    "completedOrderValue": ""
+    "activeOrders": "活躍訂單",
+    "allOrders": "所有訂單",
+    "activeOrderValue": "活躍訂單價值",
+    "completedOrderValue": "已完成訂單價值",
+    "completedOrders": "已完成訂單",
+    "totalValue": "總價值",
+    "recentActivity": "最近活動",
+    "ordersLast7Days": "過去7天訂單",
+    "ordersLast30Days": "過去30天訂單",
+    "valueLast7Days": "過去7天價值",
+    "valueLast30Days": "過去30天價值",
+    "statusBreakdown": "狀態分解",
+    "notStarted": "未開始",
+    "inProgress": "進行中",
+    "fulfilled": "已完成",
+    "cancelled": "已取消",
+    "topCustomers": "頂級客戶",
+    "orders": "訂單",
+    "failedToLoad": "載入失敗",
+    "noData": "無資料"
   },
   "marketListings": {
     "associatedListings": "",
@@ -1563,5 +1582,10 @@
     "title": "",
     "accountLink": "",
     "authenticateWithRSI": ""
+  },
+  "common": {
+    "cancel": "取消",
+    "loading": "載入中",
+    "error": "錯誤"
   }
 }

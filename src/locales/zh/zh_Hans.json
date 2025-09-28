@@ -81,6 +81,7 @@
   "listing": {
     "95PercentRating25PlusTransactions": "95%+ 好评率和25+ 成交记录",
     "90PercentRating25PlusTransactions": "90%+ 好评率和25+ 成交记录",
+    "responsiveBadge": "24小时内回复90%的订单",
     "tenPlusFiveStarStreak": "10+ 连续五星好评",
     "fivePlusFiveStarStreak": "5+ 连续五星好评"
   },
@@ -501,16 +502,18 @@
     "title": "Recent Orders"
   },
   "orderTrend": {
-    "order_count_daily": "Order Count Daily",
-    "order_count_weekly": "Order Count Weekly",
-    "order_count_monthly": "Order Count Monthly",
-    "orders_daily": "Orders Daily",
-    "orders_weekly": "Orders Weekly",
-    "orders_monthly": "Orders Monthly",
-    "in_progress": "In Progress",
-    "fulfilled": "Fulfilled",
-    "cancelled": "Cancelled",
-    "not_started": "Not Started"
+    "order_count_daily": "每日订单数量",
+    "order_count_weekly": "每周订单数量",
+    "order_count_monthly": "每月订单数量",
+    "order_value_daily": "每日订单价值",
+    "orders_daily": "每日订单",
+    "orders_weekly": "每周订单",
+    "orders_monthly": "每月订单",
+    "status_trends": "状态趋势",
+    "in_progress": "进行中",
+    "fulfilled": "已完成",
+    "cancelled": "已取消",
+    "not_started": "未开始"
   },
   "orderServiceArea": {
     "associated_services": "Associated Services",
@@ -594,10 +597,26 @@
     }
   },
   "orderMetrics": {
-    "activeOrders": "Active Orders",
-    "allOrders": "All Orders",
-    "activeOrderValue": "Active Order Value",
-    "completedOrderValue": "Completed Order Value"
+    "activeOrders": "活跃订单",
+    "allOrders": "所有订单",
+    "activeOrderValue": "活跃订单价值",
+    "completedOrderValue": "已完成订单价值",
+    "completedOrders": "已完成订单",
+    "totalValue": "总价值",
+    "recentActivity": "最近活动",
+    "ordersLast7Days": "过去7天订单",
+    "ordersLast30Days": "过去30天订单",
+    "valueLast7Days": "过去7天价值",
+    "valueLast30Days": "过去30天价值",
+    "statusBreakdown": "状态分解",
+    "notStarted": "未开始",
+    "inProgress": "进行中",
+    "fulfilled": "已完成",
+    "cancelled": "已取消",
+    "topCustomers": "顶级客户",
+    "orders": "订单",
+    "failedToLoad": "加载失败",
+    "noData": "无数据"
   },
   "marketListings": {
     "associatedListings": "Associated Market Listings",
@@ -1648,5 +1667,10 @@
       "rowsPerPage": "Rows per page:",
       "displayedRows": "{{from}}-{{to}} of {{count}}"
     }
+  },
+  "common": {
+    "cancel": "取消",
+    "loading": "加载中",
+    "error": "错误"
   }
 }
