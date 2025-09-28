@@ -21,9 +21,9 @@ import {
 import { Link } from "react-router-dom"
 import { HeadCell } from "../../components/table/PaginatedTable"
 import {
-  useGetUserByUsernameQuery,
   useGetUserProfileQuery,
 } from "../../store/profile"
+import { MinimalUser } from "../../datatypes/User"
 import { UnderlineLink } from "../../components/typography/UnderlineLink"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 import {
@@ -51,7 +51,6 @@ function PeopleRow(props: {
 }) {
   const { row, onClick, isItemSelected, labelId, contractor } = props
   const { t } = useTranslation()
-  const user = useGetUserByUsernameQuery(row.username)
 
   const [roles, setRoles] = useState(row.roles)
 
@@ -160,7 +159,7 @@ function PeopleRow(props: {
         // padding="none"
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <Avatar src={user.data?.avatar} />
+          <Avatar src={row.avatar} />
           <Box>
             <Link to={`/user/${row.username}`}>
               <UnderlineLink
@@ -172,7 +171,7 @@ function PeopleRow(props: {
               </UnderlineLink>
             </Link>
             <Typography variant={"subtitle2"}>
-              {user.data?.display_name}
+              {row.display_name}
             </Typography>
           </Box>
         </Box>
@@ -261,8 +260,7 @@ function PeopleRow(props: {
   )
 }
 
-interface OrgMember {
-  username: string
+interface OrgMember extends MinimalUser {
   roles: string[]
 }
 

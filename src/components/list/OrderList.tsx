@@ -9,13 +9,11 @@ import {
 import React, { useMemo } from "react"
 import { Link } from "react-router-dom"
 import { Order } from "../../datatypes/Order"
-import { useGetUserByUsernameQuery } from "../../store/profile"
 
 export function OrderListItem(props: { order: Order }) {
   const { order } = props
-  const { data: customer } = useGetUserByUsernameQuery(order.customer!, {
-    skip: !order.customer,
-  })
+  // Use customer_minimal data from the order instead of making a separate API call
+  const customer = (order as any).customer_minimal
 
   return (
     <ListItemButton component={Link} to={`/contract/${order.order_id}`}>

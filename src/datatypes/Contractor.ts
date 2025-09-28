@@ -1,4 +1,5 @@
 import { ContractorKindIconKey } from "../views/contractor/ContractorList"
+import { MinimalUser } from "./User"
 
 export interface DiscordSettings {
   guild_avatar: string
@@ -95,9 +96,6 @@ export interface ContractorRole {
   manage_blocklist: boolean
 }
 
-export interface ContractorMember {
-  user_id: string
-  username: string
+export interface ContractorMember extends MinimalUser {
   roles: string[]
-  avatar: string
 }

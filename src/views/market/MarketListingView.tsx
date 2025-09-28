@@ -17,7 +17,7 @@ import {
   Rating,
   Typography,
   Skeleton,
-  Pagination,
+  TablePagination,
   Tabs,
   Tab,
 } from "@mui/material"
@@ -803,9 +803,10 @@ export function MarketListingViewSkeleton() {
 function ListingOrdersSection({ listingId }: { listingId: string }) {
   const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState(0)
-  const [activeOrdersPage, setActiveOrdersPage] = useState(1)
-  const [completedOrdersPage, setCompletedOrdersPage] = useState(1)
-  const pageSize = 10
+  const [activeOrdersPage, setActiveOrdersPage] = useState(0) // TablePagination uses 0-based indexing
+  const [completedOrdersPage, setCompletedOrdersPage] = useState(0) // TablePagination uses 0-based indexing
+  const [activeOrdersPageSize, setActiveOrdersPageSize] = useState(10)
+  const [completedOrdersPageSize, setCompletedOrdersPageSize] = useState(10)
 
   // Define status arrays as constants to avoid recreation
   const activeStatuses = ['not-started', 'in-progress']
@@ -817,8 +818,8 @@ function ListingOrdersSection({ listingId }: { listingId: string }) {
     isLoading: activeOrdersLoading 
   } = useMarketGetListingOrdersQuery({
     listing_id: listingId,
-    page: activeOrdersPage,
-    pageSize,
+    page: activeOrdersPage + 1, // Convert 0-based to 1-based for API
+    pageSize: activeOrdersPageSize,
     status: activeStatuses,
     sortBy: 'timestamp',
     sortOrder: 'desc',
@@ -830,8 +831,8 @@ function ListingOrdersSection({ listingId }: { listingId: string }) {
     isLoading: completedOrdersLoading 
   } = useMarketGetListingOrdersQuery({
     listing_id: listingId,
-    page: completedOrdersPage,
-    pageSize,
+    page: completedOrdersPage + 1, // Convert 0-based to 1-based for API
+    pageSize: completedOrdersPageSize,
     status: completedStatuses,
     sortBy: 'timestamp',
     sortOrder: 'desc',
@@ -841,12 +842,22 @@ function ListingOrdersSection({ listingId }: { listingId: string }) {
     setActiveTab(newValue)
   }
 
-  const handleActiveOrdersPageChange = (_: React.ChangeEvent<unknown>, page: number) => {
+  const handleActiveOrdersPageChange = (_: React.MouseEvent<HTMLButtonElement> | null, page: number) => {
     setActiveOrdersPage(page)
   }
 
-  const handleCompletedOrdersPageChange = (_: React.ChangeEvent<unknown>, page: number) => {
+  const handleCompletedOrdersPageChange = (_: React.MouseEvent<HTMLButtonElement> | null, page: number) => {
     setCompletedOrdersPage(page)
+  }
+
+  const handleActiveOrdersPageSizeChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setActiveOrdersPageSize(parseInt(event.target.value, 10))
+    setActiveOrdersPage(0)
+  }
+
+  const handleCompletedOrdersPageSizeChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setCompletedOrdersPageSize(parseInt(event.target.value, 10))
+    setCompletedOrdersPage(0)
   }
 
   // Don't render if no orders exist
@@ -883,15 +894,33 @@ function ListingOrdersSection({ listingId }: { listingId: string }) {
                 ) : (
                   <>
                     <OrderList orders={activeOrdersData?.data || []} />
-                    {activeOrdersData?.pagination && activeOrdersData.pagination.totalPages > 1 && (
-                      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                        <Pagination
-                          count={activeOrdersData.pagination.totalPages}
-                          page={activeOrdersPage}
-                          onChange={handleActiveOrdersPageChange}
-                          color="primary"
-                        />
-                      </Box>
+                    {activeOrdersData?.pagination && activeOrdersData.pagination.totalItems > 0 && (
+                      <TablePagination
+                        labelRowsPerPage={t("rows_per_page")}
+                        labelDisplayedRows={({ from, to, count }) => (
+                          <>
+                            {t("displayed_rows", {
+                              from: from.toLocaleString(undefined),
+                              to: to.toLocaleString(undefined),
+                              count: count,
+                            })}
+                          </>
+                        )}
+                        SelectProps={{
+                          "aria-label": t("rows_per_page"),
+                          color: "primary",
+                        }}
+                        rowsPerPageOptions={[5, 10, 20, 50]}
+                        component="div"
+                        count={activeOrdersData.pagination.totalItems}
+                        rowsPerPage={activeOrdersPageSize}
+                        page={activeOrdersPage}
+                        onPageChange={handleActiveOrdersPageChange}
+                        onRowsPerPageChange={handleActiveOrdersPageSizeChange}
+                        color={"primary"}
+                        nextIconButtonProps={{ color: "primary" }}
+                        backIconButtonProps={{ color: "primary" }}
+                      />
                     )}
                   </>
                 )}
@@ -905,15 +934,33 @@ function ListingOrdersSection({ listingId }: { listingId: string }) {
                 ) : (
                   <>
                     <OrderList orders={completedOrdersData?.data || []} />
-                    {completedOrdersData?.pagination && completedOrdersData.pagination.totalPages > 1 && (
-                      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                        <Pagination
-                          count={completedOrdersData.pagination.totalPages}
-                          page={completedOrdersPage}
-                          onChange={handleCompletedOrdersPageChange}
-                          color="primary"
-                        />
-                      </Box>
+                    {completedOrdersData?.pagination && completedOrdersData.pagination.totalItems > 0 && (
+                      <TablePagination
+                        labelRowsPerPage={t("rows_per_page")}
+                        labelDisplayedRows={({ from, to, count }) => (
+                          <>
+                            {t("displayed_rows", {
+                              from: from.toLocaleString(undefined),
+                              to: to.toLocaleString(undefined),
+                              count: count,
+                            })}
+                          </>
+                        )}
+                        SelectProps={{
+                          "aria-label": t("rows_per_page"),
+                          color: "primary",
+                        }}
+                        rowsPerPageOptions={[5, 10, 20, 50]}
+                        component="div"
+                        count={completedOrdersData.pagination.totalItems}
+                        rowsPerPage={completedOrdersPageSize}
+                        page={completedOrdersPage}
+                        onPageChange={handleCompletedOrdersPageChange}
+                        onRowsPerPageChange={handleCompletedOrdersPageSizeChange}
+                        color={"primary"}
+                        nextIconButtonProps={{ color: "primary" }}
+                        backIconButtonProps={{ color: "primary" }}
+                      />
                     )}
                   </>
                 )}
