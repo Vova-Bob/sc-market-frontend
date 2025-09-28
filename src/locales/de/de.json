@@ -982,8 +982,9 @@
     "updated": "Updated",
     "expires": "Expires",
     "description": "Description",
-    "activeOrders": "Active Orders",
-    "previousOrders": "Previous Orders"
+    "orders": "Bestellungen",
+    "activeOrders": "Aktive Bestellungen",
+    "previousOrders": "Vorherige Bestellungen"
   },
   "MarketListingForm": {
     "about": "About",

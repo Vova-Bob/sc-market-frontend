@@ -999,8 +999,9 @@
     "updated": "Updated",
     "expires": "Expires",
     "description": "Description",
-    "activeOrders": "Active Orders",
-    "previousOrders": "Previous Orders"
+    "orders": "订单",
+    "activeOrders": "活跃订单",
+    "previousOrders": "历史订单"
   },
   "MarketListingForm": {
     "about": "About",

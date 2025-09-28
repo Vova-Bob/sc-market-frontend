@@ -29,6 +29,7 @@ import {
   useGetPublicServicesQuery,
   useGetServicesContractorQuery,
   useGetServicesQuery,
+  ServicesQueryParams,
 } from "../../store/services"
 import { PAYMENT_TYPE_MAP } from "../../util/constants"
 import { formatServiceUrl } from "../../util/urls"
@@ -202,12 +203,47 @@ export function ServiceListing(props: { service: Service; index: number }) {
 
 export function ServiceListings(props: { user?: string; contractor?: string }) {
   const [page, setPage] = useState(0)
-  const [perPage, setPerPage] = useState(6)
+  const [perPage, setPerPage] = useState(20)
   const [searchState] = useServiceSearch()
   const { user, contractor } = props
 
   const ref = useRef<HTMLDivElement>(null)
   const { t } = useTranslation()
+
+  // Build query parameters for server-side filtering and pagination
+  const queryParams: ServicesQueryParams = useMemo(() => {
+    const params: ServicesQueryParams = {
+      page,
+      pageSize: perPage,
+      sortBy: "timestamp",
+      sortOrder: "desc",
+    }
+
+    // Add search filters
+    if (searchState.query) {
+      params.search = searchState.query
+    }
+    if (searchState.kind) {
+      params.kind = searchState.kind
+    }
+    if (searchState.minOffer) {
+      params.minCost = searchState.minOffer
+    }
+    if (searchState.maxOffer) {
+      params.maxCost = searchState.maxOffer
+    }
+    if (searchState.paymentType) {
+      params.paymentType = searchState.paymentType
+    }
+
+    return params
+  }, [page, perPage, searchState])
+
+  const {
+    data: servicesResponse,
+    isLoading,
+    error,
+  } = useGetPublicServicesQuery(queryParams)
 
   const handleChangePage = useCallback(
     (event: unknown, newPage: number) => {
@@ -229,59 +265,62 @@ export function ServiceListings(props: { user?: string; contractor?: string }) {
     setPage(0)
   }
 
-  const { data: services } = useGetPublicServicesQuery()
+  // Apply client-side filters for user/contractor (these are specific to the component)
+  const filteredServices = useMemo(() => {
+    if (!servicesResponse?.data) return []
 
-  const filteredListings = useMemo(
-    () =>
-      (services || [])
-        .filter((listing) => {
-          return (
-            (!searchState.kind || searchState.kind === listing.kind) &&
-            (!searchState.query ||
-              listing.service_name.includes(searchState.query) ||
-              listing.service_description.includes(searchState.query)) &&
-            (searchState.maxOffer == null ||
-              listing.cost <= searchState.maxOffer) &&
-            (!searchState.minOffer || listing.cost >= searchState.minOffer) &&
-            (!searchState.paymentType ||
-              listing.payment_type === searchState.paymentType)
-          )
-        })
-        .filter((listing) => {
-          return (
-            (!user || listing.user?.username === user) &&
-            (!contractor || contractor === listing.contractor?.spectrum_id)
-          )
-          // && (!org || listing.contractor_seller?.spectrum_id === org)
-        })
-        .filter((listing) => {
-          return (
-            !CURRENT_CUSTOM_ORG ||
-            listing.contractor?.spectrum_id === CURRENT_CUSTOM_ORG
-          )
-        })
-        .sort((a, b) => +new Date(b.timestamp) - +new Date(a.timestamp)),
-    [services, searchState, user, contractor],
-  )
+    return servicesResponse.data.filter((service) => {
+      // Filter by user if specified
+      if (user && service.user?.username !== user) {
+        return false
+      }
+
+      // Filter by contractor if specified
+      if (contractor && service.contractor?.spectrum_id !== contractor) {
+        return false
+      }
+
+      // Filter by custom org if specified
+      if (
+        CURRENT_CUSTOM_ORG &&
+        service.contractor?.spectrum_id !== CURRENT_CUSTOM_ORG
+      ) {
+        return false
+      }
+
+      return true
+    })
+  }, [servicesResponse?.data, user, contractor])
+
+  if (isLoading) {
+    return (
+      <Grid item xs={12}>
+        <RecentListingsSkeleton />
+      </Grid>
+    )
+  }
+
+  if (error) {
+    return (
+      <Grid item xs={12}>
+        <Typography color="error">{t("error_loading_services")}</Typography>
+      </Grid>
+    )
+  }
 
   return (
     <React.Fragment>
       <Grid item xs={12} sx={{ paddingTop: 0 }}>
         <div ref={ref} />
       </Grid>
-      {filteredListings
-        .filter(
-          (item, index) =>
-            index >= perPage * page && index < perPage * (page + 1),
-        )
-        .map((listing, index) => (
-          <ServiceListing
-            service={listing}
-            key={listing.service_id}
-            index={index}
-          />
-        ))}
-      {services && !filteredListings.length && (
+      {filteredServices.map((service, index) => (
+        <ServiceListing
+          service={service}
+          key={service.service_id}
+          index={index}
+        />
+      ))}
+      {servicesResponse && filteredServices.length === 0 && (
         <Grid item xs={12}>
           {t("no_listings")}
         </Grid>
@@ -305,9 +344,9 @@ export function ServiceListings(props: { user?: string; contractor?: string }) {
             "aria-label": t("rows_per_page"),
             color: "primary",
           }}
-          rowsPerPageOptions={[6, 10, 16]}
+          rowsPerPageOptions={[10, 20, 50]}
           component="div"
-          count={filteredListings ? filteredListings.length : 0}
+          count={servicesResponse?.pagination.totalItems || 0}
           rowsPerPage={perPage}
           page={page}
           onPageChange={handleChangePage}

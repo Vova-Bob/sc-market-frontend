@@ -48,68 +48,110 @@ export function has_permission(
     | undefined
     | null,
   permission_name: keyof ContractorRole,
+  userContractors?: Array<{ spectrum_id: string; role: string; role_id?: string; roles?: string[] }>,
 ) {
   if (!contractor || !user) {
     return false
   }
 
-  const member = contractor.members.find((u) => u.username === user.username)
-
-  if (!member) {
+  // Check if user is a member of this contractor using profile data
+  const userContractor = userContractors?.find(
+    (c) => c.spectrum_id === contractor.spectrum_id,
+  )
+  if (!userContractor || !userContractor.roles || userContractor.roles.length === 0) {
     return false
   }
 
-  for (const role_id of member.roles) {
-    const role = (contractor.roles || []).find((r) => r.role_id === role_id)
-
-    if (!role) continue
-    if (role[permission_name]) return true
+  // Check if user has any role that grants this permission
+  const userRoles = (contractor.roles || []).filter(
+    (r) => userContractor.roles!.includes(r.role_id),
+  )
+  
+  if (userRoles.length === 0) {
+    return false
   }
 
-  return false
+  // Return true if ANY of the user's roles grants this permission
+  return userRoles.some(role => role[permission_name] === true)
 }
 
 export function min_position(
   contractor: Contractor,
   user: { username: string },
+  userContractors?: Array<{ spectrum_id: string; role: string; role_id?: string; roles?: string[] }>,
 ) {
   if (!contractor || !user) {
     return undefined
   }
 
-  const member = contractor.members.find((u) => u.username === user.username)
-
-  if (!member) {
+  // Check if user is a member of this contractor using profile data
+  const userContractor = userContractors?.find(
+    (c) => c.spectrum_id === contractor.spectrum_id,
+  )
+  if (!userContractor || !userContractor.roles || userContractor.roles.length === 0) {
     return undefined
   }
 
-  return Math.min(
-    ...contractor
-      .roles!.filter((r) => member.roles.includes(r.role_id))
-      .map((r) => r.position),
+  // Find all roles for this user and return the lowest (most powerful) position
+  const userRoles = (contractor.roles || []).filter(
+    (r) => userContractor.roles!.includes(r.role_id),
   )
+  
+  if (userRoles.length === 0) {
+    return undefined
+  }
+
+  // Return the lowest position (most powerful role)
+  return Math.min(...userRoles.map(role => role.position))
 }
 
-export function min_role(contractor: Contractor, user: { username: string }) {
-  const member = contractor.members.find((u) => u.username === user.username)
-
-  if (!member) {
+export function getMemberPosition(
+  contractor: Contractor,
+  memberRoles: string[],
+) {
+  if (!contractor || !memberRoles || memberRoles.length === 0) {
     return undefined
   }
 
-  const roles = contractor.roles!.filter((r) =>
-    member.roles.includes(r.role_id),
+  // Find all roles for this member and return the lowest (most powerful) position
+  const userRoles = (contractor.roles || []).filter(
+    (r) => memberRoles.includes(r.role_id),
   )
-
-  let result = roles[0]
-
-  for (const role of roles) {
-    if (role.position < result.position) {
-      result = role
-    }
+  
+  if (userRoles.length === 0) {
+    return undefined
   }
 
-  return result
+  // Return the lowest position (most powerful role)
+  return Math.min(...userRoles.map(role => role.position))
+}
+
+export function min_role(
+  contractor: Contractor,
+  user: { username: string },
+  userContractors?: Array<{ spectrum_id: string; role: string; role_id?: string; roles?: string[] }>,
+) {
+  if (!contractor || !user) {
+    return undefined
+  }
+
+  // Check if user is a member of this contractor using profile data
+  const userContractor = userContractors?.find(
+    (c) => c.spectrum_id === contractor.spectrum_id,
+  )
+  if (!userContractor || !userContractor.role_id) {
+    return undefined
+  }
+
+  // Find the role with the matching name
+  const role = (contractor.roles || []).find(
+    (r) => r.role_id === userContractor.role_id,
+  )
+  if (!role) {
+    return undefined
+  }
+
+  return role
 }
 
 function RolePermissionCheck(props: {
@@ -341,7 +383,7 @@ function RoleRow(props: {
   const { data: profile } = useGetUserProfileQuery()
 
   const myPosition = useMemo(
-    () => min_position(currentOrg!, profile!),
+    () => min_position(currentOrg!, profile!, profile?.contractors),
     [currentOrg, profile],
   )
 

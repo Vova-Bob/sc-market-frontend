@@ -163,7 +163,7 @@ export function OrderDetailsArea(props: { order: Order }) {
     [amCustomer, amAssigned, amContractor],
   )
   const amContractorManager = useMemo(
-    () => amContractor && has_permission(currentOrg, profile, "manage_orders"),
+    () => amContractor && has_permission(currentOrg, profile, "manage_orders", profile?.contractors),
     [currentOrg, profile, amContractor],
   )
 

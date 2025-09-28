@@ -11,6 +11,7 @@ import { orderIcons } from "../../datatypes/Order"
 import { PAYMENT_TYPES } from "../../util/constants"
 import React, { useEffect, useState } from "react"
 import { useServiceSearch } from "../../hooks/contract/ServiceSearch"
+import { useDebounce } from "../../hooks/useDebounce"
 import { ExtendedTheme } from "../../hooks/styles/Theme"
 import { useTheme } from "@mui/material/styles"
 import { Stack } from "@mui/system"
@@ -27,6 +28,9 @@ export function ServiceSearchArea() {
   const [query, setQuery] = useState<string>("")
   const [paymentType, setPaymentType] = useState<string>("any")
   const [, setSearchState] = useServiceSearch()
+
+  // Debounce the search query to prevent excessive API calls
+  const debouncedQuery = useDebounce(query, 300)
 
   const handleKindChange = (event: { target: { value: string } }) => {
     setKind(event.target.value)
@@ -50,10 +54,10 @@ export function ServiceSearchArea() {
       kind: kind === "Any" ? undefined : kind,
       minOffer: minOffer,
       maxOffer: maxOffer,
-      query: query,
+      query: debouncedQuery, // Use debounced query instead of immediate query
       paymentType: paymentType === "any" ? undefined : paymentType,
     }))
-  }, [kind, setSearchState, query, minOffer, maxOffer, paymentType])
+  }, [kind, setSearchState, debouncedQuery, minOffer, maxOffer, paymentType])
 
   return (
     <Stack

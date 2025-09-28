@@ -77,7 +77,7 @@ export function OrgRelevantListingsArea(props: { org: string }) {
     page_size: 1000, // Large page size to get all listings
     listing_type: undefined,
   })
-  
+
   const listings = useMemo(() => {
     if (!searchResults?.listings) return []
     return searchResults.listings.map(convertToLegacy)

@@ -328,18 +328,19 @@ export function RelatedServicesByCategory(props: {
   const { t } = useTranslation()
   const { serviceKind, currentServiceId } = props
 
-  // Get all public services and filter by kind
-  const { data: allServices, isLoading } = useGetPublicServicesQuery()
+  // Get services filtered by kind for related services
+  const { data: servicesResponse, isLoading } = useGetPublicServicesQuery({
+    kind: serviceKind,
+    pageSize: 20, // Get more to filter out current service
+  })
 
   const relatedServices = useMemo(() => {
-    if (!allServices) return []
+    if (!servicesResponse?.data) return []
 
-    return allServices
-      .filter(
-        (s) => s.kind === serviceKind && s.service_id !== currentServiceId,
-      )
+    return servicesResponse.data
+      .filter((s) => s.service_id !== currentServiceId)
       .slice(0, 6) // Show max 6 related services
-  }, [allServices, serviceKind, currentServiceId])
+  }, [servicesResponse?.data, currentServiceId])
 
   // Don't show section if no related services or still loading
   if (isLoading || !relatedServices.length) return null

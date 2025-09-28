@@ -2,6 +2,7 @@ import { Section } from "../../components/paper/Section"
 import React, { useCallback, useEffect, useState } from "react"
 import { MinimalUser } from "../../datatypes/User"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
+import { useGetContractorMembersQuery } from "../../store/contractor"
 import throttle from "lodash/throttle"
 import { Autocomplete, Box, Button, Grid, TextField } from "@mui/material"
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded"
@@ -28,6 +29,18 @@ export function MemberAssignArea(props: { order: Order }) {
 
   const { t } = useTranslation()
   const issueAlert = useAlertHook()
+
+  // Get members using the new paginated endpoint
+  const { data: membersData } = useGetContractorMembersQuery({
+    spectrum_id: currentOrg?.spectrum_id || "",
+    page: 0,
+    page_size: 100, // Get more members for the autocomplete
+    search: "",
+    role_filter: "",
+    sort: "username",
+  })
+
+  const members = membersData?.members || []
 
   const fetchOptions = useCallback(
     async (query: string) => {
@@ -126,12 +139,12 @@ export function MemberAssignArea(props: { order: Order }) {
           options={
             target
               ? options
-              : (
-                  currentOrg?.members.map((u) => ({
-                    ...u,
+              : members
+                  .map((u) => ({
+                    username: u.username,
                     display_name: u.username,
-                  })) || []
-                ).slice(0, 8)
+                  }))
+                  .slice(0, 8)
           }
           getOptionLabel={(option) =>
             `${option.username} (${option.display_name})`

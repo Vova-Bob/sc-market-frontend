@@ -81,6 +81,46 @@ export const marketApi = serviceApi.injectEndpoints({
         { type: "Listing" as const, id: arg },
       ],
     }),
+    marketGetListingOrders: builder.query<
+      { data: Order[]; pagination: any },
+      {
+        listing_id: string;
+        page?: number;
+        pageSize?: number;
+        status?: string[];
+        sortBy?: 'timestamp' | 'status';
+        sortOrder?: 'asc' | 'desc';
+      }
+    >({
+      query: ({ listing_id, page = 1, pageSize = 20, status, sortBy = 'timestamp', sortOrder = 'desc' }) => {
+        const params = new URLSearchParams({
+          page: page.toString(),
+          pageSize: pageSize.toString(),
+          sortBy,
+          sortOrder,
+        });
+        
+        if (status && status.length > 0) {
+          status.forEach(s => params.append('status', s));
+        }
+        
+        return `${baseUrl}/listing/${listing_id}/orders?${params.toString()}`;
+      },
+      providesTags: (result, error, arg) => [
+        { type: "Orders" as const, id: arg.listing_id },
+      ],
+      serializeQueryArgs: ({ queryArgs }) => {
+        const { listing_id, page, pageSize, status, sortBy, sortOrder } = queryArgs;
+        return {
+          listing_id,
+          page,
+          pageSize,
+          status: status ? [...status].sort().join(',') : undefined, // Create new array and sort for consistent cache keys
+          sortBy,
+          sortOrder,
+        };
+      },
+    }),
     marketGetGameItemByName: builder.query<GameItemDescription, string>({
       query: (name) => `${baseUrl}/item/${encodeURIComponent(name)}`,
     }),
@@ -606,6 +646,7 @@ export const {
   useMarketGetBuyOrderListingsQuery,
   useMarketPurchaseMutation,
   useMarketGetListingByIDQuery,
+  useMarketGetListingOrdersQuery,
   useMarketGetGameItemByNameQuery,
   useMarketBidMutation,
   useMarketAcceptBidMutation,

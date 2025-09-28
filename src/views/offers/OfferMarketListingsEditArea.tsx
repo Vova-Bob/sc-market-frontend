@@ -155,7 +155,7 @@ export function OfferMarketListingsEditArea(props: { offer: OfferSession }) {
     },
     { skip: !session.contractor?.spectrum_id },
   )
-  
+
   const contractorListings = useMemo(() => {
     if (!contractorSearchResults?.listings) return []
     return contractorSearchResults.listings.map(convertToLegacy)

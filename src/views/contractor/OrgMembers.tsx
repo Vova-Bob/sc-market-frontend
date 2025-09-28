@@ -9,13 +9,17 @@ import {
   Grid,
   IconButton,
   MenuItem,
+  Table,
+  TableBody,
   TableCell,
+  TableHead,
   TableRow,
   TextField,
   Typography,
+  TablePagination,
 } from "@mui/material"
 import { Link } from "react-router-dom"
-import { HeadCell, PaginatedTable } from "../../components/table/PaginatedTable"
+import { HeadCell } from "../../components/table/PaginatedTable"
 import {
   useGetUserByUsernameQuery,
   useGetUserProfileQuery,
@@ -26,9 +30,10 @@ import {
   useApplyContractorRoleMutation,
   useKickContractorMemberMutation,
   useRemoveContractorRoleMutation,
+  useGetContractorMembersQuery,
 } from "../../store/contractor"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
-import { has_permission, min_position } from "./OrgRoles"
+import { has_permission, min_position, getMemberPosition } from "./OrgRoles"
 import { Contractor, ContractorRole } from "../../datatypes/Contractor"
 import SearchIcon from "@mui/icons-material/Search"
 import { Stack } from "@mui/system"
@@ -57,89 +62,76 @@ function PeopleRow(props: {
 
   const { data: profile } = useGetUserProfileQuery()
   const myPosition = useMemo(
-    () => min_position(contractor, profile!),
+    () => min_position(contractor, profile!, profile?.contractors),
     [contractor, profile],
   )
   const theirPosition = useMemo(
-    () => min_position(contractor, row),
-    [contractor, row],
+    () => getMemberPosition(contractor, row.roles),
+    [contractor, row.roles],
   )
   const canKick = useMemo(
-    () => has_permission(contractor, profile, "kick_members"),
+    () =>
+      has_permission(contractor, profile, "kick_members", profile?.contractors),
     [contractor, profile],
   )
 
   const addRoleCallback = useCallback(
-    async (role_id: string) => {
-      const res: { data?: any; error?: any } = await applyRole({
+    (role_id: string) => {
+      applyRole({
         contractor: contractor!.spectrum_id,
         username: row.username,
         role_id,
       })
-
-      if (res?.data && !res?.error) {
-        issueAlert({
-          message: t("manageMemberList.updated"),
-          severity: "success",
+        .unwrap()
+        .then(() => {
+          issueAlert({
+            message: t("manageMemberList.updated"),
+            severity: "success",
+          })
         })
-      } else {
-        issueAlert({
-          message: t("manageMemberList.update_failed", {
-            reason:
-              res.error?.error || res.error?.data?.error || res.error || "",
-          }),
-          severity: "error",
+        .catch((error) => {
+          issueAlert(error)
         })
-      }
     },
     [contractor, row.username, issueAlert, applyRole, t],
   )
 
   const removeRoleCallback = useCallback(
-    async (role_id: string) => {
-      const res: { data?: any; error?: any } = await removeRole({
+    (role_id: string) => {
+      removeRole({
         contractor: contractor.spectrum_id,
         username: row.username,
         role_id,
       })
-
-      if (res?.data && !res?.error) {
-        issueAlert({
-          message: t("manageMemberList.updated"),
-          severity: "success",
+        .unwrap()
+        .then(() => {
+          issueAlert({
+            message: t("manageMemberList.updated"),
+            severity: "success",
+          })
         })
-      } else {
-        issueAlert({
-          message: t("manageMemberList.update_failed", {
-            reason:
-              res.error?.error || res.error?.data?.error || res.error || "",
-          }),
-          severity: "error",
+        .catch((error) => {
+          issueAlert(error)
         })
-      }
     },
     [contractor, row.username, issueAlert, removeRole, t],
   )
 
-  const kickMemberCallback = useCallback(async () => {
-    const res: { data?: any; error?: any } = await kickMember({
+  const kickMemberCallback = useCallback(() => {
+    kickMember({
       contractor: contractor.spectrum_id,
       username: row.username,
     })
-
-    if (res?.data && !res?.error) {
-      issueAlert({
-        message: t("manageMemberList.member_kicked"),
-        severity: "success",
+      .unwrap()
+      .then(() => {
+        issueAlert({
+          message: t("manageMemberList.member_kicked"),
+          severity: "success",
+        })
       })
-    } else {
-      issueAlert({
-        message: t("manageMemberList.kick_failed", {
-          reason: res.error?.error || res.error?.data?.error || res.error || "",
-        }),
-        severity: "error",
+      .catch((error) => {
+        issueAlert(error)
       })
-    }
   }, [contractor, row.username, issueAlert, kickMember, t])
 
   return (
@@ -167,11 +159,9 @@ function PeopleRow(props: {
         scope="row"
         // padding="none"
       >
-        <Grid container spacing={2}>
-          <Grid item>
-            <Avatar src={user.data?.avatar} />
-          </Grid>
-          <Grid item>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Avatar src={user.data?.avatar} />
+          <Box>
             <Link to={`/user/${row.username}`}>
               <UnderlineLink
                 color={"text.secondary"}
@@ -184,8 +174,8 @@ function PeopleRow(props: {
             <Typography variant={"subtitle2"}>
               {user.data?.display_name}
             </Typography>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       </TableCell>
       {props.manage &&
       myPosition !== undefined &&
@@ -215,18 +205,18 @@ function PeopleRow(props: {
                 (r) => myPosition < r.position,
               )}
               getOptionLabel={(role) => role.name}
-              onChange={async (event: any, newValue) => {
+              onChange={(event: any, newValue) => {
                 const oldSet = new Set(row.roles)
                 const newSet = new Set(newValue.map((r) => r.role_id))
 
                 for (const role_id of oldSet) {
                   if (!newSet.has(role_id)) {
-                    await removeRoleCallback(role_id)
+                    removeRoleCallback(role_id)
                   }
                 }
                 for (const role_id of newSet) {
                   if (!oldSet.has(role_id)) {
-                    await addRoleCallback(role_id)
+                    addRoleCallback(role_id)
                   }
                 }
               }}
@@ -256,17 +246,13 @@ function PeopleRow(props: {
               variant={"subtitle1"}
               sx={{ textTransform: "capitalize" }}
             >
-              {props.manage && (
-                <>
-                  {row.roles
-                    .map(
-                      (rowRole) =>
-                        contractor!.roles!.find((r) => r.role_id == rowRole)
-                          ?.name,
-                    )
-                    .join(", ")}
-                </>
-              )}
+              {row.roles
+                .map(
+                  (rowRole) =>
+                    contractor!.roles!.find((r) => r.role_id == rowRole)
+                      ?.name,
+                )
+                .join(", ")}
             </Typography>
           </TableCell>
         </>
@@ -303,21 +289,72 @@ const headCells: readonly HeadCell<OrgMember>[] = [
 
 export function MemberList(props: { contractor: Contractor }) {
   const { t } = useTranslation()
+  const [page, setPage] = useState(0)
+  const [pageSize, setPageSize] = useState(50)
+
+  // Use server-side pagination
+  const { data: membersData, isLoading } = useGetContractorMembersQuery({
+    spectrum_id: props.contractor?.spectrum_id || "",
+    page,
+    page_size: pageSize,
+    search: "",
+    role_filter: "",
+    sort: "username",
+  })
+
+  const members = membersData?.members || []
+  const total = membersData?.total || 0
+
+  // Handle page changes for server-side pagination
+  const handlePageChange = (event: unknown, newPage: number) => {
+    setPage(newPage)
+  }
+
+  const handlePageSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPageSize(parseInt(event.target.value, 10))
+    setPage(0)
+  }
+
   return (
     <Section xs={12} title={t("manageMemberList.members")} disablePadding>
-      <PaginatedTable<OrgMember>
-        rows={props.contractor?.members || []}
-        initialSort={"username"}
-        generateRow={(iprops) => (
-          <PeopleRow {...iprops} manage contractor={props.contractor} />
-        )}
-        keyAttr={"username"}
-        headCells={headCells.map((cell) => ({
-          ...cell,
-          label: t(cell.label, cell.label),
-        }))}
-        disableSelect
-      />
+      <Grid item xs={12}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              {headCells.map((cell) => (
+                <TableCell
+                  key={cell.id as string}
+                  align={cell.numeric ? "right" : "left"}
+                  padding={cell.disablePadding ? "none" : "normal"}
+                >
+                  {t(cell.label, cell.label)}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {members.map((member, index) => (
+              <PeopleRow
+                key={member.username}
+                row={member}
+                index={index}
+                isItemSelected={false}
+                labelId={`enhanced-table-checkbox-${index}`}
+                contractor={props.contractor}
+              />
+            ))}
+          </TableBody>
+        </Table>
+        <TablePagination
+          component="div"
+          count={total}
+          page={page}
+          onPageChange={handlePageChange}
+          rowsPerPage={pageSize}
+          onRowsPerPageChange={handlePageSizeChange}
+          rowsPerPageOptions={[25, 50, 100]}
+        />
+      </Grid>
     </Section>
   )
 }
@@ -328,16 +365,31 @@ export function ManageMemberList() {
 
   const [searchQuery, setSearchQuery] = useState("")
   const [roleFilter, setRoleFilter] = useState("any")
+  const [page, setPage] = useState(0)
+  const [pageSize, setPageSize] = useState(50)
 
-  const filteredMembers = useMemo(
-    () =>
-      (contractor?.members || []).filter(
-        (m) =>
-          (roleFilter === "any" || m.roles.find((r) => r === roleFilter)) &&
-          m.username.includes(searchQuery),
-      ),
-    [contractor, searchQuery, roleFilter],
-  )
+  // Use the new paginated endpoint with server-side pagination
+  const { data: membersData, isLoading } = useGetContractorMembersQuery({
+    spectrum_id: contractor?.spectrum_id || "",
+    page,
+    page_size: pageSize,
+    search: searchQuery,
+    role_filter: roleFilter === "any" ? "" : roleFilter,
+    sort: "username",
+  })
+
+  const members = membersData?.members || []
+  const total = membersData?.total || 0
+
+  // Handle page changes for server-side pagination
+  const handlePageChange = (event: unknown, newPage: number) => {
+    setPage(newPage)
+  }
+
+  const handlePageSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPageSize(parseInt(event.target.value, 10))
+    setPage(0)
+  }
 
   return (
     <Section
@@ -365,6 +417,7 @@ export function ManageMemberList() {
             value={searchQuery}
             onChange={(event: any) => {
               setSearchQuery(event.target.value)
+              setPage(0) // Reset to first page when searching
             }}
           />
           <TextField
@@ -373,32 +426,60 @@ export function ManageMemberList() {
             value={roleFilter}
             onChange={(event: any) => {
               setRoleFilter(event.target.value)
+              setPage(0) // Reset to first page when filtering
             }}
-            // fullWidth
             size={"small"}
             defaultValue={"any"}
           >
             <MenuItem value={"any"}>{t("manageMemberList.any")}</MenuItem>
             {(contractor?.roles || []).map((r) => (
-              <MenuItem value={r.role_id}>{r.name}</MenuItem>
+              <MenuItem key={r.role_id} value={r.role_id}>
+                {r.name}
+              </MenuItem>
             ))}
           </TextField>
         </Stack>
       }
     >
-      <PaginatedTable<OrgMember>
-        rows={filteredMembers}
-        initialSort={"username"}
-        generateRow={(props) => (
-          <PeopleRow {...props} manage contractor={contractor!} />
-        )}
-        keyAttr={"username"}
-        headCells={headCells.map((cell) => ({
-          ...cell,
-          label: t(cell.label, cell.label),
-        }))}
-        disableSelect
-      />
+      <Grid item xs={12}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              {headCells.map((cell) => (
+                <TableCell
+                  key={cell.id as string}
+                  align={cell.numeric ? "right" : "left"}
+                  padding={cell.disablePadding ? "none" : "normal"}
+                >
+                  {t(cell.label, cell.label)}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {members.map((member, index) => (
+              <PeopleRow
+                key={member.username}
+                row={member}
+                index={index}
+                isItemSelected={false}
+                labelId={`enhanced-table-checkbox-${index}`}
+                manage
+                contractor={contractor!}
+              />
+            ))}
+          </TableBody>
+        </Table>
+        <TablePagination
+          component="div"
+          count={total}
+          page={page}
+          onPageChange={handlePageChange}
+          rowsPerPage={pageSize}
+          onRowsPerPageChange={handlePageSizeChange}
+          rowsPerPageOptions={[25, 50, 100]}
+        />
+      </Grid>
     </Section>
   )
 }

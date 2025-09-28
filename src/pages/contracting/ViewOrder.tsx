@@ -80,7 +80,7 @@ export function ViewOrder() {
   )
 
   const amContractorManager = useMemo(
-    () => amContractor && has_permission(currentOrg, profile, "manage_orders"),
+    () => amContractor && has_permission(currentOrg, profile, "manage_orders", profile?.contractors),
     [currentOrg, profile, amContractor],
   )
 

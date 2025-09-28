@@ -982,8 +982,9 @@
     "updated": "Updated",
     "expires": "Expires",
     "description": "Description",
-    "activeOrders": "Active Orders",
-    "previousOrders": "Previous Orders"
+    "orders": "注文",
+    "activeOrders": "アクティブ注文",
+    "previousOrders": "過去の注文"
   },
   "MarketListingForm": {
     "about": "About",

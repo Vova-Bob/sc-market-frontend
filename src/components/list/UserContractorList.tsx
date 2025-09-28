@@ -13,7 +13,12 @@ import { UnderlineLink } from "../typography/UnderlineLink"
 import React from "react"
 
 export function UserContractorList(props: {
-  contractors: { spectrum_id: string; role: string; name: string }[]
+  contractors: { 
+    spectrum_id: string; 
+    roles: string[]; 
+    name: string;
+    role_details?: { role_id: string; role_name: string; position: number }[];
+  }[]
 }) {
   const { contractors } = props
 
@@ -35,12 +40,22 @@ export function UserContractorList(props: {
 }
 
 export function UserContractorListItem(props: {
-  membership: { spectrum_id: string; role: string; name: string }
+  membership: { 
+    spectrum_id: string; 
+    roles: string[]; 
+    name: string;
+    role_details?: { role_id: string; role_name: string; position: number }[];
+  }
 }) {
   const {
-    membership: { spectrum_id, role },
+    membership: { spectrum_id, role_details },
   } = props
   const { data: contractor } = useGetContractorBySpectrumIDQuery(spectrum_id)
+
+  // Sort roles by position (lowest position = highest authority)
+  // Handle case where role_details might be undefined (backward compatibility)
+  // Create a copy to avoid mutating immutable Redux state
+  const sortedRoles = [...(role_details || [])].sort((a, b) => a.position - b.position)
 
   return (
     <ListItem key={contractor?.spectrum_id}>
@@ -84,10 +99,14 @@ export function UserContractorListItem(props: {
           color={"text.primary"}
           variant={"subtitle2"}
           fontWeight={600}
-          noWrap
           sx={{ textTransform: "capitalize" }}
         >
-          {role}
+          {sortedRoles.map((roleItem, index) => (
+            <span key={roleItem.role_id}>
+              {roleItem.role_name}
+              {index < sortedRoles.length - 1 && ", "}
+            </span>
+          ))}
         </Typography>
       </ListItemText>
     </ListItem>

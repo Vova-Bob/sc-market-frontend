@@ -285,14 +285,14 @@ function ItemStockToolbar(props: {
   )
 }
 
-export function DisplayStock({ 
-  listings, 
+export function DisplayStock({
+  listings,
   total,
   page,
   perPage,
   onPageChange,
-  onRowsPerPageChange
-}: { 
+  onRowsPerPageChange,
+}: {
   listings: UniqueListing[]
   total?: number
   page?: number
@@ -913,7 +913,9 @@ export function DisplayStock({
         onPaginationModelChange={(model) => {
           if (onPageChange) onPageChange(null, model.page)
           if (onRowsPerPageChange && model.pageSize !== perPage) {
-            onRowsPerPageChange({ target: { value: model.pageSize.toString() } } as React.ChangeEvent<HTMLInputElement>)
+            onRowsPerPageChange({
+              target: { value: model.pageSize.toString() },
+            } as React.ChangeEvent<HTMLInputElement>)
           }
         }}
         pageSizeOptions={[24, 48, 96, 192]}
@@ -928,11 +930,12 @@ export function MyItemStock() {
   const [page, setPage] = useState(0)
   const [perPage, setPerPage] = useState(48)
   const [searchState] = useMarketSearch()
-  
+
   // Determine if we should search by contractor or user
   const searchByContractor = currentOrg?.spectrum_id
-  const searchByUser = currentOrg === null && profile?.username && !profileLoading
-  
+  const searchByUser =
+    currentOrg === null && profile?.username && !profileLoading
+
   // Build search query parameters
   const searchQueryParams = useMemo(() => {
     const baseParams = {
@@ -943,7 +946,7 @@ export function MyItemStock() {
       sort: searchState.sort || "activity",
       status: searchState.status || undefined, // Include status filter from search state
     }
-    
+
     // Add contractor or user filter
     if (searchByContractor) {
       return {
@@ -956,11 +959,19 @@ export function MyItemStock() {
         user_seller: profile.username,
       }
     }
-    
-    return baseParams
-  }, [searchByContractor, searchByUser, profile?.username, perPage, page, searchState])
 
-  const { data: searchResults, isLoading } = useSearchMarketQuery(searchQueryParams)
+    return baseParams
+  }, [
+    searchByContractor,
+    searchByUser,
+    profile?.username,
+    perPage,
+    page,
+    searchState,
+  ])
+
+  const { data: searchResults, isLoading } =
+    useSearchMarketQuery(searchQueryParams)
 
   const filteredListings = useMemo(() => {
     if (!searchResults?.listings) return []
@@ -971,15 +982,18 @@ export function MyItemStock() {
     setPage(newPage)
   }, [])
 
-  const handleChangeRowsPerPage = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setPerPage(parseInt(event.target.value, 10))
-    setPage(0)
-  }, [])
+  const handleChangeRowsPerPage = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setPerPage(parseInt(event.target.value, 10))
+      setPage(0)
+    },
+    [],
+  )
 
   return (
     <>
-      <DisplayStock 
-        listings={filteredListings} 
+      <DisplayStock
+        listings={filteredListings}
         total={searchResults?.total}
         page={page}
         perPage={perPage}

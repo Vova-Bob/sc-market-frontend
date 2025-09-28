@@ -4,6 +4,7 @@ import {
   DiscordSettings,
   OrderWebhook,
   MinimalContractor,
+  ContractorMember,
 } from "../datatypes/Contractor"
 import { MinimalUser, User } from "../datatypes/User"
 import { OrderReview } from "../datatypes/Order"
@@ -47,6 +48,61 @@ export const contractorsApi = serviceApi.injectEndpoints({
       query: ({ spectrum_id, query }) =>
         `/api/contractors/${spectrum_id}/members/search/${query}`,
       transformResponse: unwrapResponse,
+    }),
+    getContractorMembers: builder.query<
+      {
+        total: number
+        page: number
+        page_size: number
+        members: ContractorMember[]
+      },
+      {
+        spectrum_id: string
+        page?: number
+        page_size?: number
+        search?: string
+        sort?: string
+        role_filter?: string
+      }
+    >({
+      query: ({
+        spectrum_id,
+        page = 0,
+        page_size = 50,
+        search = "",
+        sort = "username",
+        role_filter = "",
+      }) => {
+        const params = new URLSearchParams({
+          page: page.toString(),
+          page_size: page_size.toString(),
+          sort,
+        })
+        if (search) params.append("search", search)
+        if (role_filter) params.append("role_filter", role_filter)
+
+        return `/api/contractors/${spectrum_id}/members?${params.toString()}`
+      },
+      transformResponse: unwrapResponse,
+      providesTags: (result, error, arg) => [
+        { type: "Contractor" as const, id: arg.spectrum_id },
+      ],
+    }),
+    checkContractorMembership: builder.query<
+      {
+        is_member: boolean
+        user_id: string
+        username: string
+        roles: string[]
+      },
+      { spectrum_id: string; username: string }
+    >({
+      query: ({ spectrum_id, username }) =>
+        `/api/contractors/${spectrum_id}/members/${username}`,
+      transformResponse: unwrapResponse,
+      providesTags: (result, error, arg) => [
+        { type: "Contractor" as const, id: arg.spectrum_id },
+      ],
     }),
     getContractorCustomers: builder.query<User[], string>({
       query: (spectrum_id) => `/api/contractors/${spectrum_id}/customers`,
@@ -481,6 +537,8 @@ export const {
   useGetContractorBySpectrumIDQuery,
   useRefetchContractorDetailsMutation,
   useGetContractorCustomersQuery,
+  useGetContractorMembersQuery,
+  useCheckContractorMembershipQuery,
   useCreateContractorRoleMutation,
   useUpdateContractorRoleMutation,
   useDeleteContractorRoleMutation,

@@ -11,6 +11,33 @@ interface PhotoUploadResponse {
   }>
 }
 
+// Define pagination interfaces
+interface ServicesPagination {
+  currentPage: number
+  pageSize: number
+  totalItems: number
+  totalPages: number
+  hasNextPage: boolean
+  hasPreviousPage: boolean
+}
+
+interface ServicesResponse {
+  data: Service[]
+  pagination: ServicesPagination
+}
+
+interface ServicesQueryParams {
+  page?: number
+  pageSize?: number
+  search?: string
+  kind?: string
+  minCost?: number
+  maxCost?: number
+  paymentType?: string
+  sortBy?: "timestamp" | "cost" | "service_name"
+  sortOrder?: "asc" | "desc"
+}
+
 const servicesApi = serviceApi.injectEndpoints({
   overrideExisting: false,
   endpoints: (builder) => ({
@@ -19,10 +46,48 @@ const servicesApi = serviceApi.injectEndpoints({
       providesTags: (result, error, order_id) => ["Service" as const],
       transformResponse: unwrapResponse,
     }),
-    getPublicServices: builder.query<Service[], void>({
-      query: () => `/api/services/public`,
-      providesTags: (result, error, order_id) => ["Service" as const],
+    getPublicServices: builder.query<ServicesResponse, ServicesQueryParams>({
+      query: (params) => ({
+        url: `/api/services/public`,
+        params: {
+          page: params.page || 0,
+          pageSize: params.pageSize || 20,
+          search: params.search,
+          kind: params.kind,
+          minCost: params.minCost,
+          maxCost: params.maxCost,
+          paymentType: params.paymentType,
+          sortBy: params.sortBy || "timestamp",
+          sortOrder: params.sortOrder || "desc",
+        },
+      }),
+      providesTags: (result, error, params) => ["Service" as const],
       transformResponse: unwrapResponse,
+      serializeQueryArgs: ({ queryArgs }) => {
+        // Create a stable cache key based on the query parameters
+        const {
+          page,
+          pageSize,
+          search,
+          kind,
+          minCost,
+          maxCost,
+          paymentType,
+          sortBy,
+          sortOrder,
+        } = queryArgs
+        return JSON.stringify({
+          page: page || 0,
+          pageSize: pageSize || 20,
+          search: search || "",
+          kind: kind || "",
+          minCost: minCost || undefined,
+          maxCost: maxCost || undefined,
+          paymentType: paymentType || "",
+          sortBy: sortBy || "timestamp",
+          sortOrder: sortOrder || "desc",
+        })
+      },
     }),
     getServiceById: builder.query<Service, string>({
       query: (service_id) => `/api/services/${service_id}`,
@@ -104,3 +169,6 @@ export const {
   useCreateServiceMutation,
   useUploadServicePhotosMutation,
 } = servicesApi
+
+// Export types for use in components
+export type { ServicesResponse, ServicesPagination, ServicesQueryParams }

@@ -41,23 +41,53 @@ export function OrgManage() {
   const { data: profile } = useGetUserProfileQuery()
 
   const canManageRoles = useMemo(
-    () => has_permission(contractor!, profile!, "manage_roles"),
+    () =>
+      has_permission(
+        contractor!,
+        profile!,
+        "manage_roles",
+        profile?.contractors,
+      ),
     [contractor, profile],
   )
   const canManageOrgDetails = useMemo(
-    () => has_permission(contractor!, profile!, "manage_org_details"),
+    () =>
+      has_permission(
+        contractor!,
+        profile!,
+        "manage_org_details",
+        profile?.contractors,
+      ),
     [contractor, profile],
   )
   const canManageInvites = useMemo(
-    () => has_permission(contractor!, profile!, "manage_invites"),
+    () =>
+      has_permission(
+        contractor!,
+        profile!,
+        "manage_invites",
+        profile?.contractors,
+      ),
     [contractor, profile],
   )
   const canManageWebhooks = useMemo(
-    () => has_permission(contractor!, profile!, "manage_invites"),
+    () =>
+      has_permission(
+        contractor!,
+        profile!,
+        "manage_invites",
+        profile?.contractors,
+      ),
     [contractor, profile],
   )
   const canManageOrders = useMemo(
-    () => has_permission(contractor!, profile!, "manage_blocklist"),
+    () =>
+      has_permission(
+        contractor!,
+        profile!,
+        "manage_blocklist",
+        profile?.contractors,
+      ),
     [contractor, profile],
   )
 

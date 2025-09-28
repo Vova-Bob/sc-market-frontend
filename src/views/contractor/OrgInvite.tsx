@@ -93,11 +93,7 @@ export function OrgInvite() {
           multiple
           filterSelectedOptions
           options={users || []}
-          getOptionLabel={(u) =>
-            currentOrg!.members.find((m) => m.username === u.username)
-              ? `${u.username} (${t("orgInvite.already_member")})`
-              : u.username
-          }
+          getOptionLabel={(u) => u.username}
           renderInput={(params: AutocompleteRenderInputParams) => (
             <TextField
               {...params}

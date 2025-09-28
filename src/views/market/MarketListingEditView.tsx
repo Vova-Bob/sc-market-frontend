@@ -67,7 +67,14 @@ export function MarketListingEditView() {
   )
 
   const amContractorManager = useMemo(
-    () => amContractor && has_permission(currentOrg, profile, "manage_market"),
+    () =>
+      amContractor &&
+      has_permission(
+        currentOrg,
+        profile,
+        "manage_market",
+        profile?.contractors,
+      ),
     [currentOrg, profile, amContractor],
   )
 
@@ -587,9 +594,7 @@ export function MarketListingEditView() {
                           </MenuItem>
                         </TextField>
                         <Button
-                          onClick={() =>
-                            updateListingCallback({ internal })
-                          }
+                          onClick={() => updateListingCallback({ internal })}
                           variant={"contained"}
                         >
                           {t("MarketListingEditView.updateBtn")}

@@ -26,10 +26,6 @@ export interface Contractor {
   description: string
   fields: ContractorKindIconKey[]
   spectrum_id: string
-  members: {
-    username: string
-    roles: string[]
-  }[]
   roles?: ContractorRole[]
   default_role?: string
   owner_role?: string
@@ -45,6 +41,8 @@ export interface MinimalContractor {
   name: string
   spectrum_id: string
   rating: Rating
+  role?: string
+  role_id?: string
 }
 
 export interface UserContractorState {
@@ -57,10 +55,6 @@ export interface UserContractorState {
   description: string
   fields: ContractorKindIconKey[]
   spectrum_id: string
-  members: {
-    username: string
-    roles: string[]
-  }[]
   balance: number
   roles?: ContractorRole[]
   locale?: string
@@ -99,4 +93,11 @@ export interface ContractorRole {
   manage_recruiting: boolean
   manage_webhooks: boolean
   manage_blocklist: boolean
+}
+
+export interface ContractorMember {
+  user_id: string
+  username: string
+  roles: string[]
+  avatar: string
 }

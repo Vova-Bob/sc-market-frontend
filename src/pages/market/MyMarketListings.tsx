@@ -56,10 +56,10 @@ export function MyMarketListings(props: {}) {
           </Grid>
 
           <Grid item xs={12}>
-              <HideOnScroll>
-                <MarketNavArea />
-              </HideOnScroll>
-            </Grid>
+            <HideOnScroll>
+              <MarketNavArea />
+            </HideOnScroll>
+          </Grid>
 
           <Grid item xs={12}>
             <Divider light />

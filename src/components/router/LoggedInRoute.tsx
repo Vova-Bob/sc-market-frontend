@@ -78,10 +78,10 @@ export function OrgAdminRoute(props: {
   const { data: profile } = useGetUserProfileQuery()
   const canView = useMemo(() => {
     if (permission) {
-      return has_permission(contractor!, profile!, permission)
+      return has_permission(contractor!, profile!, permission, profile?.contractors)
     } else if (anyPermission) {
       return anyPermission.some((perm) =>
-        has_permission(contractor!, profile!, perm),
+        has_permission(contractor!, profile!, perm, profile?.contractors),
       )
     } else {
       return false

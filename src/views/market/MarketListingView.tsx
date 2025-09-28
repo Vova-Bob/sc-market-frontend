@@ -17,6 +17,9 @@ import {
   Rating,
   Typography,
   Skeleton,
+  Pagination,
+  Tabs,
+  Tab,
 } from "@mui/material"
 import LoadingButton from "@mui/lab/LoadingButton"
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom"
@@ -41,6 +44,7 @@ import {
   useMarketBidMutation,
   useMarketPurchaseMutation,
   useMarketTrackListingViewMutation,
+  useMarketGetListingOrdersQuery,
 } from "../../store/market"
 import { OrderList } from "../../components/list/OrderList"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
@@ -795,6 +799,133 @@ export function MarketListingViewSkeleton() {
   )
 }
 
+// Component for displaying paginated orders
+function ListingOrdersSection({ listingId }: { listingId: string }) {
+  const { t } = useTranslation()
+  const [activeTab, setActiveTab] = useState(0)
+  const [activeOrdersPage, setActiveOrdersPage] = useState(1)
+  const [completedOrdersPage, setCompletedOrdersPage] = useState(1)
+  const pageSize = 10
+
+  // Define status arrays as constants to avoid recreation
+  const activeStatuses = ['not-started', 'in-progress']
+  const completedStatuses = ['fulfilled', 'cancelled']
+
+  // Fetch active orders (not-started, in-progress)
+  const { 
+    data: activeOrdersData, 
+    isLoading: activeOrdersLoading 
+  } = useMarketGetListingOrdersQuery({
+    listing_id: listingId,
+    page: activeOrdersPage,
+    pageSize,
+    status: activeStatuses,
+    sortBy: 'timestamp',
+    sortOrder: 'desc',
+  })
+
+  // Fetch completed orders (fulfilled, cancelled)
+  const { 
+    data: completedOrdersData, 
+    isLoading: completedOrdersLoading 
+  } = useMarketGetListingOrdersQuery({
+    listing_id: listingId,
+    page: completedOrdersPage,
+    pageSize,
+    status: completedStatuses,
+    sortBy: 'timestamp',
+    sortOrder: 'desc',
+  })
+
+  const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
+    setActiveTab(newValue)
+  }
+
+  const handleActiveOrdersPageChange = (_: React.ChangeEvent<unknown>, page: number) => {
+    setActiveOrdersPage(page)
+  }
+
+  const handleCompletedOrdersPageChange = (_: React.ChangeEvent<unknown>, page: number) => {
+    setCompletedOrdersPage(page)
+  }
+
+  // Don't render if no orders exist
+  if (!activeOrdersData?.data?.length && !completedOrdersData?.data?.length) {
+    return null
+  }
+
+  return (
+    <>
+      <Section
+        xs={12}
+        title={t("MarketListingView.orders")}
+        innerJustify={"flex-start"}
+      >
+        <Grid item xs={12}>
+          <Tabs 
+            value={activeTab} 
+            onChange={handleTabChange}
+            sx={{ borderBottom: 1, borderColor: 'divider' }}
+          >
+            <Tab 
+              label={`${t("MarketListingView.activeOrders")} (${activeOrdersData?.pagination?.totalItems || 0})`} 
+            />
+            <Tab 
+              label={`${t("MarketListingView.previousOrders")} (${completedOrdersData?.pagination?.totalItems || 0})`} 
+            />
+          </Tabs>
+
+          <Box sx={{ paddingTop: 2, paddingBottom: 2 }}>
+            {activeTab === 0 && (
+              <>
+                {activeOrdersLoading ? (
+                  <Skeleton variant="rectangular" height={200} />
+                ) : (
+                  <>
+                    <OrderList orders={activeOrdersData?.data || []} />
+                    {activeOrdersData?.pagination && activeOrdersData.pagination.totalPages > 1 && (
+                      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                        <Pagination
+                          count={activeOrdersData.pagination.totalPages}
+                          page={activeOrdersPage}
+                          onChange={handleActiveOrdersPageChange}
+                          color="primary"
+                        />
+                      </Box>
+                    )}
+                  </>
+                )}
+              </>
+            )}
+
+            {activeTab === 1 && (
+              <>
+                {completedOrdersLoading ? (
+                  <Skeleton variant="rectangular" height={200} />
+                ) : (
+                  <>
+                    <OrderList orders={completedOrdersData?.data || []} />
+                    {completedOrdersData?.pagination && completedOrdersData.pagination.totalPages > 1 && (
+                      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                        <Pagination
+                          count={completedOrdersData.pagination.totalPages}
+                          page={completedOrdersPage}
+                          onChange={handleCompletedOrdersPageChange}
+                          color="primary"
+                        />
+                      </Box>
+                    )}
+                  </>
+                )}
+              </>
+            )}
+          </Box>
+        </Grid>
+      </Section>
+    </>
+  )
+}
+
 export function MarketListingView() {
   const { t } = useTranslation()
   const [complete] = useCurrentMarketListing<UniqueListing>()
@@ -825,7 +956,14 @@ export function MarketListingView() {
   )
 
   const amContractorManager = useMemo(
-    () => amContractor && has_permission(currentOrg, profile, "manage_market"),
+    () =>
+      amContractor &&
+      has_permission(
+        currentOrg,
+        profile,
+        "manage_market",
+        profile?.contractors,
+      ),
     [currentOrg, profile, amContractor],
   )
 
@@ -1137,54 +1275,8 @@ export function MarketListingView() {
                   <Bids listing={complete as UniqueListing} />
                 )}
 
-              {amRelated && !!listing.orders?.length && (
-                <Section
-                  disablePadding
-                  xs={12}
-                  title={t("MarketListingView.activeOrders")}
-                  innerJustify={"flex-start"}
-                >
-                  <Grid
-                    item
-                    xs={12}
-                    sx={{
-                      paddingTop: 2,
-                      paddingBottom: 2,
-                      boxSizing: "border-box",
-                    }}
-                  >
-                    <OrderList
-                      orders={listing.orders.filter(
-                        (o) => !["cancelled", "fulfilled"].includes(o.status),
-                      )}
-                    />
-                  </Grid>
-                </Section>
-              )}
-
-              {amRelated && !!listing.orders?.length && (
-                <Section
-                  disablePadding
-                  xs={12}
-                  title={t("MarketListingView.previousOrders")}
-                  innerJustify={"flex-start"}
-                >
-                  <Grid
-                    item
-                    xs={12}
-                    sx={{
-                      paddingTop: 2,
-                      paddingBottom: 2,
-                      boxSizing: "border-box",
-                    }}
-                  >
-                    <OrderList
-                      orders={listing.orders.filter((o) =>
-                        ["cancelled", "fulfilled"].includes(o.status),
-                      )}
-                    />
-                  </Grid>
-                </Section>
+              {amRelated && (
+                <ListingOrdersSection listingId={listing.listing_id} />
               )}
             </Grid>
           </Grid>

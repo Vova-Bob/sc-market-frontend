@@ -1432,66 +1432,33 @@ export function DisplayListings(props: {
 
 export function convertToLegacy(l: MarketSearchResult): MarketListingType {
   if (l.listing_type === "unique") {
-      return {
-        accept_offers: false,
-        details: {
-          details_id: l.details_id,
-          item_type: l.item_type,
-          item_name: l.item_name,
-          game_item_id: l.game_item_id,
-          title: l.title,
-          description: l.title,
-        },
-        auction_details:
-          l.sale_type === "auction"
-            ? {
-                listing_id: l.listing_id,
-                status: "active",
-                minimum_bid_increment: 0,
-                end_time: l.auction_end_time,
-              }
-            : undefined,
-        listing: {
-          listing_id: l.listing_id,
-          sale_type: l.sale_type,
-          price: +l.minimum_price,
-          timestamp: l.timestamp,
-          quantity_available: +l.quantity_available,
-          status: l.status,
-          expiration: l.expiration,
-          user_seller: l.user_seller
-            ? {
-                username: l.user_seller,
-                avatar: "",
-                display_name: l.user_seller,
-                rating: {
-                  avg_rating: +l.avg_rating * 10,
-                  rating_count: +l.rating_count,
-                  streak: +l.rating_streak,
-                  total_orders: +l.total_orders,
-                },
-              }
-            : null,
-          contractor_seller: l.contractor_seller
-            ? {
-                avatar: "",
-                name: l.contractor_seller,
-                spectrum_id: l.contractor_seller,
-                rating: {
-                  avg_rating: l.avg_rating * 10,
-                  rating_count: l.rating_count,
-                  streak: l.rating_streak,
-                  total_orders: l.total_orders,
-                },
-              }
-            : null,
-          internal: false, // Default to false for search results
-        },
-        photos: [l.photo],
-        type: "unique",
-      }
-    } else if (l.listing_type === "multiple") {
-      return {
+    return {
+      accept_offers: false,
+      details: {
+        details_id: l.details_id,
+        item_type: l.item_type,
+        item_name: l.item_name,
+        game_item_id: l.game_item_id,
+        title: l.title,
+        description: l.title,
+      },
+      auction_details:
+        l.sale_type === "auction"
+          ? {
+              listing_id: l.listing_id,
+              status: "active",
+              minimum_bid_increment: 0,
+              end_time: l.auction_end_time,
+            }
+          : undefined,
+      listing: {
+        listing_id: l.listing_id,
+        sale_type: l.sale_type,
+        price: +l.minimum_price,
+        timestamp: l.timestamp,
+        quantity_available: +l.quantity_available,
+        status: l.status,
+        expiration: l.expiration,
         user_seller: l.user_seller
           ? {
               username: l.user_seller,
@@ -1511,24 +1478,72 @@ export function convertToLegacy(l: MarketSearchResult): MarketListingType {
               name: l.contractor_seller,
               spectrum_id: l.contractor_seller,
               rating: {
-                avg_rating: +l.avg_rating * 10,
-                rating_count: +l.rating_count,
-                streak: +l.rating_streak,
-                total_orders: +l.total_orders,
+                avg_rating: l.avg_rating * 10,
+                rating_count: l.rating_count,
+                streak: l.rating_streak,
+                total_orders: l.total_orders,
               },
             }
           : null,
-        default_listing: {
-          type: "multiple_listing",
+        internal: false, // Default to false for search results
+      },
+      photos: [l.photo],
+      type: "unique",
+    }
+  } else if (l.listing_type === "multiple") {
+    return {
+      user_seller: l.user_seller
+        ? {
+            username: l.user_seller,
+            avatar: "",
+            display_name: l.user_seller,
+            rating: {
+              avg_rating: +l.avg_rating * 10,
+              rating_count: +l.rating_count,
+              streak: +l.rating_streak,
+              total_orders: +l.total_orders,
+            },
+          }
+        : null,
+      contractor_seller: l.contractor_seller
+        ? {
+            avatar: "",
+            name: l.contractor_seller,
+            spectrum_id: l.contractor_seller,
+            rating: {
+              avg_rating: +l.avg_rating * 10,
+              rating_count: +l.rating_count,
+              streak: +l.rating_streak,
+              total_orders: +l.total_orders,
+            },
+          }
+        : null,
+      default_listing: {
+        type: "multiple_listing",
+        multiple_id: l.listing_id,
+        details: {
+          details_id: l.details_id,
+          item_type: l.item_type,
+          item_name: l.item_name,
+          game_item_id: l.game_item_id,
+          title: l.title,
+          description: l.title,
+        },
+        listing: {
+          listing_id: "",
+          sale_type: "sale",
+          price: +l.price,
+          timestamp: l.timestamp,
+          quantity_available: +l.quantity_available,
+          status: l.status,
+          expiration: l.expiration,
+          internal: false, // Default to false for search results
+        },
+        photos: [l.photo],
+      },
+      listings: [
+        {
           multiple_id: l.listing_id,
-          details: {
-            details_id: l.details_id,
-            item_type: l.item_type,
-            item_name: l.item_name,
-            game_item_id: l.game_item_id,
-            title: l.title,
-            description: l.title,
-          },
           listing: {
             listing_id: "",
             sale_type: "sale",
@@ -1539,78 +1554,63 @@ export function convertToLegacy(l: MarketSearchResult): MarketListingType {
             expiration: l.expiration,
             internal: false, // Default to false for search results
           },
-          photos: [l.photo],
-        },
-        listings: [
-          {
-            multiple_id: l.listing_id,
-            listing: {
-              listing_id: "",
-              sale_type: "sale",
-              price: +l.price,
-              timestamp: l.timestamp,
-              quantity_available: +l.quantity_available,
-              status: l.status,
-              expiration: l.expiration,
-              internal: false, // Default to false for search results
-            },
-            details: {
-              details_id: "",
-              item_type: "",
-              item_name: "",
-              game_item_id: null,
-              title: "",
-              description: "",
-            },
-            type: "multiple_listing",
-            photos: [],
+          details: {
+            details_id: "",
+            item_type: "",
+            item_name: "",
+            game_item_id: null,
+            title: "",
+            description: "",
           },
-        ],
-        multiple_id: l.listing_id,
-        photos: [l.photo],
-        type: "multiple",
-        details: {
-          details_id: l.details_id,
-          item_type: l.item_type,
-          item_name: l.item_name,
-          game_item_id: l.game_item_id,
-          title: l.title,
-          description: l.title,
+          type: "multiple_listing",
+          photos: [],
         },
-      }
-    } else {
-      return {
-        buy_orders: [],
-        details: {
-          details_id: l.details_id,
-          item_type: l.item_type,
-          item_name: l.item_name,
-          game_item_id: l.game_item_id,
-          title: l.title,
-          description: l.title,
-        },
-        listings: [
-          {
-            aggregate_id: l.listing_id,
-            listing_id: l.listing_id,
-            price: +l.minimum_price,
-            timestamp: l.timestamp,
-            quantity_available: +l.quantity_available - 1,
-            status: l.status,
-          },
-          {
-            aggregate_id: l.listing_id,
-            listing_id: l.listing_id,
-            price: +l.maximum_price,
-            timestamp: l.timestamp,
-            quantity_available: 1,
-            status: l.status,
-          },
-        ],
-        photos: [l.photo],
-        type: "aggregate",
-      }
+      ],
+      multiple_id: l.listing_id,
+      photos: [l.photo],
+      type: "multiple",
+      details: {
+        details_id: l.details_id,
+        item_type: l.item_type,
+        item_name: l.item_name,
+        game_item_id: l.game_item_id,
+        title: l.title,
+        description: l.title,
+      },
     }
+  } else {
+    return {
+      buy_orders: [],
+      details: {
+        details_id: l.details_id,
+        item_type: l.item_type,
+        item_name: l.item_name,
+        game_item_id: l.game_item_id,
+        title: l.title,
+        description: l.title,
+      },
+      listings: [
+        {
+          aggregate_id: l.listing_id,
+          listing_id: l.listing_id,
+          price: +l.minimum_price,
+          timestamp: l.timestamp,
+          quantity_available: +l.quantity_available - 1,
+          status: l.status,
+        },
+        {
+          aggregate_id: l.listing_id,
+          listing_id: l.listing_id,
+          price: +l.maximum_price,
+          timestamp: l.timestamp,
+          quantity_available: 1,
+          status: l.status,
+        },
+      ],
+      photos: [l.photo],
+      type: "aggregate",
+    }
+  }
 }
 
 export function DisplayListingsMin(props: {
@@ -2004,7 +2004,7 @@ export function BuyOrders() {
 export function OrgListings(props: { org: string }) {
   const { org } = props
   const [searchState, setSearchState] = useMarketSearch()
-  
+
   // Use search endpoint with contractor filter
   const { data: searchResults, isLoading } = useSearchMarketQuery({
     contractor_seller: org,
@@ -2079,26 +2079,26 @@ export function UserRecentListings(props: { user: string }) {
   )
 }
 
-export function MyItemListings(props: { status?: string; showInternal?: boolean | "all" }) {
+export function MyItemListings(props: {
+  status?: string
+  showInternal?: boolean | "all"
+}) {
   const { t } = useTranslation()
   const [currentOrg] = useCurrentOrg()
   const { data: profile, isLoading: profileLoading } = useGetUserProfileQuery()
   const [perPage, setPerPage] = useState(48)
   const [page, setPage] = useState(0)
   const ref = useRef<HTMLDivElement>(null)
-  
-  const handleChangePage = useCallback(
-    (event: unknown, newPage: number) => {
-      setPage(newPage)
-      if (ref.current) {
-        ref.current.scrollIntoView({
-          block: "end",
-          behavior: "smooth",
-        })
-      }
-    },
-    [],
-  )
+
+  const handleChangePage = useCallback((event: unknown, newPage: number) => {
+    setPage(newPage)
+    if (ref.current) {
+      ref.current.scrollIntoView({
+        block: "end",
+        behavior: "smooth",
+      })
+    }
+  }, [])
 
   const handleChangeRowsPerPage = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -2107,12 +2107,12 @@ export function MyItemListings(props: { status?: string; showInternal?: boolean 
     },
     [],
   )
-  
+
   // Determine if we should search by contractor or user
   const searchByContractor = currentOrg?.spectrum_id
-  const searchByUser = currentOrg === null && profile?.username && !profileLoading
-  
-  
+  const searchByUser =
+    currentOrg === null && profile?.username && !profileLoading
+
   // Build search query parameters
   const searchQueryParams = useMemo(() => {
     const baseParams = {
@@ -2121,7 +2121,7 @@ export function MyItemListings(props: { status?: string; showInternal?: boolean 
       quantityAvailable: 1,
       query: "",
     }
-    
+
     // Add contractor or user filter
     if (searchByContractor) {
       return {
@@ -2134,21 +2134,21 @@ export function MyItemListings(props: { status?: string; showInternal?: boolean 
         user_seller: profile.username,
       }
     }
-    
+
     return baseParams
   }, [searchByContractor, searchByUser, perPage, page])
 
   // Add status filter if provided
   const finalSearchParams = useMemo(() => {
-    const params: any = { 
+    const params: any = {
       ...searchQueryParams,
       sort: "activity", // Use valid default sort value
     }
-    
+
     if (props.status) {
       params.status = props.status
     }
-    
+
     // Add internal filter
     if (props.showInternal === false) {
       params.internal = "false"
@@ -2156,12 +2156,12 @@ export function MyItemListings(props: { status?: string; showInternal?: boolean 
       params.internal = "true"
     }
     // If showInternal is "all" or undefined, don't add internal filter (show all)
-    
+
     return params
   }, [searchQueryParams, props.status, props.showInternal])
 
-  
-  const { data: searchResults, isLoading } = useSearchMarketQuery(finalSearchParams)
+  const { data: searchResults, isLoading } =
+    useSearchMarketQuery(finalSearchParams)
 
   const filteredListings = useMemo(() => {
     if (!searchResults?.listings) return []
@@ -2178,8 +2178,8 @@ export function MyItemListings(props: { status?: string; showInternal?: boolean 
       <Grid item xs={12}>
         <div ref={ref} />
       </Grid>
-      <DisplayListingsMin 
-        listings={searchResults?.listings || []} 
+      <DisplayListingsMin
+        listings={searchResults?.listings || []}
         loading={isLoading}
       />
 
