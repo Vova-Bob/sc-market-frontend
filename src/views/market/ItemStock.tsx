@@ -927,6 +927,7 @@ export function MyItemStock() {
   const { data: profile, isLoading: profileLoading } = useGetUserProfileQuery()
   const [page, setPage] = useState(0)
   const [perPage, setPerPage] = useState(48)
+  const [searchState] = useMarketSearch()
   
   // Determine if we should search by contractor or user
   const searchByContractor = currentOrg?.spectrum_id
@@ -937,9 +938,10 @@ export function MyItemStock() {
     const baseParams = {
       page_size: perPage,
       index: page,
-      quantityAvailable: 1,
-      query: "",
-      sort: "activity",
+      quantityAvailable: searchState.quantityAvailable ?? 1,
+      query: searchState.query || "",
+      sort: searchState.sort || "activity",
+      status: searchState.status || undefined, // Include status filter from search state
     }
     
     // Add contractor or user filter
@@ -956,20 +958,13 @@ export function MyItemStock() {
     }
     
     return baseParams
-  }, [searchByContractor, searchByUser, profile?.username, perPage, page])
+  }, [searchByContractor, searchByUser, profile?.username, perPage, page, searchState])
 
   const { data: searchResults, isLoading } = useSearchMarketQuery(searchQueryParams)
 
   const filteredListings = useMemo(() => {
     if (!searchResults?.listings) return []
-    return searchResults.listings
-      .map(convertToLegacy)
-      .filter((l) => {
-        if (l.type === "unique") {
-          return l.listing.status !== "archived"
-        }
-        return false // Only show unique listings for stock management
-      }) as UniqueListing[]
+    return searchResults.listings.map(convertToLegacy) as UniqueListing[]
   }, [searchResults])
 
   const handleChangePage = useCallback((event: unknown, newPage: number) => {
