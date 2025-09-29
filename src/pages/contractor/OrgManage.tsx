@@ -85,7 +85,7 @@ export function OrgManage() {
       has_permission(
         contractor!,
         profile!,
-        "manage_blocklist",
+        "manage_orders",
         profile?.contractors,
       ),
     [contractor, profile],

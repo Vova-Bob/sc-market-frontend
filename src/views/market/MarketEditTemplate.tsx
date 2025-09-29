@@ -3,11 +3,12 @@ import { Section } from "../../components/paper/Section"
 import { MarkdownEditor } from "../../components/markdown/Markdown"
 import React, { useCallback, useEffect, useState } from "react"
 import { useGetUserProfileQuery, useUpdateProfile } from "../../store/profile"
-import { Grid, Typography } from "@mui/material"
+import { Grid, Typography, Divider } from "@mui/material"
 import LoadingButton from "@mui/lab/LoadingButton"
 import { useUpdateContractorMutation } from "../../store/contractor"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { useTranslation } from "react-i18next" // Localization
+import { OrderSettings } from "../../components/settings/OrderSettings"
 
 export function MarketEditTemplate(props: { org?: boolean }) {
   const { t } = useTranslation() // Localization hook
@@ -59,23 +60,35 @@ export function MarketEditTemplate(props: { org?: boolean }) {
   }, [template, contractor, t, props.org, updateOrg, updateProfile, issueAlert])
 
   return (
-    <Section xs={12} title={t("MarketEditTemplate.title")}>
+    <>
       <Grid item xs={12}>
-        <Typography>{t("MarketEditTemplate.configure")}</Typography>
+        <Section xs={12} title={t("MarketEditTemplate.title")}>
+          <Grid item xs={12}>
+            <Typography>{t("MarketEditTemplate.configure")}</Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <MarkdownEditor value={template} onChange={setTemplate} />
+          </Grid>
+          <Grid item xs={12}>
+            <LoadingButton
+              loading={orgUpdateLoading || profileUpdateLoading}
+              onClick={callback}
+              variant={"contained"}
+              disabled={props.org && !contractor}
+            >
+              {t("MarketEditTemplate.submit")}
+            </LoadingButton>
+          </Grid>
+        </Section>
       </Grid>
+
+      {/* Order Settings Section */}
       <Grid item xs={12}>
-        <MarkdownEditor value={template} onChange={setTemplate} />
+        <OrderSettings 
+          entityType={props.org ? "contractor" : "user"} 
+          entityId={props.org ? contractor?.spectrum_id : undefined}
+        />
       </Grid>
-      <Grid item xs={12}>
-        <LoadingButton
-          loading={orgUpdateLoading || profileUpdateLoading}
-          onClick={callback}
-          variant={"contained"}
-          disabled={props.org && !contractor}
-        >
-          {t("MarketEditTemplate.submit")}
-        </LoadingButton>
-      </Grid>
-    </Section>
+    </>
   )
 }

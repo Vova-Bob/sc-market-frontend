@@ -9,6 +9,7 @@ import {
   PrivacyTipRounded,
   StoreRounded,
   Block,
+  SecurityRounded,
 } from "@mui/icons-material"
 import { PrivacySettings } from "../../views/settings/PrivacySettings"
 import { Discord } from "../../components/icon/DiscordIcon"
@@ -17,7 +18,7 @@ import { DiscordIntegrationSettings } from "../../views/settings/DiscordIntegrat
 import { MarketSettings } from "../../views/settings/MarketSettings"
 import { ContractorsSettings } from "../../views/settings/ContractorsSettings"
 import { BlocklistSettings } from "../../views/settings/BlocklistSettings"
-
+import { ApiTokensSettings } from "../../views/settings/ApiTokensSettings"
 import { useTranslation } from "react-i18next"
 
 export function SettingsPage() {
@@ -77,6 +78,12 @@ export function SettingsPage() {
               {...a11yProps(5)}
               value={5}
             />
+            <Tab
+              label="API Tokens"
+              icon={<SecurityRounded />}
+              {...a11yProps(6)}
+              value={6}
+            />
           </Tabs>
         </Grid>
 
@@ -99,6 +106,9 @@ export function SettingsPage() {
           </TabPanel>
           <TabPanel value={page} index={5}>
             <BlocklistSettings />
+          </TabPanel>
+          <TabPanel value={page} index={6}>
+            <ApiTokensSettings />
           </TabPanel>
         </Grid>
       </ContainerGrid>

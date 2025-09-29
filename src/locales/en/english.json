@@ -1218,6 +1218,24 @@
     "minCost": "Minimum Cost",
     "maxCost": "Maximum Cost"
   },
+  "OrderSettings": {
+    "title": "Order Messages",
+    "description": "Configure custom messages that will be automatically sent when offers are created or when offers turn into orders.",
+    "offerMessage": "Offer Message",
+    "orderMessage": "Order Message",
+    "enabled": "Enabled",
+    "offerMessagePlaceholder": "Enter a message to send when an offer is created...",
+    "orderMessagePlaceholder": "Enter a message to send when an offer becomes an order...",
+    "save": "Save Settings",
+    "saving": "Saving...",
+    "delete": "Delete",
+    "confirmDelete": "Are you sure you want to delete this setting?",
+    "savedSuccessfully": "Settings saved successfully!",
+    "deletedSuccessfully": "Setting deleted successfully!",
+    "saveError": "Failed to save settings. Please try again.",
+    "deleteError": "Failed to delete setting. Please try again.",
+    "loadError": "Failed to load settings. Please refresh the page."
+  },
   "MarketMultipleView": {
     "market": "Market",
     "people": "People",

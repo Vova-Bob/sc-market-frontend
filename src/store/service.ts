@@ -38,5 +38,6 @@ export const serviceApi = createApi({
     "AdminAlerts",
     "Blocklist",
     "OrgBlocklist",
+    "OrderSettings",
   ],
 })
