@@ -9,7 +9,7 @@ export interface MarketSearchState {
   quantityAvailable?: number
   query: string
   sort?: string | null | undefined
-  status?: string
+  statuses?: string
   index?: number
   page_size?: number
   listing_type?: string
@@ -37,7 +37,7 @@ export const useMarketSearch = () => {
         minCost: +searchParams.get("minCost")! || 0,
         maxCost: +searchParams.get("maxCost")! || undefined,
         query: searchParams.get("query") || "",
-        status: searchParams.get("status") ? "active" : undefined,
+        statuses: searchParams.get("statuses") || "active",
         index: +searchParams.get("index")! ? 0 : undefined,
         page_size: searchParams.get("page_size")! ? 48 : undefined,
       }) as MarketSearchState,
@@ -69,7 +69,7 @@ export const useMarketSearch = () => {
           searchState.sort !== "activity"
             ? searchState.sort || undefined
             : undefined,
-        status: searchState.status || undefined,
+        statuses: searchState.statuses !== "active" ? searchState.statuses : undefined,
         index: searchState.index === 0 ? undefined : searchState.index,
         page_size:
           searchState.page_size === 48 ? undefined : searchState.page_size,

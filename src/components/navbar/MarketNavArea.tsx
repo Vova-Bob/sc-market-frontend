@@ -211,7 +211,7 @@ export function MarketNavArea(props: { top?: boolean }) {
   )
   const [query, setQuery] = useState<string>(searchState.query || "")
   const [activity, setActivity] = useState<string>(
-    searchState.status ? "active" : "",
+    searchState.statuses || "active",
   )
   const [drawerOpen] = useDrawerOpen()
   const [open, setOpen] = useMarketSidebar()
@@ -250,7 +250,7 @@ export function MarketNavArea(props: { top?: boolean }) {
       maxCost,
       query,
       sort,
-      status: activity,
+      statuses: activity,
     })
   }, [
     activity,

@@ -39,7 +39,7 @@ export interface MarketSearchQuery {
   contractor_seller: string
   user_seller: string
   listing_type?: string | null
-  status?: string
+  statuses?: string
   internal?: string
 }
 

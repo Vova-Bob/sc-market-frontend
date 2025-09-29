@@ -1093,8 +1093,8 @@ export function filterListings<T extends MarketListingType | SellerListingType>(
       ) {
         // Normal listing or aggregate composite
         return (
-          (!searchState.status ||
-            searchState.status === market_listing.listing.status) &&
+          (!searchState.statuses ||
+            searchState.statuses.split(',').includes(market_listing.listing.status)) &&
           (!searchState.sale_type ||
             searchState.sale_type === "any" ||
             (searchState.sale_type !== "aggregate" &&

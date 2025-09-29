@@ -1207,6 +1207,8 @@
     "either": "Either",
     "active": "Active",
     "inactive": "Inactive",
+    "activeAndInactive": "Active + Inactive",
+    "allStatuses": "All Statuses",
     "saleType": "Sale Type",
     "any": "Any",
     "sale": "Sale",

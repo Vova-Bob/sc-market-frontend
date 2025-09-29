@@ -47,7 +47,7 @@ export function MarketSearchArea(props: { status?: boolean }) {
   )
   const [query, setQuery] = useState<string>(searchState.query || "")
   const [activity, setActivity] = useState<string>(
-    searchState.status ? "active" : "",
+    searchState.statuses || "active",
   )
 
   const handleKindChange = (event: { target: { value: string } }) => {
@@ -84,7 +84,7 @@ export function MarketSearchArea(props: { status?: boolean }) {
       maxCost,
       query,
       sort,
-      status: activity,
+      statuses: activity,
     })
   }, [
     activity,
@@ -225,12 +225,14 @@ export function MarketSearchArea(props: { status?: boolean }) {
                 IconComponent: KeyboardArrowDownRoundedIcon,
               }}
             >
-              <MenuItem value={""}>{t("MarketSearchArea.either")}</MenuItem>
               <MenuItem value={"active"}>
                 {t("MarketSearchArea.active")}
               </MenuItem>
-              <MenuItem value={"inactive"}>
-                {t("MarketSearchArea.inactive")}
+              <MenuItem value={"active,inactive"}>
+                {t("MarketSearchArea.activeAndInactive")}
+              </MenuItem>
+              <MenuItem value={"active,inactive,archived"}>
+                {t("MarketSearchArea.allStatuses")}
               </MenuItem>
             </TextField>
           </Grid>

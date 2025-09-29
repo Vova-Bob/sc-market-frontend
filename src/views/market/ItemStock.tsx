@@ -944,7 +944,7 @@ export function MyItemStock() {
       quantityAvailable: searchState.quantityAvailable ?? 1,
       query: searchState.query || "",
       sort: searchState.sort || "activity",
-      status: searchState.status || undefined, // Include status filter from search state
+      statuses: searchState.statuses || undefined, // Include status filter from search state
     }
 
     // Add contractor or user filter
