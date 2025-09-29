@@ -16,6 +16,7 @@ import {
 } from "@mui/material"
 import { OfferMarketListings } from "../../views/offers/OfferMarketListings"
 import { OfferServiceArea } from "../../views/offers/OfferServiceArea"
+import { OrderAvailabilityArea } from "../../views/orders/OrderAvailabilityArea"
 import { useTranslation } from "react-i18next"
 import {
   shouldRedirectTo404,
@@ -119,6 +120,10 @@ export function ViewOfferPage() {
           <Grid item xs={12} lg={4}>
             <Skeleton width={"100%"} height={400} />
           </Grid>
+        )}
+
+        {session && session.availability && (
+          <OrderAvailabilityArea order={session} />
         )}
       </ContainerGrid>
     </Page>
