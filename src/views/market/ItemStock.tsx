@@ -62,7 +62,7 @@ import LoadingButton from "@mui/lab/LoadingButton"
 import { ThemedDataGrid } from "../../components/grid/ThemedDataGrid"
 import { SelectGameItemStack } from "../../components/select/SelectGameItem"
 import { useGetUserProfileQuery } from "../../store/profile"
-import { useTranslation } from "react-i18next" // Added for i18n
+import { useTranslation } from "react-i18next"
 
 export const ItemStockContext = React.createContext<
   | [
@@ -624,7 +624,9 @@ export function DisplayStock({
           return "—" // New rows don't have offers
         }
 
-        const stats = listingStats?.find((l) => l.listing_id === params.row)
+        const stats = listingStats?.stats?.find(
+          (l) => l.listing_id === params.row.listing_id,
+        )
 
         if (!stats) {
           return null
@@ -982,19 +984,6 @@ export function MyItemStock() {
   const { data: searchResults, isLoading } = all
 
   const filteredListings = [...(searchResults?.listings || [])]
-
-  console.log("SEARCH RESULTS", all)
-  useEffect(() => {
-    console.log(
-      isLoading,
-      searchResults?.listings.length,
-      searchResults?.listings,
-    )
-  }, [searchResults, isLoading])
-
-  useEffect(() => {
-    console.log(isLoading, filteredListings.length, filteredListings)
-  }, [filteredListings, isLoading])
 
   const handleChangePage = useCallback((event: unknown, newPage: number) => {
     setPage(newPage)

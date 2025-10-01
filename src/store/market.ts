@@ -215,10 +215,14 @@ export const marketApi = serviceApi.injectEndpoints({
     }),
 
     getStatsForListings: builder.query<
-      (ListingStats & { listing_id: string })[],
+      { stats: (ListingStats & { listing_id: string })[] },
       string[]
     >({
-      query: (body) => ({ body, url: "/api/market/listings/stats" }),
+      query: (listing_ids) => ({
+        body: { listing_ids },
+        url: "/api/market/listings/stats",
+        method: "POST",
+      }),
       transformResponse: unwrapResponse,
       providesTags: (result, error, params) => ["MarketListings" as const],
     }),
