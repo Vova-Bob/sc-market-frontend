@@ -90,6 +90,8 @@ export function RecentListings() {
     page_size: 8,
     statuses: "active",
     sale_type: "sale",
+    listing_type: "unique",
+    sort: "activity",
   })
 
   return !isLoading ? (
