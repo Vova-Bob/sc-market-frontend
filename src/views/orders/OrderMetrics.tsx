@@ -39,13 +39,14 @@ export function MetricSection(props: {
   )
 }
 
-export function ContractorOrderMetricsDisplay(props: { 
-  metrics: ContractorOrderMetrics 
+export function ContractorOrderMetricsDisplay(props: {
+  metrics: ContractorOrderMetrics
 }) {
   const { metrics } = props
   const { t, i18n } = useTranslation()
 
-  const activeOrders = metrics.status_counts["in-progress"] + metrics.status_counts["not-started"]
+  const activeOrders =
+    metrics.status_counts["in-progress"] + metrics.status_counts["not-started"]
   const completedOrders = metrics.status_counts["fulfilled"]
 
   return (
@@ -147,7 +148,9 @@ export function ContractorOrderMetricsDisplay(props: {
         </Grid>
         <Grid item xs={12}>
           <Typography variant={"h6"} color={"primary.main"}>
-            {metrics.recent_activity.orders_last_7_days.toLocaleString(i18n.language)}
+            {metrics.recent_activity.orders_last_7_days.toLocaleString(
+              i18n.language,
+            )}
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -168,7 +171,9 @@ export function ContractorOrderMetricsDisplay(props: {
         </Grid>
         <Grid item xs={12}>
           <Typography variant={"h6"} color={"primary.main"}>
-            {metrics.recent_activity.orders_last_30_days.toLocaleString(i18n.language)}
+            {metrics.recent_activity.orders_last_30_days.toLocaleString(
+              i18n.language,
+            )}
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -189,7 +194,10 @@ export function ContractorOrderMetricsDisplay(props: {
         </Grid>
         <Grid item xs={12}>
           <Typography variant={"h6"} color={"success.main"}>
-            {metrics.recent_activity.value_last_7_days.toLocaleString(i18n.language)} aUEC
+            {metrics.recent_activity.value_last_7_days.toLocaleString(
+              i18n.language,
+            )}{" "}
+            aUEC
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -210,7 +218,10 @@ export function ContractorOrderMetricsDisplay(props: {
         </Grid>
         <Grid item xs={12}>
           <Typography variant={"h6"} color={"success.main"}>
-            {metrics.recent_activity.value_last_30_days.toLocaleString(i18n.language)} aUEC
+            {metrics.recent_activity.value_last_30_days.toLocaleString(
+              i18n.language,
+            )}{" "}
+            aUEC
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -234,7 +245,11 @@ export function ContractorOrderMetricsDisplay(props: {
             <Grid container spacing={1}>
               {metrics.top_customers.slice(0, 5).map((customer, index) => (
                 <Grid item xs={12} key={customer.username}>
-                  <Box display="flex" justifyContent="space-between" alignItems="center">
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
                     <Typography variant="body1">
                       {index + 1}. {customer.username}
                     </Typography>
@@ -243,7 +258,8 @@ export function ContractorOrderMetricsDisplay(props: {
                         {customer.order_count} {t("orderMetrics.orders")}
                       </Typography>
                       <Typography variant="caption" color="text.secondary">
-                        {customer.total_value.toLocaleString(i18n.language)} aUEC
+                        {customer.total_value.toLocaleString(i18n.language)}{" "}
+                        aUEC
                       </Typography>
                     </Box>
                   </Box>
@@ -262,10 +278,13 @@ export function ContractorOrderMetricsDisplay(props: {
 
 export function OrderMetrics(props: {}) {
   const [contractor] = useCurrentOrg()
-  const { data: metrics, isLoading, error } = useGetContractorOrderMetricsQuery(
-    contractor?.spectrum_id!,
-    { skip: !contractor?.spectrum_id }
-  )
+  const {
+    data: metrics,
+    isLoading,
+    error,
+  } = useGetContractorOrderMetricsQuery(contractor?.spectrum_id!, {
+    skip: !contractor?.spectrum_id,
+  })
 
   const { t } = useTranslation()
 

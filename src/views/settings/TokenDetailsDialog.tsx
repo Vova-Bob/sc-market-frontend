@@ -23,7 +23,11 @@ import {
   Business as BusinessIcon,
 } from "@mui/icons-material"
 import { useTranslation } from "react-i18next"
-import { useGetTokenStatsQuery, ApiToken, useGetContractorsForTokensQuery } from "../../store/tokens"
+import {
+  useGetTokenStatsQuery,
+  ApiToken,
+  useGetContractorsForTokensQuery,
+} from "../../store/tokens"
 
 interface TokenDetailsDialogProps {
   open: boolean
@@ -31,13 +35,17 @@ interface TokenDetailsDialogProps {
   token: ApiToken | null
 }
 
-export function TokenDetailsDialog({ open, onClose, token }: TokenDetailsDialogProps) {
+export function TokenDetailsDialog({
+  open,
+  onClose,
+  token,
+}: TokenDetailsDialogProps) {
   const { t } = useTranslation()
   const { data: stats } = useGetTokenStatsQuery(token?.id || "", {
     skip: !token?.id,
   })
   const { data: contractors } = useGetContractorsForTokensQuery()
-  
+
   const [showToken, setShowToken] = useState(false)
 
   const formatDate = (dateString: string) => {
@@ -54,15 +62,31 @@ export function TokenDetailsDialog({ open, onClose, token }: TokenDetailsDialogP
   }
 
   const getExpiryStatus = (expiresAt?: string) => {
-    if (!expiresAt) return { status: "never", color: "default" as const, text: "Never expires" }
-    if (isExpired(expiresAt)) return { status: "expired", color: "error" as const, text: "Expired" }
-    
+    if (!expiresAt)
+      return {
+        status: "never",
+        color: "default" as const,
+        text: "Never expires",
+      }
+    if (isExpired(expiresAt))
+      return { status: "expired", color: "error" as const, text: "Expired" }
+
     const daysUntilExpiry = Math.ceil(
-      (new Date(expiresAt).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
+      (new Date(expiresAt).getTime() - new Date().getTime()) /
+        (1000 * 60 * 60 * 24),
     )
-    
-    if (daysUntilExpiry <= 7) return { status: "soon", color: "warning" as const, text: `Expires in ${daysUntilExpiry} days` }
-    return { status: "valid", color: "success" as const, text: `Expires in ${daysUntilExpiry} days` }
+
+    if (daysUntilExpiry <= 7)
+      return {
+        status: "soon",
+        color: "warning" as const,
+        text: `Expires in ${daysUntilExpiry} days`,
+      }
+    return {
+      status: "valid",
+      color: "success" as const,
+      text: `Expires in ${daysUntilExpiry} days`,
+    }
   }
 
   const getScopeColor = (scope: string) => {
@@ -93,7 +117,12 @@ export function TokenDetailsDialog({ open, onClose, token }: TokenDetailsDialogP
       <DialogContent>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              mb={1}
+            >
               <Typography variant="h6">{token.name}</Typography>
               <Tooltip title="Copy Token ID">
                 <IconButton size="small" onClick={copyTokenId}>
@@ -121,7 +150,10 @@ export function TokenDetailsDialog({ open, onClose, token }: TokenDetailsDialogP
                 <Typography variant="body2" color="text.secondary">
                   Token ID:
                 </Typography>
-                <Typography variant="body2" sx={{ fontFamily: "monospace", fontSize: "0.75rem" }}>
+                <Typography
+                  variant="body2"
+                  sx={{ fontFamily: "monospace", fontSize: "0.75rem" }}
+                >
                   {token.id}
                 </Typography>
               </Grid>
@@ -146,7 +178,9 @@ export function TokenDetailsDialog({ open, onClose, token }: TokenDetailsDialogP
                   Last Used:
                 </Typography>
                 <Typography variant="body2">
-                  {token.last_used_at ? formatDateTime(token.last_used_at) : "Never"}
+                  {token.last_used_at
+                    ? formatDateTime(token.last_used_at)
+                    : "Never"}
                 </Typography>
               </Grid>
             </Grid>
@@ -162,7 +196,9 @@ export function TokenDetailsDialog({ open, onClose, token }: TokenDetailsDialogP
                 label={expiryStatus.text}
                 size="small"
                 color={expiryStatus.color}
-                variant={expiryStatus.status === "expired" ? "filled" : "outlined"}
+                variant={
+                  expiryStatus.status === "expired" ? "filled" : "outlined"
+                }
               />
             </Box>
             {token.expires_at && (
@@ -195,10 +231,9 @@ export function TokenDetailsDialog({ open, onClose, token }: TokenDetailsDialogP
               Contractor Access
             </Typography>
             <Typography variant="body2">
-              {(token.contractor_ids || []).length === 0 
-                ? "Access to all contractors" 
-                : `Access to ${(token.contractor_ids || []).length} contractor(s)`
-              }
+              {(token.contractor_ids || []).length === 0
+                ? "Access to all contractors"
+                : `Access to ${(token.contractor_ids || []).length} contractor(s)`}
             </Typography>
             {(token.contractor_ids || []).length > 0 && (
               <Box sx={{ mt: 1 }}>
@@ -208,13 +243,17 @@ export function TokenDetailsDialog({ open, onClose, token }: TokenDetailsDialogP
                 <Box display="flex" flexWrap="wrap" gap={0.5} sx={{ mt: 0.5 }}>
                   {(token.contractor_ids || []).map((contractorId) => {
                     // Find contractor by spectrum_id
-                    const contractor = contractors?.find(c => 
-                      c.spectrum_id === contractorId
+                    const contractor = contractors?.find(
+                      (c) => c.spectrum_id === contractorId,
                     )
                     return (
                       <Chip
                         key={contractorId}
-                        label={contractor ? `${contractor.name} (${contractor.spectrum_id})` : contractorId}
+                        label={
+                          contractor
+                            ? `${contractor.name} (${contractor.spectrum_id})`
+                            : contractorId
+                        }
                         size="small"
                         variant="outlined"
                         sx={{ fontSize: "0.7rem" }}
@@ -260,9 +299,9 @@ export function TokenDetailsDialog({ open, onClose, token }: TokenDetailsDialogP
           <Grid item xs={12}>
             <Alert severity="info">
               <Typography variant="body2">
-                <strong>Security Note:</strong> This token provides access to your account 
-                with the permissions shown above. Keep it secure and only share it with 
-                trusted applications.
+                <strong>Security Note:</strong> This token provides access to
+                your account with the permissions shown above. Keep it secure
+                and only share it with trusted applications.
               </Typography>
             </Alert>
           </Grid>

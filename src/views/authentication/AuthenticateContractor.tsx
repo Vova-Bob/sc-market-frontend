@@ -15,7 +15,7 @@ import { useContractorLinkMutation } from "../../store/contractor"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { useTranslation } from "react-i18next"
 
-export function AuthenticateContractor(props: {}) {
+export function AuthenticateContractor() {
   const identifier = useGetAuthenticatorIdentifier()
   const [orgName, setOrgName] = useState("")
   const [error, setError] = useState(false)

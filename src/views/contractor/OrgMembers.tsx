@@ -20,9 +20,7 @@ import {
 } from "@mui/material"
 import { Link } from "react-router-dom"
 import { HeadCell } from "../../components/table/PaginatedTable"
-import {
-  useGetUserProfileQuery,
-} from "../../store/profile"
+import { useGetUserProfileQuery } from "../../store/profile"
 import { MinimalUser } from "../../datatypes/User"
 import { UnderlineLink } from "../../components/typography/UnderlineLink"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
@@ -158,7 +156,7 @@ function PeopleRow(props: {
         scope="row"
         // padding="none"
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <Avatar src={row.avatar} />
           <Box>
             <Link to={`/user/${row.username}`}>
@@ -170,9 +168,7 @@ function PeopleRow(props: {
                 {row.username}
               </UnderlineLink>
             </Link>
-            <Typography variant={"subtitle2"}>
-              {row.display_name}
-            </Typography>
+            <Typography variant={"subtitle2"}>{row.display_name}</Typography>
           </Box>
         </Box>
       </TableCell>
@@ -248,8 +244,7 @@ function PeopleRow(props: {
               {row.roles
                 .map(
                   (rowRole) =>
-                    contractor!.roles!.find((r) => r.role_id == rowRole)
-                      ?.name,
+                    contractor!.roles!.find((r) => r.role_id == rowRole)?.name,
                 )
                 .join(", ")}
             </Typography>

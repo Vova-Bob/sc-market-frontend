@@ -48,7 +48,12 @@ export function has_permission(
     | undefined
     | null,
   permission_name: keyof ContractorRole,
-  userContractors?: Array<{ spectrum_id: string; role: string; role_id?: string; roles?: string[] }>,
+  userContractors?: Array<{
+    spectrum_id: string
+    role: string
+    role_id?: string
+    roles?: string[]
+  }>,
 ) {
   if (!contractor || !user) {
     return false
@@ -58,27 +63,36 @@ export function has_permission(
   const userContractor = userContractors?.find(
     (c) => c.spectrum_id === contractor.spectrum_id,
   )
-  if (!userContractor || !userContractor.roles || userContractor.roles.length === 0) {
+  if (
+    !userContractor ||
+    !userContractor.roles ||
+    userContractor.roles.length === 0
+  ) {
     return false
   }
 
   // Check if user has any role that grants this permission
-  const userRoles = (contractor.roles || []).filter(
-    (r) => userContractor.roles!.includes(r.role_id),
+  const userRoles = (contractor.roles || []).filter((r) =>
+    userContractor.roles!.includes(r.role_id),
   )
-  
+
   if (userRoles.length === 0) {
     return false
   }
 
   // Return true if ANY of the user's roles grants this permission
-  return userRoles.some(role => role[permission_name] === true)
+  return userRoles.some((role) => role[permission_name] === true)
 }
 
 export function min_position(
   contractor: Contractor,
   user: { username: string },
-  userContractors?: Array<{ spectrum_id: string; role: string; role_id?: string; roles?: string[] }>,
+  userContractors?: Array<{
+    spectrum_id: string
+    role: string
+    role_id?: string
+    roles?: string[]
+  }>,
 ) {
   if (!contractor || !user) {
     return undefined
@@ -88,21 +102,25 @@ export function min_position(
   const userContractor = userContractors?.find(
     (c) => c.spectrum_id === contractor.spectrum_id,
   )
-  if (!userContractor || !userContractor.roles || userContractor.roles.length === 0) {
+  if (
+    !userContractor ||
+    !userContractor.roles ||
+    userContractor.roles.length === 0
+  ) {
     return undefined
   }
 
   // Find all roles for this user and return the lowest (most powerful) position
-  const userRoles = (contractor.roles || []).filter(
-    (r) => userContractor.roles!.includes(r.role_id),
+  const userRoles = (contractor.roles || []).filter((r) =>
+    userContractor.roles!.includes(r.role_id),
   )
-  
+
   if (userRoles.length === 0) {
     return undefined
   }
 
   // Return the lowest position (most powerful role)
-  return Math.min(...userRoles.map(role => role.position))
+  return Math.min(...userRoles.map((role) => role.position))
 }
 
 export function getMemberPosition(
@@ -114,22 +132,27 @@ export function getMemberPosition(
   }
 
   // Find all roles for this member and return the lowest (most powerful) position
-  const userRoles = (contractor.roles || []).filter(
-    (r) => memberRoles.includes(r.role_id),
+  const userRoles = (contractor.roles || []).filter((r) =>
+    memberRoles.includes(r.role_id),
   )
-  
+
   if (userRoles.length === 0) {
     return undefined
   }
 
   // Return the lowest position (most powerful role)
-  return Math.min(...userRoles.map(role => role.position))
+  return Math.min(...userRoles.map((role) => role.position))
 }
 
 export function min_role(
   contractor: Contractor,
   user: { username: string },
-  userContractors?: Array<{ spectrum_id: string; role: string; role_id?: string; roles?: string[] }>,
+  userContractors?: Array<{
+    spectrum_id: string
+    role: string
+    role_id?: string
+    roles?: string[]
+  }>,
 ) {
   if (!contractor || !user) {
     return undefined

@@ -9,9 +9,11 @@ import throttle from "lodash/throttle"
  */
 export function useDebounce<T>(value: T, delay: number): T {
   const [throttledValue, setThrottledValue] = useState<T>(value)
-  const throttledUpdate = useRef(throttle((newValue: T) => {
-    setThrottledValue(newValue)
-  }, delay))
+  const throttledUpdate = useRef(
+    throttle((newValue: T) => {
+      setThrottledValue(newValue)
+    }, delay),
+  )
 
   useEffect(() => {
     throttledUpdate.current(value)

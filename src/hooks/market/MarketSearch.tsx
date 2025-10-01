@@ -1,8 +1,11 @@
 import React, { useMemo, useCallback } from "react"
 import { useSearchParams } from "react-router-dom"
+import { SaleType } from "../../store/market.ts"
+
+export type SaleTypeSelect = SaleType | "any"
 
 export interface MarketSearchState {
-  sale_type?: string | undefined
+  sale_type?: SaleTypeSelect | undefined
   item_type?: string | undefined
   minCost?: number
   maxCost?: number | null
@@ -28,7 +31,7 @@ export const useMarketSearch = () => {
     () =>
       ({
         sort: searchParams.get("sort") || "activity",
-        sale_type: searchParams.get("kind") || undefined,
+        sale_type: (searchParams.get("kind") as SaleType) || undefined,
         item_type: searchParams.get("type") || undefined,
         quantityAvailable:
           searchParams.get("quantityAvailable") !== null
@@ -69,7 +72,8 @@ export const useMarketSearch = () => {
           searchState.sort !== "activity"
             ? searchState.sort || undefined
             : undefined,
-        statuses: searchState.statuses !== "active" ? searchState.statuses : undefined,
+        statuses:
+          searchState.statuses !== "active" ? searchState.statuses : undefined,
         index: searchState.index === 0 ? undefined : searchState.index,
         page_size:
           searchState.page_size === 48 ? undefined : searchState.page_size,

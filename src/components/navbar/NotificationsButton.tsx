@@ -46,7 +46,7 @@ import {
   useNotificationBulkDeleteMutation,
 } from "../../store/notification"
 import { MarketBid } from "../../datatypes/MarketListing"
-import { useMarketGetListingByIDQuery } from "../../store/market"
+import { useGetMarketListingQuery } from "../../store/market"
 import { OfferSession } from "../../store/offer"
 import { Trans, useTranslation } from "react-i18next"
 import { MarkdownRender } from "../markdown/Markdown"
@@ -459,7 +459,7 @@ export function NotificationBid(props: { notif: Notification }) {
   const { notif } = props
   const theme = useTheme<ExtendedTheme>()
   const bid = useMemo(() => notif.entity as MarketBid, [notif.entity])
-  const { data: listing } = useMarketGetListingByIDQuery(bid.listing_id)
+  const { data: listing } = useGetMarketListingQuery(bid.listing_id)
   const { t } = useTranslation()
 
   return (

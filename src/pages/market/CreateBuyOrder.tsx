@@ -1,7 +1,7 @@
 import { FlatSection } from "../../components/paper/Section"
 import {
-  useMarketGetAggregateByIDQuery,
-  useMarketItemsByCategoryQuery,
+  useGetAggregateByIdQuery,
+  useGetMarketItemsByCategoryQuery,
 } from "../../store/market"
 import React, { useMemo, useState } from "react"
 import { BuyOrderForm } from "../../views/market/BuyOrderForm"
@@ -15,7 +15,7 @@ export function CreateBuyOrder() {
   const [itemType, setItemType] = useState<string>("Other")
   const [itemName, setItemName] = useState<string | null>(null)
 
-  const { data: items } = useMarketItemsByCategoryQuery(itemType!, {
+  const { data: items } = useGetMarketItemsByCategoryQuery(itemType!, {
     skip: !itemType,
   })
 
@@ -27,7 +27,7 @@ export function CreateBuyOrder() {
     [items, itemName],
   )
 
-  const { data: aggregate } = useMarketGetAggregateByIDQuery(item_name_value!, {
+  const { data: aggregate } = useGetAggregateByIdQuery(item_name_value!, {
     skip: !item_name_value,
   })
 

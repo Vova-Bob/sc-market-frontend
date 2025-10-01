@@ -8,11 +8,11 @@ export interface User {
   avatar: string
   banner: string
   // [key: string]: string | number
-  contractors: { 
-    spectrum_id: string; 
-    roles: string[]; 
-    name: string;
-    role_details?: { role_id: string; role_name: string; position: number }[];
+  contractors: {
+    spectrum_id: string
+    roles: string[]
+    name: string
+    role_details?: { role_id: string; role_name: string; position: number }[]
   }[]
   profile_description: string
   rating: Rating

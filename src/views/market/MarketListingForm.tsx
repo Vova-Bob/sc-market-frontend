@@ -17,10 +17,11 @@ import {
   useMarketCreateListingMutation,
   useMarketCreateAggregateListingMutation,
   useMarketCreateMultipleListingMutation,
-  useMarketGetAggregateByIDQuery,
+  useGetAggregateByIdQuery,
   useMarketGetMyListingsQuery,
   useSearchMarketQuery,
   useMarketUploadListingPhotosMutation,
+  validatePhotoUploadParams,
 } from "../../store/market"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 import {
@@ -38,7 +39,7 @@ import { MarkdownEditor } from "../../components/markdown/Markdown"
 import { DateTimePicker } from "@mui/x-date-pickers"
 import { useNavigate } from "react-router-dom"
 import { PageSearch } from "./PageSearch"
-import { convertToLegacy, DisplayListingsHorizontal } from "./ItemListings"
+import { DisplayListingsHorizontal } from "./ItemListings"
 import { NumericFormat } from "react-number-format"
 import { FormPaper } from "../../components/paper/FormPaper"
 import {
@@ -104,29 +105,28 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
   const submitMarketListing = useCallback(
     async (event: any) => {
       createListing({
-        body: state,
+        ...state,
         spectrum_id: currentOrg?.spectrum_id,
       })
         .unwrap()
         .then(async (res) => {
           // Upload photos if any files were selected
           if (uploadedFiles.length > 0) {
-            console.log(
-              `[Photo Upload] Starting upload for listing ${res.listing_id}:`,
-              {
-                listing_id: res.listing_id,
-                file_count: uploadedFiles.length,
-                files: uploadedFiles.map((f) => ({
-                  name: f.name,
-                  size: f.size,
-                  type: f.type,
-                })),
-              },
+            const uploadParams = validatePhotoUploadParams(
+              res.listing_id,
+              uploadedFiles,
             )
+            if (uploadParams.status === "invalid") {
+              issueAlert({
+                message: uploadParams.error,
+                severity: "error",
+              })
+              return
+            }
 
             uploadPhotos({
-              listing_id: res.listing_id,
-              photos: uploadedFiles,
+              listingId: uploadParams.listingId,
+              photos: uploadParams.photos,
             })
               .unwrap()
               .then((uploadResult) => {
@@ -206,10 +206,7 @@ export function MarketListingForm(props: { sale_type: "sale" | "auction" }) {
     ],
   )
 
-  const filledResults = useMemo(
-    () => (searchResults?.listings || []).map((l) => convertToLegacy(l)),
-    [searchResults],
-  )
+  const filledResults = searchResults?.listings || []
 
   const [relatedOpen, setRelatedOpen] = useState(false)
 
@@ -608,7 +605,7 @@ export function AggregateMarketListingForm() {
     }
   }, [aggregateChoice])
 
-  const { data: aggregate } = useMarketGetAggregateByIDQuery(state.wiki_id, {
+  const { data: aggregate } = useGetAggregateByIdQuery(state.wiki_id, {
     skip: !state.wiki_id,
   })
 
@@ -951,16 +948,12 @@ export function MarketMultipleForm() {
     [createListing, currentOrg?.spectrum_id, issueAlert, state, t, navigate],
   )
 
-  const { data: currentListings } = useMarketGetMyListingsQuery(
-    currentOrg?.spectrum_id,
-  )
-  const uniqueListings = useMemo(
-    () =>
-      (currentListings || []).filter(
-        (l) => l.type === "unique" && l.listing.sale_type === "sale",
-      ) as UniqueListing[],
-    [currentListings],
-  )
+  const { data: uniqueListingResults } = useSearchMarketQuery({
+    contractor_seller: currentOrg?.spectrum_id,
+    listing_type: "unique",
+  })
+
+  const uniqueListings = uniqueListingResults?.listings || []
 
   return (
     // <FormControl component={Grid} item xs={12} container spacing={2}>
@@ -1038,7 +1031,7 @@ export function MarketMultipleForm() {
             // multiple
             disablePortal
             options={uniqueListings}
-            getOptionLabel={(option) => option.details.title}
+            getOptionLabel={(option) => option.title}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -1053,16 +1046,16 @@ export function MarketMultipleForm() {
             onChange={(event, value) =>
               setState((s) => {
                 if (value) {
-                  if (s.listings.includes(value.listing.listing_id)) {
+                  if (s.listings.includes(value.listing_id)) {
                     return {
                       ...s,
-                      default_listing_id: value.listing.listing_id,
+                      default_listing_id: value.listing_id,
                     }
                   } else {
-                    s.listings.push(value.listing.listing_id)
+                    s.listings.push(value.listing_id)
                     return {
                       ...s,
-                      default_listing_id: value.listing.listing_id,
+                      default_listing_id: value.listing_id,
                       listings: s.listings,
                     }
                   }
@@ -1073,7 +1066,7 @@ export function MarketMultipleForm() {
             }
             value={
               uniqueListings.find(
-                (l) => l.listing.listing_id === state.default_listing_id,
+                (l) => l.listing_id === state.default_listing_id,
               ) || null
             }
             color={"secondary"}
@@ -1095,7 +1088,7 @@ export function MarketMultipleForm() {
             multiple
             disablePortal
             options={uniqueListings}
-            getOptionLabel={(option) => option.details.title}
+            getOptionLabel={(option) => option.title}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -1110,13 +1103,11 @@ export function MarketMultipleForm() {
             onChange={(event, value) =>
               setState((s) => ({
                 ...s,
-                listings: value.map((l) => l.listing.listing_id),
+                listings: value.map((l) => l.listing_id),
               }))
             }
             value={state.listings
-              .map(
-                (r) => uniqueListings.find((l) => l.listing.listing_id === r)!,
-              )
+              .map((r) => uniqueListings.find((l) => l.listing_id === r)!)
               .filter((l) => l)}
             color={"secondary"}
             aria-label={t(

@@ -12,7 +12,7 @@ import {
   MarketListingUpdateBody,
   UniqueListing,
 } from "../../datatypes/MarketListing"
-import { useMarketUpdateListingMutation } from "../../store/market"
+import { useUpdateMarketListingMutation } from "../../store/market"
 import LoadingButton from "@mui/lab/LoadingButton"
 import { useTranslation } from "react-i18next"
 
@@ -92,13 +92,13 @@ export function ManageListingsActions() {
   const { t } = useTranslation()
   const [selectedListings] = useContext(ItemStockContext)!
 
-  const [updateListing, { isLoading }] = useMarketUpdateListingMutation()
+  const [updateListing, { isLoading }] = useUpdateMarketListingMutation()
   const updateListingCallback = useCallback(
     async (body: MarketListingUpdateBody) => {
       selectedListings.forEach((listing) => {
         updateListing({
-          listing_id: listing.listing.listing_id,
-          body,
+          id: listing.listing_id,
+          data: body,
         })
       })
     },
@@ -150,7 +150,7 @@ export function ManageListingsActions() {
         </Grid>
 
         <Grid item>
-          <ManageStockArea listings={selectedListings as UniqueListing[]} />
+          <ManageStockArea listings={selectedListings} />
         </Grid>
       </Grid>
     </Grid>

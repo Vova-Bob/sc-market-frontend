@@ -141,7 +141,8 @@
     "ending_in": "Ending {{time}}",
     "expiration": "Expiration: {{time}}",
     "unit": "ea",
-    "available": "{{count}} available"
+    "available": "{{count}} available",
+    "internalListing": "内部リスト"
   },
   "marketActions": {
     "createListing": "Create Listing",

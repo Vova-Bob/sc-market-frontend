@@ -43,7 +43,6 @@ import {
 } from "../contracts/ServiceListings"
 import { Section } from "../../components/paper/Section"
 import { useSearchMarketQuery } from "../../store/market"
-import { convertToLegacy } from "../market/ItemListings"
 import { RecruitingPostArea } from "../../pages/recruiting/RecruitingPostPage"
 import { useRecruitingGetPostByOrgQuery } from "../../store/recruiting"
 import {
@@ -74,14 +73,11 @@ export function OrgRelevantListingsArea(props: { org: string }) {
     contractor_seller: org,
     quantityAvailable: 1,
     index: 0,
-    page_size: 1000, // Large page size to get all listings
+    page_size: 96, // Large page size to get all listings
     listing_type: undefined,
   })
 
-  const listings = useMemo(() => {
-    if (!searchResults?.listings) return []
-    return searchResults.listings.map(convertToLegacy)
-  }, [searchResults])
+  const listings = searchResults?.listings || []
   const { data: services } = useGetServicesContractorQuery(org)
 
   const order = useMemo(

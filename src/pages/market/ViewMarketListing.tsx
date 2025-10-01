@@ -4,8 +4,8 @@ import React from "react"
 import { HeaderTitle } from "../../components/typography/HeaderTitle"
 import { CurrentMarketListingContext } from "../../hooks/market/CurrentMarketItem"
 import {
-  useMarketGetListingByIDQuery,
-  useMarketGetMultipleByIDQuery,
+  useGetMarketListingQuery,
+  useGetMultipleByIdQuery,
 } from "../../store/market"
 import { MarketListingView } from "../../views/market/MarketListingView"
 import { MarketListingViewSkeleton } from "../../views/market/MarketListingView"
@@ -15,7 +15,7 @@ import { Button, Grid } from "@mui/material"
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded"
 import { BackArrow } from "../../components/button/BackArrow"
 import { MarketMultipleEditView } from "../../views/market/MarketMultipleEditView"
-import { formatMarketUrl } from "../../util/urls"
+import { formatCompleteListingUrl, formatMarketUrl } from "../../util/urls"
 import { useTranslation } from "react-i18next"
 import {
   shouldRedirectTo404,
@@ -23,7 +23,7 @@ import {
 } from "../../util/errorHandling"
 import { ErrorPage } from "../errors/ErrorPage"
 
-export function ViewMarketListing(props: {}) {
+export function ViewMarketListing() {
   const { id } = useParams<{ id: string }>()
 
   /*
@@ -41,12 +41,12 @@ export function ViewMarketListing(props: {}) {
     error,
     refetch,
     isLoading,
-  } = useMarketGetListingByIDQuery(id!)
+  } = useGetMarketListingQuery(id!)
 
   return (
     <Page
       title={listing?.details?.title}
-      canonUrl={listing && formatMarketUrl(listing)}
+      canonUrl={listing && formatCompleteListingUrl(listing)}
     >
       <ContainerGrid sidebarOpen={true} maxWidth={"xl"}>
         <Grid
@@ -101,7 +101,7 @@ export function ViewMarketListing(props: {}) {
   )
 }
 
-export function EditMarketListing(props: {}) {
+export function EditMarketListing() {
   /*
    * TODO:
    *   Contract appliants
@@ -117,7 +117,7 @@ export function EditMarketListing(props: {}) {
     error,
     refetch,
     isLoading,
-  } = useMarketGetListingByIDQuery(id!)
+  } = useGetMarketListingQuery(id!)
 
   return (
     <Page title={listing?.details?.title}>
@@ -150,7 +150,7 @@ export function EditMarketListing(props: {}) {
   )
 }
 
-export function EditMultipleListing(props: {}) {
+export function EditMultipleListing() {
   const { id } = useParams<{ id: string }>()
   const { t } = useTranslation()
 
@@ -159,7 +159,7 @@ export function EditMultipleListing(props: {}) {
     error,
     refetch,
     isLoading,
-  } = useMarketGetMultipleByIDQuery(id!)
+  } = useGetMultipleByIdQuery(id!)
 
   return (
     <Page title={listing?.details?.title}>

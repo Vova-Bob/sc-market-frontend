@@ -55,7 +55,7 @@ import {
   UserRecentServices,
 } from "../contracts/ServiceListings"
 import { UserContractorList } from "../../components/list/UserContractorList"
-import { useMarketGetListingByUserQuery } from "../../store/market"
+import { useSearchMarketListingsQuery } from "../../store/market"
 import { useTheme } from "@mui/material/styles"
 import { UnderlineLink } from "../../components/typography/UnderlineLink"
 import { OpenLayout } from "../../components/layout/ContainerGrid"
@@ -64,7 +64,7 @@ import { Discord } from "../../components/icon/DiscordIcon"
 import { useGetServicesQuery } from "../../store/services"
 
 const external_resource_pattern =
-  /^https?:\/\/(www\.)?((((media)|(cdn)\.)?robertsspaceindustries\.com)|((media\.)?starcitizen.tools)|(i\.imgur\.com)|(cstone\.space))\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/
+  /^https?:\/\/(www\.)?((((media)|(cdn)\.)?robertsspaceindustries\.com)|((media\.)?starcitizen.tools)|(i\.imgur\.com)|(cstone\.space))\b([-a-zA-Z0-9()@:%_+.~#?&\/=]*)$/
 export const external_resource_regex = new RegExp(external_resource_pattern)
 
 const name_to_index = new Map([
@@ -104,13 +104,15 @@ export function ProfileRefetchButton(props: { user: User }) {
 export function UserRelevantListingsArea(props: { user: string }) {
   const { user } = props
 
-  const { data: listings } = useMarketGetListingByUserQuery(user)
+  const { data: listings } = useSearchMarketListingsQuery({
+    user_seller: user,
+  })
   const { data: services } = useGetServicesQuery(user)
 
   const order = useMemo(
     () =>
       [
-        { name: "listings", items: listings || [] },
+        { name: "listings", items: listings?.listings || [] },
         { name: "services", items: services || [] },
       ]
         .filter((item) => item.items.length)

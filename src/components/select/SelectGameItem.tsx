@@ -1,8 +1,8 @@
 import { Autocomplete, Grid, TextField, TextFieldProps } from "@mui/material"
 import React, { useMemo } from "react"
 import {
-  useMarketCategoriesQuery,
-  useMarketItemsByCategoryQuery,
+  useGetMarketCategoriesQuery,
+  useGetMarketItemsByCategoryQuery,
 } from "../../store/market"
 import { useTranslation } from "react-i18next"
 
@@ -12,13 +12,14 @@ export interface SelectGameItemProps {
   onTypeChange: (newValue: string) => void
   onItemChange: (newValue: string | null) => void
   TextfieldProps?: TextFieldProps
+  size?: "small" | "medium" | undefined
 }
 
 export function SelectGameItemStack(props: SelectGameItemProps) {
   const { t } = useTranslation()
-  const { data: categories } = useMarketCategoriesQuery()
+  const { data: categories } = useGetMarketCategoriesQuery()
   const { data: items, isLoading: itemsLoading } =
-    useMarketItemsByCategoryQuery(props.item_type!, {
+    useGetMarketItemsByCategoryQuery(props.item_type!, {
       skip: !props.item_type,
     })
 
@@ -50,6 +51,7 @@ export function SelectGameItemStack(props: SelectGameItemProps) {
           // fullWidth
           options={categories || []}
           id="item-type"
+          size={props.size || "medium"}
           value={category_value}
           onChange={(event, value) => {
             if (value) {
@@ -87,6 +89,7 @@ export function SelectGameItemStack(props: SelectGameItemProps) {
           // fullWidth
           options={props.item_type ? items || [] : []}
           id="item-name"
+          size={props.size || "medium"}
           value={item_name_value}
           onChange={(event, value) => {
             props.onItemChange(value ? value.name : null)
@@ -136,9 +139,9 @@ export function SelectGameItemStack(props: SelectGameItemProps) {
 
 export function SelectGameItem(props: SelectGameItemProps) {
   const { t } = useTranslation()
-  const { data: categories } = useMarketCategoriesQuery()
+  const { data: categories } = useGetMarketCategoriesQuery()
   const { data: items, isLoading: itemsLoading } =
-    useMarketItemsByCategoryQuery(props.item_type!, {
+    useGetMarketItemsByCategoryQuery(props.item_type!, {
       skip: !props.item_type,
     })
 
@@ -260,7 +263,7 @@ export function SelectGameCategory(props: {
   TextfieldProps?: TextFieldProps
 }) {
   const { t } = useTranslation()
-  const { data: categories } = useMarketCategoriesQuery()
+  const { data: categories } = useGetMarketCategoriesQuery()
 
   const category_value = useMemo(
     () =>
@@ -311,7 +314,7 @@ export function SelectGameCategoryOption(props: {
   TextfieldProps?: TextFieldProps
 }) {
   const { t } = useTranslation()
-  const { data: categories } = useMarketCategoriesQuery()
+  const { data: categories } = useGetMarketCategoriesQuery()
 
   const category_value = useMemo(
     () =>

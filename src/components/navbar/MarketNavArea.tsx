@@ -34,7 +34,10 @@ import { DiscordLoginButton } from "../button/DiscordLoginButton"
 import { useGetUserProfileQuery } from "../../store/profile"
 import { useMarketSidebar } from "../../hooks/market/MarketSidebar"
 import { useSearchParams } from "react-router-dom"
-import { useMarketSearch } from "../../hooks/market/MarketSearch"
+import {
+  SaleTypeSelect,
+  useMarketSearch,
+} from "../../hooks/market/MarketSearch"
 import { SelectGameCategoryOption } from "../select/SelectGameItem"
 import { useTranslation } from "react-i18next"
 
@@ -198,7 +201,9 @@ export function MarketNavArea(props: { top?: boolean }) {
 
   const [searchState, setMarketSearch] = useMarketSearch()
   const [sort, setSort] = useState<string | null>(searchState.sort || null)
-  const [kind, setKind] = useState<string>(searchState.sale_type || "any")
+  const [kind, setKind] = useState<SaleTypeSelect>(
+    searchState.sale_type || "any",
+  )
   const [type, setType] = useState<string | null>(searchState.item_type || null)
   const [quantityAvailable, setQuantityAvailable] = useState<number>(
     searchState.quantityAvailable !== undefined
@@ -217,7 +222,7 @@ export function MarketNavArea(props: { top?: boolean }) {
   const [open, setOpen] = useMarketSidebar()
 
   const handleKindChange = (event: { target: { value: string } }) => {
-    setKind(event.target.value)
+    setKind(event.target.value as SaleTypeSelect)
   }
   const handleSortChange = (event: { target: { value: string } }) => {
     setSort(event.target.value || null)

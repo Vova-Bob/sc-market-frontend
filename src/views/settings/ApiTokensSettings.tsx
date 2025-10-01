@@ -35,7 +35,11 @@ import {
   Schedule as ScheduleIcon,
 } from "@mui/icons-material"
 import { useTranslation } from "react-i18next"
-import { useGetTokensQuery, useDeleteTokenMutation, ApiToken } from "../../store/tokens"
+import {
+  useGetTokensQuery,
+  useDeleteTokenMutation,
+  ApiToken,
+} from "../../store/tokens"
 import { CreateTokenDialog } from "./CreateTokenDialog"
 import { EditTokenDialog } from "./EditTokenDialog"
 import { TokenDetailsDialog } from "./TokenDetailsDialog"
@@ -44,17 +48,17 @@ export function ApiTokensSettings() {
   const { t } = useTranslation()
   const { data: tokens, isLoading, error } = useGetTokensQuery()
   const [deleteToken] = useDeleteTokenMutation()
-  
+
   // Debug logging for cache invalidation
   React.useEffect(() => {
-    console.log('ApiTokensSettings - Query state changed:', { 
-      tokens: tokens?.length, 
-      isLoading, 
+    console.log("ApiTokensSettings - Query state changed:", {
+      tokens: tokens?.length,
+      isLoading,
       error: !!error,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     })
   }, [tokens, isLoading, error])
-  
+
   const [createDialogOpen, setCreateDialogOpen] = useState(false)
   const [editDialogOpen, setEditDialogOpen] = useState(false)
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false)
@@ -84,9 +88,9 @@ export function ApiTokensSettings() {
   const confirmDeleteToken = async () => {
     if (tokenToDelete) {
       try {
-        console.log('ApiTokensSettings - Deleting token:', tokenToDelete.id)
+        console.log("ApiTokensSettings - Deleting token:", tokenToDelete.id)
         await deleteToken(tokenToDelete.id).unwrap()
-        console.log('ApiTokensSettings - Token deleted successfully')
+        console.log("ApiTokensSettings - Token deleted successfully")
         setDeleteDialogOpen(false)
         setTokenToDelete(null)
       } catch (error) {
@@ -110,13 +114,16 @@ export function ApiTokensSettings() {
 
   const getExpiryStatus = (expiresAt?: string) => {
     if (!expiresAt) return { status: "never", color: "default" as const }
-    if (isExpired(expiresAt)) return { status: "expired", color: "error" as const }
-    
+    if (isExpired(expiresAt))
+      return { status: "expired", color: "error" as const }
+
     const daysUntilExpiry = Math.ceil(
-      (new Date(expiresAt).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
+      (new Date(expiresAt).getTime() - new Date().getTime()) /
+        (1000 * 60 * 60 * 24),
     )
-    
-    if (daysUntilExpiry <= 7) return { status: "soon", color: "warning" as const }
+
+    if (daysUntilExpiry <= 7)
+      return { status: "soon", color: "warning" as const }
     return { status: "valid", color: "success" as const }
   }
 
@@ -168,8 +175,9 @@ export function ApiTokensSettings() {
 
       <Grid item xs={12}>
         <Alert severity="info" sx={{ mb: 2 }}>
-          API tokens allow third-party applications to access your account with specific permissions. 
-          You can create tokens with limited scopes and contractor access for enhanced security.
+          API tokens allow third-party applications to access your account with
+          specific permissions. You can create tokens with limited scopes and
+          contractor access for enhanced security.
         </Alert>
       </Grid>
 
@@ -177,12 +185,15 @@ export function ApiTokensSettings() {
         <Grid item xs={12}>
           <Card>
             <CardContent sx={{ textAlign: "center", py: 4 }}>
-              <SecurityIcon sx={{ fontSize: 64, color: "text.secondary", mb: 2 }} />
+              <SecurityIcon
+                sx={{ fontSize: 64, color: "text.secondary", mb: 2 }}
+              />
               <Typography variant="h6" color="text.secondary" gutterBottom>
                 No API tokens created
               </Typography>
               <Typography color="text.secondary" sx={{ mb: 3 }}>
-                Create your first API token to start integrating with third-party applications.
+                Create your first API token to start integrating with
+                third-party applications.
               </Typography>
               <Button
                 variant="contained"
@@ -197,12 +208,17 @@ export function ApiTokensSettings() {
       ) : (
         tokens?.map((token) => {
           const expiryStatus = getExpiryStatus(token.expires_at)
-          
+
           return (
             <Grid item xs={12} md={6} key={token.id}>
               <Card>
                 <CardContent>
-                  <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="flex-start"
+                    mb={2}
+                  >
                     <Box>
                       <Typography variant="h6" component="h3">
                         {token.name}
@@ -215,18 +231,24 @@ export function ApiTokensSettings() {
                     </Box>
                     <Box display="flex" gap={1}>
                       <Tooltip title="View Details">
-                        <IconButton size="small" onClick={() => handleViewToken(token)}>
+                        <IconButton
+                          size="small"
+                          onClick={() => handleViewToken(token)}
+                        >
                           <VisibilityIcon />
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="Edit Token">
-                        <IconButton size="small" onClick={() => handleEditToken(token)}>
+                        <IconButton
+                          size="small"
+                          onClick={() => handleEditToken(token)}
+                        >
                           <EditIcon />
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="Delete Token">
-                        <IconButton 
-                          size="small" 
+                        <IconButton
+                          size="small"
                           color="error"
                           onClick={() => handleDeleteToken(token)}
                         >
@@ -237,7 +259,11 @@ export function ApiTokensSettings() {
                   </Box>
 
                   <Box mb={2}>
-                    <Typography variant="body2" color="text.secondary" gutterBottom>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      gutterBottom
+                    >
                       Scopes:
                     </Typography>
                     <Box display="flex" flexWrap="wrap" gap={0.5}>
@@ -261,18 +287,25 @@ export function ApiTokensSettings() {
                   </Box>
 
                   <Box mb={2}>
-                    <Typography variant="body2" color="text.secondary" gutterBottom>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      gutterBottom
+                    >
                       Contractor Access:
                     </Typography>
                     <Typography variant="body2">
-                      {(token.contractor_ids || []).length === 0 
-                        ? "All contractors" 
-                        : `${(token.contractor_ids || []).length} contractor(s)`
-                      }
+                      {(token.contractor_ids || []).length === 0
+                        ? "All contractors"
+                        : `${(token.contractor_ids || []).length} contractor(s)`}
                     </Typography>
                   </Box>
 
-                  <Box display="flex" justifyContent="space-between" alignItems="center">
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
                     <Box display="flex" alignItems="center" gap={1}>
                       <ScheduleIcon fontSize="small" color="action" />
                       <Typography variant="body2" color="text.secondary">
@@ -282,21 +315,29 @@ export function ApiTokensSettings() {
                     {token.expires_at && (
                       <Chip
                         label={
-                          expiryStatus.status === "expired" 
-                            ? "Expired" 
+                          expiryStatus.status === "expired"
+                            ? "Expired"
                             : expiryStatus.status === "soon"
-                            ? "Expires Soon"
-                            : "Active"
+                              ? "Expires Soon"
+                              : "Active"
                         }
                         size="small"
                         color={expiryStatus.color}
-                        variant={expiryStatus.status === "expired" ? "filled" : "outlined"}
+                        variant={
+                          expiryStatus.status === "expired"
+                            ? "filled"
+                            : "outlined"
+                        }
                       />
                     )}
                   </Box>
 
                   {token.last_used_at && (
-                    <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: "block" }}>
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      sx={{ mt: 1, display: "block" }}
+                    >
                       Last used: {formatDateTime(token.last_used_at)}
                     </Typography>
                   )}
@@ -328,17 +369,25 @@ export function ApiTokensSettings() {
       />
 
       {/* Delete Confirmation Dialog */}
-      <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
+      <Dialog
+        open={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+      >
         <DialogTitle>Delete API Token</DialogTitle>
         <DialogContent>
           <Typography>
-            Are you sure you want to delete the token "{tokenToDelete?.name}"? 
-            This action cannot be undone and any applications using this token will lose access.
+            Are you sure you want to delete the token "{tokenToDelete?.name}"?
+            This action cannot be undone and any applications using this token
+            will lose access.
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
-          <Button onClick={confirmDeleteToken} color="error" variant="contained">
+          <Button
+            onClick={confirmDeleteToken}
+            color="error"
+            variant="contained"
+          >
             Delete
           </Button>
         </DialogActions>

@@ -145,6 +145,7 @@
     "expiration": "Expiration: {{time}}",
     "unit": "ea",
     "available": "{{count}}在售",
+    "internalListing": "内部商品页",
     "aria": {
       "listingTabs": "market listing tabs"
     }

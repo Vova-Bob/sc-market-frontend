@@ -1,9 +1,16 @@
 import {
+  BaseListingType,
   MarketAggregateListingComposite,
   MarketMultiple,
+  UniqueListing,
 } from "../datatypes/MarketListing"
 import { Service } from "../datatypes/Order"
 import { Contractor } from "../datatypes/Contractor"
+import {
+  BaseMarketListingSearchResult,
+  ExtendedMultipleSearchResult,
+  MarketListingSearchResult,
+} from "../store/market.ts"
 
 interface FormattableListingType {
   type: string
@@ -18,26 +25,37 @@ export function formatListingSlug(title: string) {
     .replace(/[^\w-]+/g, "")
 }
 
-export function formatMarketUrl(listing: FormattableListingType) {
-  const composite = listing as MarketAggregateListingComposite | undefined
-
+export function formatMarketUrl(listing: MarketListingSearchResult) {
   try {
-    return listing?.type === "aggregate_composite"
-      ? `/market/aggregate/${composite?.aggregate_id}/#/${formatListingSlug(
-          listing.details.title,
+    return listing?.listing_type === "aggregate"
+      ? `/market/aggregate/${listing?.listing_id}/#/${formatListingSlug(
+          listing.title,
         )}`
-      : `/market/${listing?.listing?.listing_id}/#/${formatListingSlug(
-          listing.details.title,
-        )}`
+      : `/market/${listing?.listing_id}/#/${formatListingSlug(listing.title)}`
   } catch (e) {
     console.log(listing, e)
     return ""
   }
 }
 
-export function formatMarketMultipleUrl(multiple: MarketMultiple) {
-  return `/market/multiple/${multiple.multiple_id}/#/${formatListingSlug(
-    multiple.details.title,
+export function formatCompleteListingUrl(listing: BaseListingType) {
+  try {
+    return listing?.type === "aggregate_composite"
+      ? `/market/aggregate/${listing?.aggregate_id}/#/${formatListingSlug(
+          listing.details.title,
+        )}`
+      : `/market/${listing?.listing.listing_id}/#/${formatListingSlug(listing.details.title)}`
+  } catch (e) {
+    console.log(listing, e)
+    return ""
+  }
+}
+
+export function formatMarketMultipleUrl(
+  multiple: ExtendedMultipleSearchResult,
+) {
+  return `/market/multiple/${multiple.listing_type}/#/${formatListingSlug(
+    multiple.title,
   )}`
 }
 

@@ -19,8 +19,8 @@ import { UnderlineLink } from "../../components/typography/UnderlineLink"
 import { useGetUserByUsernameQuery } from "../../store/profile"
 import { useGetContractorBySpectrumIDQuery } from "../../store/contractor"
 import {
-  useMarketGetListingByIDQuery,
-  useMarketPurchaseMutation,
+  useGetMarketListingQuery,
+  usePurchaseMarketListingMutation,
 } from "../../store/market"
 import { LocalOfferRounded } from "@mui/icons-material"
 import { TrashCan } from "mdi-material-ui"
@@ -31,7 +31,7 @@ import { BackArrow } from "../../components/button/BackArrow"
 import { MarkdownEditor } from "../../components/markdown/Markdown"
 import { MarketAggregateListingComposite } from "../../datatypes/MarketListing"
 import { NumericFormat } from "react-number-format"
-import { formatMarketUrl } from "../../util/urls"
+import { formatCompleteListingUrl, formatMarketUrl } from "../../util/urls"
 import { FALLBACK_IMAGE_URL } from "../../util/constants"
 import { useTranslation } from "react-i18next"
 
@@ -42,7 +42,7 @@ export function CartItemEntry(props: {
 }) {
   const { t } = useTranslation()
   const { item, updateCart, removeCartItem } = props
-  const { data: listing } = useMarketGetListingByIDQuery(item.listing_id)
+  const { data: listing } = useGetMarketListingQuery(item.listing_id)
   const composite = listing as MarketAggregateListingComposite | undefined
 
   useEffect(() => {
@@ -81,7 +81,7 @@ export function CartItemEntry(props: {
           <Box>
             <MaterialLink
               component={Link}
-              to={listing ? formatMarketUrl(listing) : ""}
+              to={listing ? formatCompleteListingUrl(listing) : ""}
               style={{ textDecoration: "none", color: "inherit" }}
             >
               <UnderlineLink
@@ -221,7 +221,7 @@ export function CartSellerEntry(props: {
   const [
     purchaseListing, // This is the mutation trigger
     { isLoading: purchaseLoading }, // This is the destructured mutation result
-  ] = useMarketPurchaseMutation()
+  ] = usePurchaseMarketListingMutation()
 
   const total = useMemo(
     () =>
@@ -244,7 +244,8 @@ export function CartSellerEntry(props: {
   const handlePurchase = useCallback(
     async (offer: number | undefined | null) => {
       purchaseListing({
-        body: { ...seller, offer },
+        ...seller,
+        offer,
       })
         .unwrap()
         .then((res) => {

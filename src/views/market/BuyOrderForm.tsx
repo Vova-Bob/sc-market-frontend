@@ -6,7 +6,7 @@ import { MarketAggregate } from "../../datatypes/MarketListing"
 import { HeaderTitle } from "../../components/typography/HeaderTitle"
 import { DateTimePicker } from "@mui/x-date-pickers"
 import moment from "moment/moment"
-import { useMarketCreateBuyOrderMutation } from "../../store/market"
+import { useCreateBuyOrderMutation } from "../../store/market"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { useNavigate } from "react-router-dom"
 import { NumericFormat } from "react-number-format"
@@ -26,32 +26,22 @@ export function BuyOrderForm(props: { aggregate: MarketAggregate }) {
     setState((s) => ({ ...s, game_item_id: aggregate.details.game_item_id }))
   }, [aggregate])
 
-  const [createBuyOrder, { isLoading }] = useMarketCreateBuyOrderMutation()
+  const [createBuyOrder, { isLoading }] = useCreateBuyOrderMutation()
   const issueAlert = useAlertHook()
   const navigate = useNavigate()
 
   const callback = useCallback(async () => {
-    const res: { data?: any; error?: any } = await createBuyOrder(state)
+    createBuyOrder(state)
+      .unwrap()
+      .then(() => {
+        issueAlert({
+          message: t("buyorder.submitted"),
+          severity: "success",
+        })
 
-    if (res?.data && !res?.error) {
-      issueAlert({
-        message: t("buyorder.submitted"),
-        severity: "success",
+        navigate(`/market/aggregate/${aggregate.details.game_item_id}`)
       })
-
-      navigate(`/market/aggregate/${aggregate.details.game_item_id}`)
-    } else {
-      issueAlert({
-        message: t("buyorder.failed", {
-          error:
-            res.error?.error ||
-            res.error?.data?.error ||
-            res.error ||
-            t("buyorder.unknown_error"),
-        }),
-        severity: "error",
-      })
-    }
+      .catch((err) => issueAlert(err))
 
     return false
   }, [

@@ -53,9 +53,9 @@ export type MarketListingType =
 
 export interface MarketListing {
   listing_id: string
-  sale_type: "auction" | "sale"
+  sale_type: "auction" | "sale" | "multiple" | "aggregate"
   price: number
-  timestamp: number
+  timestamp: string
   quantity_available: number
   status: string
   user_seller?: MinimalUser | null
@@ -79,12 +79,14 @@ export interface UniqueListing {
     minimum_bid_increment: number
     end_time: number
   }
-  stats?: {
-    order_count: number
-    offer_count: number
-    view_count: number
-  }
+  stats?: ListingStats
   view_count?: number
+}
+
+export interface ListingStats {
+  order_count: number
+  offer_count: number
+  view_count: number
 }
 
 export interface MinimalAggregate {
@@ -215,6 +217,7 @@ export interface MarketListingBody {
   internal: boolean
   status: string
   end_time: Moment | null
+  spectrum_id?: string | null
 }
 
 export interface MarketBuyOrderBody {

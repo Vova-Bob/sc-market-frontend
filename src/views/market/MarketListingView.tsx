@@ -39,12 +39,10 @@ import {
 } from "@mui/icons-material"
 import { useCurrentMarketListing } from "../../hooks/market/CurrentMarketItem"
 import { BaseListingType, UniqueListing } from "../../datatypes/MarketListing"
-import { UserList } from "../../components/list/UserList"
 import {
-  useMarketBidMutation,
-  useMarketPurchaseMutation,
   useMarketTrackListingViewMutation,
   useMarketGetListingOrdersQuery,
+  useCreateListingBidMutation,
 } from "../../store/market"
 import { OrderList } from "../../components/list/OrderList"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
@@ -55,7 +53,6 @@ import { useCookies } from "react-cookie"
 import { Cart } from "../../datatypes/Cart"
 import { ListingNameAndRating } from "../../components/rating/ListingRating"
 import { has_permission } from "../contractor/OrgRoles"
-import { useTheme } from "@mui/material/styles"
 import { BACKEND_URL } from "../../util/constants"
 import { NumericFormat } from "react-number-format"
 import { Stack } from "@mui/system"
@@ -64,7 +61,7 @@ import moment from "moment"
 import { ClockAlert } from "mdi-material-ui"
 import { useTranslation } from "react-i18next"
 import { ReportButton } from "../../components/button/ReportButton"
-import { DisplayListingsHorizontal, convertToLegacy } from "./ItemListings"
+import { DisplayListingsHorizontal } from "./ItemListings"
 import { useSearchMarketQuery } from "../../store/market"
 import { useGetUserOrderReviews } from "../../store/profile"
 import { useGetContractorReviewsQuery } from "../../store/contractor"
@@ -101,10 +98,7 @@ export function SellerOtherListings(props: {
   const otherListings = useMemo(() => {
     if (!results?.listings) return []
 
-    return results.listings
-      .filter((l) => l.listing_id !== currentListingId) // Exclude current listing
-      .slice(0, 6) // Show max 6 other listings
-      .map((l) => convertToLegacy(l))
+    return results.listings.filter((l) => l.listing_id !== currentListingId) // exclude current listing
   }, [results?.listings, currentListingId])
 
   // Don't show section if no other listings or still loading
@@ -304,10 +298,7 @@ export function RelatedListings(props: {
   const relatedListings = useMemo(() => {
     if (!results?.listings) return []
 
-    return results.listings
-      .filter((l) => l.listing_id !== currentListingId) // Exclude current listing
-      .slice(0, 6) // Show max 6 related listings
-      .map((l) => convertToLegacy(l))
+    return results.listings.filter((l) => l.listing_id !== currentListingId) // Exclude current listing
   }, [results?.listings, currentListingId])
 
   // Don't show section if no related listings or still loading
@@ -459,10 +450,10 @@ export function PurchaseArea(props: { listing: BaseListingType }) {
     setJustAddedToCart(true)
   }, [
     cookies.market_cart,
-    listing.listing.contractor_seller?.spectrum_id,
+    listing.listing.contractor_seller,
     listing.listing.listing_id,
     listing.listing.quantity_available,
-    listing.listing.user_seller?.username,
+    listing.listing.user_seller,
     listing.type,
     location.pathname,
     profile,
@@ -583,33 +574,24 @@ function BidArea(props: { listing: UniqueListing }) {
 
   const issueAlert = useAlertHook()
 
-  const [purchaseListing, { isLoading }] = useMarketBidMutation()
+  const [createBid, { isLoading }] = useCreateListingBidMutation()
 
   const handleBid = useCallback(async () => {
-    const res: { data?: any; error?: any } = await purchaseListing({
-      body: { listing_id: listing.listing.listing_id, bid },
-    })
-
-    if (res?.data && !res?.error) {
-      issueAlert({
-        message: t("MarketListingView.bidSuccess"),
-        severity: "success",
+    createBid({ listing_id: listing.listing.listing_id, bid_amount: bid })
+      .unwrap()
+      .then(() => {
+        issueAlert({
+          message: t("MarketListingView.bidSuccess"),
+          severity: "success",
+        })
+        setBid(bid + listing.auction_details!.minimum_bid_increment)
       })
-      setBid(bid + listing.auction_details!.minimum_bid_increment)
-    } else {
-      // console.log(res.error)
-      issueAlert({
-        message: t("MarketListingView.bidError", {
-          error: res.error?.error || res.error?.data?.error || res.error || "",
-        }),
-        severity: "error",
-      })
-    }
+      .catch((err) => issueAlert(err))
   }, [
     bid,
     listing.auction_details,
     listing.listing.listing_id,
-    purchaseListing,
+    createBid,
     issueAlert,
     t,
   ])
@@ -809,53 +791,59 @@ function ListingOrdersSection({ listingId }: { listingId: string }) {
   const [completedOrdersPageSize, setCompletedOrdersPageSize] = useState(10)
 
   // Define status arrays as constants to avoid recreation
-  const activeStatuses = ['not-started', 'in-progress']
-  const completedStatuses = ['fulfilled', 'cancelled']
+  const activeStatuses = ["not-started", "in-progress"]
+  const completedStatuses = ["fulfilled", "cancelled"]
 
   // Fetch active orders (not-started, in-progress)
-  const { 
-    data: activeOrdersData, 
-    isLoading: activeOrdersLoading 
-  } = useMarketGetListingOrdersQuery({
-    listing_id: listingId,
-    page: activeOrdersPage + 1, // Convert 0-based to 1-based for API
-    pageSize: activeOrdersPageSize,
-    status: activeStatuses,
-    sortBy: 'timestamp',
-    sortOrder: 'desc',
-  })
+  const { data: activeOrdersData, isLoading: activeOrdersLoading } =
+    useMarketGetListingOrdersQuery({
+      listing_id: listingId,
+      page: activeOrdersPage + 1, // Convert 0-based to 1-based for API
+      pageSize: activeOrdersPageSize,
+      status: activeStatuses,
+      sortBy: "timestamp",
+      sortOrder: "desc",
+    })
 
   // Fetch completed orders (fulfilled, cancelled)
-  const { 
-    data: completedOrdersData, 
-    isLoading: completedOrdersLoading 
-  } = useMarketGetListingOrdersQuery({
-    listing_id: listingId,
-    page: completedOrdersPage + 1, // Convert 0-based to 1-based for API
-    pageSize: completedOrdersPageSize,
-    status: completedStatuses,
-    sortBy: 'timestamp',
-    sortOrder: 'desc',
-  })
+  const { data: completedOrdersData, isLoading: completedOrdersLoading } =
+    useMarketGetListingOrdersQuery({
+      listing_id: listingId,
+      page: completedOrdersPage + 1, // Convert 0-based to 1-based for API
+      pageSize: completedOrdersPageSize,
+      status: completedStatuses,
+      sortBy: "timestamp",
+      sortOrder: "desc",
+    })
 
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue)
   }
 
-  const handleActiveOrdersPageChange = (_: React.MouseEvent<HTMLButtonElement> | null, page: number) => {
+  const handleActiveOrdersPageChange = (
+    _: React.MouseEvent<HTMLButtonElement> | null,
+    page: number,
+  ) => {
     setActiveOrdersPage(page)
   }
 
-  const handleCompletedOrdersPageChange = (_: React.MouseEvent<HTMLButtonElement> | null, page: number) => {
+  const handleCompletedOrdersPageChange = (
+    _: React.MouseEvent<HTMLButtonElement> | null,
+    page: number,
+  ) => {
     setCompletedOrdersPage(page)
   }
 
-  const handleActiveOrdersPageSizeChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleActiveOrdersPageSizeChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setActiveOrdersPageSize(parseInt(event.target.value, 10))
     setActiveOrdersPage(0)
   }
 
-  const handleCompletedOrdersPageSizeChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleCompletedOrdersPageSizeChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setCompletedOrdersPageSize(parseInt(event.target.value, 10))
     setCompletedOrdersPage(0)
   }
@@ -873,16 +861,16 @@ function ListingOrdersSection({ listingId }: { listingId: string }) {
         innerJustify={"flex-start"}
       >
         <Grid item xs={12}>
-          <Tabs 
-            value={activeTab} 
+          <Tabs
+            value={activeTab}
             onChange={handleTabChange}
-            sx={{ borderBottom: 1, borderColor: 'divider' }}
+            sx={{ borderBottom: 1, borderColor: "divider" }}
           >
-            <Tab 
-              label={`${t("MarketListingView.activeOrders")} (${activeOrdersData?.pagination?.totalItems || 0})`} 
+            <Tab
+              label={`${t("MarketListingView.activeOrders")} (${activeOrdersData?.pagination?.totalItems || 0})`}
             />
-            <Tab 
-              label={`${t("MarketListingView.previousOrders")} (${completedOrdersData?.pagination?.totalItems || 0})`} 
+            <Tab
+              label={`${t("MarketListingView.previousOrders")} (${completedOrdersData?.pagination?.totalItems || 0})`}
             />
           </Tabs>
 
@@ -894,34 +882,35 @@ function ListingOrdersSection({ listingId }: { listingId: string }) {
                 ) : (
                   <>
                     <OrderList orders={activeOrdersData?.data || []} />
-                    {activeOrdersData?.pagination && activeOrdersData.pagination.totalItems > 0 && (
-                      <TablePagination
-                        labelRowsPerPage={t("rows_per_page")}
-                        labelDisplayedRows={({ from, to, count }) => (
-                          <>
-                            {t("displayed_rows", {
-                              from: from.toLocaleString(undefined),
-                              to: to.toLocaleString(undefined),
-                              count: count,
-                            })}
-                          </>
-                        )}
-                        SelectProps={{
-                          "aria-label": t("rows_per_page"),
-                          color: "primary",
-                        }}
-                        rowsPerPageOptions={[5, 10, 20, 50]}
-                        component="div"
-                        count={activeOrdersData.pagination.totalItems}
-                        rowsPerPage={activeOrdersPageSize}
-                        page={activeOrdersPage}
-                        onPageChange={handleActiveOrdersPageChange}
-                        onRowsPerPageChange={handleActiveOrdersPageSizeChange}
-                        color={"primary"}
-                        nextIconButtonProps={{ color: "primary" }}
-                        backIconButtonProps={{ color: "primary" }}
-                      />
-                    )}
+                    {activeOrdersData?.pagination &&
+                      activeOrdersData.pagination.totalItems > 0 && (
+                        <TablePagination
+                          labelRowsPerPage={t("rows_per_page")}
+                          labelDisplayedRows={({ from, to, count }) => (
+                            <>
+                              {t("displayed_rows", {
+                                from: from.toLocaleString(undefined),
+                                to: to.toLocaleString(undefined),
+                                count: count,
+                              })}
+                            </>
+                          )}
+                          SelectProps={{
+                            "aria-label": t("rows_per_page"),
+                            color: "primary",
+                          }}
+                          rowsPerPageOptions={[5, 10, 20, 50]}
+                          component="div"
+                          count={activeOrdersData.pagination.totalItems}
+                          rowsPerPage={activeOrdersPageSize}
+                          page={activeOrdersPage}
+                          onPageChange={handleActiveOrdersPageChange}
+                          onRowsPerPageChange={handleActiveOrdersPageSizeChange}
+                          color={"primary"}
+                          nextIconButtonProps={{ color: "primary" }}
+                          backIconButtonProps={{ color: "primary" }}
+                        />
+                      )}
                   </>
                 )}
               </>
@@ -934,34 +923,37 @@ function ListingOrdersSection({ listingId }: { listingId: string }) {
                 ) : (
                   <>
                     <OrderList orders={completedOrdersData?.data || []} />
-                    {completedOrdersData?.pagination && completedOrdersData.pagination.totalItems > 0 && (
-                      <TablePagination
-                        labelRowsPerPage={t("rows_per_page")}
-                        labelDisplayedRows={({ from, to, count }) => (
-                          <>
-                            {t("displayed_rows", {
-                              from: from.toLocaleString(undefined),
-                              to: to.toLocaleString(undefined),
-                              count: count,
-                            })}
-                          </>
-                        )}
-                        SelectProps={{
-                          "aria-label": t("rows_per_page"),
-                          color: "primary",
-                        }}
-                        rowsPerPageOptions={[5, 10, 20, 50]}
-                        component="div"
-                        count={completedOrdersData.pagination.totalItems}
-                        rowsPerPage={completedOrdersPageSize}
-                        page={completedOrdersPage}
-                        onPageChange={handleCompletedOrdersPageChange}
-                        onRowsPerPageChange={handleCompletedOrdersPageSizeChange}
-                        color={"primary"}
-                        nextIconButtonProps={{ color: "primary" }}
-                        backIconButtonProps={{ color: "primary" }}
-                      />
-                    )}
+                    {completedOrdersData?.pagination &&
+                      completedOrdersData.pagination.totalItems > 0 && (
+                        <TablePagination
+                          labelRowsPerPage={t("rows_per_page")}
+                          labelDisplayedRows={({ from, to, count }) => (
+                            <>
+                              {t("displayed_rows", {
+                                from: from.toLocaleString(undefined),
+                                to: to.toLocaleString(undefined),
+                                count: count,
+                              })}
+                            </>
+                          )}
+                          SelectProps={{
+                            "aria-label": t("rows_per_page"),
+                            color: "primary",
+                          }}
+                          rowsPerPageOptions={[5, 10, 20, 50]}
+                          component="div"
+                          count={completedOrdersData.pagination.totalItems}
+                          rowsPerPage={completedOrdersPageSize}
+                          page={completedOrdersPage}
+                          onPageChange={handleCompletedOrdersPageChange}
+                          onRowsPerPageChange={
+                            handleCompletedOrdersPageSizeChange
+                          }
+                          color={"primary"}
+                          nextIconButtonProps={{ color: "primary" }}
+                          backIconButtonProps={{ color: "primary" }}
+                        />
+                      )}
                   </>
                 )}
               </>
@@ -984,7 +976,7 @@ export function MarketListingView() {
   // Track view when component mounts
   useEffect(() => {
     if (listing?.listing_id) {
-      trackView({ listing_id: listing.listing_id })
+      trackView(listing.listing_id)
     }
   }, [listing?.listing_id]) // Removed trackView from dependencies to prevent duplicate calls
 

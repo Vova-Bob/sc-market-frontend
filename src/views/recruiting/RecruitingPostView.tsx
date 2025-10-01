@@ -41,7 +41,13 @@ export function RecruitingPostView(props: { post: RecruitingPost }) {
   const { data: profile } = useGetUserProfileQuery()
   const [currentOrg] = useCurrentOrg()
   const amContractorManager = useMemo(
-    () => has_permission(currentOrg, profile, "manage_recruiting", profile?.contractors),
+    () =>
+      has_permission(
+        currentOrg,
+        profile,
+        "manage_recruiting",
+        profile?.contractors,
+      ),
     [contractor, profile],
   )
 

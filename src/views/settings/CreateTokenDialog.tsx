@@ -21,7 +21,10 @@ import {
   Grid,
 } from "@mui/material"
 import { useTranslation } from "react-i18next"
-import { useCreateTokenMutation, useGetContractorsForTokensQuery } from "../../store/tokens"
+import {
+  useCreateTokenMutation,
+  useGetContractorsForTokensQuery,
+} from "../../store/tokens"
 
 interface CreateTokenDialogProps {
   open: boolean
@@ -112,7 +115,7 @@ export function CreateTokenDialog({ open, onClose }: CreateTokenDialogProps) {
   const { t } = useTranslation()
   const [createToken, { isLoading }] = useCreateTokenMutation()
   const { data: contractors } = useGetContractorsForTokensQuery()
-  
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -120,39 +123,42 @@ export function CreateTokenDialog({ open, onClose }: CreateTokenDialogProps) {
     contractor_spectrum_ids: [] as string[],
     expires_at: "",
   })
-  
+
   const [showToken, setShowToken] = useState(false)
   const [createdToken, setCreatedToken] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   const handleScopeChange = (scope: string, checked: boolean) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      scopes: checked 
+      scopes: checked
         ? [...prev.scopes, scope]
-        : prev.scopes.filter(s => s !== scope)
+        : prev.scopes.filter((s) => s !== scope),
     }))
   }
 
   const handleContractorChange = (spectrumId: string, checked: boolean) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      contractor_spectrum_ids: checked 
+      contractor_spectrum_ids: checked
         ? [...prev.contractor_spectrum_ids, spectrumId]
-        : prev.contractor_spectrum_ids.filter(id => id !== spectrumId)
+        : prev.contractor_spectrum_ids.filter((id) => id !== spectrumId),
     }))
   }
 
   const handleSubmit = async () => {
     try {
       setError(null)
-      console.log('CreateTokenDialog - Creating token:', formData)
+      console.log("CreateTokenDialog - Creating token:", formData)
       // Convert spectrum IDs to contractor IDs
-      const contractorIds = formData.contractor_spectrum_ids.length > 0 
-        ? contractors
-            ?.filter(c => formData.contractor_spectrum_ids.includes(c.spectrum_id))
-            .map(c => c.spectrum_id)
-        : undefined
+      const contractorIds =
+        formData.contractor_spectrum_ids.length > 0
+          ? contractors
+              ?.filter((c) =>
+                formData.contractor_spectrum_ids.includes(c.spectrum_id),
+              )
+              .map((c) => c.spectrum_id)
+          : undefined
 
       const result = await createToken({
         name: formData.name,
@@ -161,12 +167,12 @@ export function CreateTokenDialog({ open, onClose }: CreateTokenDialogProps) {
         contractor_ids: contractorIds,
         expires_at: formData.expires_at || undefined,
       }).unwrap()
-      
-      console.log('CreateTokenDialog - Token created successfully:', result)
+
+      console.log("CreateTokenDialog - Token created successfully:", result)
       setCreatedToken(result.token)
       setShowToken(true)
     } catch (err: any) {
-      console.error('CreateTokenDialog - Failed to create token:', err)
+      console.error("CreateTokenDialog - Failed to create token:", err)
       setError(err.data?.error || "Failed to create token")
     }
   }
@@ -202,9 +208,10 @@ export function CreateTokenDialog({ open, onClose }: CreateTokenDialogProps) {
         {showToken ? (
           <Box>
             <Alert severity="success" sx={{ mb: 2 }}>
-              Your API token has been created successfully. Make sure to copy it now as it won't be shown again.
+              Your API token has been created successfully. Make sure to copy it
+              now as it won't be shown again.
             </Alert>
-            
+
             <TextField
               fullWidth
               label="API Token"
@@ -213,23 +220,21 @@ export function CreateTokenDialog({ open, onClose }: CreateTokenDialogProps) {
               rows={3}
               InputProps={{
                 readOnly: true,
-                style: { fontFamily: "monospace" }
+                style: { fontFamily: "monospace" },
               }}
               sx={{ mb: 2 }}
             />
-            
-            <Button
-              variant="outlined"
-              onClick={copyToken}
-              sx={{ mb: 2 }}
-            >
+
+            <Button variant="outlined" onClick={copyToken} sx={{ mb: 2 }}>
               Copy Token
             </Button>
-            
+
             <Alert severity="warning">
               <Typography variant="body2">
-                <strong>Important:</strong> Store this token securely. It provides access to your account 
-                with the permissions you've granted. If you lose this token, you'll need to create a new one.
+                <strong>Important:</strong> Store this token securely. It
+                provides access to your account with the permissions you've
+                granted. If you lose this token, you'll need to create a new
+                one.
               </Typography>
             </Alert>
           </Box>
@@ -240,71 +245,92 @@ export function CreateTokenDialog({ open, onClose }: CreateTokenDialogProps) {
                 {error}
               </Alert>
             )}
-            
+
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <TextField
                   fullWidth
                   label="Token Name"
                   value={formData.name}
-                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, name: e.target.value }))
+                  }
                   required
                   helperText="A descriptive name for this token"
                 />
               </Grid>
-              
+
               <Grid item xs={12}>
                 <TextField
                   fullWidth
                   label="Description (Optional)"
                   value={formData.description}
-                  onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      description: e.target.value,
+                    }))
+                  }
                   multiline
                   rows={2}
                   helperText="Optional description of what this token will be used for"
                 />
               </Grid>
-              
+
               <Grid item xs={12}>
                 <Typography variant="h6" gutterBottom>
                   Permissions (Scopes)
                 </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                  Select the permissions this token should have. Be conservative and only grant what's necessary.
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mb: 2 }}
+                >
+                  Select the permissions this token should have. Be conservative
+                  and only grant what's necessary.
                 </Typography>
-                
-                {Object.entries(SCOPE_CATEGORIES).map(([category, { label, scopes }]) => (
-                  <Box key={category} sx={{ mb: 3 }}>
-                    <Typography variant="subtitle1" gutterBottom>
-                      {label}
-                    </Typography>
-                    <FormGroup>
-                      {scopes.map(({ value, label: scopeLabel }) => (
-                        <FormControlLabel
-                          key={value}
-                          control={
-                            <Checkbox
-                              checked={formData.scopes.includes(value)}
-                              onChange={(e) => handleScopeChange(value, e.target.checked)}
-                            />
-                          }
-                          label={scopeLabel}
-                        />
-                      ))}
-                    </FormGroup>
-                    <Divider sx={{ mt: 1 }} />
-                  </Box>
-                ))}
+
+                {Object.entries(SCOPE_CATEGORIES).map(
+                  ([category, { label, scopes }]) => (
+                    <Box key={category} sx={{ mb: 3 }}>
+                      <Typography variant="subtitle1" gutterBottom>
+                        {label}
+                      </Typography>
+                      <FormGroup>
+                        {scopes.map(({ value, label: scopeLabel }) => (
+                          <FormControlLabel
+                            key={value}
+                            control={
+                              <Checkbox
+                                checked={formData.scopes.includes(value)}
+                                onChange={(e) =>
+                                  handleScopeChange(value, e.target.checked)
+                                }
+                              />
+                            }
+                            label={scopeLabel}
+                          />
+                        ))}
+                      </FormGroup>
+                      <Divider sx={{ mt: 1 }} />
+                    </Box>
+                  ),
+                )}
               </Grid>
-              
+
               <Grid item xs={12}>
                 <Typography variant="h6" gutterBottom>
                   Contractor Access
                 </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                  Restrict this token to specific contractors. Leave empty for access to all contractors.
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mb: 2 }}
+                >
+                  Restrict this token to specific contractors. Leave empty for
+                  access to all contractors.
                 </Typography>
-                
+
                 {contractors && contractors.length > 0 ? (
                   <FormGroup>
                     {contractors.map((contractor) => (
@@ -312,8 +338,15 @@ export function CreateTokenDialog({ open, onClose }: CreateTokenDialogProps) {
                         key={contractor.spectrum_id}
                         control={
                           <Checkbox
-                            checked={formData.contractor_spectrum_ids.includes(contractor.spectrum_id)}
-                            onChange={(e) => handleContractorChange(contractor.spectrum_id, e.target.checked)}
+                            checked={formData.contractor_spectrum_ids.includes(
+                              contractor.spectrum_id,
+                            )}
+                            onChange={(e) =>
+                              handleContractorChange(
+                                contractor.spectrum_id,
+                                e.target.checked,
+                              )
+                            }
                           />
                         }
                         label={`${contractor.name} (${contractor.spectrum_id})`}
@@ -326,14 +359,19 @@ export function CreateTokenDialog({ open, onClose }: CreateTokenDialogProps) {
                   </Typography>
                 )}
               </Grid>
-              
+
               <Grid item xs={12}>
                 <TextField
                   fullWidth
                   label="Expiration Date (Optional)"
                   type="datetime-local"
                   value={formData.expires_at}
-                  onChange={(e) => setFormData(prev => ({ ...prev, expires_at: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      expires_at: e.target.value,
+                    }))
+                  }
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -345,9 +383,7 @@ export function CreateTokenDialog({ open, onClose }: CreateTokenDialogProps) {
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>
-          {showToken ? "Close" : "Cancel"}
-        </Button>
+        <Button onClick={handleClose}>{showToken ? "Close" : "Cancel"}</Button>
         {!showToken && (
           <Button
             onClick={handleSubmit}

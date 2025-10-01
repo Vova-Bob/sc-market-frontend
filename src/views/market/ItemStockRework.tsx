@@ -13,24 +13,17 @@ import {
   GridValidRowModel,
   Toolbar,
 } from "@mui/x-data-grid"
-import React, { useCallback, useEffect } from "react"
+import React, { useCallback } from "react"
 import { Stack } from "@mui/system"
 import { MinimalUser } from "../../datatypes/User"
 import {
   Autocomplete,
   Button,
   ButtonGroup,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  FormControlLabel,
   IconButton,
   Switch,
   TextField,
   Tooltip,
-  Paper,
-  Typography,
 } from "@mui/material"
 import {
   AddRounded,
@@ -39,27 +32,19 @@ import {
   DeleteRounded,
   RemoveRounded,
   SaveRounded,
-  ShoppingCartRounded,
 } from "@mui/icons-material"
 import { useGetUserProfileQuery } from "../../store/profile"
 import { UserProfileState } from "../../hooks/login/UserProfile"
 import { UserAvatar } from "../../components/avatar/UserAvatar"
 import { ThemedDataGrid } from "../../components/grid/ThemedDataGrid"
 import { SelectMarketListing } from "../../components/select/SelectMarketListing.tsx"
-import { UniqueListing } from "../../datatypes/MarketListing.ts"
 import { NumericFormat } from "react-number-format"
-import {
-  useMarketCreateListingMutation,
-  useMarketGetGameItemByNameQuery,
-} from "../../store/market"
-import { useAlertHook } from "../../hooks/alert/AlertHook"
-import { LoadingButton } from "@mui/lab"
-import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
+import { ExtendedUniqueSearchResult } from "../../store/market"
 import { useTranslation } from "react-i18next" // Added for localization
 
 interface StockEntry extends GridValidRowModel {
   id: string
-  listing: UniqueListing | null
+  listing: ExtendedUniqueSearchResult | null
   quantity_available: number
   location: string
   status: string
@@ -69,13 +54,13 @@ interface StockEntry extends GridValidRowModel {
 }
 
 export function StockEntryItemDisplay(props: {
-  listing: UniqueListing | null
+  listing: ExtendedUniqueSearchResult | null
 }) {
   const { t } = useTranslation()
-  if (!props.listing || !props.listing.details) {
+  if (!props.listing) {
     return t("ItemStockRework.noItemSelected")
   }
-  return `${props.listing.details.item_type} / ${props.listing.details.title}`
+  return `${props.listing.item_type} / ${props.listing.title}`
 }
 
 export function ManageStockArea(props: {
@@ -608,10 +593,6 @@ export function ItemStockRework() {
       },
     },
   ]
-
-  useEffect(() => {
-    console.log(rows)
-  }, [rows])
 
   return (
     <ThemedDataGrid

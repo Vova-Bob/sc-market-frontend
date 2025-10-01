@@ -4,8 +4,8 @@ import React from "react"
 import { HeaderTitle } from "../../components/typography/HeaderTitle"
 import { CurrentMarketListingContext } from "../../hooks/market/CurrentMarketItem"
 import {
-  useMarketGetListingByIDQuery,
-  useMarketGetMultipleByIDQuery,
+  useGetMarketListingQuery,
+  useGetMultipleByIdQuery,
 } from "../../store/market"
 import { MarketListingView } from "../../views/market/MarketListingView"
 import { Page } from "../../components/metadata/Page"
@@ -39,7 +39,7 @@ export function ViewMarketMultiple(props: {}) {
     error,
     refetch,
     isLoading,
-  } = useMarketGetMultipleByIDQuery(id!)
+  } = useGetMultipleByIdQuery(id!)
 
   return (
     <Page title={listing?.details?.title}>
@@ -113,7 +113,7 @@ export function EditMarketMultiple(props: {}) {
     error,
     refetch,
     isLoading,
-  } = useMarketGetListingByIDQuery(id!)
+  } = useGetMarketListingQuery(id!)
 
   return (
     <Page title={listing?.details?.title}>

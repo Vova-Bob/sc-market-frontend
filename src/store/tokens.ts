@@ -79,7 +79,10 @@ export const tokensApi = createApi({
     }),
 
     // Create a new token
-    createToken: builder.mutation<{ token: string; data: ApiToken }, CreateTokenRequest>({
+    createToken: builder.mutation<
+      { token: string; data: ApiToken },
+      CreateTokenRequest
+    >({
       query: (body) => ({
         url: "/tokens",
         method: "POST",
@@ -90,7 +93,10 @@ export const tokensApi = createApi({
     }),
 
     // Update a token
-    updateToken: builder.mutation<ApiToken, { tokenId: string; body: UpdateTokenRequest }>({
+    updateToken: builder.mutation<
+      ApiToken,
+      { tokenId: string; body: UpdateTokenRequest }
+    >({
       query: ({ tokenId, body }) => ({
         url: `/tokens/${tokenId}`,
         method: "PUT",
@@ -116,7 +122,10 @@ export const tokensApi = createApi({
     }),
 
     // Extend token expiration
-    extendToken: builder.mutation<ApiToken, { tokenId: string; body: ExtendTokenRequest }>({
+    extendToken: builder.mutation<
+      ApiToken,
+      { tokenId: string; body: ExtendTokenRequest }
+    >({
       query: ({ tokenId, body }) => ({
         url: `/tokens/${tokenId}/extend`,
         method: "POST",

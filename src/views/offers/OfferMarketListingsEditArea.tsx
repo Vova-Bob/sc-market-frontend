@@ -18,10 +18,9 @@ import { PaginatedTable } from "../../components/table/PaginatedTable"
 import React, { useMemo, useState } from "react"
 import { MarketListingDetails } from "../../components/list/UserDetails"
 import {
+  MarketListingSearchResult,
   useSearchMarketQuery,
-  useMarketGetListingByUserQuery,
 } from "../../store/market"
-import { convertToLegacy } from "../market/ItemListings"
 import { useCounterOffer } from "../../hooks/offer/CounterOfferDetails"
 import { UniqueListing } from "../../datatypes/MarketListing"
 import { marketListingHeadCells } from "./OfferMarketListings"
@@ -139,57 +138,59 @@ export function OfferMarketListingsEditArea(props: { offer: OfferSession }) {
   const { offer: session } = props
   const [body, setBody] = useCounterOffer()
 
-  const { data: userListings } = useMarketGetListingByUserQuery(
-    session.assigned_to?.username!,
+  const { data: userSearchResults } = useSearchMarketQuery(
+    {
+      user_seller: session.assigned_to?.username,
+      quantityAvailable: 1,
+      index: 0,
+      page_size: 50,
+    },
     {
       skip: !session.assigned_to?.username,
     },
   )
   const { data: contractorSearchResults } = useSearchMarketQuery(
     {
-      contractor_seller: session.contractor?.spectrum_id!,
+      contractor_seller: session.contractor?.spectrum_id,
       quantityAvailable: 1,
       index: 0,
-      page_size: 1000,
-      listing_type: undefined,
+      page_size: 96,
     },
     { skip: !session.contractor?.spectrum_id },
   )
 
-  const contractorListings = useMemo(() => {
-    if (!contractorSearchResults?.listings) return []
-    return contractorSearchResults.listings.map(convertToLegacy)
-  }, [contractorSearchResults])
   const listings = useMemo(
     () =>
-      ((session.assigned_to
-        ? userListings
-        : contractorListings) as UniqueListing[]) || [],
-    [session.assigned_to, userListings, contractorListings],
+      (session.assigned_to
+        ? userSearchResults?.listings
+        : contractorSearchResults?.listings) ||
+      [] ||
+      [],
+    [session.assigned_to, userSearchResults, contractorSearchResults],
   )
 
   const extendedListings = useMemo(() => {
     return body.market_listings
       .map((l) => {
         const fullListing =
-          listings.find((c) => c.listing.listing_id === l.listing_id) || null
+          listings.find((c) => c.listing_id === l.listing_id) || null
 
         if (!fullListing) {
           return null
         }
 
         return {
-          ...l,
-          listing: fullListing,
-          title: fullListing.details.title,
-          unit_price: fullListing.listing.price,
-          total: l.quantity * fullListing.listing.price,
+          title: fullListing.title,
+          unit_price: fullListing.price,
+          total: l.quantity * fullListing.price,
         }
       })
       .filter((o) => o) as ListingRowItem[]
   }, [body.market_listings, listings])
 
-  const [selected, setSelected] = useState<UniqueListing | null>(null)
+  const [selected, setSelected] = useState<MarketListingSearchResult | null>(
+    null,
+  )
   const [quantity, setQuantity] = useState(1)
 
   return (
@@ -251,19 +252,16 @@ export function OfferMarketListingsEditArea(props: { offer: OfferSession }) {
                   onChange={(event, value) => {
                     setSelected(value)
                     setQuantity(
-                      Math.min(
-                        quantity,
-                        value?.listing?.quantity_available || 1,
-                      ),
+                      Math.min(quantity, value?.quantity_available || 1),
                     )
                   }}
                   options={listings.filter(
                     (o) =>
                       !body.market_listings.find(
-                        (l) => l.listing_id === o.listing.listing_id,
+                        (l) => l.listing_id === o.listing_id,
                       ),
                   )}
-                  getOptionLabel={(option) => option.details.title}
+                  getOptionLabel={(option) => option.title}
                 />
                 <NumericFormat
                   decimalScale={0}
@@ -274,7 +272,7 @@ export function OfferMarketListingsEditArea(props: { offer: OfferSession }) {
                     setQuantity(
                       Math.min(
                         values.floatValue || 1,
-                        selected?.listing?.quantity_available || 1,
+                        selected?.quantity_available || 1,
                       ),
                     )
                   }}
@@ -287,7 +285,7 @@ export function OfferMarketListingsEditArea(props: { offer: OfferSession }) {
                     endAdornment: (
                       <InputAdornment position="start">
                         {t("OfferMarketListingsEditArea.ofAvailable", {
-                          count: selected?.listing?.quantity_available || 0,
+                          count: selected?.quantity_available || 0,
                         })}
                       </InputAdornment>
                     ),
@@ -310,7 +308,7 @@ export function OfferMarketListingsEditArea(props: { offer: OfferSession }) {
                       ...body,
                       market_listings: [
                         ...body.market_listings,
-                        { listing_id: selected.listing.listing_id, quantity },
+                        { listing_id: selected.listing_id, quantity },
                       ],
                     })
                     setQuantity(1)

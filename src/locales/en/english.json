@@ -387,7 +387,8 @@
     "available": "{{count}} available",
     "allListings": "All Listings",
     "publicListings": "Public Listings",
-    "internalListings": "Internal Listings"
+    "internalListings": "Internal Listings",
+    "internalListing": "Internal Listing"
   },
   "marketActions": {
     "createListing": "Create Listing",

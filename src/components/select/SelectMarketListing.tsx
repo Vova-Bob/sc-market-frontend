@@ -1,48 +1,45 @@
 import { Autocomplete, TextField, TextFieldProps } from "@mui/material"
 import React, { useMemo } from "react"
-import { useMarketGetMyListingsQuery } from "../../store/market"
+import {
+  ExtendedUniqueSearchResult,
+  useSearchMarketListingsQuery,
+} from "../../store/market"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
-import { UniqueListing } from "../../datatypes/MarketListing"
 import { useTranslation } from "react-i18next"
 
 export interface SelectMarketListingProps {
   listing_id: string | null
-  onListingChange: (newValue: UniqueListing | null) => void
+  onListingChange: (newValue: ExtendedUniqueSearchResult | null) => void
   TextfieldProps?: TextFieldProps
 }
 
 export function SelectMarketListing(props: SelectMarketListingProps) {
   const { t } = useTranslation()
   const [currentOrg] = useCurrentOrg()
-  const { data: listings } = useMarketGetMyListingsQuery(
-    currentOrg?.spectrum_id,
-  )
+  const { data: searchResults } = useSearchMarketListingsQuery({
+    contractor_seller: currentOrg?.spectrum_id,
+    listing_type: "unique",
+  })
 
-  // Filter out multiple listings and only show unique listings
-  const uniqueListings = useMemo(() => {
-    return (listings || [])
-      .filter((listing) => listing.type === "unique")
-      .map((listing) => listing as UniqueListing)
-  }, [listings])
+  const listings =
+    (searchResults?.listings as ExtendedUniqueSearchResult[]) || []
 
   const selectedListing = useMemo(() => {
     if (!props.listing_id) return null
     return (
-      uniqueListings.find(
-        (listing) => listing.listing.listing_id === props.listing_id,
-      ) || null
+      listings.find((listing) => listing.listing_id === props.listing_id) ||
+      null
     )
-  }, [uniqueListings, props.listing_id])
+  }, [listings, props.listing_id])
 
-  const getOptionLabel = (option: UniqueListing) => {
-    const details = option.details
-    return `${details.item_type} / ${details.item_name || details.title}`
+  const getOptionLabel = (option: ExtendedUniqueSearchResult) => {
+    return `${option.item_type} / ${option.item_name || option.title}`
   }
 
   return (
     <Autocomplete
       fullWidth
-      options={uniqueListings}
+      options={listings}
       value={selectedListing}
       onChange={(event, value) => {
         if (value) {
@@ -60,7 +57,7 @@ export function SelectMarketListing(props: SelectMarketListingProps) {
         />
       )}
       isOptionEqualToValue={(option, value) => {
-        return option.listing.listing_id === value.listing.listing_id
+        return option.listing_id === value.listing_id
       }}
     />
   )

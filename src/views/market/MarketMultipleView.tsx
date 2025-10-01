@@ -69,7 +69,14 @@ export function MarketMultipleView() {
   )
 
   const amContractorManager = useMemo(
-    () => amContractor && has_permission(currentOrg, profile, "manage_market", profile?.contractors),
+    () =>
+      amContractor &&
+      has_permission(
+        currentOrg,
+        profile,
+        "manage_market",
+        profile?.contractors,
+      ),
     [currentOrg, profile, amContractor],
   )
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react"
 import {
   Box,
   Card,
@@ -11,8 +11,8 @@ import {
   Alert,
   CircularProgress,
   Divider,
-} from '@mui/material'
-import { useTranslation } from 'react-i18next'
+} from "@mui/material"
+import { useTranslation } from "react-i18next"
 import {
   OrderSetting,
   CreateOrderSettingRequest,
@@ -25,17 +25,17 @@ import {
   useCreateContractorOrderSettingMutation,
   useUpdateContractorOrderSettingMutation,
   useDeleteContractorOrderSettingMutation,
-} from '../../store/orderSettings'
+} from "../../store/orderSettings"
 
 interface OrderSettingsProps {
-  entityType: 'user' | 'contractor'
+  entityType: "user" | "contractor"
   entityId?: string // Required for contractor, optional for user
 }
 
 export function OrderSettings({ entityType, entityId }: OrderSettingsProps) {
   const { t } = useTranslation()
-  const [offerMessage, setOfferMessage] = useState('')
-  const [orderMessage, setOrderMessage] = useState('')
+  const [offerMessage, setOfferMessage] = useState("")
+  const [orderMessage, setOrderMessage] = useState("")
   const [offerEnabled, setOfferEnabled] = useState(true)
   const [orderEnabled, setOrderEnabled] = useState(true)
   const [offerSettingId, setOfferSettingId] = useState<string | null>(null)
@@ -50,7 +50,7 @@ export function OrderSettings({ entityType, entityId }: OrderSettingsProps) {
     isLoading: userLoading,
     error: userError,
   } = useGetUserOrderSettingsQuery(undefined, {
-    skip: entityType !== 'user',
+    skip: entityType !== "user",
   })
 
   // Contractor settings queries
@@ -59,7 +59,7 @@ export function OrderSettings({ entityType, entityId }: OrderSettingsProps) {
     isLoading: contractorLoading,
     error: contractorError,
   } = useGetContractorOrderSettingsQuery(entityId!, {
-    skip: entityType !== 'contractor' || !entityId,
+    skip: entityType !== "contractor" || !entityId,
   })
 
   // User mutations
@@ -73,13 +73,17 @@ export function OrderSettings({ entityType, entityId }: OrderSettingsProps) {
   const [deleteContractorSetting] = useDeleteContractorOrderSettingMutation()
 
   const isLoading = userLoading || contractorLoading
-  const settings = entityType === 'user' ? userSettings : contractorSettings
+  const settings = entityType === "user" ? userSettings : contractorSettings
 
   // Initialize form with existing settings
   useEffect(() => {
     if (settings.length > 0) {
-      const offerSetting = settings.find(s => s.setting_type === 'offer_message')
-      const orderSetting = settings.find(s => s.setting_type === 'order_message')
+      const offerSetting = settings.find(
+        (s) => s.setting_type === "offer_message",
+      )
+      const orderSetting = settings.find(
+        (s) => s.setting_type === "order_message",
+      )
 
       if (offerSetting) {
         setOfferMessage(offerSetting.message_content)
@@ -104,7 +108,7 @@ export function OrderSettings({ entityType, entityId }: OrderSettingsProps) {
       // Handle offer message
       if (offerSettingId) {
         // Update existing
-        if (entityType === 'user') {
+        if (entityType === "user") {
           await updateUserSetting({
             id: offerSettingId,
             message_content: offerMessage,
@@ -121,12 +125,12 @@ export function OrderSettings({ entityType, entityId }: OrderSettingsProps) {
       } else if (offerMessage.trim()) {
         // Create new
         const request: CreateOrderSettingRequest = {
-          setting_type: 'offer_message',
+          setting_type: "offer_message",
           message_content: offerMessage,
           enabled: offerEnabled,
         }
 
-        if (entityType === 'user') {
+        if (entityType === "user") {
           await createUserSetting(request).unwrap()
         } else {
           await createContractorSetting({
@@ -139,7 +143,7 @@ export function OrderSettings({ entityType, entityId }: OrderSettingsProps) {
       // Handle order message
       if (orderSettingId) {
         // Update existing
-        if (entityType === 'user') {
+        if (entityType === "user") {
           await updateUserSetting({
             id: orderSettingId,
             message_content: orderMessage,
@@ -156,12 +160,12 @@ export function OrderSettings({ entityType, entityId }: OrderSettingsProps) {
       } else if (orderMessage.trim()) {
         // Create new
         const request: CreateOrderSettingRequest = {
-          setting_type: 'order_message',
+          setting_type: "order_message",
           message_content: orderMessage,
           enabled: orderEnabled,
         }
 
-        if (entityType === 'user') {
+        if (entityType === "user") {
           await createUserSetting(request).unwrap()
         } else {
           await createContractorSetting({
@@ -171,26 +175,37 @@ export function OrderSettings({ entityType, entityId }: OrderSettingsProps) {
         }
       }
 
-      setSuccess(t('OrderSettings.savedSuccessfully'))
+      setSuccess(t("OrderSettings.savedSuccessfully"))
     } catch (err: any) {
-      const errorMessage = err?.data?.error?.error || err?.data?.error || err?.message || t('OrderSettings.saveError')
-      setError(typeof errorMessage === 'string' ? errorMessage : t('OrderSettings.saveError'))
+      const errorMessage =
+        err?.data?.error?.error ||
+        err?.data?.error ||
+        err?.message ||
+        t("OrderSettings.saveError")
+      setError(
+        typeof errorMessage === "string"
+          ? errorMessage
+          : t("OrderSettings.saveError"),
+      )
     } finally {
       setSaving(false)
     }
   }
 
-  const handleDelete = async (settingType: 'offer_message' | 'order_message') => {
-    if (!confirm(t('OrderSettings.confirmDelete'))) return
+  const handleDelete = async (
+    settingType: "offer_message" | "order_message",
+  ) => {
+    if (!confirm(t("OrderSettings.confirmDelete"))) return
 
     setSaving(true)
     setError(null)
 
     try {
-      const settingId = settingType === 'offer_message' ? offerSettingId : orderSettingId
-      
+      const settingId =
+        settingType === "offer_message" ? offerSettingId : orderSettingId
+
       if (settingId) {
-        if (entityType === 'user') {
+        if (entityType === "user") {
           await deleteUserSetting(settingId).unwrap()
         } else {
           await deleteContractorSetting({
@@ -200,21 +215,29 @@ export function OrderSettings({ entityType, entityId }: OrderSettingsProps) {
         }
 
         // Reset form
-        if (settingType === 'offer_message') {
-          setOfferMessage('')
+        if (settingType === "offer_message") {
+          setOfferMessage("")
           setOfferEnabled(true)
           setOfferSettingId(null)
         } else {
-          setOrderMessage('')
+          setOrderMessage("")
           setOrderEnabled(true)
           setOrderSettingId(null)
         }
 
-        setSuccess(t('OrderSettings.deletedSuccessfully'))
+        setSuccess(t("OrderSettings.deletedSuccessfully"))
       }
     } catch (err: any) {
-      const errorMessage = err?.data?.error?.error || err?.data?.error || err?.message || t('OrderSettings.deleteError')
-      setError(typeof errorMessage === 'string' ? errorMessage : t('OrderSettings.deleteError'))
+      const errorMessage =
+        err?.data?.error?.error ||
+        err?.data?.error ||
+        err?.message ||
+        t("OrderSettings.deleteError")
+      setError(
+        typeof errorMessage === "string"
+          ? errorMessage
+          : t("OrderSettings.deleteError"),
+      )
     } finally {
       setSaving(false)
     }
@@ -229,22 +252,18 @@ export function OrderSettings({ entityType, entityId }: OrderSettingsProps) {
   }
 
   if (userError || contractorError) {
-    return (
-      <Alert severity="error">
-        {t('OrderSettings.loadError')}
-      </Alert>
-    )
+    return <Alert severity="error">{t("OrderSettings.loadError")}</Alert>
   }
 
   return (
     <Card>
       <CardContent>
         <Typography variant="h6" gutterBottom>
-          {t('OrderSettings.title')}
+          {t("OrderSettings.title")}
         </Typography>
-        
+
         <Typography variant="body2" color="text.secondary" paragraph>
-          {t('OrderSettings.description')}
+          {t("OrderSettings.description")}
         </Typography>
 
         {error && (
@@ -262,9 +281,9 @@ export function OrderSettings({ entityType, entityId }: OrderSettingsProps) {
         {/* Offer Message Setting */}
         <Box mb={3}>
           <Typography variant="subtitle1" gutterBottom>
-            {t('OrderSettings.offerMessage')}
+            {t("OrderSettings.offerMessage")}
           </Typography>
-          
+
           <FormControlLabel
             control={
               <Switch
@@ -273,29 +292,29 @@ export function OrderSettings({ entityType, entityId }: OrderSettingsProps) {
                 disabled={saving}
               />
             }
-            label={t('OrderSettings.enabled')}
+            label={t("OrderSettings.enabled")}
             sx={{ mb: 1 }}
           />
-          
+
           <TextField
             fullWidth
             multiline
             rows={3}
             value={offerMessage}
             onChange={(e) => setOfferMessage(e.target.value)}
-            placeholder={t('OrderSettings.offerMessagePlaceholder')}
+            placeholder={t("OrderSettings.offerMessagePlaceholder")}
             disabled={saving || !offerEnabled}
             sx={{ mb: 1 }}
           />
-          
+
           {offerSettingId && (
             <Button
               size="small"
               color="error"
-              onClick={() => handleDelete('offer_message')}
+              onClick={() => handleDelete("offer_message")}
               disabled={saving}
             >
-              {t('OrderSettings.delete')}
+              {t("OrderSettings.delete")}
             </Button>
           )}
         </Box>
@@ -305,9 +324,9 @@ export function OrderSettings({ entityType, entityId }: OrderSettingsProps) {
         {/* Order Message Setting */}
         <Box mb={3}>
           <Typography variant="subtitle1" gutterBottom>
-            {t('OrderSettings.orderMessage')}
+            {t("OrderSettings.orderMessage")}
           </Typography>
-          
+
           <FormControlLabel
             control={
               <Switch
@@ -316,29 +335,29 @@ export function OrderSettings({ entityType, entityId }: OrderSettingsProps) {
                 disabled={saving}
               />
             }
-            label={t('OrderSettings.enabled')}
+            label={t("OrderSettings.enabled")}
             sx={{ mb: 1 }}
           />
-          
+
           <TextField
             fullWidth
             multiline
             rows={3}
             value={orderMessage}
             onChange={(e) => setOrderMessage(e.target.value)}
-            placeholder={t('OrderSettings.orderMessagePlaceholder')}
+            placeholder={t("OrderSettings.orderMessagePlaceholder")}
             disabled={saving || !orderEnabled}
             sx={{ mb: 1 }}
           />
-          
+
           {orderSettingId && (
             <Button
               size="small"
               color="error"
-              onClick={() => handleDelete('order_message')}
+              onClick={() => handleDelete("order_message")}
               disabled={saving}
             >
-              {t('OrderSettings.delete')}
+              {t("OrderSettings.delete")}
             </Button>
           )}
         </Box>
@@ -349,7 +368,7 @@ export function OrderSettings({ entityType, entityId }: OrderSettingsProps) {
           disabled={saving}
           startIcon={saving ? <CircularProgress size={20} /> : null}
         >
-          {saving ? t('OrderSettings.saving') : t('OrderSettings.save')}
+          {saving ? t("OrderSettings.saving") : t("OrderSettings.save")}
         </Button>
       </CardContent>
     </Card>

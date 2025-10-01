@@ -31,11 +31,11 @@ import { Footer } from "../../components/footer/Footer"
 import ExpandLess from "@mui/icons-material/ExpandLess"
 import ExpandMore from "@mui/icons-material/ExpandMore"
 import { MarkdownRender } from "../../components/markdown/Markdown"
-import { useMarketStatsQuery, useSearchMarketQuery } from "../../store/market"
 import {
-  convertToLegacy,
-  DisplayListingsHorizontal,
-} from "../../views/market/ItemListings"
+  useGetMarketStatsQuery,
+  useSearchMarketListingsQuery,
+} from "../../store/market"
+import { DisplayListingsHorizontal } from "../../views/market/ItemListings"
 import { CURRENT_CUSTOM_ORG } from "../../hooks/contractor/CustomDomain"
 import { Link, Navigate } from "react-router-dom"
 import { MetricSection } from "../../views/orders/OrderMetrics"
@@ -85,25 +85,15 @@ function LandingSmallImage(props: { src: string; title: string }) {
 }
 
 export function RecentListings() {
-  const { data: results, isLoading } = useSearchMarketQuery({
-    index: 0,
-    page_size: 5,
-    quantityAvailable: 1,
-    sort: "date-old",
-    listing_type: "not-aggregate",
+  const { data: results, isLoading } = useSearchMarketListingsQuery({
+    page: 0,
+    page_size: 8,
+    statuses: "active",
+    sale_type: "sale",
   })
 
-  const { total, listings } = useMemo(
-    () => results || { total: 0, listings: [] },
-    [results],
-  )
-  const filledListings = useMemo(
-    () => (listings || []).map((l) => convertToLegacy(l)),
-    [listings],
-  )
-
   return !isLoading ? (
-    <DisplayListingsHorizontal listings={filledListings} />
+    <DisplayListingsHorizontal listings={results?.listings || []} />
   ) : (
     <RecentListingsSkeleton />
   )
@@ -153,7 +143,7 @@ export function RecentListingsSkeleton() {
 
 export function OrderStatistics() {
   const { t } = useTranslation()
-  const { data: stats } = useMarketStatsQuery()
+  const { data: stats } = useGetMarketStatsQuery()
   const { total_orders, total_order_value, week_orders, week_order_value } =
     stats || {
       total_orders: 0,

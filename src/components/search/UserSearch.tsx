@@ -83,7 +83,15 @@ export function UserSearch({
         banner: "",
         contractors: [],
         profile_description: "",
-        rating: { avg_rating: 0, rating_count: 0, streak: 0, total_orders: 0 },
+        rating: {
+          avg_rating: 0,
+          rating_count: 0,
+          streak: 0,
+          total_orders: 0,
+          total_rating: 0,
+          total_assignments: 0,
+          response_rate: 0,
+        },
         market_order_template: "",
         created_at: Date.now(),
       }

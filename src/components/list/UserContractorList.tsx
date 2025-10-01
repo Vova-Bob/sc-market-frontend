@@ -13,11 +13,11 @@ import { UnderlineLink } from "../typography/UnderlineLink"
 import React from "react"
 
 export function UserContractorList(props: {
-  contractors: { 
-    spectrum_id: string; 
-    roles: string[]; 
-    name: string;
-    role_details?: { role_id: string; role_name: string; position: number }[];
+  contractors: {
+    spectrum_id: string
+    roles: string[]
+    name: string
+    role_details?: { role_id: string; role_name: string; position: number }[]
   }[]
 }) {
   const { contractors } = props
@@ -40,11 +40,11 @@ export function UserContractorList(props: {
 }
 
 export function UserContractorListItem(props: {
-  membership: { 
-    spectrum_id: string; 
-    roles: string[]; 
-    name: string;
-    role_details?: { role_id: string; role_name: string; position: number }[];
+  membership: {
+    spectrum_id: string
+    roles: string[]
+    name: string
+    role_details?: { role_id: string; role_name: string; position: number }[]
   }
 }) {
   const {
@@ -55,7 +55,9 @@ export function UserContractorListItem(props: {
   // Sort roles by position (lowest position = highest authority)
   // Handle case where role_details might be undefined (backward compatibility)
   // Create a copy to avoid mutating immutable Redux state
-  const sortedRoles = [...(role_details || [])].sort((a, b) => a.position - b.position)
+  const sortedRoles = [...(role_details || [])].sort(
+    (a, b) => a.position - b.position,
+  )
 
   return (
     <ListItem key={contractor?.spectrum_id}>

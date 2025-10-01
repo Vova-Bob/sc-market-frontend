@@ -5,7 +5,7 @@ import React from "react"
 import { MinimalContractor } from "../../datatypes/Contractor"
 import { UniqueListing } from "../../datatypes/MarketListing"
 import { Link } from "react-router-dom"
-import { formatMarketUrl } from "../../util/urls"
+import { formatCompleteListingUrl, formatMarketUrl } from "../../util/urls"
 import { FALLBACK_IMAGE_URL } from "../../util/constants"
 
 export function UserDetails(props: { user: MinimalUser }) {
@@ -78,7 +78,7 @@ export function MarketListingDetails(props: { listing: UniqueListing }) {
       <Stack direction={"column"} justifyContent={"left"}>
         <MaterialLink
           component={Link}
-          to={formatMarketUrl(listing)}
+          to={formatCompleteListingUrl(listing)}
           underline={"hover"}
         >
           <Typography variant={"subtitle2"} color={"text.secondary"}>

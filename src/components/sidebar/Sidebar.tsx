@@ -367,7 +367,9 @@ export function Sidebar() {
               "manage_webhooks",
               "manage_orders",
             ] as const
-          ).some((perm) => has_permission(currentOrgObj, profile, perm, profile?.contractors))
+          ).some((perm) =>
+            has_permission(currentOrgObj, profile, perm, profile?.contractors),
+          )
         ) {
           return false
         }

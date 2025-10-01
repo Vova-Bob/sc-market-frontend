@@ -2,6 +2,7 @@ import { serviceApi } from "./service"
 import { MinimalUser } from "../datatypes/User"
 import { Contractor } from "../datatypes/Contractor"
 import { RecruitingSearchState } from "../hooks/recruiting/RecruitingSearch"
+import { unwrapResponse } from "./orders.ts"
 
 export interface Comment {
   comment_id: string
@@ -33,10 +34,12 @@ export const recruitingApi = serviceApi.injectEndpoints({
       { index: number; pageSize: number } & RecruitingSearchState
     >({
       query: (params) => ({ url: `/api/recruiting/posts`, params }),
+      transformResponse: unwrapResponse,
       providesTags: ["RecruitingPosts"],
     }),
     recruitingGetPostByID: builder.query<RecruitingPost, string>({
-      query: (id) => `/api/recruiting/post/${id}`,
+      query: (id) => `/api/recruiting/posts/${id}`,
+      transformResponse: unwrapResponse,
       providesTags: (result, error, post_id) => [
         "RecruitingPosts",
         {
@@ -46,7 +49,8 @@ export const recruitingApi = serviceApi.injectEndpoints({
       ],
     }),
     recruitingGetPostCommentsByID: builder.query<Comment[], string>({
-      query: (id) => `/api/recruiting/post/${id}/comments`,
+      query: (id) => `/api/recruiting/posts/${id}/comments`,
+      transformResponse: unwrapResponse,
       providesTags: (result, error, post_id) => [
         {
           type: "RecruitingPostComments" as const,
@@ -55,7 +59,8 @@ export const recruitingApi = serviceApi.injectEndpoints({
       ],
     }),
     recruitingGetPostByOrg: builder.query<RecruitingPost, string>({
-      query: (id) => `/api/recruiting/org/${id}`,
+      query: (id) => `/api/recruiting/contractors/${id}/posts`,
+      transformResponse: unwrapResponse,
       providesTags: (result, error, spectrum_id) => [
         "RecruitingPosts",
         {
@@ -65,25 +70,27 @@ export const recruitingApi = serviceApi.injectEndpoints({
       ],
     }),
     recruitingCreatePost: builder.mutation<
-      void,
+      RecruitingPost,
       { contractor: string; title: string; body: string }
     >({
       query: (body) => ({
-        url: `/api/recruiting/post/create`,
+        url: `/api/recruiting/posts`,
         method: "POST",
         body,
       }),
+      transformResponse: unwrapResponse,
       invalidatesTags: ["RecruitingPosts" as const],
     }),
     recruitingUpdatePost: builder.mutation<
-      void,
+      RecruitingPost,
       { post_id: string; body: { title: string; body: string } }
     >({
       query: ({ post_id, body }) => ({
-        url: `/api/recruiting/post/${post_id}/update`,
-        method: "POST",
+        url: `/api/recruiting/posts/${post_id}`,
+        method: "PUT",
         body,
       }),
+      transformResponse: unwrapResponse,
       invalidatesTags: (result, error, arg) => [
         "RecruitingPosts" as const,
         {
@@ -94,17 +101,22 @@ export const recruitingApi = serviceApi.injectEndpoints({
     }),
     recruitingUpvotePost: builder.mutation<{ already_voted: boolean }, string>({
       query: (post_id) => ({
-        url: `/api/recruiting/post/${post_id}/upvote`,
+        url: `/api/recruiting/posts/${post_id}/upvote`,
         method: "POST",
+        body: { vote_type: "upvote" },
       }),
-      // invalidatesTags: (result, error, post_id) => ['RecruitingPosts' as const, {
-      //     type: "RecruitingPosts" as const,
-      //     id: post_id
-      // }]
+      transformResponse: unwrapResponse,
+      invalidatesTags: (result, error, post_id) => [
+        "RecruitingPosts" as const,
+        {
+          type: "RecruitingPosts" as const,
+          id: post_id,
+        },
+      ],
     }),
     recruitingDownvotePost: builder.mutation<void, string>({
       query: (post_id) => ({
-        url: `/api/recruiting/post/${post_id}/downvote`,
+        url: `/api/recruiting/posts/${post_id}/downvote`,
         method: "POST",
       }),
       invalidatesTags: (result, error, post_id) => [
@@ -120,7 +132,7 @@ export const recruitingApi = serviceApi.injectEndpoints({
       { post_id: string; content: string; reply_to?: string }
     >({
       query: ({ post_id, content, reply_to }) => ({
-        url: `/api/recruiting/post/${post_id}/comment`,
+        url: `/api/recruiting/posts/${post_id}/comment`,
         method: "POST",
         body: { content, reply_to },
       }),

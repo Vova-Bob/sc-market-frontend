@@ -19,7 +19,7 @@ export function OrgOrders() {
     <Page title={t("orders.orgOrdersTitle")}>
       <ContainerGrid maxWidth={"xxl"} sidebarOpen={true}>
         <HeaderTitle>{t("orders.ordersTitle")}</HeaderTitle>
-        
+
         {xxl && (
           <>
             <Grid item xs={12} lg={2.5}>
@@ -40,7 +40,7 @@ export function OrgOrders() {
             </Grid>
           </>
         )}
-        
+
         {lg && !xxl && (
           <>
             <Grid item xs={12} lg={3}>
@@ -57,7 +57,7 @@ export function OrgOrders() {
             </Grid>
           </>
         )}
-        
+
         {!lg && (
           <>
             <ReceivedOffersArea />

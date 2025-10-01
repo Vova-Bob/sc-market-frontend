@@ -40,21 +40,18 @@ import {
   DeleteRounded,
 } from "@mui/icons-material"
 import { useMarketSearch } from "../../hooks/market/MarketSearch"
-import { filterListings } from "./ItemListings"
 import { formatMarketUrl } from "../../util/urls"
 import { Link } from "react-router-dom"
-import {
-  MarketListingUpdateBody,
-  UniqueListing,
-} from "../../datatypes/MarketListing"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 import {
+  ExtendedUniqueSearchResult,
+  useGetStatsForListingsQuery,
   useMarketCreateListingMutation,
   useMarketGetGameItemByNameQuery,
   useMarketRefreshListingMutation,
   useMarketUpdateListingMutation,
   useMarketUpdateListingQuantityMutation,
-  useSearchMarketQuery,
+  useSearchMarketListingsQuery,
 } from "../../store/market"
 import { Stack } from "@mui/system"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
@@ -66,27 +63,35 @@ import { ThemedDataGrid } from "../../components/grid/ThemedDataGrid"
 import { SelectGameItemStack } from "../../components/select/SelectGameItem"
 import { useGetUserProfileQuery } from "../../store/profile"
 import { useTranslation } from "react-i18next" // Added for i18n
-import { convertToLegacy } from "./ItemListings"
 
 export const ItemStockContext = React.createContext<
-  | [UniqueListing[], React.Dispatch<React.SetStateAction<UniqueListing[]>>]
+  | [
+      ExtendedUniqueSearchResult[],
+      React.Dispatch<React.SetStateAction<ExtendedUniqueSearchResult[]>>,
+    ]
   | null
 >(null)
 
-export function ManageStockArea(props: { listings: UniqueListing[] }) {
+export function ManageStockArea(props: {
+  listings: ExtendedUniqueSearchResult[]
+}) {
   const [quantity, setQuantity] = useState(1)
   const { listings } = props
 
-  const [updateListing] = useMarketUpdateListingQuantityMutation()
+  const [updateListingQuantity] = useMarketUpdateListingQuantityMutation()
+  const [updateListingStatus] = useMarketUpdateListingMutation()
 
   const issueAlert = useAlertHook()
   const { t } = useTranslation() // i18n hook
 
   const updateListingCallback = useCallback(
-    async (listing: UniqueListing, body: { quantity_available: number }) => {
-      updateListing({
-        listing_id: listing.listing.listing_id,
-        body,
+    async (
+      listing: ExtendedUniqueSearchResult,
+      body: { quantity_available: number },
+    ) => {
+      updateListingQuantity({
+        listingId: listing.listing_id,
+        quantity: body.quantity_available,
       })
         .unwrap()
         .then(() =>
@@ -97,7 +102,7 @@ export function ManageStockArea(props: { listings: UniqueListing[] }) {
         )
         .catch((err) => issueAlert(err))
     },
-    [listings, issueAlert, updateListing, t],
+    [listings, issueAlert, updateListingQuantity, t],
   )
 
   return (
@@ -128,14 +133,13 @@ export function ManageStockArea(props: { listings: UniqueListing[] }) {
       <ButtonGroup size={"small"}>
         <Button
           variant={"contained"}
-          onClick={() =>
+          onClick={() => {
             listings.map((listing) =>
               updateListingCallback(listing, {
-                quantity_available:
-                  listing.listing.quantity_available + quantity,
+                quantity_available: listing.quantity_available + quantity,
               }),
             )
-          }
+          }}
           color={"success"}
           startIcon={<AddRounded />}
         >
@@ -158,8 +162,7 @@ export function ManageStockArea(props: { listings: UniqueListing[] }) {
           onClick={() =>
             listings.map((listing) =>
               updateListingCallback(listing, {
-                quantity_available:
-                  listing.listing.quantity_available - quantity,
+                quantity_available: listing.quantity_available - quantity,
               }),
             )
           }
@@ -171,18 +174,6 @@ export function ManageStockArea(props: { listings: UniqueListing[] }) {
       </ButtonGroup>
     </>
   )
-}
-
-export interface StockRow {
-  title: string
-  quantity_available: number
-  listing_id: string
-  price: number
-  status: string
-  image_url: string
-  expiration: string
-  order_count: number
-  offer_count: number
 }
 
 export interface NewListingRow {
@@ -217,16 +208,41 @@ function ItemStockToolbar(props: {
   const { t } = useTranslation() // i18n hook
 
   const [updateListing, { isLoading }] = useMarketUpdateListingMutation()
-  const updateListingCallback = useCallback(
-    async (body: MarketListingUpdateBody) => {
-      selectedListings.forEach((listing) => {
-        updateListing({
-          listing_id: listing.listing.listing_id,
-          body,
+  const issueAlert = useAlertHook()
+
+  const updateStatusCallback = useCallback(
+    async (status: "active" | "inactive") => {
+      if (selectedListings.length === 0) {
+        issueAlert({
+          message: t("ItemStock.noListingsSelected"),
+          severity: "error",
         })
+        return
+      }
+
+      // Update all selected listings
+      const updatePromises = selectedListings.map((listing) => {
+        if (!listing.listing_id) {
+          console.error("Invalid listing structure:", listing)
+          return Promise.reject(new Error("Invalid listing structure"))
+        }
+
+        return updateListing({
+          id: listing.listing_id,
+          data: { status },
+        }).unwrap()
       })
+
+      Promise.all(updatePromises)
+        .then(() => {
+          issueAlert({
+            message: t("ItemStock.statusUpdated"),
+            severity: "success",
+          })
+        })
+        .catch((err) => issueAlert(err))
     },
-    [selectedListings, updateListing],
+    [selectedListings, issueAlert, updateListing, t],
   )
 
   return (
@@ -239,7 +255,7 @@ function ItemStockToolbar(props: {
         size={"small"}
         loading={isLoading}
         onClick={() => {
-          updateListingCallback({ status: "active" })
+          updateStatusCallback("active")
         }}
       >
         {t("ItemStock.activate")}
@@ -251,7 +267,7 @@ function ItemStockToolbar(props: {
         size={"small"}
         loading={isLoading}
         onClick={() => {
-          updateListingCallback({ status: "inactive" })
+          updateStatusCallback("inactive")
         }}
       >
         {t("ItemStock.deactivate")}
@@ -293,19 +309,20 @@ export function DisplayStock({
   onPageChange,
   onRowsPerPageChange,
 }: {
-  listings: UniqueListing[]
+  listings: ExtendedUniqueSearchResult[]
   total?: number
   page?: number
   perPage?: number
   onPageChange?: (event: unknown, newPage: number) => void
   onRowsPerPageChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }) {
-  const [searchState] = useMarketSearch()
   const [, setSelectedListings] = useContext(ItemStockContext)!
   const [refresh] = useMarketRefreshListingMutation()
-  const { data: profile } = useGetUserProfileQuery()
   const [currentOrg] = useCurrentOrg()
   const { t } = useTranslation() // i18n hook
+  const { data: listingStats } = useGetStatsForListingsQuery(
+    listings.map((l) => l.listing_id),
+  )
 
   // State for new listing rows
   const [newRows, setNewRows] = React.useState<NewListingRow[]>([])
@@ -316,29 +333,8 @@ export function DisplayStock({
     Record<string, Partial<NewListingRow>>
   >({})
 
-  const filteredListings = useMemo(
-    () => filterListings(listings, searchState),
-    [listings, searchState],
-  )
-
-  const rows: StockRow[] = useMemo(
-    () =>
-      filteredListings.map((listing) => ({
-        ...listing.details,
-        ...listing.listing,
-        ...(listing.stats || {
-          offer_count: 0,
-          order_count: 0,
-          view_count: 0,
-        }),
-        // Access view_count from both locations for backward compatibility
-        view_count:
-          (listing as any).view_count || listing.stats?.view_count || 0,
-        image_url: listing.photos[0],
-      })),
-    [filteredListings],
-  )
-
+  // Use the listings prop directly since MyItemStock already filters via useSearchMarketQuery
+  const rows: ExtendedUniqueSearchResult[] = listings
   const [createListing] = useMarketCreateListingMutation()
   const issueAlert = useAlertHook()
 
@@ -393,8 +389,8 @@ export function DisplayStock({
           item_type: editingRow.item_type || "Other",
           price: editingRow.price || 1,
           quantity_available: editingRow.quantity_available || 1,
-          photos: gameItem?.image_url
-            ? [gameItem.image_url]
+          photos: gameItem?.photo
+            ? [gameItem.photo]
             : [
                 "https://media.starcitizen.tools/thumb/9/93/Placeholderv2.png/399px-Placeholderv2.png.webp",
               ],
@@ -403,17 +399,18 @@ export function DisplayStock({
           status: editingRow.status || "active",
           end_time: null,
           item_name: editingRow.item_name,
+          spectrum_id: currentOrg?.spectrum_id,
         }
 
-        await createListing({
-          body: listingData,
-          spectrum_id: currentOrg?.spectrum_id,
-        }).unwrap()
-
-        issueAlert({
-          message: t("ItemStock.created"),
-          severity: "success",
-        })
+        await createListing(listingData)
+          .unwrap()
+          .then((res) =>
+            issueAlert({
+              message: t("ItemStock.created"),
+              severity: "success",
+            }),
+          )
+          .catch(issueAlert)
 
         // Remove the new row from the editable rows
         setNewRows((prev) => prev.filter((r) => r.id !== id))
@@ -473,6 +470,7 @@ export function DisplayStock({
 
             return (
               <SelectGameItemStack
+                size={"small"}
                 item_type={currentItemType}
                 item_name={currentItemName}
                 onTypeChange={(newType) => {
@@ -512,14 +510,10 @@ export function DisplayStock({
             spacing={1}
             alignItems={"center"}
           >
-            <Avatar src={params.row.image_url} variant="rounded" />
+            <Avatar src={params.row.photo} variant="rounded" />
             <MaterialLink
               component={Link}
-              to={formatMarketUrl({
-                type: "unique",
-                details: { title: params.row.title },
-                listing: params.row,
-              })}
+              to={formatMarketUrl(params.row)}
               sx={{ fontWeight: "bold" }}
               underline="hover"
             >
@@ -630,13 +624,19 @@ export function DisplayStock({
           return "—" // New rows don't have offers
         }
 
+        const stats = listingStats?.find((l) => l.listing_id === params.row)
+
+        if (!stats) {
+          return null
+        }
+
         return (
           <Typography
             variant={"subtitle2"}
-            color={+params.row.offer_count === 0 ? "success" : "warning"}
+            color={+stats.offer_count === 0 ? "success" : "warning"}
           >
-            {(+params.row.order_count).toLocaleString(undefined)} /{" "}
-            {(+params.row.order_count + +params.row.offer_count).toLocaleString(
+            {(+stats.order_count).toLocaleString(undefined)} /{" "}
+            {(+stats.order_count + +stats.offer_count).toLocaleString(
               undefined,
             )}
           </Typography>
@@ -850,14 +850,22 @@ export function DisplayStock({
     React.useState<GridRowSelectionModel>({ type: "include", ids: new Set() })
 
   useEffect(() => {
-    setSelectedListings(
-      [...rowSelectionModel.ids]
-        .map(
-          (id) =>
-            listings.find((listing) => listing.listing.listing_id === id)!,
-        )
-        .filter((x) => x), // filter not null
-    )
+    const newSelectedListings = [...rowSelectionModel.ids]
+      .map((id) => listings.find((listing) => listing.listing_id === id)!)
+      .filter((x) => x)
+
+    setSelectedListings((prev) => {
+      const prevIds = prev
+        .map((l) => l.listing_id)
+        .sort()
+        .join(",")
+      const newIds = newSelectedListings
+        .map((l) => l.listing_id)
+        .sort()
+        .join(",")
+
+      return prevIds !== newIds ? newSelectedListings : prev
+    })
   }, [rowSelectionModel, listings])
 
   // Combine existing rows with new rows
@@ -875,7 +883,7 @@ export function DisplayStock({
       quantity_available: row.quantity_available,
       status: row.status,
       listing_id: row.id, // Use the new row ID as listing_id for consistency
-      image_url: "",
+      photo: "",
       expiration: "",
       order_count: 0,
       offer_count: 0,
@@ -941,10 +949,10 @@ export function MyItemStock() {
     const baseParams = {
       page_size: perPage,
       index: page,
-      quantityAvailable: searchState.quantityAvailable ?? 1,
+      quantityAvailable: searchState.quantityAvailable ?? 0,
       query: searchState.query || "",
       sort: searchState.sort || "activity",
-      statuses: searchState.statuses || undefined, // Include status filter from search state
+      statuses: "active,inactive", // Show both active and inactive listings for manage stock
     }
 
     // Add contractor or user filter
@@ -970,13 +978,23 @@ export function MyItemStock() {
     searchState,
   ])
 
-  const { data: searchResults, isLoading } =
-    useSearchMarketQuery(searchQueryParams)
+  const all = useSearchMarketListingsQuery(searchQueryParams)
+  const { data: searchResults, isLoading } = all
 
-  const filteredListings = useMemo(() => {
-    if (!searchResults?.listings) return []
-    return searchResults.listings.map(convertToLegacy) as UniqueListing[]
-  }, [searchResults])
+  const filteredListings = [...(searchResults?.listings || [])]
+
+  console.log("SEARCH RESULTS", all)
+  useEffect(() => {
+    console.log(
+      isLoading,
+      searchResults?.listings.length,
+      searchResults?.listings,
+    )
+  }, [searchResults, isLoading])
+
+  useEffect(() => {
+    console.log(isLoading, filteredListings.length, filteredListings)
+  }, [filteredListings, isLoading])
 
   const handleChangePage = useCallback((event: unknown, newPage: number) => {
     setPage(newPage)
@@ -993,7 +1011,7 @@ export function MyItemStock() {
   return (
     <>
       <DisplayStock
-        listings={filteredListings}
+        listings={filteredListings as ExtendedUniqueSearchResult[]}
         total={searchResults?.total}
         page={page}
         perPage={perPage}

@@ -16,7 +16,11 @@ import {
   Grid,
 } from "@mui/material"
 import { useTranslation } from "react-i18next"
-import { useUpdateTokenMutation, ApiToken, useGetContractorsForTokensQuery } from "../../store/tokens"
+import {
+  useUpdateTokenMutation,
+  ApiToken,
+  useGetContractorsForTokensQuery,
+} from "../../store/tokens"
 
 interface EditTokenDialogProps {
   open: boolean
@@ -104,11 +108,15 @@ const SCOPE_CATEGORIES = {
   },
 }
 
-export function EditTokenDialog({ open, onClose, token }: EditTokenDialogProps) {
+export function EditTokenDialog({
+  open,
+  onClose,
+  token,
+}: EditTokenDialogProps) {
   const { t } = useTranslation()
   const [updateToken, { isLoading }] = useUpdateTokenMutation()
   const { data: contractors } = useGetContractorsForTokensQuery()
-  
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -116,58 +124,64 @@ export function EditTokenDialog({ open, onClose, token }: EditTokenDialogProps) 
     contractor_spectrum_ids: [] as string[],
     expires_at: "",
   })
-  
+
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (token) {
       // Convert contractor_ids to spectrum_ids for display
-      const contractorSpectrumIds = token.contractor_ids?.length > 0 
-        ? contractors
-            ?.filter(c => token.contractor_ids?.includes(c.spectrum_id))
-            .map(c => c.spectrum_id) || []
-        : []
+      const contractorSpectrumIds =
+        token.contractor_ids?.length > 0
+          ? contractors
+              ?.filter((c) => token.contractor_ids?.includes(c.spectrum_id))
+              .map((c) => c.spectrum_id) || []
+          : []
 
       setFormData({
         name: token.name,
         description: token.description || "",
         scopes: token.scopes,
         contractor_spectrum_ids: contractorSpectrumIds,
-        expires_at: token.expires_at ? new Date(token.expires_at).toISOString().slice(0, 16) : "",
+        expires_at: token.expires_at
+          ? new Date(token.expires_at).toISOString().slice(0, 16)
+          : "",
       })
     }
   }, [token, contractors])
 
   const handleScopeChange = (scope: string, checked: boolean) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      scopes: checked 
+      scopes: checked
         ? [...prev.scopes, scope]
-        : prev.scopes.filter(s => s !== scope)
+        : prev.scopes.filter((s) => s !== scope),
     }))
   }
 
   const handleContractorChange = (spectrumId: string, checked: boolean) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      contractor_spectrum_ids: checked 
+      contractor_spectrum_ids: checked
         ? [...prev.contractor_spectrum_ids, spectrumId]
-        : prev.contractor_spectrum_ids.filter(id => id !== spectrumId)
+        : prev.contractor_spectrum_ids.filter((id) => id !== spectrumId),
     }))
   }
 
   const handleSubmit = async () => {
     if (!token) return
-    
+
     try {
       setError(null)
-      
+
       // Convert spectrum IDs to contractor IDs
-      const contractorIds = formData.contractor_spectrum_ids.length > 0 
-        ? contractors
-            ?.filter(c => formData.contractor_spectrum_ids.includes(c.spectrum_id))
-            .map(c => c.spectrum_id) || []
-        : []
+      const contractorIds =
+        formData.contractor_spectrum_ids.length > 0
+          ? contractors
+              ?.filter((c) =>
+                formData.contractor_spectrum_ids.includes(c.spectrum_id),
+              )
+              .map((c) => c.spectrum_id) || []
+          : []
 
       await updateToken({
         tokenId: token.id,
@@ -179,7 +193,7 @@ export function EditTokenDialog({ open, onClose, token }: EditTokenDialogProps) 
           expires_at: formData.expires_at || undefined,
         },
       }).unwrap()
-      
+
       onClose()
     } catch (err: any) {
       setError(err.data?.error || "Failed to update token")
@@ -204,104 +218,126 @@ export function EditTokenDialog({ open, onClose, token }: EditTokenDialogProps) 
             {error}
           </Alert>
         )}
-        
+
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <TextField
               fullWidth
               label="Token Name"
               value={formData.name}
-              onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, name: e.target.value }))
+              }
               required
               helperText="A descriptive name for this token"
             />
           </Grid>
-          
+
           <Grid item xs={12}>
             <TextField
               fullWidth
               label="Description (Optional)"
               value={formData.description}
-              onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  description: e.target.value,
+                }))
+              }
               multiline
               rows={2}
               helperText="Optional description of what this token will be used for"
             />
           </Grid>
-          
+
           <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>
               Permissions (Scopes)
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Select the permissions this token should have. Be conservative and only grant what's necessary.
+              Select the permissions this token should have. Be conservative and
+              only grant what's necessary.
             </Typography>
-            
-            {Object.entries(SCOPE_CATEGORIES).map(([category, { label, scopes }]) => (
-              <Box key={category} sx={{ mb: 3 }}>
-                <Typography variant="subtitle1" gutterBottom>
-                  {label}
-                </Typography>
-                <FormGroup>
-                  {scopes.map(({ value, label: scopeLabel }) => (
-                    <FormControlLabel
-                      key={value}
-                      control={
-                        <Checkbox
-                          checked={formData.scopes.includes(value)}
-                          onChange={(e) => handleScopeChange(value, e.target.checked)}
-                        />
-                      }
-                      label={scopeLabel}
-                    />
-                  ))}
-                </FormGroup>
-                <Divider sx={{ mt: 1 }} />
-              </Box>
-            ))}
+
+            {Object.entries(SCOPE_CATEGORIES).map(
+              ([category, { label, scopes }]) => (
+                <Box key={category} sx={{ mb: 3 }}>
+                  <Typography variant="subtitle1" gutterBottom>
+                    {label}
+                  </Typography>
+                  <FormGroup>
+                    {scopes.map(({ value, label: scopeLabel }) => (
+                      <FormControlLabel
+                        key={value}
+                        control={
+                          <Checkbox
+                            checked={formData.scopes.includes(value)}
+                            onChange={(e) =>
+                              handleScopeChange(value, e.target.checked)
+                            }
+                          />
+                        }
+                        label={scopeLabel}
+                      />
+                    ))}
+                  </FormGroup>
+                  <Divider sx={{ mt: 1 }} />
+                </Box>
+              ),
+            )}
           </Grid>
-          
+
           <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>
               Contractor Access
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Restrict this token to specific contractors. Leave empty for access to all contractors.
+              Restrict this token to specific contractors. Leave empty for
+              access to all contractors.
             </Typography>
-            
-                {contractors && contractors.length > 0 ? (
-                  <FormGroup>
-                    {contractors.map((contractor) => (
-                      <FormControlLabel
-                        key={contractor.spectrum_id}
-                        control={
-                          <Checkbox
-                            checked={formData.contractor_spectrum_ids.includes(contractor.spectrum_id)}
-                            onChange={(e) => handleContractorChange(contractor.spectrum_id, e.target.checked)}
-                          />
+
+            {contractors && contractors.length > 0 ? (
+              <FormGroup>
+                {contractors.map((contractor) => (
+                  <FormControlLabel
+                    key={contractor.spectrum_id}
+                    control={
+                      <Checkbox
+                        checked={formData.contractor_spectrum_ids.includes(
+                          contractor.spectrum_id,
+                        )}
+                        onChange={(e) =>
+                          handleContractorChange(
+                            contractor.spectrum_id,
+                            e.target.checked,
+                          )
                         }
-                        label={`${contractor.name} (${contractor.spectrum_id})`}
                       />
-                    ))}
-                  </FormGroup>
-                ) : (
-                  <Typography variant="body2" color="text.secondary">
-                    No contractors available
-                  </Typography>
-                )}
+                    }
+                    label={`${contractor.name} (${contractor.spectrum_id})`}
+                  />
+                ))}
+              </FormGroup>
+            ) : (
+              <Typography variant="body2" color="text.secondary">
+                No contractors available
+              </Typography>
+            )}
           </Grid>
-          
+
           <Grid item xs={12}>
             <TextField
               fullWidth
               label="Expiration Date (Optional)"
               type="datetime-local"
               value={formData.expires_at}
-              onChange={(e) => setFormData(prev => ({ ...prev, expires_at: e.target.value }))}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, expires_at: e.target.value }))
+              }
               InputLabelProps={{
                 shrink: true,
               }}
-                  helperText="Leave empty for no expiration. Time is interpreted as UTC."
+              helperText="Leave empty for no expiration. Time is interpreted as UTC."
             />
           </Grid>
         </Grid>

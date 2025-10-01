@@ -200,7 +200,7 @@ export function MarketAggregateView() {
                   if (arg) {
                     await updateAggregate({
                       game_item_id: details.game_item_id!,
-                      body: { photo: arg },
+                      data: { photo: arg },
                     })
                   }
                 }}
@@ -627,48 +627,33 @@ export function BuyOrderRow(props: {
   const { data: profile } = useGetUserProfileQuery()
 
   const callback = useCallback(async () => {
-    const res: { data?: Order; error?: any } = await fulfillBuyOrder({
+    fulfillBuyOrder({
       buy_order_id: buy_order.buy_order_id,
       contractor_spectrum_id: currentOrg?.spectrum_id,
     })
+      .unwrap()
+      .then((order: Order) => {
+        issueAlert({
+          message: t("MarketAggregateView.submitted"),
+          severity: "success",
+        })
 
-    if (res?.data && !res?.error) {
-      issueAlert({
-        message: t("MarketAggregateView.submitted"),
-        severity: "success",
+        navigate(`/contract/${order.order_id}`)
       })
-
-      navigate(`/contract/${res.data.order_id}`)
-    } else {
-      issueAlert({
-        message:
-          t("MarketAggregateView.failedSubmit") +
-          ` ${res.error?.error || res.error?.data?.error || res.error}`,
-        severity: "error",
-      })
-    }
+      .catch((err) => issueAlert(err))
 
     return false
   }, [buy_order, t, issueAlert, fulfillBuyOrder, currentOrg, navigate])
 
   const cancelCallback = useCallback(async () => {
-    const res: { data?: Order; error?: any } = await cancelBuyOrder(
-      buy_order.buy_order_id,
-    )
-
-    if (res?.data && !res?.error) {
-      issueAlert({
-        message: t("MarketAggregateView.cancelled"),
-        severity: "success",
+    cancelBuyOrder(buy_order.buy_order_id)
+      .then(() => {
+        issueAlert({
+          message: t("MarketAggregateView.cancelled"),
+          severity: "success",
+        })
       })
-    } else {
-      issueAlert({
-        message:
-          t("MarketAggregateView.failedSubmit") +
-          ` ${res.error?.error || res.error?.data?.error || res.error}`,
-        severity: "error",
-      })
-    }
+      .catch(issueAlert)
 
     return false
   }, [buy_order, t, issueAlert, cancelBuyOrder])

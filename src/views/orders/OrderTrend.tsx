@@ -61,20 +61,22 @@ export function OrderTrendFromMetrics(props: { data: ContractorOrderData }) {
   const { trend_data } = data.metrics
 
   // Convert trend data to chart format
-  const dailyOrdersData = trend_data.daily_orders.map(item => ({
+  const dailyOrdersData = trend_data.daily_orders.map((item) => ({
     x: item.date,
-    y: item.count
+    y: item.count,
   }))
 
-  const dailyValueData = trend_data.daily_value.map(item => ({
+  const dailyValueData = trend_data.daily_value.map((item) => ({
     x: item.date,
-    y: item.value
+    y: item.value,
   }))
 
-  const statusTrendsData = Object.entries(trend_data.status_trends).map(([status, data]) => ({
-    name: status,
-    data: data.map(item => ({ x: item.date, y: item.count }))
-  }))
+  const statusTrendsData = Object.entries(trend_data.status_trends).map(
+    ([status, data]) => ({
+      name: status,
+      data: data.map((item) => ({ x: item.date, y: item.count })),
+    }),
+  )
 
   return (
     <>
@@ -422,10 +424,10 @@ export function OrderTrendFromOrders(props: { orders: TrendOrder[] }) {
 export function OrgOrderTrend() {
   const [contractor] = useCurrentOrg()
   const { data: orderData } = useGetContractorOrderDataQuery(
-    { 
+    {
       spectrum_id: contractor?.spectrum_id!,
       include_trends: true,
-      assigned_only: false 
+      assigned_only: false,
     },
     {
       skip: !contractor?.spectrum_id,
@@ -445,10 +447,10 @@ export function UserOrderTrend() {
   const [contractor] = useCurrentOrg()
 
   const { data: orderData } = useGetContractorOrderDataQuery(
-    { 
+    {
       spectrum_id: contractor?.spectrum_id!,
       include_trends: true,
-      assigned_only: true 
+      assigned_only: true,
     },
     {
       skip: !contractor?.spectrum_id,
@@ -467,13 +469,13 @@ export function UserOrderTrend() {
   // Fallback to original implementation with recent orders
   const trendOrders = [
     ...(orderData?.recent_orders || []),
-    ...(allOrders || []).map(order => ({
+    ...(allOrders || []).map((order) => ({
       order_id: order.order_id,
       timestamp: order.timestamp,
       status: order.status,
       cost: parseFloat(order.cost),
-      title: order.title
-    }))
+      title: order.title,
+    })),
   ]
   return <OrderTrendFromOrders orders={trendOrders} />
 }

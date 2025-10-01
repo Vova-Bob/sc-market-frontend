@@ -29,6 +29,7 @@ import { useCurrentMarketListing } from "../../hooks/market/CurrentMarketItem"
 import {
   useMarketUpdateListingMutation,
   useMarketUploadListingPhotosMutation,
+  validatePhotoUploadParams,
 } from "../../store/market"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { MarkdownEditor } from "../../components/markdown/Markdown"
@@ -119,8 +120,8 @@ export function MarketListingEditView() {
   const updateListingCallback = useCallback(
     (body: MarketListingUpdateBody) => {
       return updateListing({
-        listing_id: listing.listing.listing_id,
-        body,
+        id: listing.listing.listing_id,
+        data: body,
       })
         .unwrap()
         .then(() => {
@@ -202,9 +203,21 @@ export function MarketListingEditView() {
             },
           )
 
+          const uploadParams = validatePhotoUploadParams(
+            listing.listing.listing_id,
+            pendingFiles,
+          )
+          if (uploadParams.status === "invalid") {
+            issueAlert({
+              message: uploadParams.error,
+              severity: "error",
+            })
+            return
+          }
+
           uploadPhotos({
-            listing_id: listing.listing.listing_id,
-            photos: pendingFiles,
+            listingId: uploadParams.listingId,
+            photos: uploadParams.photos,
           })
             .unwrap()
             .then((uploadResult) => {

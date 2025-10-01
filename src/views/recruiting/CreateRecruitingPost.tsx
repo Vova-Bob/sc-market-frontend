@@ -13,6 +13,7 @@ import { RecruitingPostView } from "./RecruitingPostView"
 import { UnderlineLink } from "../../components/typography/UnderlineLink"
 import { MarkdownEditor } from "../../components/markdown/Markdown"
 import { useTranslation } from "react-i18next"
+import { useNavigate } from "react-router-dom"
 
 export interface RecruitingPostState {
   title: string
@@ -46,43 +47,35 @@ export function CreateRecruitingPost(props: { post?: RecruitingPost }) {
     updatePost, // This is the mutation trigger
   ] = useRecruitingUpdatePostMutation()
 
+  const navigate = useNavigate()
+
   const submitPost = useCallback(
     async (event: any) => {
-      // event.preventDefault();
-      let res: { data?: any; error?: any }
-
+      let request
       if (!post) {
-        res = await createPost({
+        request = createPost({
           ...state,
           contractor: contractor!.spectrum_id,
         })
       } else {
-        res = await updatePost({
+        request = updatePost({
           body: state,
           post_id: post.post_id,
         })
       }
 
-      if (res?.data && !res?.error) {
-        setState({
-          title: "",
-          body: "",
-        })
+      request
+        .unwrap()
+        .then((res) => {
+          issueAlert({
+            message: t("recruiting_post.alert.submitted"),
+            severity: "success",
+          })
 
-        issueAlert({
-          message: t("recruiting_post.alert.submitted"),
-          severity: "success",
+          navigate(`/recruiting/post/${res.post_id}`)
         })
+        .catch(issueAlert)
 
-        window.location.href = `/recruiting/post/${res.data.post_id}`
-      } else {
-        issueAlert({
-          message: `${t("recruiting_post.alert.failed")} ${
-            res.error?.error || res.error?.data?.error || res.error
-          }`,
-          severity: "error",
-        })
-      }
       return false
     },
     [contractor, createPost, post, issueAlert, state, updatePost, t],

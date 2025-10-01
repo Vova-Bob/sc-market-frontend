@@ -84,8 +84,8 @@ export function MarketEditTemplate(props: { org?: boolean }) {
 
       {/* Order Settings Section */}
       <Grid item xs={12}>
-        <OrderSettings 
-          entityType={props.org ? "contractor" : "user"} 
+        <OrderSettings
+          entityType={props.org ? "contractor" : "user"}
           entityId={props.org ? contractor?.spectrum_id : undefined}
         />
       </Grid>

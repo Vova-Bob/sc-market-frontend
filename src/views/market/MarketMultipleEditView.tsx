@@ -10,6 +10,7 @@ import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
 import {
   useMarketGetMyListingsQuery,
   useMarketUpdateMultipleListingMutation,
+  useSearchMarketListingsQuery,
 } from "../../store/market"
 import { useAlertHook } from "../../hooks/alert/AlertHook"
 import { MarkdownEditor } from "../../components/markdown/Markdown"
@@ -61,22 +62,15 @@ export function MarketMultipleEditView() {
 
   const updateMarketListing = useCallback(
     async (event: any) => {
-      const res: { data?: any; error?: any } = await updateListing(state)
-
-      if (res?.data && !res?.error) {
-        issueAlert({
-          message: t("MarketMultipleEditView.submitted"),
-          severity: "success",
-        })
-      } else {
-        issueAlert({
-          message: t("MarketMultipleEditView.failedSubmit", {
-            error:
-              res.error?.error || res.error?.data?.error || res.error || "",
+      updateListing(state)
+        .unwrap()
+        .then(() =>
+          issueAlert({
+            message: t("MarketMultipleEditView.submitted"),
+            severity: "success",
           }),
-          severity: "error",
-        })
-      }
+        )
+        .catch(issueAlert)
 
       return false
     },
@@ -90,21 +84,13 @@ export function MarketMultipleEditView() {
     ],
   )
 
-  const { data: currentListings } = useMarketGetMyListingsQuery(
-    currentOrg?.spectrum_id,
-  )
-  const listingOptions = useMemo(
-    () =>
-      (currentListings || []).filter(
-        (l) =>
-          ["unique", "multiple_listing"].includes(l.type) &&
-          ["multiple", "sale"].includes(
-            (l as UniqueListing | MarketMultipleListingComposite).listing
-              .sale_type,
-          ),
-      ) as (UniqueListing | MarketMultipleListingComposite)[],
-    [currentListings],
-  )
+  const { data: currentListingsUnique } = useSearchMarketListingsQuery({
+    contractor_seller: currentOrg?.spectrum_id,
+    page_size: 96,
+    listing_type: "unique",
+    sale_type: "sale",
+  })
+  const listingOptions = currentListingsUnique?.listings || []
 
   return (
     // <FormControl component={Grid} item xs={12} container spacing={2}>
@@ -179,7 +165,7 @@ export function MarketMultipleEditView() {
               // multiple
               disablePortal
               options={listingOptions}
-              getOptionLabel={(option) => option.details.title}
+              getOptionLabel={(option) => option.title}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -190,16 +176,16 @@ export function MarketMultipleEditView() {
               onChange={(event, value) =>
                 setState((s) => {
                   if (value) {
-                    if (state.listings!.includes(value.listing.listing_id)) {
+                    if (state.listings!.includes(value.listing_id)) {
                       return {
                         ...s,
-                        default_listing_id: value.listing.listing_id,
+                        default_listing_id: value.listing_id,
                       }
                     } else {
-                      state.listings!.push(value.listing.listing_id)
+                      state.listings!.push(value.listing_id)
                       return {
                         ...s,
-                        default_listing_id: value.listing.listing_id,
+                        default_listing_id: value.listing_id,
                         listings: s.listings,
                       }
                     }
@@ -210,7 +196,7 @@ export function MarketMultipleEditView() {
               }
               value={
                 listingOptions.find(
-                  (l) => l.listing.listing_id === state.default_listing_id,
+                  (l) => l.listing_id === state.default_listing_id,
                 ) || null
               }
               color={"secondary"}
@@ -221,7 +207,7 @@ export function MarketMultipleEditView() {
               multiple
               disablePortal
               options={listingOptions}
-              getOptionLabel={(option) => option.details.title}
+              getOptionLabel={(option) => option.title}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -231,14 +217,11 @@ export function MarketMultipleEditView() {
               onChange={(event, value) =>
                 setState((s) => ({
                   ...s,
-                  listings: value.map((l) => l.listing.listing_id),
+                  listings: value.map((l) => l.listing_id),
                 }))
               }
               value={state.listings
-                .map(
-                  (r) =>
-                    listingOptions.find((l) => l.listing.listing_id === r)!,
-                )
+                .map((r) => listingOptions.find((l) => l.listing_id === r)!)
                 .filter((l) => l)}
               color={"secondary"}
             />

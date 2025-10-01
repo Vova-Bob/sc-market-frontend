@@ -58,24 +58,19 @@ import {
   MarketAggregateListing,
   MarketListing,
   MarketListingType,
-  MarketMultiple,
   SellerListingType,
   UniqueListing,
 } from "../../datatypes/MarketListing"
+import { useMarketSearch } from "../../hooks/market/MarketSearch"
 import {
-  MarketSearchState,
-  useMarketSearch,
-} from "../../hooks/market/MarketSearch"
-import {
-  MarketSearchResult,
-  useMarketGetPublicQuery,
-  useMarketGetAllListingsQuery,
-  useMarketGetBuyOrderListingsQuery,
-  useMarketGetListingByUserQuery,
-  useMarketGetMyListingsQuery,
-  useMarketRefreshListingMutation,
+  MarketListingSearchResult,
+  useGetBuyOrderListingsQuery,
+  useRefreshMarketListingMutation,
+  useSearchMarketListingsQuery,
+  ExtendedUniqueSearchResult,
+  ExtendedMultipleSearchResult,
+  ExtendedAggregateSearchResult,
   useSearchMarketQuery,
-  MarketSearchQuery,
 } from "../../store/market"
 import { Link } from "react-router-dom"
 import { useCurrentOrg } from "../../hooks/login/CurrentOrg"
@@ -86,20 +81,13 @@ import { ExtendedTheme } from "../../hooks/styles/Theme"
 import { CURRENT_CUSTOM_ORG } from "../../hooks/contractor/CustomDomain"
 import { RecentListingsSkeleton } from "../../pages/home/LandingPage"
 import { getRelativeTime } from "../../util/time"
-import { ListingSellerRating } from "../../components/rating/ListingRating"
-import { Rating } from "../../datatypes/Contractor"
+import { MarketListingRating } from "../../components/rating/ListingRating"
 import { useGetUserProfileQuery } from "../../store/profile"
 import { RefreshRounded } from "@mui/icons-material"
 import moment from "moment/moment"
 import { Stack } from "@mui/system"
 import { formatMarketMultipleUrl, formatMarketUrl } from "../../util/urls"
 import { FALLBACK_IMAGE_URL } from "../../util/constants" // const listingIcons = {
-
-// const listingIcons = {
-//     "auction": <GavelIcon/>,
-//     "sale": <PaidIcon/>,
-//     "service": <AccountBoxIcon/>,
-// }
 
 export function ListingSkeleton(props: { index: number }) {
   const { index } = props
@@ -131,9 +119,11 @@ export function ListingSkeleton(props: { index: number }) {
   )
 }
 
-export function ListingRefreshButton(props: { listing: MarketListing }) {
+export function ListingRefreshButton(props: {
+  listing: ExtendedUniqueSearchResult
+}) {
   const { listing } = props
-  const [refresh] = useMarketRefreshListingMutation()
+  const [refresh] = useRefreshMarketListingMutation()
 
   return (
     <Fab
@@ -152,31 +142,32 @@ export function ListingRefreshButton(props: { listing: MarketListing }) {
 }
 
 export function ItemListingBase(props: {
-  listing: UniqueListing
+  listing: ExtendedUniqueSearchResult
   index: number
 }) {
   const { t, i18n } = useTranslation()
-  const { listing: complete, index } = props
-  const { details, listing, auction_details, photos } = complete
+  const { listing, index } = props
   const { user_seller, contractor_seller } = listing
   const theme = useTheme<ExtendedTheme>()
   const [timeDisplay, setTimeDisplay] = useState(
-    auction_details ? getRelativeTime(new Date(auction_details.end_time)) : "",
+    listing.auction_end_time
+      ? getRelativeTime(new Date(listing.auction_end_time))
+      : "",
   )
 
   useEffect(() => {
-    if (auction_details) {
+    if (listing.auction_end_time) {
       const interval = setInterval(
         () =>
-          auction_details &&
-          setTimeDisplay(getRelativeTime(new Date(auction_details.end_time))),
+          listing.auction_end_time &&
+          setTimeDisplay(getRelativeTime(new Date(listing.auction_end_time))),
         1000,
       )
       return () => {
         clearInterval(interval)
       }
     }
-  }, [auction_details, listing])
+  }, [listing])
   const ending = useMemo(
     () =>
       timeDisplay.endsWith("seconds") ||
@@ -189,16 +180,15 @@ export function ItemListingBase(props: {
   const [currentOrg] = useCurrentOrg()
   const showExpiration = useMemo(
     () =>
-      (listing.user_seller?.username === profile?.username ||
-        (currentOrg &&
-          currentOrg.spectrum_id === listing.contractor_seller?.spectrum_id)) &&
+      (listing.user_seller === profile?.username ||
+        (currentOrg && currentOrg.spectrum_id === listing.contractor_seller)) &&
       listing.expiration &&
       profile,
     [
       currentOrg,
-      listing.contractor_seller?.spectrum_id,
+      listing.contractor_seller,
       listing.expiration,
-      listing.user_seller?.username,
+      listing.user_seller,
       profile,
     ],
   )
@@ -212,7 +202,7 @@ export function ItemListingBase(props: {
       }}
     >
       <Link
-        to={formatMarketUrl(complete)}
+        to={formatMarketUrl(listing)}
         style={{ textDecoration: "none", color: "inherit" }}
       >
         <CardActionArea sx={{ borderRadius: 2 }}>
@@ -257,7 +247,7 @@ export function ItemListingBase(props: {
             <CardMedia
               component="img"
               loading="lazy"
-              image={photos[0] || FALLBACK_IMAGE_URL}
+              image={listing.photo || FALLBACK_IMAGE_URL}
               onError={({ currentTarget }) => {
                 currentTarget.onerror = null
                 currentTarget.src = FALLBACK_IMAGE_URL
@@ -273,7 +263,7 @@ export function ItemListingBase(props: {
                 // maxHeight: '100%',
                 overflow: "hidden",
               }}
-              alt={`Image of ${details.title}`}
+              alt={`Image of ${listing.title}`}
             />
             <Box
               sx={{
@@ -324,7 +314,7 @@ export function ItemListingBase(props: {
                     WebkitLineClamp: "2",
                   }}
                 >
-                  {details.title} ({details.item_type})
+                  {listing.title} ({listing.item_type})
                 </span>{" "}
               </Typography>
               <Stack
@@ -344,8 +334,8 @@ export function ItemListingBase(props: {
                   variant={"subtitle2"}
                   to={
                     user_seller
-                      ? `/user/${user_seller?.username}`
-                      : `/contractor/${contractor_seller?.spectrum_id}`
+                      ? `/user/${user_seller}`
+                      : `/contractor/${contractor_seller}`
                   }
                   sx={{
                     overflowX: "hidden",
@@ -353,17 +343,22 @@ export function ItemListingBase(props: {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {user_seller?.username || contractor_seller?.spectrum_id}{" "}
+                  {user_seller || contractor_seller}{" "}
                 </UnderlineLink>
                 <Typography variant={"subtitle2"} sx={{ flexShrink: "0" }}>
-                  <ListingSellerRating
-                    user={user_seller}
-                    contractor={contractor_seller}
+                  <MarketListingRating
+                    avg_rating={listing.avg_rating}
+                    rating_count={listing.rating_count}
+                    total_rating={listing.total_rating}
+                    rating_streak={listing.rating_streak}
+                    total_orders={listing.total_orders}
+                    total_assignments={listing.total_assignments}
+                    response_rate={listing.response_rate}
                   />
                 </Typography>
               </Stack>
 
-              {auction_details && (
+              {listing.auction_end_time && (
                 <Typography display={"block"}>
                   <Typography
                     display={"inline"}
@@ -406,7 +401,10 @@ export function ItemListingBase(props: {
   )
 }
 
-export function ItemListing(props: { listing: UniqueListing; index: number }) {
+export function ItemListing(props: {
+  listing: ExtendedUniqueSearchResult
+  index: number
+}) {
   const { listing, index } = props
   const marketSidebarOpen = useMarketSidebarExp()
 
@@ -426,7 +424,7 @@ export function ItemListing(props: { listing: UniqueListing; index: number }) {
 }
 
 export function AggregateListing(props: {
-  aggregate: MarketAggregate
+  aggregate: ExtendedAggregateSearchResult
   index: number
 }) {
   const { aggregate, index } = props
@@ -469,30 +467,13 @@ export function AggregateBuyOrderListing(props: {
 }
 
 export function AggregateListingBase(props: {
-  aggregate: MarketAggregate
+  aggregate: ExtendedAggregateSearchResult
   index: number
 }) {
   const { t } = useTranslation()
   const { aggregate, index } = props
-  const { details, listings, photos } = aggregate
   const theme = useTheme<ExtendedTheme>()
-  const minimum_price = useMemo(
-    () =>
-      aggregate.listings.length
-        ? aggregate.listings.reduce((prev, curr) =>
-            prev.price < curr.price || !curr.quantity_available ? prev : curr,
-          ).price
-        : 0,
-    [aggregate.listings],
-  )
-  const sum_available = useMemo(
-    () =>
-      aggregate.listings.reduce(
-        (prev, curr) => prev + curr.quantity_available,
-        0,
-      ),
-    [aggregate.listings],
-  )
+  const { minimum_price, photo, quantity_available, title } = aggregate
 
   return (
     <Fade
@@ -503,7 +484,7 @@ export function AggregateListingBase(props: {
       }}
     >
       <Link
-        to={`/market/aggregate/${aggregate.details.game_item_id}`}
+        to={`/market/aggregate/${aggregate.game_item_id}`}
         style={{ textDecoration: "none", color: "inherit" }}
       >
         <CardActionArea
@@ -521,7 +502,7 @@ export function AggregateListingBase(props: {
             <CardMedia
               component="img"
               loading="lazy"
-              image={photos[0] || FALLBACK_IMAGE_URL}
+              image={photo || FALLBACK_IMAGE_URL}
               onError={({ currentTarget }) => {
                 currentTarget.onerror = null
                 currentTarget.src = FALLBACK_IMAGE_URL
@@ -537,7 +518,7 @@ export function AggregateListingBase(props: {
                 // maxHeight: '100%',
                 overflow: "hidden",
               }}
-              alt={`Image of ${details.title}`}
+              alt={`Image of ${title}`}
             />
             <Box
               sx={{
@@ -592,7 +573,7 @@ export function AggregateListingBase(props: {
                       WebkitLineClamp: "2",
                     }}
                   >
-                    {details.title} ({details.item_type})
+                    {aggregate.title} ({aggregate.item_type})
                   </span>{" "}
                 </Typography>
                 <Typography
@@ -600,7 +581,7 @@ export function AggregateListingBase(props: {
                   color={"text.primary"}
                   variant={"subtitle2"}
                 >
-                  {sum_available.toLocaleString(undefined)}{" "}
+                  {quantity_available.toLocaleString(undefined)}{" "}
                   {t("market.total_available")}
                 </Typography>
               </CardContent>
@@ -804,7 +785,7 @@ export function AggregateBuyOrderListingBase(props: {
 }
 
 export function MultipleListing(props: {
-  multiple: MarketMultiple
+  multiple: ExtendedMultipleSearchResult
   index: number
 }) {
   const { multiple, index } = props
@@ -826,30 +807,13 @@ export function MultipleListing(props: {
 }
 
 export function MultipleListingBase(props: {
-  multiple: MarketMultiple
+  multiple: ExtendedMultipleSearchResult
   index: number
 }) {
   const { t } = useTranslation()
   const { multiple, index } = props
-  const { details, listings, photos } = multiple
+  const { photo, title } = multiple
   const theme = useTheme<ExtendedTheme>()
-  const minimum_price = useMemo(
-    () =>
-      multiple.listings.length
-        ? multiple.listings.reduce((prev, curr) =>
-            prev.listing.price < curr.listing.price ? prev : curr,
-          ).listing.price
-        : 0,
-    [multiple.listings],
-  )
-  const sum_available = useMemo(
-    () =>
-      multiple.listings.reduce(
-        (prev, curr) => prev + curr.listing.quantity_available,
-        0,
-      ),
-    [multiple.listings],
-  )
 
   return (
     <Fade
@@ -878,7 +842,7 @@ export function MultipleListingBase(props: {
             <CardMedia
               component="img"
               loading="lazy"
-              image={photos[0] || FALLBACK_IMAGE_URL}
+              image={photo || FALLBACK_IMAGE_URL}
               onError={({ currentTarget }) => {
                 currentTarget.onerror = null
                 currentTarget.src = FALLBACK_IMAGE_URL
@@ -894,7 +858,7 @@ export function MultipleListingBase(props: {
                 // maxHeight: '100%',
                 overflow: "hidden",
               }}
-              alt={`Image of ${details.title}`}
+              alt={`Image of ${title}`}
             />
             <Box
               sx={{
@@ -932,7 +896,7 @@ export function MultipleListingBase(props: {
                   fontWeight={"bold"}
                 >
                   {t("market.starting_at", {
-                    price: minimum_price.toLocaleString(undefined),
+                    price: multiple.minimum_price.toLocaleString(undefined),
                   })}{" "}
                   aUEC
                 </Typography>
@@ -952,7 +916,7 @@ export function MultipleListingBase(props: {
                       WebkitLineClamp: "2",
                     }}
                   >
-                    {details.title} ({details.item_type})
+                    {title} ({multiple.item_type})
                   </span>{" "}
                 </Typography>
                 <Typography
@@ -960,7 +924,7 @@ export function MultipleListingBase(props: {
                   color={"text.primary"}
                   variant={"subtitle2"}
                 >
-                  {sum_available.toLocaleString(undefined)}{" "}
+                  {multiple.quantity_available.toLocaleString(undefined)}{" "}
                   {t("market.total_available")}
                 </Typography>
               </CardContent>
@@ -1029,231 +993,8 @@ export function getCompareTimestamp(
   return +new Date()
 }
 
-export function getListingRating(
-  listing: MarketAggregateListing | MarketListing,
-): Rating {
-  return listing.contractor_seller?.rating || listing.user_seller?.rating!
-}
-
-export function getCompareRating(
-  listing: MarketListingType | SellerListingType,
-): number {
-  const market_listing = listing as UniqueListing
-  if (
-    ["unique", "multiple_listing", "aggregate_listing"].includes(listing.type)
-  ) {
-    const r = getListingRating(market_listing.listing)
-    return r.avg_rating * r.rating_count
-  } else if (listing.type === "multiple") {
-    const multiple = listing as MarketMultiple
-    if (!multiple.listings.length) {
-      return 0
-    }
-
-    const r =
-      multiple.listings[0].listing.contractor_seller?.rating ||
-      multiple.listings[0].listing.user_seller?.rating!
-    return r.avg_rating * r.rating_count
-  }
-
-  const market_aggregate = listing as MarketAggregate
-  return market_aggregate.listings.reduce((prev, curr) => {
-    const r = getListingRating(curr)
-    const value = r.avg_rating * r.rating_count
-    return prev > value ? prev : value
-  }, 0)
-}
-
-export function getCompareQuantity(
-  listing: MarketListingType | SellerListingType,
-) {
-  const market_listing = listing as UniqueListing
-  if (market_listing.listing?.sale_type) {
-    return market_listing.listing.quantity_available
-  }
-
-  const market_aggregate = listing as MarketAggregate
-  return market_aggregate.listings.reduce(
-    (prev, curr) => prev + curr.quantity_available,
-    0,
-  )
-}
-
-export function filterListings<T extends MarketListingType | SellerListingType>(
-  listings: T[],
-  searchState: MarketSearchState,
-): T[] {
-  return listings
-    .filter((listing) => {
-      const market_listing = listing as UniqueListing
-      if (
-        market_listing.type === "unique" ||
-        market_listing.type === "aggregate_composite" ||
-        market_listing.type === "multiple_listing"
-      ) {
-        // Normal listing or aggregate composite
-        return (
-          (!searchState.statuses ||
-            searchState.statuses.split(',').includes(market_listing.listing.status)) &&
-          (!searchState.sale_type ||
-            searchState.sale_type === "any" ||
-            (searchState.sale_type !== "aggregate" &&
-              searchState.sale_type === market_listing.listing.sale_type)) &&
-          (!searchState.item_type ||
-            searchState.item_type === market_listing.details.item_type) &&
-          (!searchState.query ||
-            listing.details.title
-              .toLowerCase()
-              .includes(searchState.query.toLowerCase()) ||
-            market_listing.details.description
-              .toLowerCase()
-              .includes(searchState.query.toLowerCase())) &&
-          (!searchState.quantityAvailable ||
-            market_listing.listing.quantity_available >=
-              searchState.quantityAvailable) &&
-          (!searchState.maxCost ||
-            market_listing.listing.price <= searchState.maxCost) &&
-          (!searchState.minCost ||
-            market_listing.listing.price >= searchState.minCost)
-        )
-      }
-
-      if (market_listing.type === "multiple") {
-        const multiple = listing as MarketMultiple
-
-        const min = getComparePrice(multiple)
-
-        if (searchState.query) {
-          let found =
-            multiple.details.title
-              .toLowerCase()
-              .includes(searchState.query.toLowerCase()) ||
-            multiple.details.description
-              .toLowerCase()
-              .includes(searchState.query.toLowerCase())
-
-          if (!found) {
-            found = !!multiple.listings.find(
-              (l) =>
-                l.details.title
-                  .toLowerCase()
-                  .includes(searchState.query.toLowerCase()) ||
-                l.details.description
-                  .toLowerCase()
-                  .includes(searchState.query.toLowerCase()),
-            )
-
-            if (!found) {
-              return false
-            }
-          }
-        }
-
-        return (
-          (!searchState.item_type ||
-            searchState.item_type === multiple.details.item_type) &&
-          (!searchState.quantityAvailable ||
-            !!multiple.listings.find(
-              (l) =>
-                l.listing.quantity_available >= searchState.quantityAvailable!,
-            )) &&
-          (!searchState.maxCost || min <= searchState.maxCost) &&
-          (!searchState.minCost || min >= searchState.minCost) &&
-          (!searchState.sale_type ||
-            ["any", "sale", "multiple"].includes(searchState.sale_type))
-        )
-      }
-
-      const market_aggregate = listing as MarketAggregate
-      // Aggregate listing
-      const min = getComparePrice(market_aggregate)
-
-      return (
-        (!searchState.item_type ||
-          searchState.item_type === market_aggregate.details.item_type) &&
-        (!searchState.quantityAvailable ||
-          !!market_aggregate.listings.find(
-            (l) => l.quantity_available >= searchState.quantityAvailable!,
-          )) &&
-        (!searchState.query ||
-          market_aggregate.details.title
-            .toLowerCase()
-            .includes(searchState.query.toLowerCase()) ||
-          market_aggregate.details.description
-            .toLowerCase()
-            .includes(searchState.query.toLowerCase())) &&
-        (!searchState.maxCost || min <= searchState.maxCost) &&
-        (!searchState.minCost || min >= searchState.minCost) &&
-        (!searchState.sale_type ||
-          ["any", "sale", "aggregate"].includes(searchState.sale_type))
-      )
-    })
-    .sort((a, b) => {
-      switch (searchState.sort) {
-        case "title":
-          return a.details.title.localeCompare(b.details.title)
-        case "price-low":
-          return getComparePrice(a) - getComparePrice(b)
-        case "price-high":
-          return getComparePrice(b) - getComparePrice(a)
-        case "quantity-low":
-          return getCompareQuantity(a) - getCompareQuantity(b)
-        case "quantity-high":
-          return getCompareQuantity(b) - getCompareQuantity(a)
-        case "date-new":
-          return getCompareTimestamp(a) - getCompareTimestamp(b)
-        case "date-old":
-          return getCompareTimestamp(b) - getCompareTimestamp(a)
-        case "activity":
-          return getCompareTimestamp(b) - getCompareTimestamp(a)
-        case "rating": {
-          const brating = getCompareRating(b)
-          const arating = getCompareRating(a)
-          if (brating === arating) {
-            return getCompareTimestamp(b) - getCompareTimestamp(a)
-          }
-          return brating - arating
-        }
-        default:
-          return 0
-      }
-    })
-}
-
-export function ListingBase(props: {
-  listing: MarketListingType
-  index: number
-}) {
-  const { listing, index } = props
-  if (listing.type === "aggregate") {
-    return (
-      <AggregateListingBase
-        aggregate={listing as MarketAggregate}
-        key={index}
-        index={index}
-      />
-    )
-  } else if (listing.type === "multiple") {
-    return (
-      <MultipleListingBase
-        multiple={listing as MarketMultiple}
-        key={index}
-        index={index}
-      />
-    )
-  } else {
-    return (
-      <ItemListingBase
-        listing={listing as UniqueListing}
-        key={index}
-        index={index}
-      />
-    )
-  }
-}
-
 export function DisplayListingsHorizontal(props: {
-  listings: MarketListingType[]
+  listings: MarketListingSearchResult[]
 }) {
   const { listings } = props
 
@@ -1281,7 +1022,7 @@ export function DisplayListingsHorizontal(props: {
                   display: "inline-block",
                   flexShrink: 0,
                 }}
-                key={item.details.details_id}
+                key={item.details_id}
               >
                 <ListingBase listing={item} index={index} />
               </Box>
@@ -1293,23 +1034,55 @@ export function DisplayListingsHorizontal(props: {
   )
 }
 
-export function Listing(props: {
-  listing: MarketListingType | SellerListingType
+export function ListingBase(props: {
+  listing: MarketListingSearchResult
   index: number
 }) {
   const { listing, index } = props
-  if (listing.type === "aggregate") {
+  if (listing.listing_type === "aggregate") {
     return (
-      <AggregateListing
-        aggregate={listing as MarketAggregate}
+      <AggregateListingBase
+        aggregate={listing as ExtendedAggregateSearchResult}
         key={index}
         index={index}
       />
     )
-  } else if (listing.type === "multiple") {
+  } else if (listing.listing_type === "multiple") {
+    return (
+      <MultipleListingBase
+        multiple={listing as ExtendedMultipleSearchResult}
+        key={index}
+        index={index}
+      />
+    )
+  } else {
+    return (
+      <ItemListingBase
+        listing={listing as ExtendedUniqueSearchResult}
+        key={index}
+        index={index}
+      />
+    )
+  }
+}
+
+export function Listing(props: {
+  listing: MarketListingSearchResult
+  index: number
+}) {
+  const { listing, index } = props
+  if (listing.listing_type === "aggregate") {
+    return (
+      <AggregateListing
+        aggregate={listing as ExtendedAggregateSearchResult}
+        key={index}
+        index={index}
+      />
+    )
+  } else if (listing.listing_type === "multiple") {
     return (
       <MultipleListing
-        multiple={listing as MarketMultiple}
+        multiple={listing as ExtendedMultipleSearchResult}
         key={index}
         index={index}
       />
@@ -1317,7 +1090,7 @@ export function Listing(props: {
   } else {
     return (
       <ItemListing
-        listing={listing as UniqueListing}
+        listing={listing as ExtendedUniqueSearchResult}
         key={index}
         index={index}
       />
@@ -1326,21 +1099,15 @@ export function Listing(props: {
 }
 
 export function DisplayListings(props: {
-  listings: (MarketListingType | SellerListingType)[]
+  listings: MarketListingSearchResult[]
   loading?: boolean
   total?: number
 }) {
   const { t } = useTranslation()
-  const [searchState] = useMarketSearch()
   const [perPage, setPerPage] = useState(48)
   const [page, setPage] = useState(0)
 
   const { listings, loading, total } = props
-
-  const filteredListings = useMemo(
-    () => filterListings(listings, searchState),
-    [listings, searchState],
-  )
 
   const ref = useRef<HTMLDivElement>(null)
 
@@ -1375,20 +1142,11 @@ export function DisplayListings(props: {
         ? new Array(perPage)
             .fill(undefined)
             .map((o, i) => <ListingSkeleton index={i} key={i} />)
-        : filteredListings
-            .filter(
-              (item, index) =>
-                index >= perPage * page && index < perPage * (page + 1),
-            )
-            .map((item, index) => (
-              <Listing
-                listing={item}
-                index={index}
-                key={item.details.details_id}
-              />
-            ))}
+        : (listings || []).map((item, index) => (
+            <Listing listing={item} index={index} key={item.listing_id} />
+          ))}
 
-      {listings && !filteredListings.length && !props.loading && (
+      {listings !== undefined && !listings.length && !props.loading && (
         <Grid item xs={12}>
           {t("no_listings")}
         </Grid>
@@ -1416,7 +1174,7 @@ export function DisplayListings(props: {
           }}
           rowsPerPageOptions={[12, 24, 48, 96]}
           component="div"
-          count={total ?? filteredListings.length}
+          count={total ?? (listings?.length || 0)}
           rowsPerPage={perPage}
           page={page}
           onPageChange={handleChangePage}
@@ -1430,222 +1188,18 @@ export function DisplayListings(props: {
   )
 }
 
-export function convertToLegacy(l: MarketSearchResult): MarketListingType {
-  if (l.listing_type === "unique") {
-    return {
-      accept_offers: false,
-      details: {
-        details_id: l.details_id,
-        item_type: l.item_type,
-        item_name: l.item_name,
-        game_item_id: l.game_item_id,
-        title: l.title,
-        description: l.title,
-      },
-      auction_details:
-        l.sale_type === "auction"
-          ? {
-              listing_id: l.listing_id,
-              status: "active",
-              minimum_bid_increment: 0,
-              end_time: l.auction_end_time,
-            }
-          : undefined,
-      listing: {
-        listing_id: l.listing_id,
-        sale_type: l.sale_type,
-        price: +l.minimum_price,
-        timestamp: l.timestamp,
-        quantity_available: +l.quantity_available,
-        status: l.status,
-        expiration: l.expiration,
-        user_seller: l.user_seller
-          ? {
-              username: l.user_seller,
-              avatar: "",
-              display_name: l.user_seller,
-              rating: {
-                avg_rating: +l.avg_rating * 10,
-                rating_count: +l.rating_count,
-                streak: +l.rating_streak,
-                total_orders: +l.total_orders,
-                // Add responsive badge data
-                total_assignments: l.total_assignments || 0,
-                response_rate: l.response_rate || 0,
-              },
-            }
-          : null,
-        contractor_seller: l.contractor_seller
-          ? {
-              avatar: "",
-              name: l.contractor_seller,
-              spectrum_id: l.contractor_seller,
-              rating: {
-                avg_rating: l.avg_rating * 10,
-                rating_count: l.rating_count,
-                streak: l.rating_streak,
-                total_orders: l.total_orders,
-                // Add responsive badge data
-                total_assignments: l.total_assignments || 0,
-                response_rate: l.response_rate || 0,
-              },
-            }
-          : null,
-        internal: false, // Default to false for search results
-      },
-      photos: [l.photo],
-      type: "unique",
-    }
-  } else if (l.listing_type === "multiple") {
-    return {
-      user_seller: l.user_seller
-        ? {
-            username: l.user_seller,
-            avatar: "",
-            display_name: l.user_seller,
-            rating: {
-              avg_rating: +l.avg_rating * 10,
-              rating_count: +l.rating_count,
-              streak: +l.rating_streak,
-              total_orders: +l.total_orders,
-              // Add responsive badge data
-              total_assignments: l.total_assignments || 0,
-              response_rate: l.response_rate || 0,
-            },
-          }
-        : null,
-      contractor_seller: l.contractor_seller
-        ? {
-            avatar: "",
-            name: l.contractor_seller,
-            spectrum_id: l.contractor_seller,
-            rating: {
-              avg_rating: +l.avg_rating * 10,
-              rating_count: +l.rating_count,
-              streak: +l.rating_streak,
-              total_orders: +l.total_orders,
-              // Add responsive badge data
-              total_assignments: l.total_assignments || 0,
-              response_rate: l.response_rate || 0,
-            },
-          }
-        : null,
-      default_listing: {
-        type: "multiple_listing",
-        multiple_id: l.listing_id,
-        details: {
-          details_id: l.details_id,
-          item_type: l.item_type,
-          item_name: l.item_name,
-          game_item_id: l.game_item_id,
-          title: l.title,
-          description: l.title,
-        },
-        listing: {
-          listing_id: "",
-          sale_type: "sale",
-          price: +l.price,
-          timestamp: l.timestamp,
-          quantity_available: +l.quantity_available,
-          status: l.status,
-          expiration: l.expiration,
-          internal: false, // Default to false for search results
-        },
-        photos: [l.photo],
-      },
-      listings: [
-        {
-          multiple_id: l.listing_id,
-          listing: {
-            listing_id: "",
-            sale_type: "sale",
-            price: +l.price,
-            timestamp: l.timestamp,
-            quantity_available: +l.quantity_available,
-            status: l.status,
-            expiration: l.expiration,
-            internal: false, // Default to false for search results
-          },
-          details: {
-            details_id: "",
-            item_type: "",
-            item_name: "",
-            game_item_id: null,
-            title: "",
-            description: "",
-          },
-          type: "multiple_listing",
-          photos: [],
-        },
-      ],
-      multiple_id: l.listing_id,
-      photos: [l.photo],
-      type: "multiple",
-      details: {
-        details_id: l.details_id,
-        item_type: l.item_type,
-        item_name: l.item_name,
-        game_item_id: l.game_item_id,
-        title: l.title,
-        description: l.title,
-      },
-    }
-  } else {
-    return {
-      buy_orders: [],
-      details: {
-        details_id: l.details_id,
-        item_type: l.item_type,
-        item_name: l.item_name,
-        game_item_id: l.game_item_id,
-        title: l.title,
-        description: l.title,
-      },
-      listings: [
-        {
-          aggregate_id: l.listing_id,
-          listing_id: l.listing_id,
-          price: +l.minimum_price,
-          timestamp: l.timestamp,
-          quantity_available: +l.quantity_available - 1,
-          status: l.status,
-        },
-        {
-          aggregate_id: l.listing_id,
-          listing_id: l.listing_id,
-          price: +l.maximum_price,
-          timestamp: l.timestamp,
-          quantity_available: 1,
-          status: l.status,
-        },
-      ],
-      photos: [l.photo],
-      type: "aggregate",
-    }
-  }
-}
-
 export function DisplayListingsMin(props: {
-  listings: MarketSearchResult[]
+  listings: MarketListingSearchResult[]
   loading?: boolean
 }) {
-  const filledListings = useMemo(
-    () => props.listings.map((l) => convertToLegacy(l)),
-    [props.listings],
-  )
-
   return (
     <React.Fragment>
       {props.loading
         ? new Array(16)
             .fill(undefined)
             .map((o, i) => <ListingSkeleton index={i} key={i} />)
-        : filledListings.map((item, index) => (
-            <Listing
-              listing={item}
-              index={index}
-              key={item.details.details_id}
-            />
+        : props.listings.map((item, index) => (
+            <Listing listing={item} index={index} key={item.listing_id} />
           ))}
     </React.Fragment>
   )
@@ -1665,11 +1219,6 @@ export function DisplayBuyOrderListings(props: {
   }, [searchState])
 
   const { listings } = props
-
-  const filteredListings = useMemo(
-    () => filterListings(listings, searchState),
-    [listings, searchState],
-  )
 
   const ref = useRef<HTMLDivElement>(null)
 
@@ -1704,18 +1253,13 @@ export function DisplayBuyOrderListings(props: {
         ? new Array(perPage)
             .fill(undefined)
             .map((o, i) => <ListingSkeleton index={i} key={i} />)
-        : filteredListings
-            .filter(
-              (item, index) =>
-                index >= perPage * page && index < perPage * (page + 1),
-            )
-            .map((item, index) => (
-              <AggregateBuyOrderListing
-                aggregate={item}
-                index={index}
-                key={item.details.game_item_id}
-              />
-            ))}
+        : listings.map((item, index) => (
+            <AggregateBuyOrderListing
+              aggregate={item}
+              index={index}
+              key={item.details.game_item_id}
+            />
+          ))}
 
       <Grid item xs={12}>
         <Divider light />
@@ -1739,7 +1283,7 @@ export function DisplayBuyOrderListings(props: {
           }}
           rowsPerPageOptions={[12, 24, 48, 96]}
           component="div"
-          count={filteredListings.length}
+          count={listings.length}
           rowsPerPage={perPage}
           page={page}
           onPageChange={handleChangePage}
@@ -1781,8 +1325,7 @@ export function ItemListings(props: {
   // Memoize search query parameters to prevent unnecessary re-renders
   const searchQueryParams = useMemo(
     () => ({
-      rating: undefined,
-      seller_rating: 0,
+      rating: 0,
       contractor_seller: CURRENT_CUSTOM_ORG || org,
       user_seller: user,
       ...searchState,
@@ -1793,7 +1336,8 @@ export function ItemListings(props: {
     [org, user, searchState, page, perPage],
   )
 
-  const { data: results, isLoading } = useSearchMarketQuery(searchQueryParams)
+  const { data: results, isLoading } =
+    useSearchMarketListingsQuery(searchQueryParams)
 
   const { total, listings } = useMemo(
     () => results || { total: 1, listings: [] },
@@ -1894,8 +1438,7 @@ export function BulkListingsRefactor(props: {
   // Memoize search query parameters to prevent unnecessary re-renders
   const searchQueryParams = useMemo(
     () => ({
-      rating: undefined,
-      seller_rating: 0,
+      rating: 0,
       contractor_seller: CURRENT_CUSTOM_ORG || org,
       user_seller: user,
       ...searchState,
@@ -1906,7 +1449,8 @@ export function BulkListingsRefactor(props: {
     [org, user, searchState, page, perPage],
   )
 
-  const { data: results, isLoading } = useSearchMarketQuery(searchQueryParams)
+  const { data: results, isLoading } =
+    useSearchMarketListingsQuery(searchQueryParams)
 
   const { total, listings } = useMemo(
     () => results || { total: 1, listings: [] },
@@ -1979,31 +1523,8 @@ export function BulkListingsRefactor(props: {
   )
 }
 
-export function BulkListings() {
-  const { data: listings, isLoading } = useMarketGetPublicQuery()
-
-  const [searchState, setSearchState] = useMarketSearch()
-  useEffect(() => {
-    setSearchState({
-      ...searchState,
-      quantityAvailable:
-        !searchState.quantityAvailable || searchState.quantityAvailable > 1
-          ? searchState.quantityAvailable
-          : 1,
-    })
-    // Fire once, no deps
-  }, [])
-
-  return (
-    <DisplayListings
-      listings={(listings || []).filter((l) => l.type === "aggregate")}
-      loading={isLoading}
-    />
-  )
-}
-
 export function BuyOrders() {
-  const { data: listings, isLoading } = useMarketGetBuyOrderListingsQuery()
+  const { data: listings, isLoading } = useGetBuyOrderListingsQuery()
 
   return (
     <DisplayBuyOrderListings
@@ -2018,19 +1539,14 @@ export function OrgListings(props: { org: string }) {
   const [searchState, setSearchState] = useMarketSearch()
 
   // Use search endpoint with contractor filter
-  const { data: searchResults, isLoading } = useSearchMarketQuery({
+  const { data: searchResults, isLoading } = useSearchMarketListingsQuery({
     contractor_seller: org,
     quantityAvailable: 1,
     index: 0,
-    page_size: 1000, // Large page size to get all listings
+    page_size: 96,
     listing_type: undefined,
     ...searchState,
   })
-
-  const filteredListings = useMemo(() => {
-    if (!searchResults?.listings) return []
-    return searchResults.listings.map(convertToLegacy)
-  }, [searchResults])
 
   useEffect(() => {
     setSearchState({
@@ -2044,30 +1560,26 @@ export function OrgListings(props: { org: string }) {
     // Fire once, no deps
   }, [])
 
-  return <DisplayListings listings={filteredListings} loading={isLoading} />
+  return (
+    <DisplayListings
+      listings={searchResults?.listings || []}
+      loading={isLoading}
+    />
+  )
 }
 
 export function OrgRecentListings(props: { org: string }) {
   const { org } = props
-  const { data: searchResults } = useSearchMarketQuery({
+  const { data: searchResults } = useSearchMarketListingsQuery({
     contractor_seller: org,
     quantityAvailable: 1,
     index: 0,
-    page_size: 1000, // Large page size to get all listings
+    page_size: 96, // Large page size to get all listings
     listing_type: undefined,
   })
 
-  const filteredListings = useMemo(() => {
-    if (!searchResults?.listings) return []
-    const legacyListings = searchResults.listings.map(convertToLegacy)
-    return [...legacyListings]
-      .filter((item) => getCompareQuantity(item))
-      .sort((a, b) => getCompareTimestamp(b) - getCompareTimestamp(a))
-      .slice(0, 25)
-  }, [searchResults])
-
   return searchResults ? (
-    <DisplayListingsHorizontal listings={filteredListings || []} />
+    <DisplayListingsHorizontal listings={searchResults.listings || []} />
   ) : (
     <RecentListingsSkeleton />
   )
@@ -2075,17 +1587,13 @@ export function OrgRecentListings(props: { org: string }) {
 
 export function UserRecentListings(props: { user: string }) {
   const { user } = props
-  const { data: listings } = useMarketGetListingByUserQuery(user)
-
-  const filteredListings = useMemo(() => {
-    return [...(listings || [])]
-      .filter((item) => getCompareQuantity(item))
-      .sort((a, b) => getCompareTimestamp(b) - getCompareTimestamp(a))
-      .slice(0, 25)
-  }, [listings])
+  const { data: listings } = useSearchMarketListingsQuery({
+    page_size: 25,
+    user_seller: user,
+  })
 
   return listings ? (
-    <DisplayListingsHorizontal listings={filteredListings || []} />
+    <DisplayListingsHorizontal listings={listings.listings || []} />
   ) : (
     <RecentListingsSkeleton />
   )
@@ -2173,12 +1681,7 @@ export function MyItemListings(props: {
   }, [searchQueryParams, props.status, props.showInternal])
 
   const { data: searchResults, isLoading } =
-    useSearchMarketQuery(finalSearchParams)
-
-  const filteredListings = useMemo(() => {
-    if (!searchResults?.listings) return []
-    return searchResults.listings.map(convertToLegacy)
-  }, [searchResults])
+    useSearchMarketListingsQuery(finalSearchParams)
 
   const [, setSearchState] = useMarketSearch()
   useEffect(() => {
@@ -2232,32 +1735,19 @@ export function MyItemListings(props: {
 }
 
 export function AllItemListings(props: { status?: string }) {
-  const { data: listings, isLoading } = useMarketGetAllListingsQuery(undefined)
+  const { data: searchResults, isLoading } = useSearchMarketQuery({
+    statuses: props.status,
+  })
 
   const [, setSearchState] = useMarketSearch()
   useEffect(() => {
     setSearchState({ query: "", quantityAvailable: 0 })
   }, [])
 
-  const filteredListings = useMemo(
-    () =>
-      (listings || []).filter((listing) => {
-        if (!props.status) {
-          return true
-        }
-
-        const unique = listing as UniqueListing
-        if (unique.listing) {
-          return props.status === unique.listing.status
-        } else {
-          const multiple = listing as MarketMultiple
-          return multiple.listings.find(
-            (l) => l.listing.status === props.status,
-          )
-        }
-      }),
-    [listings, props.status],
+  return (
+    <DisplayListings
+      listings={searchResults?.listings || []}
+      loading={isLoading}
+    />
   )
-
-  return <DisplayListings listings={filteredListings} loading={isLoading} />
 }

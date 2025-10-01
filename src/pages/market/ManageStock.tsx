@@ -1,33 +1,25 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { Grid, Paper } from "@mui/material"
 import { MarketSearchArea } from "../../views/market/MarketSidebar"
 import { ContainerGrid } from "../../components/layout/ContainerGrid"
 import { MarketSidebarContext } from "../../hooks/market/MarketSidebar"
 import { Page } from "../../components/metadata/Page"
 import { ItemStockContext, MyItemStock } from "../../views/market/ItemStock"
-import { useMarketSearch } from "../../hooks/market/MarketSearch"
-import { UniqueListing } from "../../datatypes/MarketListing"
 import { HeaderTitle } from "../../components/typography/HeaderTitle"
 import { UnderlineLink } from "../../components/typography/UnderlineLink"
 import { Link } from "react-router-dom"
 import { ItemStockRework } from "../../views/market/ItemStockRework"
 import { useGetUserProfileQuery } from "../../store/profile.ts"
 import { useTranslation } from "react-i18next"
+import { ExtendedUniqueSearchResult } from "../../store/market.ts"
 
 export function ManageStock() {
   const { t } = useTranslation()
   const [open, setOpen] = useState(true)
-  const [searchState, setSearchState] = useMarketSearch()
 
-  useEffect(() => {
-    setSearchState({
-      query: "",
-      quantityAvailable: 0,
-      sort: searchState.sort || "activity",
-    })
-  }, [])
-
-  const [selectedListings, setSelectedListings] = useState<UniqueListing[]>([])
+  const [selectedListings, setSelectedListings] = useState<
+    ExtendedUniqueSearchResult[]
+  >([])
   const { data: profile } = useGetUserProfileQuery()
 
   return (

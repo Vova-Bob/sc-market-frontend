@@ -22,10 +22,14 @@ import {
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded"
 import { useSearchParams } from "react-router-dom"
 import { SearchRounded } from "@mui/icons-material"
-import { useMarketSearch } from "../../hooks/market/MarketSearch"
+import {
+  SaleTypeSelect,
+  useMarketSearch,
+} from "../../hooks/market/MarketSearch"
 import { SelectGameCategoryOption } from "../../components/select/SelectGameItem"
 import CloseIcon from "@mui/icons-material/CloseRounded"
 import MenuIcon from "@mui/icons-material/MenuRounded"
+import { SaleType } from "../../store/market.ts"
 
 export function MarketSearchArea(props: { status?: boolean }) {
   const theme: ExtendedTheme = useTheme()
@@ -34,7 +38,9 @@ export function MarketSearchArea(props: { status?: boolean }) {
 
   const [searchState, setMarketSearch] = useMarketSearch()
   const [sort, setSort] = useState<string | null>(searchState.sort || null)
-  const [kind, setKind] = useState<string>(searchState.sale_type || "any")
+  const [kind, setKind] = useState<SaleTypeSelect>(
+    searchState.sale_type || "any",
+  )
   const [type, setType] = useState<string | null>(null)
   const [quantityAvailable, setQuantityAvailable] = useState<number>(
     searchState.quantityAvailable !== undefined
@@ -51,7 +57,7 @@ export function MarketSearchArea(props: { status?: boolean }) {
   )
 
   const handleKindChange = (event: { target: { value: string } }) => {
-    setKind(event.target.value)
+    setKind(event.target.value as SaleTypeSelect)
   }
   const handleSortChange = (event: { target: { value: string } }) => {
     setSort(event.target.value || null)

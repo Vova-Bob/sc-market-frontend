@@ -2,7 +2,7 @@ import { Navigate, useParams } from "react-router-dom"
 import { ContainerGrid } from "../../components/layout/ContainerGrid"
 import React from "react"
 import { HeaderTitle } from "../../components/typography/HeaderTitle"
-import { useMarketGetAggregateByIDQuery } from "../../store/market"
+import { useGetAggregateByIdQuery } from "../../store/market"
 import { Page } from "../../components/metadata/Page"
 import { Link } from "react-router-dom"
 import { Button, Grid } from "@mui/material"
@@ -29,7 +29,7 @@ export function ViewMarketAggregate(props: {}) {
     error,
     refetch,
     isLoading,
-  } = useMarketGetAggregateByIDQuery(id!)
+  } = useGetAggregateByIdQuery(id!)
 
   return (
     <Page title={aggregate?.details?.title}>
@@ -93,7 +93,7 @@ export function EditMarketAggregate(props: {}) {
     error,
     refetch,
     isLoading,
-  } = useMarketGetAggregateByIDQuery(id!)
+  } = useGetAggregateByIdQuery(id!)
 
   return (
     <Page title={aggregate?.details?.title}>

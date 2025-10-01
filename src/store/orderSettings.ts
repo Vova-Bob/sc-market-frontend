@@ -2,9 +2,9 @@ import { serviceApi } from "./service"
 
 export interface OrderSetting {
   id: string
-  entity_type: 'user' | 'contractor'
+  entity_type: "user" | "contractor"
   entity_id: string
-  setting_type: 'offer_message' | 'order_message'
+  setting_type: "offer_message" | "order_message"
   message_content: string
   enabled: boolean
   created_at: string
@@ -12,7 +12,7 @@ export interface OrderSetting {
 }
 
 export interface CreateOrderSettingRequest {
-  setting_type: 'offer_message' | 'order_message'
+  setting_type: "offer_message" | "order_message"
   message_content: string
   enabled?: boolean
 }
@@ -26,79 +26,101 @@ export const orderSettingsApi = serviceApi.injectEndpoints({
   endpoints: (builder) => ({
     // User order settings
     getUserOrderSettings: builder.query<OrderSetting[], void>({
-      query: () => '/api/orders/settings',
-      transformResponse: (response: { data: { settings: OrderSetting[] } }) => response.data.settings,
-      providesTags: ['OrderSettings'],
+      query: () => "/api/orders/settings",
+      transformResponse: (response: { data: { settings: OrderSetting[] } }) =>
+        response.data.settings,
+      providesTags: ["OrderSettings"],
     }),
-    
-    createUserOrderSetting: builder.mutation<{ setting: OrderSetting }, CreateOrderSettingRequest>({
+
+    createUserOrderSetting: builder.mutation<
+      { setting: OrderSetting },
+      CreateOrderSettingRequest
+    >({
       query: (setting) => ({
-        url: '/api/orders/settings',
-        method: 'POST',
+        url: "/api/orders/settings",
+        method: "POST",
         body: setting,
       }),
-      transformResponse: (response: { data: { setting: OrderSetting } }) => response.data,
-      invalidatesTags: ['OrderSettings'],
+      transformResponse: (response: { data: { setting: OrderSetting } }) =>
+        response.data,
+      invalidatesTags: ["OrderSettings"],
     }),
-    
-    updateUserOrderSetting: builder.mutation<{ setting: OrderSetting }, { id: string } & UpdateOrderSettingRequest>({
+
+    updateUserOrderSetting: builder.mutation<
+      { setting: OrderSetting },
+      { id: string } & UpdateOrderSettingRequest
+    >({
       query: ({ id, ...updates }) => ({
         url: `/api/orders/settings/${id}`,
-        method: 'PUT',
+        method: "PUT",
         body: updates,
       }),
-      transformResponse: (response: { data: { setting: OrderSetting } }) => response.data,
-      invalidatesTags: ['OrderSettings'],
+      transformResponse: (response: { data: { setting: OrderSetting } }) =>
+        response.data,
+      invalidatesTags: ["OrderSettings"],
     }),
-    
+
     deleteUserOrderSetting: builder.mutation<void, string>({
       query: (id) => ({
         url: `/api/orders/settings/${id}`,
-        method: 'DELETE',
+        method: "DELETE",
       }),
-      invalidatesTags: ['OrderSettings'],
+      invalidatesTags: ["OrderSettings"],
     }),
-    
+
     // Contractor order settings
     getContractorOrderSettings: builder.query<OrderSetting[], string>({
-      query: (contractorId) => `/api/orders/contractors/${contractorId}/settings`,
-      transformResponse: (response: { data: { settings: OrderSetting[] } }) => response.data.settings,
+      query: (contractorId) =>
+        `/api/orders/contractors/${contractorId}/settings`,
+      transformResponse: (response: { data: { settings: OrderSetting[] } }) =>
+        response.data.settings,
       providesTags: (result, error, contractorId) => [
-        { type: 'OrderSettings', id: contractorId },
+        { type: "OrderSettings", id: contractorId },
       ],
     }),
-    
-    createContractorOrderSetting: builder.mutation<{ setting: OrderSetting }, { contractorId: string } & CreateOrderSettingRequest>({
+
+    createContractorOrderSetting: builder.mutation<
+      { setting: OrderSetting },
+      { contractorId: string } & CreateOrderSettingRequest
+    >({
       query: ({ contractorId, ...setting }) => ({
         url: `/api/orders/contractors/${contractorId}/settings`,
-        method: 'POST',
+        method: "POST",
         body: setting,
       }),
-      transformResponse: (response: { data: { setting: OrderSetting } }) => response.data,
+      transformResponse: (response: { data: { setting: OrderSetting } }) =>
+        response.data,
       invalidatesTags: (result, error, { contractorId }) => [
-        { type: 'OrderSettings', id: contractorId },
+        { type: "OrderSettings", id: contractorId },
       ],
     }),
-    
-    updateContractorOrderSetting: builder.mutation<{ setting: OrderSetting }, { contractorId: string; id: string } & UpdateOrderSettingRequest>({
+
+    updateContractorOrderSetting: builder.mutation<
+      { setting: OrderSetting },
+      { contractorId: string; id: string } & UpdateOrderSettingRequest
+    >({
       query: ({ contractorId, id, ...updates }) => ({
         url: `/api/orders/contractors/${contractorId}/settings/${id}`,
-        method: 'PUT',
+        method: "PUT",
         body: updates,
       }),
-      transformResponse: (response: { data: { setting: OrderSetting } }) => response.data,
+      transformResponse: (response: { data: { setting: OrderSetting } }) =>
+        response.data,
       invalidatesTags: (result, error, { contractorId }) => [
-        { type: 'OrderSettings', id: contractorId },
+        { type: "OrderSettings", id: contractorId },
       ],
     }),
-    
-    deleteContractorOrderSetting: builder.mutation<void, { contractorId: string; id: string }>({
+
+    deleteContractorOrderSetting: builder.mutation<
+      void,
+      { contractorId: string; id: string }
+    >({
       query: ({ contractorId, id }) => ({
         url: `/api/orders/contractors/${contractorId}/settings/${id}`,
-        method: 'DELETE',
+        method: "DELETE",
       }),
       invalidatesTags: (result, error, { contractorId }) => [
-        { type: 'OrderSettings', id: contractorId },
+        { type: "OrderSettings", id: contractorId },
       ],
     }),
   }),

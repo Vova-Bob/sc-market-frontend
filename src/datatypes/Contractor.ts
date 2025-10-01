@@ -12,10 +12,11 @@ export interface DiscordSettings {
 export interface Rating {
   avg_rating: number
   rating_count: number
+  total_rating: number
   streak: number
   total_orders: number
-  response_rate?: number
-  total_assignments?: number
+  response_rate: number
+  total_assignments: number
 }
 
 export interface Contractor {
